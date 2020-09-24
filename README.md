@@ -1,6 +1,9 @@
 # cg_lims 
 A new package for lims interactions. The aim is to replace all other lims interactions at CG with this new package.
 
+## Database access
+The lims ststem is built upon a postgress database. Illumina provides a REST API for accessing the database. On top of that there is a python API, the [genologics](https://github.com/SciLifeLab/genologics) packge wich simply translates the rest into python. This package is hevily depending upon the genologics python API. 
+
 ## Branching model
 
 cg_lims is using github flow branching model as described in our development manual.
