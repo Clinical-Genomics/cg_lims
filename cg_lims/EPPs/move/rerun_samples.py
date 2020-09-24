@@ -4,7 +4,7 @@ from cg_lims.exceptions import (
     LimsError,
     DuplicateSampleError,
     MissingArtifactError,
-    WhatToCallThisError
+    WhatToCallThisError,
 )
 
 from cg_lims.get.artifacts import get_latest_artifact, get_artifacts, filter_artifacts
@@ -23,7 +23,9 @@ import click
 LOG = logging.getLogger(__name__)
 
 
-def get_artifacts_to_requeue(lims: Lims, rerun_arts: List[Artifact], process_type: List[str]) -> List[Artifact]:
+def get_artifacts_to_requeue(
+    lims: Lims, rerun_arts: List[Artifact], process_type: List[str]
+) -> List[Artifact]:
     """Get input artifacts to define step (output artifacts of sort step)
     Args:
         lims: Lims
@@ -34,18 +36,18 @@ def get_artifacts_to_requeue(lims: Lims, rerun_arts: List[Artifact], process_typ
     artifacts_to_requeue = []
     break_rerun = False
     for art in rerun_arts:
-        representative_sample_id = art.samples[0].id ## hantera med if samples..
+        representative_sample_id = art.samples[0].id  ## hantera med if samples..
         try:
             requeue_art = get_latest_artifact(
-            lims, representative_sample_id, process_type
-        )
+                lims, representative_sample_id, process_type
+            )
         except MissingArtifactError as e:
             LOG.warning(e.message)
             break_rerun = True
             continue
         artifacts_to_requeue.append(requeue_art)
     if break_rerun:
-        raise WhatToCallThisError('Issues finding artifacts to requeue. See log')
+        raise WhatToCallThisError("Issues finding artifacts to requeue. See log")
     return set(artifacts_to_requeue)
 
 
@@ -66,30 +68,30 @@ def check_same_sample_in_many_rerun_pools(rerun_arts: List[Artifact]) -> None:
 
 
 @click.command()
-@options.workflow_id("Destination workflow id.")
-@options.stage_id("Destination stage id.")
+@options.workflow_id(help="Destination workflow id.")
+@options.stage_id(help="Destination stage id.")
 @options.process_type(
-    "The name(s) of the process type(s) before the requeue step. Fetching artifact to requeue from here.")
-@options.udf("UDF that will tell wich artifacts to move.")
-
+    help="The name(s) of the process type(s) before the requeue step. Fetching artifact to requeue from here."
+)
+@options.udf(help="UDF that will tell wich artifacts to move.")
 @click.pass_context
 def rerun_samples(ctx, workflow_id, stage_id, udf, process_type):
     """Script to requeue samples for sequencing.
     
     """
-    process = ctx.obj['process']
-    lims = ctx.obj['lims']
+    process = ctx.obj["process"]
+    lims = ctx.obj["lims"]
     artifacts = get_artifacts(process, False)
     rerun_arts = filter_artifacts(artifacts, udf, True)
 
     if rerun_arts:
         try:
-            artifacts_to_requeue = get_artifacts_to_requeue(lims, rerun_arts, process_type)
+            artifacts_to_requeue = get_artifacts_to_requeue(
+                lims, rerun_arts, process_type
+            )
             check_same_sample_in_many_rerun_pools(artifacts_to_requeue)
             queue_artifacts(lims, artifacts_to_requeue, workflow_id, stage_id)
             click.echo("Artifacts have been queued.")
         except LimsError as e:
             sys.exit(e.message)
-
-
 
