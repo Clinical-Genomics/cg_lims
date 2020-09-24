@@ -4,7 +4,6 @@ from cg_lims.exceptions import (
     LimsError,
     DuplicateSampleError,
     MissingArtifactError,
-    WhatToCallThisError,
 )
 
 from cg_lims.get.artifacts import get_latest_artifact, get_artifacts, filter_artifacts
@@ -47,7 +46,7 @@ def get_artifacts_to_requeue(
             continue
         artifacts_to_requeue.append(requeue_art)
     if break_rerun:
-        raise WhatToCallThisError("Issues finding artifacts to requeue. See log")
+        raise MissingArtifactError("Issues finding artifacts to requeue. See log")
     return set(artifacts_to_requeue)
 
 

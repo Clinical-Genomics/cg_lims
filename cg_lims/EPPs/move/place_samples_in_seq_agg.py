@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from cg_lims.exceptions import LimsError, MissingArtifactError, WhatToCallThisError
+from cg_lims.exceptions import LimsError, MissingArtifactError
 from cg_lims.get.artifacts import get_latest_artifact, get_sample_artifact
 from cg_lims.get.samples import get_process_samples
 from cg_lims.put.queue import queue_artifacts
@@ -52,7 +52,7 @@ def get_pools_and_samples_to_queue(
             artifact = get_sample_artifact(lims, sample)
         send_to_next_step.append(artifact)
     if break_send_to_next_step:
-        raise WhatToCallThisError(
+        raise MissingArtifactError(
             "Issues getting pools and or samples to queue. See log"
         )
     return set(send_to_next_step)
