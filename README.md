@@ -1,17 +1,37 @@
 # cg_lims 
-## About
+A new package for lims interactions. The aim is to replace all other lims interactions at CG with this new package.
 
-The External Program Plug-in (EPP) is a script that is configuerd to be run from within a lims step.
-
-Clinical Genomics LIMS is using both scripts that are developed and maintained by Genologics, and scripts that are developed by developers at Clinical Genomics. Scripts developed and maintained by Clinical Genomics are collected in this repocitory.
-
+## Database access
+The lims ststem is built upon a postgress database. Illumina provides a REST API for accessing the database. On top of that there is a python API, the [genologics](https://github.com/SciLifeLab/genologics) packge wich simply translates the rest into python. This package is hevily depending upon the genologics python API. 
 
 ## Branching model
 
 cg_lims is using github flow branching model as described in our development manual.
 
 
-## Production and Stage
+## Config files
+   
+The genologics package requires a config: **~/.genologicsrc**  
+Its content must look like this:
+
+```
+[genologics]
+BASEURI=
+USERNAME=
+PASSWORD=
+```
+
+
+## About EPPs
+
+The External Program Plug-in (EPP) is a script that is configuerd to be run from within a lims step.
+
+Clinical Genomics LIMS is using both scripts that are developed and maintained by Genologics, and scripts that are developed by developers at Clinical Genomics. Scripts developed and maintained by Clinical Genomics are collected in this repocitory.
+
+
+
+
+#### Production and Stage
 
 Development of new EPPs is preferably done locally but the final testing is done on the stage server.
 
@@ -25,7 +45,7 @@ ssh into the servers:
 
 You will need a password wich is kept in the safety locker at clinical genomics.
 
-## Insalling
+#### Insalling
 The procedure for installing is the same on both servers.
 
 cg_lims is cloned into `/home/glsai/opt/` and installed by the glsai user under the conda environment epp_master.
@@ -43,7 +63,7 @@ the branch that has been installed is now avalibe from within the [lims web inte
 
 
 
-## Setting up a new EPP
+#### Setting up a new EPP
 
 The branch with the new script has been installed and you want to test the script through the web interface. (Or deploy it to production. The procedure is the same.)
 
@@ -100,21 +120,6 @@ The script is now avalible from within the step. Queue some samples to the step 
 Read more about EPPs in the [Clarity LIMS API Cookbook](https://genologics.zendesk.com/hc/en-us/restricted?return_to=https%3A%2F%2Fgenologics.zendesk.com%2Fhc%2Fen-us%2Fcategories%2F201688743-Clarity-LIMS-API-Cookbook)
 
 
-## Config files
-
-**~/.genologicsrc**
-   
-This config file contains user info to give access to the lims database and is requiered for the SciLifeLab/genologics package. All EPPs depend on this config.
-
-Its content must look like this:
-
-```
-[genologics]
-BASEURI=
-USERNAME=
-PASSWORD=
-```
-
 **~/.clinical_eppsrc**
 
 This config file contains userinfo to give access to cgstats which contains information about demultiplexing data. The config is used by one of the scripts in the Clinical-Genomics/cg_lims package; bcl2fastq.py
@@ -130,7 +135,7 @@ URL=https://clinical-api.scilifelab.se/api/v1
 
 ```
 
-## Trouble shooting
+#### Trouble shooting
 
 When a script is failing, usually as a developer, you will get this information from the lims user who has run the script from within a specific lims step. It´s easiest to trouble shoot if the step is still opened.
 
@@ -164,7 +169,7 @@ python copyUDFs_from_aggregateQC.py -p '24-144356' -l testlog -u 'Concentration'
 ```
 
 
-### Scripts developt by Illumina
+#### Scripts developt by Illumina
 In our Clinical Genomics lims system we are also using a fiew scripts that are developed and maintained by Illumina.
 Programs written and maintained by Illumina are located in
 
