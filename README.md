@@ -1,5 +1,5 @@
 # cg_lims 
-## About
+## About EPPs
 
 The External Program Plug-in (EPP) is a script that is configuerd to be run from within a lims step.
 
