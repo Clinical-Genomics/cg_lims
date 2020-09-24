@@ -1,4 +1,4 @@
-# clinical_EPPs 
+# cg_lims 
 ## About
 
 The External Program Plug-in (EPP) is a script that is configuerd to be run from within a lims step.
@@ -8,7 +8,7 @@ Clinical Genomics LIMS is using both scripts that are developed and maintained b
 
 ## Branching model
 
-clinical_EPPs is using github flow branching model as described in our development manual.
+cg_lims is using github flow branching model as described in our development manual.
 
 
 ## Production and Stage
@@ -28,13 +28,13 @@ You will need a password wich is kept in the safety locker at clinical genomics.
 ## Insalling
 The procedure for installing is the same on both servers.
 
-clinical_EPPs is cloned into `/home/glsai/opt/` and installed by the glsai user under the conda environment epp_master.
+cg_lims is cloned into `/home/glsai/opt/` and installed by the glsai user under the conda environment epp_master.
 
 ```
 sudo -iu glsai
 source activate epp_master
 
-cd /home/glsai/opt/clinical_EPPs
+cd /home/glsai/opt/cg_lims
 git pull <branch name>
 python setup.py install
 
@@ -50,7 +50,7 @@ The branch with the new script has been installed and you want to test the scrip
 Let us call the new script we want to test: `bcl2fastq.py`. Running it from the command line looks like this:
 
 ```
-(epp_master)glsai@clinical-lims-stage:~/opt/clinical_EPPs/EPPs$ python bcl2fastq.py --help
+(epp_master)glsai@clinical-lims-stage:~/opt/cg_lims/EPPs$ python bcl2fastq.py --help
 
 usage: bcl2fastq.py [-h] [-p PID] [-l LOG]
 
@@ -117,7 +117,7 @@ PASSWORD=
 
 **~/.clinical_eppsrc**
 
-This config file contains userinfo to give access to cgstats which contains information about demultiplexing data. The config is used by one of the scripts in the Clinical-Genomics/clinical_EPPs package; bcl2fastq.py
+This config file contains userinfo to give access to cgstats which contains information about demultiplexing data. The config is used by one of the scripts in the Clinical-Genomics/cg_lims package; bcl2fastq.py
 
 Its content must look like this:
 
@@ -159,7 +159,7 @@ Prefixes:
 151- for indexing/reagent tag processes
 
 ```
-cd /home/glsai/opt/clinical_EPPs/EPPs/
+cd /home/glsai/opt/cg_lims/EPPs/
 python copyUDFs_from_aggregateQC.py -p '24-144356' -l testlog -u 'Concentration' 'Amount (ng)' -q 'Aggregate QC (DNA) TWIST v1'
 ```
 
