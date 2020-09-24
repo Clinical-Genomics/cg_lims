@@ -10,8 +10,6 @@ cg_lims is using github flow branching model as described in our development man
 
 
 ## Config files
-
-**~/.genologicsrc**
    
 The genologics package requires a config: **~/.genologicsrc**  
 Its content must look like this:
