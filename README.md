@@ -13,8 +13,7 @@ cg_lims is using github flow branching model as described in our development man
 
 **~/.genologicsrc**
    
-This config file contains user info to give access to the lims database and is requiered for the SciLifeLab/genologics package. All EPPs depend on this config.
-
+The genologics package requires a config: **~/.genologicsrc**  
 Its content must look like this:
 
 ```
