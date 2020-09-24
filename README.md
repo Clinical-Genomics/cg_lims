@@ -1,1 +1,1 @@
-# cg-lims
+# cg_lims
