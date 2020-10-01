@@ -18,11 +18,15 @@ def stage_id(help: str = "Stage id.") -> click.option:
 def udf(help: str = "UDF name",) -> click.option:
     return click.option("-u", "--udf", required=True, help=help)
 
-def input_artifacts(
+def log(help: str = "Path to log file.",) -> click.option:
+    return click.option("-l", "--log", required=True, help=help)
+
+
+def input(
     help: str = "Use this flag if you run the script from a QC step.",
 ) -> click.option:
     return click.option(
-        "-i", "--input-artifacts", default=False, is_flag=True, help=help,
+        "-i", "--input", default=False, is_flag=True, help=help,
     )
 
 def process_type(help: str = "Process type name.") -> click.option:

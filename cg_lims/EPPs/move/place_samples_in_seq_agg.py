@@ -55,7 +55,7 @@ def get_pools_and_samples_to_queue(
         raise MissingArtifactError(
             "Issues getting pools and or samples to queue. See log"
         )
-    return set(send_to_next_step)
+    return list(set(send_to_next_step))
 
 
 @click.command()
