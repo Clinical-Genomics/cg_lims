@@ -1,3 +1,4 @@
 genologics                               
 click
 pathlib
+PyYAML
