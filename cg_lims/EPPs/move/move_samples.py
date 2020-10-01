@@ -20,7 +20,7 @@ import click
     help="Use this flag if you want to queue the input artifacts of the current process. Default is to queue the output artifacts (analytes) of the process."
 )
 @click.pass_context
-def move_samples(ctx, workflow_id, stage_id, udf, input_artifacts):
+def move_samples(ctx, workflow_id: int, stage_id: int, udf: str, input_artifacts:bool):
     """Script to move aritfats to another stage.
     
     Queueing artifacts with <udf==True>, to stage with <stage-id>
@@ -29,7 +29,7 @@ def move_samples(ctx, workflow_id, stage_id, udf, input_artifacts):
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
 
-    artifacts = get_artifacts(process, input_artifacts)
+    artifacts = get_artifacts(process=process, input=input_artifacts)
     filtered_artifacts = filter_artifacts(artifacts, udf, True)
 
     try:
