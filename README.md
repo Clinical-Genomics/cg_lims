@@ -16,17 +16,7 @@ Read about this [here](https://github.com/SciLifeLab/genologics).
 
 
 
-## About EPPs
-
-The External Program Plug-in (EPP) is a script that is configuerd to be run from within a lims step.
-
-Clinical Genomics LIMS is using both scripts that are developed and maintained by Genologics, and scripts that are developed by developers at Clinical Genomics. Scripts developed and maintained by Clinical Genomics are located in [cg_lims/cg_lims/EPPs](https://github.com/Clinical-Genomics/cg_lims/tree/master/cg_lims/EPPs).
-
-
-
-#### Production and Stage
-
-Development of new EPPs is preferably done locally but the final testing is done on the stage server.
+## Production and Stage
 
 The production lims system is set up on hippocampus and the stage lims system is set up on amygdala.
 
@@ -38,40 +28,79 @@ ssh into the servers:
 
 You will need a password wich is kept in the safety locker at clinical genomics.
 
-#### Insalling
+Testing of new code or new workflows takes place on the stage server.
+
+
+## About EPPs
+
+The External Program Plug-in (EPP) is a script that is configuerd to be run from within a lims step.
+
+Clinical Genomics LIMS is using both scripts that are developed and maintained by Genologics, and scripts that are developed by developers at Clinical Genomics. Scripts developed and maintained by Clinical Genomics are located in [cg_lims/cg_lims/EPPs](https://github.com/Clinical-Genomics/cg_lims/tree/master/cg_lims/EPPs).
+
+Development of new EPPs is preferably done locally but the final testing is done on the stage server.
+
+
+
+#### Install
 The procedure for installing is the same on both servers.
 
-cg_lims is cloned into `/home/glsai/opt/` and installed by the glsai user under the conda environment epp_master.
+Curently cg_lims is cloned into `/home/glsai/opt/` and installed by the glsai user under the conda environment python3.
 
 ```
 sudo -iu glsai
-source activate epp_master
+source activate python3
+pip install -U "git+https://github.com/Clinical-Genomics/cg_lims@<branch name>"
+```
+The branch that has been installed is now avalibe from within the [lims web interface](https://clinical-lims-stage.scilifelab.se/clarity/).
 
-cd /home/glsai/opt/cg_lims
-git pull <branch name>
-python setup.py install
+Test it from the command line:
 
 ```
-the branch that has been installed is now avalibe from within the [lims web interface](https://clinical-lims-stage.scilifelab.se/clarity/).
+(python3)glsai@clinical-lims-stage:~$ epps --help
+Usage: epps [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  -l, --log TEXT      Path to log file.  [required]
+  -p, --process TEXT  Lims id for current Process.  [required]
+  --help              Show this message and exit.
+
+Commands:
+  move-samples              Script to move aritfats to another stage.
+  place-samples-in-seq-agg  Queueing artifacts with given udf==True, to...
+  rerun-samples             Script to requeue samples for sequencing.
+```
 
 
 
-#### Setting up a new EPP
+
+#### Configure EPPs
 
 The branch with the new script has been installed and you want to test the script through the web interface. (Or deploy it to production. The procedure is the same.)
 
-Let us call the new script we want to test: `bcl2fastq.py`. Running it from the command line looks like this:
+Let us call the new script we want to test: `move-samples`. Running it from the command line looks like this:
 
 ```
-(epp_master)glsai@clinical-lims-stage:~/opt/cg_lims/EPPs$ python bcl2fastq.py --help
+(python3)glsai@clinical-lims-stage:~$ epps -p 'some-process' -l 'log' move-samples  --help
+Usage: epps move-samples [OPTIONS]
 
-usage: bcl2fastq.py [-h] [-p PID] [-l LOG]
+  Script to move aritfats to another stage.
 
-optional arguments:
-  -h, --help  show this help message and exit
-  -p PID      Lims id for current Process
-  -l LOG      File name for standard log file, for runtime information and
-              problems.
+  Queueing artifacts with <udf==True>, to stage with <stage-id> in workflow
+  with <workflow-id>. Raising error if quiueing fails.
+
+Options:
+  -w, --workflow-id TEXT  Destination workflow id.  [required]
+  -s, --stage-id TEXT     Destination stage id.  [required]
+  -u, --udf TEXT          UDF that will tell wich artifacts to move.
+                          [required]
+
+  -i, --input-artifacts   Use this flag if you want to queue the input
+                          artifacts of the current process. Default is to
+                          queue the output artifacts (analytes) of the
+                          process.
+
+  --help                  Show this message and exit.
+
 ```
 
 When the script is configured in the lims step, arguments bust be replaced by `tokens`. They function as placeholders that are replaced with actual values at runtime. You can read more about tokens [here](https://genologics.zendesk.com/hc/en-us/articles/213988783-Derived-Sample-Naming-Convention-Tokens).
@@ -81,7 +110,7 @@ To make the new script avalible in the [web interface](https://clinical-lims-sta
 - Choose a Automation Name
 - Channel Name should always be `limsserver`.
 - Enter the command line string. If you need help selecting a token for an argument, klick the `TOKENS` tab wich will show the list of avalible tokens. In this case the string is
-`bash -c "/home/glsai/miniconda2/envs/epp_master/bin/bcl2fastq.py -p {processLuid} -l {compoundOutputFileLuid0}"`
+`bash -c "source activate python3 && epps -l {compoundOutputFileLuid0} -p {processLuid} move-samples -w '801' -s '1532' -u 'HiSeq2500'"`
 - Under `AUTOMATION USE`, select master step(s) in which the new EPP should be available.
 - Save
 
@@ -112,21 +141,6 @@ The script is now avalible from within the step. Queue some samples to the step 
 
 Read more about EPPs in the [Clarity LIMS API Cookbook](https://genologics.zendesk.com/hc/en-us/restricted?return_to=https%3A%2F%2Fgenologics.zendesk.com%2Fhc%2Fen-us%2Fcategories%2F201688743-Clarity-LIMS-API-Cookbook)
 
-
-**~/.clinical_eppsrc**
-
-This config file contains userinfo to give access to cgstats which contains information about demultiplexing data. The config is used by one of the scripts in the Clinical-Genomics/cg_lims package; bcl2fastq.py
-
-Its content must look like this:
-
-```
-[demultiplex data]
-
-SQLALCHEMY_DATABASE_URI=mysql+pymysql://remoteuser:<password>@127.0.0.1:<port>/cgstats
-[CgFace]
-URL=https://clinical-api.scilifelab.se/api/v1
-
-```
 
 #### Trouble shooting
 
