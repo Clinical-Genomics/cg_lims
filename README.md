@@ -41,7 +41,7 @@ Development of new EPPs is preferably done locally but the final testing is done
 
 
 
-#### Install
+### Install
 The procedure for installing is the same on both servers.
 
 Curently cg_lims is cloned into `/home/glsai/opt/` and installed by the glsai user under the conda environment python3.
@@ -73,7 +73,7 @@ Commands:
 
 
 
-#### Configure EPPs
+### Configure EPPs
 
 The branch with the new script has been installed and you want to test the script through the web interface. (Or deploy it to production. The procedure is the same.)
 
@@ -142,7 +142,7 @@ The script is now avalible from within the step. Queue some samples to the step 
 Read more about EPPs in the [Clarity LIMS API Cookbook](https://genologics.zendesk.com/hc/en-us/restricted?return_to=https%3A%2F%2Fgenologics.zendesk.com%2Fhc%2Fen-us%2Fcategories%2F201688743-Clarity-LIMS-API-Cookbook)
 
 
-#### Trouble shooting
+### Trouble shooting
 
 When a script is failing, usually as a developer, you will get this information from the lims user who has run the script from within a specific lims step. It´s easiest to trouble shoot if the step is still opened.
 
@@ -172,7 +172,7 @@ python copyUDFs_from_aggregateQC.py -p '24-144356' -l testlog -u 'Concentration'
 ```
 
 
-#### Scripts developt by Illumina
+### Scripts developt by Illumina
 In our Clinical Genomics lims system we are also using a fiew scripts that are developed and maintained by Illumina.
 Programs written and maintained by Illumina are located in
 
