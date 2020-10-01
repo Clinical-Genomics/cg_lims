@@ -11,15 +11,9 @@ cg_lims is using github flow branching model as described in our development man
 
 ## Config files
    
-The genologics package requires a config: **~/.genologicsrc**  
-Its content must look like this:
+The genologics package requires a config: **~/.genologicsrc**
+Read about this [here](https://github.com/SciLifeLab/genologics).
 
-```
-[genologics]
-BASEURI=
-USERNAME=
-PASSWORD=
-```
 
 
 ## About EPPs
