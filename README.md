@@ -48,7 +48,7 @@ Curently cg_lims is cloned into `/home/glsai/opt/` and installed by the glsai us
 
 ```
 sudo -iu glsai
-source activate python3
+source activate cg_lims
 pip install -U "git+https://github.com/Clinical-Genomics/cg_lims@<branch name>"
 ```
 The branch that has been installed is now avalibe from within the [lims web interface](https://clinical-lims-stage.scilifelab.se/clarity/).
