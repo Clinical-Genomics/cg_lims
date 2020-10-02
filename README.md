@@ -44,7 +44,7 @@ Development of new EPPs is preferably done locally but the final testing is done
 ### Install
 The procedure for installing is the same on both servers.
 
-Curently cg_lims is cloned into `/home/glsai/opt/` and installed by the glsai user under the conda environment python3.
+Curently cg_lims is cloned into `/home/glsai/opt/` and installed by the glsai user under the conda environment `cg_lims`.
 
 ```
 sudo -iu glsai
