@@ -47,7 +47,7 @@ def get_artifacts_to_requeue(
         artifacts_to_requeue.append(requeue_art)
     if break_rerun:
         raise MissingArtifactError("Issues finding artifacts to requeue. See log")
-    return set(artifacts_to_requeue)
+    return list(set(artifacts_to_requeue))
 
 
 def check_same_sample_in_many_rerun_pools(rerun_arts: List[Artifact]) -> None:

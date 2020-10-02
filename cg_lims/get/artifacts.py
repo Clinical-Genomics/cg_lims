@@ -16,11 +16,11 @@ def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
     return Artifact(lims, id=f"{sample.id}PA1")
 
 
-def get_artifacts(process: Process, inputs: bool) -> List[Artifact]:
+def get_artifacts(process: Process, input: bool) -> List[Artifact]:
     """If inputs is True, returning all input analytes of the process,
     otherwise returning all output analytes of the process"""
 
-    if inputs:
+    if input:
         artifacts = process.all_inputs(unique=True)
     else:
         artifacts = [a for a in process.all_outputs(unique=True) if a.type == "Analyte"]
