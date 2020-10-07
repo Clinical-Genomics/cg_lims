@@ -11,6 +11,7 @@ import logging
 import sys
 import click
 
+LOG = logging.getLogger(__name__)
 
 @click.command()
 @options.workflow_id(help="Destination workflow id.")
@@ -31,6 +32,10 @@ def move_samples(ctx, workflow_id: str, stage_id: str, udf: str, input:bool):
 
     artifacts = get_artifacts(process=process, input=input)
     filtered_artifacts = filter_artifacts(artifacts, udf, True)
+
+    if not filtered_artifacts:
+        LOG.info(f"No artifacts to queue.")
+        return
 
     try:
         queue_artifacts(lims, filtered_artifacts, workflow_id, stage_id)
