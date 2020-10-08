@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
+from cg_lims.XXX.make_csv import make_plate_file
 from cg_lims import options
 from genologics.lims import Lims
 from genologics.entities import Process
@@ -13,7 +14,8 @@ LOG = logging.getLogger(__name__)
 
 
 def get_file_rows(lims: Lims, amount_step: str, artifacts: list)-> dict:
-    """Getting row data for hamilton file based on amount, reagent label and well."""
+    """Getting row data for hamilton file based on amount, reagent label and"""
+
 
     translate_amount = {10: {'Ligation Master Mix':'B', 'PCR Plate': 'Plate3'},
                         50: {'Ligation Master Mix':'A', 'PCR Plate': 'Plate2'},
@@ -45,19 +47,6 @@ def get_file_rows(lims: Lims, amount_step: str, artifacts: list)-> dict:
     return file_rows
 
 
-def make_file(hamilton_file: str, file_rows: dict):
-    """Creating a hamilton file"""
-
-    hamilton_file = f"{hamilton_file}_KAPA_Hamilton.txt"
-    hamilton_csv = open( hamilton_file , 'w')
-    wr = csv.writer(hamilton_csv)
-    wr.writerow(['LIMS ID', 'Sample Well', 'Ligation Master Mix', 'Index Well', 'PCR Plate'])
-    for col in range(1,13):
-        for row in string.ascii_uppercase[0:8]:
-            row = file_rows.get(f"{row}{col}")
-            if row:
-                wr.writerow(row)
-
 
 @click.command()
 @options.process_type(help="Amount step name.")
@@ -70,5 +59,7 @@ def make_kapa_csv(ctx, file, process_type):
     lims = ctx.obj["lims"]
     artifacts = get_artifacts(process=process, input=False)
     file_rows = get_file_rows(lims, process_type, artifacts)
-    make_file(file, file_rows)
+    headers = ['LIMS ID', 'Sample Well', 'Ligation Master Mix', 'Index Well', 'PCR Plate']
+    file = f"{file}_KAPA_Hamilton.txt"
+    make_plate_file(file, file_rows, headers)
 
