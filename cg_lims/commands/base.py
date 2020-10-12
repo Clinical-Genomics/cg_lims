@@ -15,6 +15,7 @@ import yaml
 from cg_lims.EPPs.move.rerun_samples import rerun_samples
 from cg_lims.EPPs.move.move_samples import move_samples
 from cg_lims.EPPs.move.place_samples_in_seq_agg import place_samples_in_seq_agg
+from cg_lims.EPPs.files.make_kapa_csv import make_kapa_csv
 
 
 @click.group(invoke_without_command=True)
@@ -45,3 +46,4 @@ def cli(ctx, log, process, config):
 cli.add_command(rerun_samples)
 cli.add_command(move_samples)
 cli.add_command(place_samples_in_seq_agg)
+cli.add_command(make_kapa_csv)

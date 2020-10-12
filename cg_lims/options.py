@@ -21,6 +21,8 @@ def udf(help: str = "UDF name",) -> click.option:
 def log(help: str = "Path to log file.",) -> click.option:
     return click.option("-l", "--log", required=True, help=help)
 
+def file_placeholder(help: str = "File.",) -> click.option:
+    return click.option("-f", "--file", required=True, help=help)
 
 def input(
     help: str = "Use this flag if you run the script from a QC step.",
