@@ -9,7 +9,6 @@ from genologics.entities import Process
 import string
 import logging
 import click
-import csv
 LOG = logging.getLogger(__name__)
 
 
@@ -25,10 +24,15 @@ def get_file_rows(lims: Lims, amount_step: str, artifacts: list)-> dict:
     for art in artifacts:
         sample_id = art.samples[0].id
         if art.reagent_labels:
+            # Assuming one reagent label per artifact (reagent_labels is a list)
             reagent_label = art.reagent_labels[0]
-            index_well_col = str(int(reagent_label.split(' ')[0][1:3]))
-            index_well_row = reagent_label.split(' ')[0][0]
-            index_well = index_well_row + index_well_col
+            # A ragent label typically looks like this: 'A05 IDT_10nt_446 (AGCGTGACCT-CCATCCGAGT)'
+            # Getting the index well:
+            index_well_with_zero = reagent_label.split(' ')[0]
+            # Picking out column and removing zeros by int(): 
+            index_well_col = int(index_well_with_zero[1:])
+            index_well_row = index_well_with_zero[0]
+            index_well = f"{index_well_row}{index_well_col}"
         else:
             index_well = '-'
         well = art.location[1].replace(':','')
