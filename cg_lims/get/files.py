@@ -24,7 +24,9 @@ def get_lims_log_file(lims: Lims, file_id: str) -> pathlib.Path:
     if files:
         server_adress = BASEURI.split(":")[1]
         file_path = files[0].content_location.split(server_adress)[1]
+        file = pathlib.Path(file_path)
     else:
-        file_path = file_id
+        file = pathlib.Path(file_id)
+        file.chmod(0o775)
 
-    return pathlib.Path(file_path)
+    return file
