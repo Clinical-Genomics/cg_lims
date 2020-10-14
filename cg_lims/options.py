@@ -18,6 +18,15 @@ def stage_id(help: str = "Stage id.") -> click.option:
 def udf(help: str = "UDF name",) -> click.option:
     return click.option("-u", "--udf", required=True, help=help)
 
+def sample_qc_udf(help: str = "UDF name",) -> click.option:
+    return click.option("-qc", "--sample-qc-udf", default="" ,required=False, help=help)
+
+def artifact_udf(help: str = "UDF name",) -> click.option:
+    return click.option("-audf", "--artifact-udf", required=True, help=help)
+
+def sample_udf(help: str = "UDF name",) -> click.option:
+    return click.option("-sudf", "--sample-udf", required=True, help=help)
+
 def log(help: str = "Path to log file.",) -> click.option:
     return click.option("-l", "--log", required=True, help=help)
 
