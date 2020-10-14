@@ -82,7 +82,6 @@ def rerun_samples(ctx, workflow_id, stage_id, udf, process_type):
     lims = ctx.obj["lims"]
     artifacts = get_artifacts(process, False)
     rerun_arts = filter_artifacts(artifacts, udf, True)
-
     if rerun_arts:
         try:
             artifacts_to_requeue = get_artifacts_to_requeue(
