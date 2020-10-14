@@ -8,6 +8,7 @@ from genologics.entities import Process
 
 import logging
 import click
+import sys
 
 
 def copy_art2samp(
@@ -26,6 +27,7 @@ def copy_art2samp(
         sample_qc_udf: sample qc udf to set based on artifact qc_flagg"""
 
     failed_udfs = 0
+    passed_udfs = 0
     for art in artifacts:
         udf = art.udf.get(art_udf)
         if udf is not None:
@@ -37,31 +39,32 @@ def copy_art2samp(
                     else:
                         samp.udf[sample_qc_udf] = "False"
                 sample.put()
+                passed_udfs += 1
         else:
             failed_udfs += 1
+
     if failed_udfs:
         raise MissingUDFsError(
-            message=f"UDF: {art_udf} missing for {failed_udfs} samples"
+            message=f"The udf '{art_udf}' is missing for {failed_udfs} artifacts. Udfs were set on {passed_udfs} samples."
         )
 
 
 @click.command()
-@options.udf(help="Sample udf to set.")
+@options.sample_udf(help="Sample udf to set.")
 @options.artifact_udf(help="Artifact udf to get.")
 @options.sample_qc_udf()
 @options.input(
     help="Use this flag if you want copy udfs from input artifacts. Defaulte is output artifacts."
 )
 @click.pass_context
-def art2samp(ctx, udf, artifact_udf, input, sample_qc_udf):
+def art2samp(ctx, sample_udf, artifact_udf, input, sample_qc_udf):
     """Script to copy artifact udf to sample udf"""
 
     process = ctx.obj["process"]
-
     try:
         artifacts = get_artifacts(process=process, input=input)
-        copy(artifacts, udf, art_udf, sample_qc_udf)
-        click.echo("Udfs have been set.")
+        copy_art2samp(artifacts, sample_udf, artifact_udf, sample_qc_udf)
+        click.echo("Udfs have been set on all samples.")
     except LimsError as e:
         sys.exit(e.message)
 

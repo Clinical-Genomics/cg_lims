@@ -15,7 +15,7 @@ import yaml
 from cg_lims.EPPs.move.rerun_samples import rerun_samples
 from cg_lims.EPPs.move.move_samples import move_samples
 from cg_lims.EPPs.move.place_samples_in_seq_agg import place_samples_in_seq_agg
-from cg_lims.EPPs.files.make_kapa_csv import make_kapa_csv
+from cg_lims.EPPs.io.make_kapa_csv import make_kapa_csv
 from cg_lims.EPPs.get_and_set.art2samp import art2samp
 
 
