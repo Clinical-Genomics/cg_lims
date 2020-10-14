@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
-from cg_lims.io.make_csv import make_plate_file
+from cg_lims.files.make_csv import make_plate_file
 from cg_lims import options
 from genologics.lims import Lims
 from genologics.entities import Process

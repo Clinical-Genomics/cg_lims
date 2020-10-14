@@ -12,12 +12,7 @@ import click
 import yaml
 
 # commands
-from cg_lims.EPPs.move.rerun_samples import rerun_samples
-from cg_lims.EPPs.move.move_samples import move_samples
-from cg_lims.EPPs.move.place_samples_in_seq_agg import place_samples_in_seq_agg
-from cg_lims.EPPs.io.make_kapa_csv import make_kapa_csv
-from cg_lims.EPPs.get_and_set.art2samp import art2samp
-
+from cg_lims.EPPs import epps
 
 @click.group(invoke_without_command=True)
 @options.log()
@@ -44,8 +39,4 @@ def cli(ctx, log, process, config):
     ctx.obj["process"] = process
 
 
-cli.add_command(rerun_samples)
-cli.add_command(move_samples)
-cli.add_command(place_samples_in_seq_agg)
-cli.add_command(make_kapa_csv)
-cli.add_command(art2samp)
+cli.add_command(epps)

@@ -11,7 +11,7 @@ import click
 import sys
 
 
-def copy_art2samp(
+def udf_copy_artifact_to_sample(
     artifacts: list, sample_udf: str, art_udf: str, sample_qc_udf: str = None
 ) -> None:
     """Function to copy artifact udf and qc to sample level.
@@ -57,13 +57,13 @@ def copy_art2samp(
     help="Use this flag if you want copy udfs from input artifacts. Defaulte is output artifacts."
 )
 @click.pass_context
-def art2samp(ctx, sample_udf, artifact_udf, input, sample_qc_udf):
+def artifact_to_sample(ctx, sample_udf, artifact_udf, input, sample_qc_udf):
     """Script to copy artifact udf to sample udf"""
 
     process = ctx.obj["process"]
     try:
         artifacts = get_artifacts(process=process, input=input)
-        copy_art2samp(artifacts, sample_udf, artifact_udf, sample_qc_udf)
+        udf_copy_artifact_to_sample(artifacts, sample_udf, artifact_udf, sample_qc_udf)
         click.echo("Udfs have been set on all samples.")
     except LimsError as e:
         sys.exit(e.message)
