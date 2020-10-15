@@ -24,7 +24,7 @@ def epps(ctx, log, process):
 
     log_path = pathlib.Path(log)
     if not log_path.is_file():
-        log_path = get_lims_log_file(lims, log)
+        log_path = get_lims_log_file(ctx.obj['lims'], log)
     logging.basicConfig(
         filename=str(log_path.absolute()), filemode="a", level=logging.INFO
     )
