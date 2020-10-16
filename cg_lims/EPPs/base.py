@@ -24,10 +24,11 @@ def epps(ctx, log: str, process: Process):
 
     log_path = pathlib.Path(log)
     if not log_path.is_file():
-        log_path = get_lims_log_file(ctx.obj['lims'], log)
+        log_path, log_content = get_lims_log_file(ctx.obj['lims'], log)
     logging.basicConfig(
         filename=str(log_path.absolute()), filemode="a", level=logging.INFO
     )
+    logging.info(log_content)
     process = Process(ctx.obj['lims'], id=process)
 
     ctx.obj["process"] = process
