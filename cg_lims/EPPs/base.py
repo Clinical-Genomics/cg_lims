@@ -19,7 +19,7 @@ from cg_lims.EPPs.udf import udf
 @options.log()
 @options.process()
 @click.pass_context
-def epps(ctx, log, process):
+def epps(ctx, log: str, process: Process):
     """Main entry point of epp commands"""
 
     log_path = pathlib.Path(log)
