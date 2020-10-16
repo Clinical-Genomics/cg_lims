@@ -1,5 +1,5 @@
   
-"""General Lims Objects ??? Not sure what to write
+"""Base cg_lims calss definitions
 """
 
 from cg_lims.exceptions import ZeroReadsError, MissingUDFsError
@@ -11,13 +11,12 @@ class Pool:
 
     def __init__(self, pool_artifact: Artifact):
         self.total_reads_missing = 0
-        self.pool = pool_artifact
-        self.artifacts = pool_artifact.input_artifact_list()
+        self.artifact = pool_artifact
 
     def get_total_reads_missing(self)-> None:
         """Get the total numer of missing reads in the pool"""
 
-        for art in self.artifacts:
+        for art in self.artifact.input_artifact_list():
             reads = art.samples[0].udf.get('Reads missing (M)')
             if reads is None:
                 raise MissingUDFsError('Missing udfs: Reads missing (M)')

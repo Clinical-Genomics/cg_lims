@@ -1,22 +1,28 @@
 
-from cg_lims.objects import Pool
-from cg_lims.exceptions import LimsError, LowAmountError
-from cg_lims.get.artifacts import get_artifacts
-
 from genologics.entities import Artifact
 
 import logging
 import sys
 import click
+from typing import List
+
+from cg_lims.objects import Pool
+from cg_lims.exceptions import LimsError, LowAmountError
+from cg_lims.get.artifacts import get_artifacts
+from cg_lims.constants import TWIST
+
+
+AVALIBLE_SAMPLE_VOLUME = TWIST['pooling']['avalible_sample_volume']
+MINIMUM_SAMPLE_AMOUNT = TWIST['pooling']['minimum_sample_amount']
 
 LOG = logging.getLogger(__name__)
 
 
 class TwistPool(Pool):
-    
-    def __init__(self, pool_artifact: Artifact):
-        super().__init__(pool_artifact)
-        self.pool.qc_flag = 'PASSED'
+
+    def __init__(self, artifact: Artifact):
+        super().__init__(artifact)
+        self.qc_flag = "PASSED"
         self.total_volume = 0
         self.amount_fail = False
 
@@ -25,46 +31,47 @@ class TwistPool(Pool):
         Based on the udf 'Reads missing (M)', the sample is given an 
         equivalent proportion in the pool.
 
-        The total avalible volume of a sample is allways 15.
+        The avalible volume of a sample is allways 15.
 
         A sample should not have les than 187.5 ng in the pool
         """
 
-        for art in self.artifacts:
+        for art in self.artifact.input_artifact_list():
             reads = art.samples[0].udf.get('Reads missing (M)')
             concentration = art.udf.get('Concentration')
             fract_of_pool = reads/float(self.total_reads_missing)
-            amount_to_pool = self.pool.udf.get(
+            amount_to_pool = self.artifact.udf.get(
                 'Total Amount (ng)') * fract_of_pool
             vol = amount_to_pool/concentration
-            if vol > 15:
-                vol = 15
-            if amount_to_pool > art.udf.get('Amount (ng)') or amount_to_pool < 187.5:
-                self.pool.qc_flag = 'FAILED'
-                self.amount_fail = True
+            if vol > AVALIBLE_SAMPLE_VOLUME:
+                vol = AVALIBLE_SAMPLE_VOLUME
+            self.total_volume += vol
             art.udf['Amount taken (ng)'] = amount_to_pool
             art.udf['Volume of sample (ul)'] = vol
             art.put()
-            self.total_volume += vol
+            if amount_to_pool > art.udf.get('Amount (ng)') or amount_to_pool < MINIMUM_SAMPLE_AMOUNT:
+                self.qc_flag = "FAILED"
+                self.amount_fail = True
 
 
-def calculate_volumes_for_pooling(pools):
+def calculate_volumes_for_pooling(pools: List[Artifact]):
     """Perform calculations for each pool in the step.
     All pools in the plate must have the same volume to not overdry.
-    Wahter is added to each pool, for them to all get the same volume."""
+    Wahter is added to each pool for them to all get the same volume."""
 
     amount_failed_for_some_pool = False
     all_volumes = []
 
     for pool_art in pools:
-        pool = TwistPool(pool_art)
-        pool.get_total_reads_missing()
-        pool.calculate_amount_and_volume()
-        if pool.amount_fail:
+        twist_pool = TwistPool(pool_art)
+        twist_pool.get_total_reads_missing()
+        twist_pool.calculate_amount_and_volume()
+        pool_art.qc_flag = twist_pool.qc_flag
+        if twist_pool.amount_fail:
             amount_failed_for_some_pool = True
-        if pool.total_volume:
-            pool_art.udf['Total Volume (ul)'] = pool.total_volume
-        all_volumes.append(pool.total_volume)
+        if twist_pool.total_volume:
+            pool_art.udf['Total Volume (ul)'] = twist_pool.total_volume
+        all_volumes.append(twist_pool.total_volume)
 
     for pool_art in pools:
         if pool_art.udf.get('Total Volume (ul)'):
