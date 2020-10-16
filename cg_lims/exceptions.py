@@ -18,5 +18,16 @@ class MissingArtifactError(LimsError):
     Eg: Found no artifact for sample X in process Y."""
     pass
 
+class MissingUDFsError(LimsError):
+    """Raise when searching for udfs that don't exist.
+    Eg: Found no udf X on artifact Y."""
+    pass
 
+class ZeroReadsError(LimsError):
+    """Raise when read count is unexpectedly zero."""
+    pass
+
+class LowAmountError(LimsError):
+    """Raise when amount is low."""
+    pass
 

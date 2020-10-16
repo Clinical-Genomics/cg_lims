@@ -8,16 +8,27 @@ try:
 except IOError:
     install_requires = []
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 
 setup(name='cg_lims',
         version='1.0',
-        description='',
+        description='Lims code for Clinical Genomics',
+        long_description=long_description,
+        long_description_content_type="text/markdown",
         author='Maya Brandi',
+        url="https://github.com/Clinical-Genomics/cg_lims",
         author_email='maya.brandi@scilifelab.se',
         packages=find_packages(),
         include_package_data=True,
         entry_points={
-        'console_scripts': ['epps=cg_lims.commands:cli'],
-    },
-
+        'console_scripts': ['lims=cg_lims.commands:cli'],
+        },
+        classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: Nix",
+        ],
+        python_requires='>=3.6',
      )
