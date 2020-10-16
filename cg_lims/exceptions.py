@@ -23,4 +23,11 @@ class MissingUDFsError(LimsError):
     Eg: Found no udf X on artifact Y."""
     pass
 
+class ZeroReadsError(LimsError):
+    """Raise when read count is unexpectedly zero."""
+    pass
+
+class LowAmountError(LimsError):
+    """Raise when amount is low."""
+    pass
 
