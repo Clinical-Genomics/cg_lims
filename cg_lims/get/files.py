@@ -27,6 +27,5 @@ def get_lims_log_file(lims: Lims, file_id: str) -> pathlib.Path:
         file = pathlib.Path(file_path)
     else:
         file = pathlib.Path(file_id)
-        file.chmod(0o775)
 
     return file
