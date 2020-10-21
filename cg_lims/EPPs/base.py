@@ -22,13 +22,15 @@ from cg_lims.EPPs.udf import udf
 def epps(ctx, log: str, process: Process):
     """Main entry point of epp commands"""
 
-    log_path = pathlib.Path(log)
-    if not log_path.is_file():
-        log_path, log_content = get_lims_log_file(ctx.obj['lims'], log)
+
+    log_content = get_log_content(ctx.obj['lims'], log)
+
+    with open(log, 'a') as new_log:
+        new_log.write(f"{log_content}\n")
+
     logging.basicConfig(
-        filename=str(log_path.absolute()), filemode="a", level=logging.INFO
+        filename=str(log, filemode="a", level=logging.INFO
     )
-    logging.info(log_content)
     process = Process(ctx.obj['lims'], id=process)
 
     ctx.obj["process"] = process
