@@ -89,7 +89,7 @@ def calculate_volumes_for_pooling(pools: List[Artifact]):
 @click.pass_context
 def twist_pool(ctx):
     """Calculates volumes for pools in a plate before hybridization."""
-    
+
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
     try:

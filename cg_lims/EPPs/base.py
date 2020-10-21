@@ -23,11 +23,12 @@ def epps(ctx, log: str, process: Process):
     """Main entry point of epp commands"""
 
     log_path = pathlib.Path(log)
- 
+
     log_content = get_log_content(ctx.obj['lims'], log)
-    print(log_content)
-    with open(log_path.absolute(), 'a') as new_log:
-        new_log.write(f"{log_content}\n")
+    if log_content:
+        with open(log_path.absolute(), 'a') as new_log:
+            new_log.write(log_content)
+
     logging.basicConfig(
         filename=str(log_path.absolute()), filemode="a", level=logging.INFO
     )
