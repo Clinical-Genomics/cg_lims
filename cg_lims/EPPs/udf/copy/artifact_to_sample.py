@@ -35,9 +35,9 @@ def udf_copy_artifact_to_sample(
                 sample.udf[sample_udf] = udf
                 if sample_qc_udf:
                     if art.qc_flag == "PASSED":
-                        samp.udf[sample_qc_udf] = "True"
+                        sample.udf[sample_qc_udf] = "True"
                     else:
-                        samp.udf[sample_qc_udf] = "False"
+                        sample.udf[sample_qc_udf] = "False"
                 sample.put()
                 passed_udfs += 1
         else:
