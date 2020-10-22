@@ -90,8 +90,8 @@ def calculate_volumes_for_pooling(pools: List[Artifact]):
 def twist_pool(ctx):
     """Calculates volumes for pools in a plate before hybridization."""
 
+    LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
-
     try:
         pools = get_artifacts(process=process, input=False)
         calculate_volumes_for_pooling(pools)
