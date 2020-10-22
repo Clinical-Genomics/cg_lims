@@ -13,7 +13,7 @@ def test_cli_existing_log_file(config):
     # WHEN running cli base command
     runner = CliRunner()
     result = runner.invoke(
-        cli, ["-l", file_path, "-p", "some_process_id", "-c", config]
+        cli, ["-c", config, "epps", "-l", file_path, "-p", "some_process_id"]
     )
     file.unlink()
 
@@ -28,7 +28,7 @@ def test_cli_not_existing_log_file(config):
     # WHEN running cli base command
     runner = CliRunner()
     result = runner.invoke(
-        cli, ["-l", file_path, "-p", "some_process_id", "-c", config]
+        cli, ["-c", config, "epps", "-l", file_path, "-p", "some_process_id"]
     )
 
     # THEN assert no error
