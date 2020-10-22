@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from cg_lims import options
-from cg_lims.get.files import get_lims_log_file
+from cg_lims.get.files import get_log_content
 
 import click
 import logging
@@ -23,13 +23,16 @@ def epps(ctx, log: str, process: Process):
     """Main entry point of epp commands"""
 
     log_path = pathlib.Path(log)
-    if not log_path.is_file():
-        log_path = get_lims_log_file(ctx.obj['lims'], log)
+
+    log_content = get_log_content(ctx.obj['lims'], log)
+    if log_content:
+        with open(log_path.absolute(), 'a') as new_log:
+            new_log.write(log_content)
+
     logging.basicConfig(
         filename=str(log_path.absolute()), filemode="a", level=logging.INFO
     )
     process = Process(ctx.obj['lims'], id=process)
-
     ctx.obj["process"] = process
 
 
