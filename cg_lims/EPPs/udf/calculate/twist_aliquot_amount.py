@@ -17,6 +17,8 @@ MAXIMUM_SAMPLE_AMOUNT = TWIST['aliquot']['maximum_sample_amount']
 LOG = logging.getLogger(__name__)
 
 def set_amount_needed(artifacts: List[Artifact]):
+    """The maximum amount taken into the prep is MAXIMUM_SAMPLE_AMOUNT. 
+    Any amount below this can be used in the prep if the total amount is limited."""
 
     missing_udfs = 0
     for art in artifacts:
