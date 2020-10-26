@@ -67,7 +67,7 @@ def get_index_well(art):
     return index_well
 
 
-def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list) -> dict:
+def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file: str) -> dict:
     """Getting row data for hamilton file based on amount and reagent label"""
 
     failed_samples = []
@@ -107,7 +107,7 @@ def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list) -> di
         "Index Well",
         "PCR Plate",
     ]
-    file = f"{file}_KAPA_Hamilton.txt"
+    
     make_plate_file(file, file_rows, headers)
 
     if failed_samples:
@@ -129,8 +129,10 @@ def make_kapa_csv(ctx, file, process_type):
     lims = ctx.obj["lims"]
     artifacts = get_artifacts(process=process, input=False)
 
+    file_name = f"{file}_{artifacts[0].container.name}_{process.type.name.replace(' ', '_')}"
+
     try:
-        get_file_data_and_write(lims, process_type, artifacts)
-        click.echo("The was sucessfully generated.")
+        get_file_data_and_write(lims, process_type, artifacts, file_name)
+        click.echo("The file was sucessfully generated.")
     except LimsError as e:
         sys.exit(e.message)
