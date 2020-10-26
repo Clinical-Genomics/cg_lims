@@ -111,7 +111,7 @@ def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file:
 
     if failed_samples:
         raise MissingUDFsError(
-            f"Could not find artifacts for samples: {', '.join(failed_samples)}, from step {amount_step}."
+            f"Could not find udf: Amount needed (ng) for samples: {', '.join(failed_samples)}, from step {amount_step}."
         )
 
 
