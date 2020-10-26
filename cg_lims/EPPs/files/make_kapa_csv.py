@@ -107,7 +107,7 @@ def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file:
         "Index Well",
         "PCR Plate",
     ]
-    
+
     make_plate_file(file, file_rows, headers)
 
     if failed_samples:
@@ -124,7 +124,7 @@ def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file:
 def make_kapa_csv(ctx, file, process_type):
     """Script to make a csv file for hamilton. See AM doc #2125
     """
-
+    LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
     artifacts = get_artifacts(process=process, input=False)
