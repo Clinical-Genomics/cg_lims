@@ -15,6 +15,8 @@ LOG = logging.getLogger(__name__)
 
 
 def calculate_volumes(artifacts: List[Artifact], process: Process):
+    """Calculates volumes for diluting samples. The total volume differ depending on 
+    type of sample. It is given by the process udf 'Total Volume (ul)'."""
 
     max_volume = process.udf.get('Total Volume (ul)')
     if not max_volume:
