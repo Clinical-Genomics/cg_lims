@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
-from cg_lims.exceptions import LimsError, MissingArtifactError
+from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.make_csv import make_plate_file
 from cg_lims import options
 from cg_lims.constants import TWIST
@@ -111,9 +111,8 @@ def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file:
     make_plate_file(file, file_rows, headers)
 
     if failed_samples:
-        failed_samples_string = ", ".join(failed_samples)
-        raise MissingArtifactError(
-            "Could not find artifacts for samples: {failed_samples_string}, from step {amount_step}."
+        raise MissingUDFsError(
+            f"Could not find artifacts for samples: {', '.join(failed_samples)}, from step {amount_step}."
         )
 
 
