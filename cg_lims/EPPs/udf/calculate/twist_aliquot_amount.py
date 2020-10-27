@@ -9,12 +9,13 @@ from typing import List
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 
-from cg_lims.constants import TWIST
-
-MAXIMUM_SAMPLE_AMOUNT = TWIST['aliquot']['maximum_sample_amount']
-
-
 LOG = logging.getLogger(__name__)
+
+
+# The maximum amount taken into the prep is MAXIMUM_SAMPLE_AMOUNT.
+# Any amount below this can be used in the prep if the total amount is limited.
+MAXIMUM_SAMPLE_AMOUNT = 250
+
 
 def set_amount_needed(artifacts: List[Artifact]):
     """The maximum amount taken into the prep is MAXIMUM_SAMPLE_AMOUNT. 
@@ -24,9 +25,9 @@ def set_amount_needed(artifacts: List[Artifact]):
     for art in artifacts:
         amount = art.udf.get('Amount (ng)')
         if not amount:
-            missing_udfs +=1
+            missing_udfs += 1
             continue
-        if amount >= MAXIMUM_SAMPLE_AMOUNT: 
+        if amount >= MAXIMUM_SAMPLE_AMOUNT:
             art.udf['Amount needed (ng)'] = MAXIMUM_SAMPLE_AMOUNT
         else:
             art.udf['Amount needed (ng)'] = amount
@@ -34,6 +35,7 @@ def set_amount_needed(artifacts: List[Artifact]):
 
     if missing_udfs:
         raise MissingUDFsError(f"Udf missing for {missing_udfs} samples")
+
 
 @click.command()
 @click.pass_context

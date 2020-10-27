@@ -9,13 +9,15 @@ from typing import List
 from cg_lims.objects import Pool
 from cg_lims.exceptions import LimsError, LowAmountError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.constants import TWIST
-
-
-AVALIBLE_SAMPLE_VOLUME = TWIST['pooling']['avalible_sample_volume']
-MINIMUM_SAMPLE_AMOUNT = TWIST['pooling']['minimum_sample_amount']
 
 LOG = logging.getLogger(__name__)
+
+
+# The avalible volume of a sample is allways 15.
+AVALIBLE_SAMPLE_VOLUME = 15
+
+# A sample should not have les than 187.5 ng in the pool
+MINIMUM_SAMPLE_AMOUNT = 187.5
 
 
 class TwistPool(Pool):
@@ -30,10 +32,6 @@ class TwistPool(Pool):
         """Perform calcualtions for the input artifacts to the pool.
         Based on the udf 'Reads missing (M)', the sample is given an 
         equivalent proportion in the pool.
-
-        The avalible volume of a sample is allways 15.
-
-        A sample should not have les than 187.5 ng in the pool
         """
 
         for art in self.artifact.input_artifact_list():

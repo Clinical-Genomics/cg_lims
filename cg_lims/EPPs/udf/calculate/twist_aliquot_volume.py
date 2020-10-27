@@ -10,7 +10,6 @@ from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 
 
-
 LOG = logging.getLogger(__name__)
 
 
