@@ -1,6 +1,5 @@
 from typing import List
 
-
 from genologics_mock.lims import MockLims
 from genologics_mock.entities import (
     MockArtifact,
@@ -11,6 +10,8 @@ from genologics_mock.entities import (
 
 
 class Helpers:
+    """Fixure Help functions to create fixures."""
+
     @staticmethod
     def ensure_lims_process(
         lims: MockLims,
@@ -19,7 +20,7 @@ class Helpers:
         date_run: str = "2020-01-01",
         output_artifacts: list = [],
         input_artifacts: list = [],
-    ):
+    )-> None:
         """Setting up a complete process with input and output artifacts."""
 
         process_type = MockProcessType(name=process_type_name)

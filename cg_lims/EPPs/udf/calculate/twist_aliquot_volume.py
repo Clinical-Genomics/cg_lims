@@ -50,6 +50,9 @@ def twist_aliquot_volume(ctx):
     try:
         artifacts = get_artifacts(process=process, input=False)
         calculate_volumes(artifacts=artifacts, process=process)
-        click.echo("Volumes have been calculated for all samples.")
+        message = "Volumes have been calculated for all samples."
+        LOG.info(message)
+        click.echo(message)
     except LimsError as e:
+        LOG.error(e.message)
         sys.exit(e.message)

@@ -49,6 +49,9 @@ def twist_aliquot_amount(ctx):
     try:
         artifacts = get_artifacts(process=process, input=False)
         set_amount_needed(artifacts)
-        click.echo("Amount needed has been calculated for all samples.")
+        message =  "Amount needed has been calculated for all samples."
+        LOG.info(message)
+        click.echo(message)
     except LimsError as e:
+        LOG.error(e.message)
         sys.exit(e.message)

@@ -31,7 +31,7 @@ def test_get_latest_artifact(lims, sample, helpers):
     )
 
     # THEN the artifact from the latest process will be returned
-    assert latest_artifact.parent_process.date_run == "2020-01-01"
+    assert latest_artifact.parent_process.date_run == last_date
 
 
 def test_get_latest_artifact_no_artifacts(lims):
