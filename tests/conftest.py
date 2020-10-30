@@ -9,14 +9,20 @@ from genologics_mock.entities import (
     MockSample,
 )
 from .helpers import Helpers
-from .fixtures.entety_data import entety_data
 
 
 @pytest.fixture
 def config():
-    """Get file path to invalid csv"""
+    """Get file path to config"""
 
     return "tests/fixtures/config.yaml"
+
+
+@pytest.fixture
+def entety_json_data():
+    """Get file path to entety yaml data"""
+
+    return "tests/fixtures/entety_data.json"
 
 
 @pytest.fixture
@@ -43,12 +49,6 @@ def process():
 def fixture_helpers():
     """Return a class with small helper functions"""
     return Helpers()
-
-
-@pytest.fixture()
-def fixture_entety_data():
-    """Return a class with small helper functions"""
-    return entety_data
 
 
 @pytest.fixture
