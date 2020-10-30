@@ -1,5 +1,5 @@
 from cg_lims.get.artifacts import get_latest_artifact, get_artifacts
-from cg_lims.exceptions import MissingArtifactError, MissingUDFsError
+from cg_lims.exceptions import MissingArtifactError
 
 import pytest
 

@@ -1,4 +1,6 @@
 from typing import List
+from copy import deepcopy
+
 
 from genologics_mock.lims import MockLims
 from genologics_mock.entities import (
@@ -20,7 +22,7 @@ class Helpers:
         date_run: str = "2020-01-01",
         output_artifacts: list = [],
         input_artifacts: list = [],
-    )-> None:
+    )-> MockProcess:
         """Setting up a complete process with input and output artifacts."""
 
         process_type = MockProcessType(name=process_type_name)
@@ -35,6 +37,39 @@ class Helpers:
         for artifact in output_artifacts:
             artifact.parent_process = process
             lims.artifacts.append(artifact)
+        return process
+
+
+    @staticmethod
+    def create_samples(samples_data: List[dict]) -> List[MockSample]:
+        """Create a mock samples"""
+        
+        samples = []
+        for sample_data in samples_data:
+            sample = MockSample(**sample_data)
+            samples.append(sample)
+
+        return samples
+
+    @staticmethod
+    def ensure_lims_artifacts(lims: MockLims, artifacts_data: List[dict]) -> List[MockArtifact]:
+        """Create a mock artifacts"""
+
+        artifacts = []
+        for data in artifacts_data:
+            artifact_data = deepcopy(data)
+            if artifact_data.get('samples'):
+                samples = Helpers.create_samples(artifact_data['samples'])
+                artifact_data['samples'] = samples
+
+            if artifact_data.get('parent_process'):
+                process = Helpers.ensure_lims_process(**artifact_data.get('parent_process'))
+                artifact_data['parent_process'] = process
+            artifact = MockArtifact(**artifact_data)
+
+            artifacts.append(artifact)
+            lims.artifacts.append(artifact)
+        return artifacts
 
     @staticmethod
     def create_artifact(samples: list=[], type: str='')-> MockArtifact:
@@ -42,6 +77,7 @@ class Helpers:
 
         artifact = MockArtifact(samples=samples, type=type)
         return artifact
+
 
     @staticmethod
     def create_many_artifacts(nr_of_artifacts:int, type: str='')-> List[MockArtifact]:
