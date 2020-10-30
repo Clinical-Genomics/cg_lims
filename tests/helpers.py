@@ -57,7 +57,9 @@ class Helpers:
     def ensure_lims_artifacts(
         lims: MockLims, artifacts_data: List[dict]
     ) -> List[MockArtifact]:
-        """Create a mock artifacts"""
+        """Creating MockArtifacts defined by <artifacts_data>. 
+        Appending the new MockArtifacts to the given MockLims instance.
+        Returning the new MockArtifacts"""
 
         artifacts = []
         for data in artifacts_data:
