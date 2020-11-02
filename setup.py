@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from cg_lims import __version__ as version
 from setuptools import setup, find_packages
 
 try:
@@ -13,7 +14,7 @@ with open("README.md", "r") as fh:
 
 
 setup(name='cg_lims',
-        version='1.0',
+        version=version,
         description='Lims code for Clinical Genomics',
         long_description=long_description,
         long_description_content_type="text/markdown",
