@@ -18,6 +18,10 @@ class MissingArtifactError(LimsError):
     Eg: Found no artifact for sample X in process Y."""
     pass
 
+class MissingSampleError(LimsError):
+    """Raise when searching for samples that don't exist."""
+    pass
+
 class MissingUDFsError(LimsError):
     """Raise when searching for udfs that don't exist.
     Eg: Found no udf X on artifact Y."""

@@ -26,6 +26,13 @@ def get_artifacts(process: Process, input: bool) -> List[Artifact]:
         artifacts = [a for a in process.all_outputs(unique=True) if a.type == "Analyte"]
     return artifacts
 
+def get_qc_messuements(lims: Lims, process: Process) -> List[Artifact]:
+    """Get output 'artifacts' (messuements) of a qc process"""
+
+    iom = process.input_output_maps
+    artifact_ids = [io[1]['limsid'] for io in iom if io[1]['output-generation-type'] == 'PerInput']
+    return [Artifact(lims, id=id) for id in artifact_ids if id is not None]
+
 
 def filter_artifacts(artifacts: List[Artifact], udf: str, value) -> List[Artifact]:
     """Returning a list of only artifacts with udf==value"""
