@@ -29,7 +29,7 @@ setup(name='cg_lims',
         classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: Nix",
+        "Operating System :: OS Independent",
         ],
         python_requires='>=3.6',
      )
