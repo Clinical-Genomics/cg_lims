@@ -1,0 +1,8 @@
+INFO:cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer:Updated 0 samples with volume from Buffer step.
+INFO:cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer:Updated 0 samples with volume from Buffer step.
+INFO:cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer:Updated 0 samples with volume from Buffer step.
+ERROR:cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer:Failed to update 70 artifacts - buffer volume lower than 0!
+ERROR:cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer:Failed to update 70 artifacts - buffer volume lower than 0!
+INFO:cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer:Updated 70 samples with volume from Buffer step.
+ERROR:cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer:Failed to update 4 artifacts - buffer volume lower than 0!
+INFO:cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer:Updated 70 samples with volume from Buffer step.
