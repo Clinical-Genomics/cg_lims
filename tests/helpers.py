@@ -16,41 +16,44 @@ from genologics_mock.entities import (
 class Helpers:
     """Fixure Help functions to create fixures."""
 
-
     @staticmethod
     def read_json(file_path: str, key: str) -> list:
         with open(file_path) as json_file:
             data = json.load(json_file)
         return data[key]
 
-    # Ensure methods: 
-    # Creating enteties defined by arguments. 
+    # Ensure methods:
+    # Creating enteties defined by arguments.
     # Appending the new enteties to the given MockLims instance.
     # Returning teh new enteties
 
     @staticmethod
-    def ensure_lims_process(
-        lims: MockLims,
-        process_id: str = "SomeID",
-        process_type_name: str = "SomeTypeOfName",
-        date_run: str = "2020-01-01",
-        output_artifacts: list = [],
-        input_artifacts: list = [],
-    ) -> MockProcess:
-        """Setting up a complete process with input and output artifacts."""
+    def ensure_lims_process(lims: MockLims, data: List[dict]) -> MockProcess:
+        """Creating a MockProcess defined by <data>. 
+        Appending the new MockProcess to the given MockLims instance.
+        If output artifacts are provided in data, 
+            Creating MockArtifacts defined by output
+            setting parent_process of the artifacts to the new MockProcess.
+        Returning the new MockProcess."""
 
-        process_type = MockProcessType(name=process_type_name)
-        process = MockProcess(
-            pid=process_id, process_type=process_type, date_run=date_run
-        )
-        process.input_artifact_list = input_artifacts
+        process_data = deepcopy(data)
+        if process_data.get("input_artifact_list"):
+            artifacts = Helpers.ensure_lims_artifacts(
+                lims, process_data["input_artifact_list"]
+            )
+            process_data["input_artifact_list"] = artifacts
+        if process_data.get("process_type"):
+            process_type = MockProcessType(**process_data["process_type"])
+            process_data["process_type"] = process_type
+        if process_data.get("outputs"):
+            artifacts = Helpers.ensure_lims_artifacts(lims, process_data["outputs"])
+            process_data["outputs"] = artifacts
+
+        process = MockProcess(**process_data)
+        for artifact in process.outputs:
+            artifact.parent_process = process
 
         lims.processes.append(process)
-        lims.process_types.append(process_type)
-
-        for artifact in output_artifacts:
-            artifact.parent_process = process
-            lims.artifacts.append(artifact)
         return process
 
     @staticmethod
@@ -79,9 +82,8 @@ class Helpers:
         lims.artifacts.extend(artifacts)
         return artifacts
 
-
     # Create methods:
-    # Creating and returning enteties defined by arguments. 
+    # Creating and returning enteties defined by arguments.
 
     @staticmethod
     def create_samples(samples_data: List[dict] = []) -> List[MockSample]:

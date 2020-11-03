@@ -20,11 +20,12 @@ def test_get_file_data_and_write_KAPA_library_preparation(
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST"
     entety_data = helpers.read_json(entety_json_data, "make_kapa_csv")
 
-    amount_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["amount_artifacts"]
-    )
     helpers.ensure_lims_process(
-        lims=lims, process_type_name=amount_step, output_artifacts=amount_artifacts
+        lims=lims,
+        data={
+            "process_type": {"name": amount_step},
+            "outputs": entety_data["amount_artifacts"],
+        },
     )
     curent_step_artifacts = helpers.ensure_lims_artifacts(
         lims, entety_data["artifacts_kapa_library_preparation"]
@@ -55,11 +56,12 @@ def test_get_file_data_and_write_Enzymatic_fragmentation(
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST"
     entety_data = helpers.read_json(entety_json_data, "make_kapa_csv")
 
-    amount_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["amount_artifacts"]
-    )
     helpers.ensure_lims_process(
-        lims=lims, process_type_name=amount_step, output_artifacts=amount_artifacts
+        lims=lims,
+        data={
+            "process_type": {"name": amount_step},
+            "outputs": entety_data["amount_artifacts"],
+        },
     )
     curent_step_artifacts = helpers.ensure_lims_artifacts(
         lims, entety_data["artifacts_enzymatic_feragmentation"]
@@ -90,11 +92,12 @@ def test_get_file_data_and_write_missing_udf(
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST"
     entety_data = helpers.read_json(entety_json_data, "make_kapa_csv")
 
-    amount_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["amount_artifacts_missing_udf"]
-    )
     helpers.ensure_lims_process(
-        lims=lims, process_type_name=amount_step, output_artifacts=amount_artifacts
+        lims=lims,
+        data={
+            "process_type": {"name": amount_step},
+            "outputs": entety_data["amount_artifacts_missing_udf"],
+        },
     )
     curent_step_artifacts = helpers.ensure_lims_artifacts(
         lims, entety_data["artifacts_kapa_library_preparation"]

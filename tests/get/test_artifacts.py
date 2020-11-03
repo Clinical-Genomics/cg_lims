@@ -5,8 +5,8 @@ import pytest
 
 
 def test_get_latest_artifact(lims, sample, helpers):
-    # GIVEN a lims with a sample that has been run through the same 
-    # type of process twise but on two diferent dates. 
+    # GIVEN a lims with a sample that has been run through the same
+    # type of process twise but on two diferent dates.
     sample_id = "SomeSampleID"
     process_type = "SomeTypeOfProcess"
     first_date = "2019-01-01"
@@ -14,15 +14,22 @@ def test_get_latest_artifact(lims, sample, helpers):
 
     sample.id = sample_id
 
-    helpers.ensure_lims_process(lims = lims,
-        process_type_name=process_type,
-        date_run=first_date,
-        output_artifacts=[helpers.create_artifact(samples=[sample], type="Analyte")],
+    helpers.ensure_lims_process(
+        lims=lims,
+        data={
+            "process_type": {"name": process_type},
+            "date_run": first_date,
+            "outputs": [{"samples": [{"sample_id": sample_id}], "type": "Analyte"}],
+        },
     )
-    helpers.ensure_lims_process(lims = lims,
-        process_type_name=process_type,
-        date_run=last_date,
-        output_artifacts=[helpers.create_artifact(samples=[sample], type="Analyte")],
+
+    helpers.ensure_lims_process(
+        lims=lims,
+        data={
+            "process_type": {"name": process_type},
+            "date_run": last_date,
+            "outputs": [{"samples": [{"sample_id": sample_id}], "type": "Analyte"}],
+        },
     )
 
     # WHEN running get_latest_artifact with the sample id and the process type name
@@ -58,7 +65,7 @@ def test_get_artifacts_no_output_artifacts(process):
 
 def test_get_artifacts_with_output_artifacts(process, helpers):
     # GIVEN a process with five output artifacts
-    five_artifacts = helpers.create_many_artifacts(nr_of_artifacts=5, type='Analyte')
+    five_artifacts = helpers.create_many_artifacts(nr_of_artifacts=5, type="Analyte")
     process.outputs = five_artifacts
 
     # WHEN running get_artifacts
@@ -70,13 +77,12 @@ def test_get_artifacts_with_output_artifacts(process, helpers):
 
 def test_get_artifacts_with_input_artifacts(process, helpers):
     # GIVEN a process with five output artifacts
-    five_artifacts = helpers.create_many_artifacts(nr_of_artifacts=5, type='Analyte')
-    process.inputs = five_artifacts
+    five_artifacts = helpers.create_many_artifacts(nr_of_artifacts=5, type="Analyte")
+    process.input_artifact_list = five_artifacts
 
     # WHEN running get_artifacts
     input_artifacts = get_artifacts(process, input=True)
 
     # THEN assert input_artifacts are five
     assert len(input_artifacts) == 5
-
 
