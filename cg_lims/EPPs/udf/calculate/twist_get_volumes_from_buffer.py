@@ -32,9 +32,9 @@ def get_buffer(ctx, process_type: List[str]) -> None:
             if volume_buffer < 0:
                 failed_count += 1
                 continue
+            updated_count += 1
             artifact.udf["Volume (ul)"] = volume_buffer
             artifact.put()
-            updated_count += 1
 
     message = f"Updated {updated_count} samples with volume from Buffer step."
     LOG.info(message)
