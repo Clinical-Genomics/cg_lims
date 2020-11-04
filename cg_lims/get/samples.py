@@ -22,9 +22,9 @@ def get_artifact_sample(artifact: Artifact)-> Sample:
         samples = artifact.samples
     except:
         raise MissingSampleError(f"Artifact {artifact.id} has no samples.")
-    if len(samples) > 1:
-        raise MissingSampleError(f"Artifact {artifact.id} has more than one sample.")
-    elif len(samples) == 0:
+    if not samples:
         raise MissingSampleError(f"Artifact {artifact.id} has no samples.")
+    elif len(samples) > 1:
+        raise MissingSampleError(f"Artifact {artifact.id} has more than one sample.")
 
     return samples[0]

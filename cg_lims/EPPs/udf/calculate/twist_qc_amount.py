@@ -21,7 +21,7 @@ def get_qc(source: str, conc: float, amount: float) -> str:
         if amount >= 10 and conc <= 250 and amount >= conc >= amount / 50.0:
             qc = "PASSED"
     else:
-        if amount >= 300 and conc <= 250 and amount >= conc >= amount / 30.0:
+        if amount >= 300 and conc <= 250:
             qc = "PASSED"
 
     return qc
@@ -46,7 +46,8 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
         qc = get_qc(source, conc, amount)
         if qc == "FAILED":
             qc_fail_count +=1
-        artifact.qc_flag = get_qc(source, conc, amount)
+            LOG.info(f"Sample {sample.id} failed qc. Source: {source} Amount: {amount} Concentration: {conc}")
+        artifact.qc_flag = qc
         artifact.put()
 
     if missing_udfs_count:
