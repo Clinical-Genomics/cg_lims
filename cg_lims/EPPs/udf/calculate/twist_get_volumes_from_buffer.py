@@ -15,7 +15,7 @@ LOG = logging.getLogger(__name__)
 @click.pass_context
 def get_buffer(ctx, process_type: List[str]) -> None:
     """Getting Volume Elution from previous step of type defined by process_types.
-    If volume found, setting the value Volume udf on artifact of current step."""
+    If volume found, setting the value Volume udf on artifact of current step. As part of the sample is used in the QC, the value is subtracted by 10 to get the actual volume that is left."""
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
 
