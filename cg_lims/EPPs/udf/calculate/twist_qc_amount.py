@@ -18,10 +18,10 @@ def get_qc(source: str, conc: float, amount: float) -> str:
     qc = "FAILED"
 
     if source == "cfDNA":
-        if amount >= 10 and conc <= 250 and amount >= conc >= amount / 50.0:
+        if amount >= 10 and conc <= 250 and conc >= 0.2:
             qc = "PASSED"
     else:
-        if amount >= 300 and conc <= 250:
+        if amount >= 300 and conc <= 250 and conc >= 8.33:
             qc = "PASSED"
 
     return qc
