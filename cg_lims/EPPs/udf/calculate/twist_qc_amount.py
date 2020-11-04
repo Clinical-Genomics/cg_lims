@@ -50,9 +50,9 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
         artifact.put()
 
     if missing_udfs_count:
-        raise MissingUDFsError(f"Udf missing for {missing_udfs_count} samples")
+        raise MissingUDFsError(f"Udf missing for {missing_udfs_count} sample(s).")
     if qc_fail_count:
-        raise FailingQCError(f"QC failed for {qc_fail_count} samples")
+        raise FailingQCError(f"Amounts have been calculated and qc flags set for all samples. QC failed for {qc_fail_count} sample(s).")
 
 
 @click.command()
