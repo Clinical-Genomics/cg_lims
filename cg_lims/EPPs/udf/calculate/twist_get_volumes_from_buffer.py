@@ -10,7 +10,7 @@ from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
 LOG = logging.getLogger(__name__)
 
 
-@click.command("get_volumes_from_buffer")
+@click.command()
 @options.process_type(help="Get buffer from this process type(s)")
 @click.pass_context
 def get_volumes_from_buffer(ctx, process_type: List[str]) -> None:
