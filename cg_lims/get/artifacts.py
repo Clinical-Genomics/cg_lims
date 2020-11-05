@@ -66,3 +66,23 @@ def get_latest_artifact(
 
     return artifacts[-1]
 
+
+def get_latest_input_artifact(process_type: str, lims_id: str, lims: Lims) -> Artifact:
+    """Returns the input artifact related to lims_id and the step that was latest run."""
+    latest_input_artifact = None
+    artifacts = lims.get_artifacts(samplelimsid = lims_id, process_type = process_type)
+    # Make a list of tuples (<date the artifact was generated>, <artifact>): 
+    date_art_list = list(set([(a.parent_process.date_run, a) for a in artifacts]))
+    if date_art_list:
+        #Sort on date:
+        date_art_list.sort(key = operator.itemgetter(0))
+        #Get latest:
+        dummy, latest_outart = date_art_list[-1] #get latest
+        #Get the input artifact related to our sample
+        for inart in latest_outart.input_artifact_list():
+            if lims_id in [sample.id for sample in inart.samples]:
+                latest_input_artifact = inart 
+                break        
+
+    return latest_input_artifact
+
