@@ -1,6 +1,7 @@
 from cg_lims.exceptions import MissingUDFsError, MissingArtifactError
 
 from pathlib import Path
+import json
 
 from cg_lims.EPPs.files.make_kapa_csv import get_file_data_and_write
 
@@ -8,7 +9,7 @@ import pytest
 
 
 def test_get_file_data_and_write_KAPA_library_preparation(
-    lims, kapa_library_preparation_file, helpers, entety_json_data
+    lims, kapa_library_preparation_file, helpers, kapa_csv_data
 ):
     # GIVEN: A file name. and a lims with three samples that has been run
     # through a process of type <amount_step>. There  they got udf: Amount needed (ng) set.
@@ -18,16 +19,16 @@ def test_get_file_data_and_write_KAPA_library_preparation(
 
     file_name = "some_file_name"
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST"
-    entety_data = helpers.read_json(entety_json_data, "make_kapa_csv")
 
-    amount_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["amount_artifacts"]
-    )
     helpers.ensure_lims_process(
-        lims=lims, process_type_name=amount_step, output_artifacts=amount_artifacts
+        lims=lims,
+        data={
+            "process_type": {"name": amount_step},
+            "outputs": kapa_csv_data["amount_artifacts"],
+        },
     )
     curent_step_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["artifacts_kapa_library_preparation"]
+        lims, kapa_csv_data["artifacts_kapa_library_preparation"]
     )
 
     file = Path(file_name)
@@ -43,7 +44,7 @@ def test_get_file_data_and_write_KAPA_library_preparation(
 
 
 def test_get_file_data_and_write_Enzymatic_fragmentation(
-    lims, enzymatic_fragmentation_file, helpers, entety_json_data
+    lims, enzymatic_fragmentation_file, helpers, kapa_csv_data
 ):
     # GIVEN: A file name. and a lims with three samples that has been run
     # through a process of type <amount_step>. There  they got udf: Amount needed (ng) set.
@@ -53,16 +54,16 @@ def test_get_file_data_and_write_Enzymatic_fragmentation(
 
     file_name = "some_file_id"
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST"
-    entety_data = helpers.read_json(entety_json_data, "make_kapa_csv")
 
-    amount_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["amount_artifacts"]
-    )
     helpers.ensure_lims_process(
-        lims=lims, process_type_name=amount_step, output_artifacts=amount_artifacts
+        lims=lims,
+        data={
+            "process_type": {"name": amount_step},
+            "outputs": kapa_csv_data["amount_artifacts"],
+        },
     )
     curent_step_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["artifacts_enzymatic_feragmentation"]
+        lims, kapa_csv_data["artifacts_enzymatic_feragmentation"]
     )
 
     file = Path(file_name)
@@ -78,7 +79,7 @@ def test_get_file_data_and_write_Enzymatic_fragmentation(
 
 
 def test_get_file_data_and_write_missing_udf(
-    lims, kapa_library_preparation_file_missing_udf, helpers, entety_json_data
+    lims, kapa_library_preparation_file_missing_udf, helpers, kapa_csv_data
 ):
     # GIVEN: A file name. and a lims with three samples that has been run
     # through a process of type <amount_step>. There some samples did not get the udf: Amount needed (ng) set.
@@ -88,16 +89,16 @@ def test_get_file_data_and_write_missing_udf(
 
     file_name = "some_file_name"
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST"
-    entety_data = helpers.read_json(entety_json_data, "make_kapa_csv")
 
-    amount_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["amount_artifacts_missing_udf"]
-    )
     helpers.ensure_lims_process(
-        lims=lims, process_type_name=amount_step, output_artifacts=amount_artifacts
+        lims=lims,
+        data={
+            "process_type": {"name": amount_step},
+            "outputs": kapa_csv_data["amount_artifacts_missing_udf"],
+        },
     )
     curent_step_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["artifacts_kapa_library_preparation"]
+        lims, kapa_csv_data["artifacts_kapa_library_preparation"]
     )
 
     file = Path(file_name)
@@ -112,7 +113,7 @@ def test_get_file_data_and_write_missing_udf(
 
 
 def test_get_file_data_and_write_missing_artifact(
-    lims, kapa_library_preparation_file_missing_udf, helpers, entety_json_data
+    lims, kapa_library_preparation_file_missing_udf, helpers, kapa_csv_data
 ):
     # GIVEN: A file name. and a lims with three samples that has NOT been run
     # through a process of type <amount_step>.
@@ -122,10 +123,9 @@ def test_get_file_data_and_write_missing_artifact(
 
     file_name = "some_file_name"
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST"
-    entety_data = helpers.read_json(entety_json_data, "make_kapa_csv")
 
     curent_step_artifacts = helpers.ensure_lims_artifacts(
-        lims, entety_data["artifacts_kapa_library_preparation"]
+        lims, kapa_csv_data["artifacts_kapa_library_preparation"]
     )
 
     file = Path(file_name)
