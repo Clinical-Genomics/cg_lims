@@ -1,6 +1,5 @@
 from typing import List
 from copy import deepcopy
-import json
 from pathlib import Path
 
 
@@ -15,12 +14,6 @@ from genologics_mock.entities import (
 
 class Helpers:
     """Fixure Help functions to create fixures."""
-
-    @staticmethod
-    def read_json(file_path: str, key: str) -> list:
-        with open(file_path) as json_file:
-            data = json.load(json_file)
-        return data[key]
 
     # Ensure methods:
     # Creating enteties defined by arguments.

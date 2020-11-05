@@ -7,7 +7,7 @@ from typing import List
 
 from cg_lims.exceptions import LimsError, MissingUDFsError, FailingQCError
 from cg_lims.get.artifacts import get_qc_messuements
-from cg_lims.get.samples import get_artifact_sample
+from cg_lims.get.samples import get_one_sample_from_artifact
 
 LOG = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
     missing_udfs_count = 0
     qc_fail_count = 0
     for artifact in artifacts:
-        sample = get_artifact_sample(artifact)
+        sample = get_one_sample_from_artifact(artifact)
         source = sample.udf.get("Source")
         vol = artifact.udf.get("Volume (ul)")
         conc = artifact.udf.get("Concentration")

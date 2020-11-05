@@ -19,10 +19,10 @@ def config():
 
 
 @pytest.fixture
-def entety_json_data():
-    """Get file path to entety yaml data"""
+def make_kapa_csv_data():
+    """Get file path to make_kapa_csv_data.json"""
 
-    return "tests/fixtures/entety_data.json"
+    return "tests/fixtures/make_kapa_csv_data.json"
 
 
 @pytest.fixture

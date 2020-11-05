@@ -13,8 +13,8 @@ def get_process_samples(process: Process) -> List[Sample]:
 
     return list(set(all_samples))
 
-def get_artifact_sample(artifact: Artifact)-> Sample:
-    """Checking that a artifact has one and only one sample.
+def get_one_sample_from_artifact(artifact: Artifact)-> Sample:
+    """Checking that an artifact has one and only one sample.
     Returning the sample if it exists.
     Raising MissingSampleError otherwise."""
     

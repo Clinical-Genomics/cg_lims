@@ -29,8 +29,8 @@ def get_artifacts(process: Process, input: bool) -> List[Artifact]:
 def get_qc_messuements(lims: Lims, process: Process) -> List[Artifact]:
     """Get output 'artifacts' (messuements) of a qc process"""
 
-    iom = process.input_output_maps
-    artifact_ids = [io[1]['limsid'] for io in iom if io[1]['output-generation-type'] == 'PerInput']
+    input_output_maps = process.input_output_maps
+    artifact_ids = [io[1]['limsid'] for io in input_output_maps if io[1]['output-generation-type'] == 'PerInput']
     return [Artifact(lims, id=id) for id in artifact_ids if id is not None]
 
 
