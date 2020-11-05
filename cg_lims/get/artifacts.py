@@ -26,7 +26,7 @@ def get_artifacts(process: Process, input: bool) -> List[Artifact]:
         artifacts = [a for a in process.all_outputs(unique=True) if a.type == "Analyte"]
     return artifacts
 
-def get_qc_messuements(lims: Lims, process: Process) -> List[Artifact]:
+def get_qc_output_artifacts(lims: Lims, process: Process) -> List[Artifact]:
     """Get output 'artifacts' (messuements) of a qc process"""
 
     input_output_maps = process.input_output_maps

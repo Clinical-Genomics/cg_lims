@@ -6,7 +6,7 @@ import click
 from typing import List
 
 from cg_lims.exceptions import LimsError, MissingUDFsError, FailingQCError
-from cg_lims.get.artifacts import get_qc_messuements
+from cg_lims.get.artifacts import get_qc_output_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
 
 LOG = logging.getLogger(__name__)
@@ -67,7 +67,7 @@ def twist_qc_amount(ctx):
     lims = ctx.obj["lims"]
 
     try:
-        artifacts = get_qc_messuements(lims=lims, process=process)
+        artifacts = get_qc_output_artifacts(lims=lims, process=process)
         calculate_amount_and_set_qc(artifacts)
         message = "Amounts have been calculated and qc flags set for all samples."
         LOG.info(message)
