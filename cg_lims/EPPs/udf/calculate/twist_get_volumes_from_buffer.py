@@ -10,12 +10,16 @@ from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
 LOG = logging.getLogger(__name__)
 
 
-@click.command("get-buffer")
+@click.command("get_volumes_from_buffer")
 @options.process_type(help="Get buffer from this process type(s)")
 @click.pass_context
-def get_buffer(ctx, process_type: List[str]) -> None:
+def get_volumes_from_buffer(ctx, process_type: List[str]) -> None:
     """Getting Volume Elution from previous step of type defined by process_types.
-    If volume found, setting the value Volume udf on artifact of current step. As part of the sample is used in the QC, the value is subtracted by 10 to get the actual volume that is left."""
+    If volume found, setting the value Volume udf on artifact of current step. As part of the sample is used in the QC,
+    the value is subtracted by 10 to get the actual volume that is left."""
+
+    LOG.info(f"Running {ctx.command_path} with params {ctx.params}")
+
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
 
