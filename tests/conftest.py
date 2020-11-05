@@ -1,6 +1,6 @@
 import pytest
 from pathlib import Path
-
+import json
 from genologics_mock.lims import MockLims
 from genologics_mock.entities import (
     MockArtifact,
@@ -19,10 +19,11 @@ def config():
 
 
 @pytest.fixture
-def entety_json_data():
-    """Get file path to entety yaml data"""
+def kapa_csv_data():
+    """Get file path to make_kapa_csv_data.json"""
 
-    return "tests/fixtures/entety_data.json"
+    with open("tests/fixtures/make_kapa_csv_data.json") as file:
+        return json.load(file)
 
 
 @pytest.fixture
