@@ -13,7 +13,7 @@ LOG = logging.getLogger(__name__)
 
 
 def get_qc(source: str, conc: float, amount: float) -> str:
-    """"""
+    """QC-criteria depends on sample source, total amount and sample concentration. See AMS doc 1117, 1993 and 2125."""
 
     qc = "FAILED"
 
