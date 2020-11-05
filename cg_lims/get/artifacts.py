@@ -8,7 +8,6 @@ from typing import List
 from cg_lims.exceptions import QueueArtifactsError, MissingArtifactError
 
 
-
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
     """Returning the initial artifact related to a sample.
     Assuming first artifact is allways named sample.id + 'PA1."""
@@ -26,11 +25,16 @@ def get_artifacts(process: Process, input: bool) -> List[Artifact]:
         artifacts = [a for a in process.all_outputs(unique=True) if a.type == "Analyte"]
     return artifacts
 
+
 def get_qc_output_artifacts(lims: Lims, process: Process) -> List[Artifact]:
     """Get output 'artifacts' (messuements) of a qc process"""
 
     input_output_maps = process.input_output_maps
-    artifact_ids = [io[1]['limsid'] for io in input_output_maps if io[1]['output-generation-type'] == 'PerInput']
+    artifact_ids = [
+        io[1]["limsid"]
+        for io in input_output_maps
+        if io[1]["output-generation-type"] == "PerInput"
+    ]
     return [Artifact(lims, id=id) for id in artifact_ids if id is not None]
 
 
@@ -40,7 +44,9 @@ def filter_artifacts(artifacts: List[Artifact], udf: str, value) -> List[Artifac
     return [a for a in artifacts if a.udf.get(udf) == value]
 
 
-def get_latest_artifact(lims: Lims, sample_id: str, process_type: List[str]) -> Artifact:
+def get_latest_artifact(
+    lims: Lims, sample_id: str, process_type: List[str]
+) -> Artifact:
     """Getting the most recently generated artifact by process_type and sample_id.
 
     Searching for all artifacts (Analytes) associated with <sample_id> that
@@ -50,9 +56,7 @@ def get_latest_artifact(lims: Lims, sample_id: str, process_type: List[str]) -> 
     If there are many such artifacts only one will be returned."""
 
     artifacts = lims.get_artifacts(
-        samplelimsid=sample_id,
-        type="Analyte",
-        process_type=process_type,
+        samplelimsid=sample_id, type="Analyte", process_type=process_type,
     )
     if not artifacts:
         raise MissingArtifactError(
@@ -61,6 +65,4 @@ def get_latest_artifact(lims: Lims, sample_id: str, process_type: List[str]) -> 
     sorted(artifacts, key=attrgetter("parent_process.date_run"))
 
     return artifacts[-1]
-
-
 

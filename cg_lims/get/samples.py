@@ -3,7 +3,6 @@ from cg_lims.exceptions import MissingSampleError
 from typing import List
 
 
-
 def get_process_samples(process: Process) -> List[Sample]:
     """Get all samples in a process"""
 
@@ -13,11 +12,12 @@ def get_process_samples(process: Process) -> List[Sample]:
 
     return list(set(all_samples))
 
-def get_one_sample_from_artifact(artifact: Artifact)-> Sample:
+
+def get_one_sample_from_artifact(artifact: Artifact) -> Sample:
     """Checking that an artifact has one and only one sample.
     Returning the sample if it exists.
     Raising MissingSampleError otherwise."""
-    
+
     try:
         samples = artifact.samples
     except:
