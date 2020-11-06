@@ -26,11 +26,13 @@ def get_volumes_from_buffer(ctx, process_type: List[str]) -> None:
     failed_count = 0
     updated_count = 0
     artifacts = get_qc_output_artifacts(lims, process)
-
     for artifact in artifacts:
-        buffer_artifact = get_latest_artifact(
-            lims=lims, sample_id=artifact.samples[0].id, process_type=process_type
+        try:
+            buffer_artifact = get_latest_artifact(
+            lims=lims, sample_id=artifact.samples[0].id, process_type=list(process_type)
         )
+        except:
+            continue
         if buffer_artifact.udf.get("Volume Elution (ul)"):
             volume_buffer = float(buffer_artifact.udf.get("Volume Elution (ul)")) - 10.0
             if volume_buffer < 0:
