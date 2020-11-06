@@ -1,7 +1,78 @@
-from cg_lims.get.artifacts import get_latest_artifact, get_artifacts
+from cg_lims.get.artifacts import get_latest_artifact, get_artifacts, get_latest_input_artifact
 from cg_lims.exceptions import MissingArtifactError
 
 import pytest
+
+
+def test_get_latest_input_artifact(lims, helpers):
+    # GIVEN a lims with artifacts A1,A2,A3,A4,A5 and processes P1, P2,P3 with relationships:
+    # P1 --> A1
+    # P2 --> A2
+    # [A4, A5] --> P3 --> A3
+    # where P1, P2, P3 are of the same process type but where run on different
+    # dates: 2018-01-01, 2018-02-01, 2018-03-01. P3 has the latest date
+    # And only A4 has a sample list with a sample with sample_id = TheOne
+
+    sample_id1 = "TheOne"
+    sample_id2 = "SomeSampleID"
+    process_type = "SomeTypeOfProcess"
+    first_date = "2019-01-01"
+    last_date = "2020-01-01"
+
+    p1 = {
+        "process_type": {"name": process_type},
+        "date_run": first_date,
+        "outputs": [
+            {
+                "samples": [{"sample_id": sample_id1}],
+                "type": "Analyte",
+                "input_artifact_list": [
+                    {
+                        "samples": [{"sample_id": sample_id1}],
+                        "type": "Analyte",
+                        "id": "artifact_id1",
+                    },
+                    {
+                        "samples": [{"sample_id": sample_id2}],
+                        "type": "Analyte",
+                        "id": "artifact_id2",
+                    },
+                ],
+            }
+        ],
+    }
+
+    p2 = {
+        "process_type": {"name": process_type},
+        "date_run": last_date,
+        "outputs": [
+            {
+                "samples": [{"sample_id": sample_id1}],
+                "type": "Analyte",
+                "input_artifact_list": [
+                    {
+                        "samples": [{"sample_id": sample_id1}],
+                        "type": "Analyte",
+                        "id": "the_one",
+                    },
+                    {
+                        "samples": [{"sample_id": sample_id2}],
+                        "type": "Analyte",
+                        "id": "artifact_id3",
+                    },
+                ],
+            }
+        ],
+    }
+
+    p1=helpers.ensure_lims_process(lims=lims, data=p1)
+    helpers.ensure_lims_process(lims=lims, data=p2)
+    print(p1.outputs[0])
+    # WHEN running get_latest_input_artifact
+    latest_input_artifact = get_latest_input_artifact(process_type, sample_id1, lims)
+
+    # THEN latest_input_artifact should be A4
+    assert latest_input_artifact.id == "the_one"
 
 
 def test_get_latest_artifact(lims, sample, helpers):

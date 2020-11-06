@@ -1,7 +1,7 @@
 from genologics.lims import Lims
 from genologics.entities import Sample, Artifact
 from cg_lims.constants import MASTER_STEPS_UDFS
-from cg_lims.get.artifacts import get_latest_artifact
+from cg_lims.get.artifacts import get_latest_artifact, get_latest_input_artifact
 from cg_lims.utils.date_utils import str_to_datetime
 import operator
 import logging
