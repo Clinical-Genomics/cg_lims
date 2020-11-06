@@ -42,6 +42,13 @@ class Helpers:
             artifacts = Helpers.ensure_lims_artifacts(lims, process_data["outputs"])
             process_data["outputs"] = artifacts
 
+        if process_data.get("input_output_maps"):
+            input_output_map = []
+            for map_object in process_data.get("input_output_maps"):
+                
+
+
+
         process = MockProcess(**process_data)
         for artifact in process.outputs:
             artifact.parent_process = process

@@ -1,6 +1,7 @@
 import pytest
 from pathlib import Path
 import json
+from click.testing import CliRunner
 from genologics_mock.lims import MockLims
 from genologics_mock.entities import (
     MockArtifact,
@@ -75,3 +76,9 @@ def kapa_library_preparation_file_missing_udf():
     file = Path(file_path)
     return file.read_text()
 
+
+@pytest.fixture(name="cli_runner")
+def fixture_cli_runner():
+    """Create a CliRunner"""
+    runner = CliRunner()
+    return runner
