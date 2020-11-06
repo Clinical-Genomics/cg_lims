@@ -5,7 +5,7 @@ from typing import List
 import click
 
 from cg_lims import options
-from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
+from cg_lims.get.artifacts import get_latest_artifact, get_qc_output_artifacts
 
 LOG = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ def get_volumes_from_buffer(ctx, process_type: List[str]) -> None:
 
     failed_count = 0
     updated_count = 0
-    artifacts = get_artifacts(process=process, input=True)
+    artifacts = get_qc_output_artifacts(lims, process)
 
     for artifact in artifacts:
         buffer_artifact = get_latest_artifact(
