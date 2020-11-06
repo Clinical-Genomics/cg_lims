@@ -13,10 +13,7 @@ def test_calculate_amount_and_set_qc(lims, helpers):
             "samples": [{"udf": {"Source": "cfDNA"}}],
             "udf": {"Volume (ul)": 35, "Concentration": 10},
         },
-        {
-            "samples": [{"udf": {"Source": "blood"}}],
-            "udf": {"Volume (ul)": 3, "Concentration": 1},
-        },
+        {"samples": [{"udf": {"Source": "blood"}}], "udf": {"Volume (ul)": 3, "Concentration": 1},},
         {
             "samples": [{"udf": {"Source": "cfDNA"}}],
             "udf": {"Volume (ul)": 10, "Concentration": 0.1},

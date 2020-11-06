@@ -31,9 +31,7 @@ class Helpers:
 
         process_data = deepcopy(data)
         if process_data.get("input_artifact_list"):
-            artifacts = Helpers.ensure_lims_artifacts(
-                lims, process_data["input_artifact_list"]
-            )
+            artifacts = Helpers.ensure_lims_artifacts(lims, process_data["input_artifact_list"])
             process_data["input_artifact_list"] = artifacts
         if process_data.get("process_type"):
             process_type = MockProcessType(**process_data["process_type"])
@@ -50,9 +48,7 @@ class Helpers:
         return process
 
     @staticmethod
-    def ensure_lims_artifacts(
-        lims: MockLims, artifacts_data: List[dict]
-    ) -> List[MockArtifact]:
+    def ensure_lims_artifacts(lims: MockLims, artifacts_data: List[dict]) -> List[MockArtifact]:
         """Creating MockArtifacts defined by <artifacts_data>. 
         Appending the new MockArtifacts to the given MockLims instance.
         Returning the new MockArtifacts"""
@@ -65,9 +61,7 @@ class Helpers:
                 artifact_data["samples"] = samples
 
             if artifact_data.get("parent_process"):
-                process = Helpers.ensure_lims_process(
-                    **artifact_data.get("parent_process")
-                )
+                process = Helpers.ensure_lims_process(**artifact_data.get("parent_process"))
                 artifact_data["parent_process"] = process
             artifact = MockArtifact(**artifact_data)
 
@@ -97,9 +91,7 @@ class Helpers:
         return artifact
 
     @staticmethod
-    def create_many_artifacts(
-        nr_of_artifacts: int, type: str = ""
-    ) -> List[MockArtifact]:
+    def create_many_artifacts(nr_of_artifacts: int, type: str = "") -> List[MockArtifact]:
         """Create a list of mock aritfacts"""
 
         artifacts = []
