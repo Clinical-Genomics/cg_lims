@@ -42,6 +42,7 @@ def get_missing_reads(artifacts):
             art.qc_flag = 'PASSED'
         art.put()
         passed_arts += 1
+    return passed_arts, failed_arts
 
 
 @click.command()
@@ -55,9 +56,14 @@ def get_missing_reads(ctx):
 
     try:
         artifacts = get_artifacts(process=process, input=False)
-        message = get_missing_reads(artifacts=artifacts)
-        LOG.info(message)
-        click.echo(message)
+        passed_arts, failed_arts = get_missing_reads(artifacts=artifacts)
+        message = f"Updataed {passed_arts}. Ignored {failed_arts} due to missing UDFs"
+        if failed_arts:
+            LOG.error(message)
+            sys.exit(message)
+        else:
+            LOG.info(message)
+            click.echo(message)
     except LimsError as e:
         LOG.error(e.message)
         sys.exit(e.message)
