@@ -39,6 +39,6 @@ class FailingQCError(LimsError):
     """Raise when qc fails"""
     pass
 
-class MissingFieldError(LimsError):
+class MissingCgFieldError(LimsError):
     """Raise when field missing"""
     pass

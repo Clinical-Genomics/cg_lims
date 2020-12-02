@@ -2,7 +2,7 @@ import logging
 import sys
 import click
 
-from cg_lims.exceptions import LimsError, MissingFieldError
+from cg_lims.exceptions import LimsError, MissingCgFieldError
 from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
@@ -21,10 +21,9 @@ def missing_reads(artifacts: list, cgface)-> tuple:
             continue
         try:
             target_amount_reads = cgface.apptag(tag_name=app_tag, key='target_reads')
-            print(target_amount_reads/1000000)
             guaranteed_fraction = 0.01*cgface.apptag(tag_name=app_tag, key='percent_reads_guaranteed')
         except:
-            raise MissingFieldError(f"Could not find application tag: {app_tag} in database.")
+            raise MissingCgFieldError(f"Could not find application tag: {app_tag} in database.")
         # Converting from reads to million reads.
         target_amount = target_amount_reads / 1000000
         reads_min = target_amount * guaranteed_fraction
@@ -49,7 +48,7 @@ def missing_reads(artifacts: list, cgface)-> tuple:
 @click.command()
 @click.pass_context
 def get_missing_reads(ctx):
-    """"""
+    """Script to calculate missing reads and decide on reruns"""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
