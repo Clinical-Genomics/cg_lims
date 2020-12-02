@@ -8,7 +8,7 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 
-def get_missing_reads(artifacts):
+def missing_reads(artifacts: list, cgface)-> tuple:
     failed_arts = 0
     passed_arts = 0
     for art in artifacts:
@@ -20,8 +20,9 @@ def get_missing_reads(artifacts):
             failed_arts += 1
             continue
         try:
-            target_amount_reads = cgface_obj.apptag(tag_name=app_tag, key='target_reads')
-            guaranteed_fraction = cgface_obj.apptag(tag_name=app_tag, key='reads_guaranteed')
+            target_amount_reads = cgface.apptag(tag_name=app_tag, key='target_reads')
+            print(target_amount_reads/1000000)
+            guaranteed_fraction = 0.01*cgface.apptag(tag_name=app_tag, key='percent_reads_guaranteed')
         except:
             raise MissingFieldError(f"Could not find application tag: {app_tag} in database.")
         # Converting from reads to million reads.
@@ -53,10 +54,11 @@ def get_missing_reads(ctx):
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
     process = ctx.obj["process"]
+    cgface = ctx.obj["cgface"]
 
     try:
         artifacts = get_artifacts(process=process, input=False)
-        passed_arts, failed_arts = get_missing_reads(artifacts=artifacts)
+        passed_arts, failed_arts = missing_reads(artifacts=artifacts, cgface=cgface)
         message = f"Updataed {passed_arts}. Ignored {failed_arts} due to missing UDFs"
         if failed_arts:
             LOG.error(message)
