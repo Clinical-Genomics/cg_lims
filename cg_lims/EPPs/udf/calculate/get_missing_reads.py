@@ -1,5 +1,6 @@
 import logging
 import sys
+from  requests.exceptions import ConnectionError
 import click
 
 from cg_lims.exceptions import LimsError, MissingCgFieldError
@@ -22,6 +23,8 @@ def missing_reads(artifacts: list, cgface)-> tuple:
         try:
             target_amount_reads = cgface.apptag(tag_name=app_tag, key='target_reads')
             guaranteed_fraction = 0.01*cgface.apptag(tag_name=app_tag, key='percent_reads_guaranteed')
+        except ConnectionError:
+            raise LimsError(message="Could not communicate with cg server")
         except:
             raise MissingCgFieldError(f"Could not find application tag: {app_tag} in database.")
         # Converting from reads to million reads.
