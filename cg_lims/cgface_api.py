@@ -9,7 +9,6 @@ class CgFace(object):
 
     def apptag(self, tag_name, key=None, entry_point='/applications'):
         res = requests.get(self.url + entry_point + '/' + tag_name)
-        print(json.loads(res.text).keys())
         if key:
             return json.loads(res.text)[key]
         else:
