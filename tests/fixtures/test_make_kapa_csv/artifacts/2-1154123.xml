@@ -1,0 +1,22 @@
+<art:artifact xmlns:udf="http://genologics.com/ri/userdefined" xmlns:file="http://genologics.com/ri/file" xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154123?state=869639" limsid="2-1154123">
+<name>2020-29674-02</name>
+<type>Analyte</type>
+<output-type>Analyte</output-type>
+<parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-167852" limsid="24-167852"/>
+<qc-flag>PASSED</qc-flag>
+<location>
+<container uri="http://127.0.0.1:8000/api/v2/containers/27-119253" limsid="27-119253"/>
+<value>B:1</value>
+</location>
+<working-flag>true</working-flag>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7271A5" limsid="ACC7271A5"/>
+<udf:field type="Numeric" name="Amount (ng)">400</udf:field>
+<udf:field type="Numeric" name="Sample Volume (ul)">12.5</udf:field>
+<udf:field type="Numeric" name="Volume H2O (ul)">17.5</udf:field>
+<udf:field type="Numeric" name="Amount needed (ng)">250</udf:field>
+<udf:field type="Numeric" name="Concentration">20</udf:field>
+<udf:field type="Numeric" name="DIN Value">5</udf:field>
+<workflow-stages>
+<workflow-stage status="COMPLETE" name="Enzymatic fragmentation TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1601/stages/5106"/>
+</workflow-stages>
+</art:artifact>

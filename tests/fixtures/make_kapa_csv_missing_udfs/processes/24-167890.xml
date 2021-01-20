@@ -1,0 +1,58 @@
+<prc:process xmlns:udf="http://genologics.com/ri/userdefined" xmlns:file="http://genologics.com/ri/file" xmlns:prc="http://genologics.com/ri/process" uri="http://127.0.0.1:8000/api/v2/processes/24-167890" limsid="24-167890">
+<type uri="http://127.0.0.1:8000/api/v2/processtypes/1362">Enzymatic fragmentation TWIST v2</type>
+<date-run>2020-12-14</date-run>
+<technician uri="http://127.0.0.1:8000/api/v2/researchers/54">
+<first-name>Cecilia</first-name>
+<last-name>Svensson</last-name>
+</technician>
+<input-output-map>
+<input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154123?state=869639" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154123?state=869639" limsid="2-1154123">
+<parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-167852" limsid="24-167852"/>
+</input>
+<output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1155122?state=870638" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1155122"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154123?state=869639" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154123?state=869639" limsid="2-1154123">
+<parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-167852" limsid="24-167852"/>
+</input>
+<output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1155123?state=870639" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1155123"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154123?state=869639" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154123?state=869639" limsid="2-1154123">
+<parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-167852" limsid="24-167852"/>
+</input>
+<output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1155124?state=870640" output-generation-type="PerInput" output-type="Analyte" limsid="2-1155124"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154124?state=869640" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154124?state=869640" limsid="2-1154124">
+<parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-167852" limsid="24-167852"/>
+</input>
+<output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1155122?state=870638" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1155122"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154124?state=869640" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154124?state=869640" limsid="2-1154124">
+<parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-167852" limsid="24-167852"/>
+</input>
+<output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1155123?state=870639" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1155123"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154124?state=869640" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1154124?state=869640" limsid="2-1154124">
+<parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-167852" limsid="24-167852"/>
+</input>
+<output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1155125?state=870641" output-generation-type="PerInput" output-type="Analyte" limsid="2-1155125"/>
+</input-output-map>
+<udf:field type="Numeric" name="Covaris cycles per burst">200</udf:field>
+<udf:field type="Numeric" name="Covaris duty cycle (%)">10</udf:field>
+<udf:field type="Numeric" name="Covaris intensity">4</udf:field>
+<udf:field type="String" name="Covaris mode">Frequency sweeping</udf:field>
+<udf:field type="Numeric" name="Covaris Power (W)">175</udf:field>
+<udf:field type="Numeric" name="Covaris temperature (C)">6</udf:field>
+<udf:field type="Numeric" name="Covaris time (s)">100</udf:field>
+<udf:field type="String" name="Document version">2</udf:field>
+<udf:field type="Numeric" name="Fragmentation time (min)">1</udf:field>
+<udf:field type="Numeric" name="KAPA HyperPlus Kit">1</udf:field>
+<udf:field type="String" name="Method document">2125</udf:field>
+<udf:field type="String" name="Protocol">PCR free 350 bp_S2</udf:field>
+<udf:field type="String" name="Thermal cycler name">aygo</udf:field>
+<process-parameter name="Sorted File for Hamilton"/>
+</prc:process>

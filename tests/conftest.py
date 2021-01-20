@@ -26,6 +26,22 @@ def server_test_get_artifacts():
     thread.start()
     time.sleep(0.1)
 
+@pytest.fixture
+def server_make_kapa_csv():
+    file_path = f"tests/fixtures/test_make_kapa_csv"
+    thread = threading.Thread(target=run_server, args=(file_path,))
+    thread.daemon = True
+    thread.start()
+    time.sleep(0.1)
+
+@pytest.fixture
+def server_make_kapa_csv_missing_udfs():
+    file_path = f"tests/fixtures/make_kapa_csv_missing_udfs"
+    thread = threading.Thread(target=run_server, args=(file_path,))
+    thread.daemon = True
+    thread.start()
+    time.sleep(0.1)
+
 ########### ########## ######### ############# #############
 
 @pytest.fixture
