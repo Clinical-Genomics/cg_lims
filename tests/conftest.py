@@ -6,11 +6,27 @@ from genologics_mock.lims import MockLims
 from genologics_mock.entities import (
     MockArtifact,
     MockProcess,
-    MockProcessType,
     MockSample,
 )
 from .helpers import Helpers
+import threading
+import time
 
+############# limsmock server fixtures #############
+
+from limsmock.server import run_server
+
+
+
+@pytest.fixture
+def server_test_get_artifacts():
+    file_path = f"tests/fixtures/test_get_artifacts"
+    thread = threading.Thread(target=run_server, args=(file_path,))
+    thread.daemon = True
+    thread.start()
+    time.sleep(0.1)
+
+########### ########## ######### ############# #############
 
 @pytest.fixture
 def config():
