@@ -1,83 +1,77 @@
 from cg_lims.exceptions import FailingQCError, MissingUDFsError, MissingSampleError
-
+from genologics.entities import Artifact, Sample
+from genologics.lims import Lims
 from cg_lims.EPPs.udf.calculate.twist_qc_amount import calculate_amount_and_set_qc
 
 import pytest
 
 
-def test_calculate_amount_and_set_qc(lims, helpers):
+def test_calculate_amount_and_set_qc(server_flat_tests):
     # GIVEN: A list of  artifacts as below
+    lims = Lims("http://127.0.0.1:8000", 'dummy', 'dummy')
 
-    artifacts_data = [
-        {
-            "samples": [{"udf": {"Source": "cfDNA"}}],
-            "udf": {"Volume (ul)": 35, "Concentration": 10},
-        },
-        {"samples": [{"udf": {"Source": "blood"}}], "udf": {"Volume (ul)": 3, "Concentration": 1},},
-        {
-            "samples": [{"udf": {"Source": "cfDNA"}}],
-            "udf": {"Volume (ul)": 10, "Concentration": 0.1},
-        },
-        {
-            "samples": [{"udf": {"Source": "blood"}}],
-            "udf": {"Volume (ul)": 50, "Concentration": 300},
-        },
-        {
-            "samples": [{"udf": {"Source": "blood"}}],
-            "udf": {"Volume (ul)": 300, "Concentration": 2},
-        },
-        {
-            "samples": [{"udf": {"Source": "blood"}}],
-            "udf": {"Volume (ul)": 10, "Concentration": 10},
-        },
-        {
-            "samples": [{"udf": {"Source": "blood"}}],
-            "udf": {"Volume (ul)": 50, "Concentration": 50},
-        },
-    ]
+    a1 = Artifact(lims, id='1')
+    a1.udf["Volume (ul)"] = 35
+    a1.udf["Concentration"] = 10
+    a1.put()
+    a2 = Artifact(lims, id='2')
+    a2.udf["Volume (ul)"] = 3
+    a2.udf["Concentration"] = 1
+    a2.put()
+    a3 = Artifact(lims, id='3')
+    a3.udf["Volume (ul)"] = 10
+    a3.udf["Concentration"] = 0.1
+    a3.put()
+    a4 = Artifact(lims, id='4')
+    a4.udf["Volume (ul)"] = 50
+    a4.udf["Concentration"] = 300
+    a4.put()
+    a5 = Artifact(lims, id='5')
+    a5.udf["Volume (ul)"] = 300
+    a5.udf["Concentration"] = 2
+    a5.put()
+    a6 = Artifact(lims, id='6')
+    a6.udf["Volume (ul)"] = 10
+    a6.udf["Concentration"] = 10
+    a6.put()
+    a7 = Artifact(lims, id='7')
+    a7.udf["Volume (ul)"] = 50
+    a7.udf["Concentration"] = 50
+    a7.put()
 
-    artifacts = helpers.ensure_lims_artifacts(lims=lims, artifacts_data=artifacts_data,)
+    sample = Sample(lims, id='S1')
+    sample.udf["Source"] = "blood"
+    sample.put()
+
+    artifacts=[a1, a2,a3,a4,a5,a6,a7]
 
     # WHEN running calculate_amount_and_set_qc
     # THEN FailingQCError is being raised and the artifacts should get the expected qc flags
     with pytest.raises(FailingQCError):
         calculate_amount_and_set_qc(artifacts=artifacts)
-    assert artifacts[0].qc_flag == "PASSED"
-    assert artifacts[1].qc_flag == "FAILED"
-    assert artifacts[2].qc_flag == "FAILED"
-    assert artifacts[3].qc_flag == "FAILED"
-    assert artifacts[4].qc_flag == "FAILED"
-    assert artifacts[5].qc_flag == "FAILED"
-    assert artifacts[6].qc_flag == "PASSED"
+    assert a1.qc_flag == "PASSED"
+    assert a2.qc_flag == "FAILED"
+    assert a3.qc_flag == "FAILED"
+    assert a4.qc_flag == "FAILED"
+    assert a5.qc_flag == "FAILED"
+    assert a6.qc_flag == "FAILED"
+    assert a7.qc_flag == "PASSED"
 
 
-def test_calculate_amount_and_set_qc_missing_udf(lims, helpers):
+def test_calculate_amount_and_set_qc_missing_udf(server_flat_tests):
     # GIVEN: A list of two artifacts with missing udfs
+    lims = Lims("http://127.0.0.1:8000", 'dummy', 'dummy')
 
-    artifacts_data = [
-        {"samples": [{"udf": {}}], "udf": {"Volume (ul)": 35, "Concentration": 10},},
-        {"samples": [{"udf": {"Source": "blood"}}], "udf": {"Concentration": 1},},
-    ]
+    a1 = Artifact(lims, id='1')
+    a1.udf["Volume (ul)"] = 35
+    a1.put()
+    a2 = Artifact(lims, id='2')
+    a2.udf["Concentration"] = 1
+    a2.put()
 
-    artifacts = helpers.ensure_lims_artifacts(lims=lims, artifacts_data=artifacts_data,)
+    artifacts = [a1, a2]
 
     # WHEN running calculate_amount_and_set_qc
     # THEN MissingUDFsError is being raised
     with pytest.raises(MissingUDFsError):
-        calculate_amount_and_set_qc(artifacts=artifacts)
-
-
-def test_calculate_amount_and_set_qc_missing_samples(lims, helpers):
-    # GIVEN: A list of two artifacts with missing udfs
-
-    artifacts_data = [
-        {"udf": {"Concentration": 10},},
-        {"udf": {"Volume (ul)": 3, "Concentration": 1},},
-    ]
-
-    artifacts = helpers.ensure_lims_artifacts(lims=lims, artifacts_data=artifacts_data,)
-
-    # WHEN running calculate_amount_and_set_qc
-    # THEN MissingSampleError is being raised
-    with pytest.raises(MissingSampleError):
         calculate_amount_and_set_qc(artifacts=artifacts)

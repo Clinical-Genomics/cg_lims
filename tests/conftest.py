@@ -17,6 +17,14 @@ import time
 from limsmock.server import run_server
 
 
+@pytest.fixture
+def server_flat_tests():
+    file_path = f"tests/fixtures/flat_tests"
+    thread = threading.Thread(target=run_server, args=(file_path,))
+    thread.daemon = True
+    thread.start()
+    time.sleep(0.1)
+
 
 @pytest.fixture
 def server_test_get_artifacts():
