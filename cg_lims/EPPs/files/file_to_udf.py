@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from cg_lims.exceptions import LimsError, MissingArtifactError
-from cg_lims.get.files import get_result_file
+from cg_lims.get.files import get_file_path
+from cg_lims.get.artifacts import get_artifact_by_name
 from cg_lims import options
 from pathlib import Path
 from genologics.entities import Artifact
