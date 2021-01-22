@@ -41,7 +41,7 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
     passed_arts = 0
     csv_reader = pd.read_csv(result_file, encoding='latin1')
     data = csv_reader.transpose().to_dict()
-    for i, sample in data.items():
+    for _, sample in data.items():
         well = sample.get(well_field)
         value = sample.get(value_field)
         if not value or math.isnan(value) or well not in well_dict:
