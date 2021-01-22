@@ -15,12 +15,14 @@ import time
 ############# limsmock server fixtures #############
 
 from limsmock.server import run_server
+PORT = 8000
+HOST = '127.0.0.1'
 
 
 @pytest.fixture
 def server_flat_tests():
     file_path = f"tests/fixtures/flat_tests"
-    thread = threading.Thread(target=run_server, args=(file_path,))
+    thread = threading.Thread(target=run_server, args=(file_path, HOST, PORT,))
     thread.daemon = True
     thread.start()
     time.sleep(0.1)
@@ -29,7 +31,7 @@ def server_flat_tests():
 @pytest.fixture
 def server_test_get_artifacts():
     file_path = f"tests/fixtures/test_get_artifacts"
-    thread = threading.Thread(target=run_server, args=(file_path,))
+    thread = threading.Thread(target=run_server, args=(file_path, HOST, PORT,))
     thread.daemon = True
     thread.start()
     time.sleep(0.1)
@@ -37,7 +39,7 @@ def server_test_get_artifacts():
 @pytest.fixture
 def server_make_kapa_csv():
     file_path = f"tests/fixtures/test_make_kapa_csv"
-    thread = threading.Thread(target=run_server, args=(file_path,))
+    thread = threading.Thread(target=run_server, args=(file_path, HOST, PORT,))
     thread.daemon = True
     thread.start()
     time.sleep(0.1)
@@ -45,7 +47,7 @@ def server_make_kapa_csv():
 @pytest.fixture
 def server_make_kapa_csv_missing_udfs():
     file_path = f"tests/fixtures/make_kapa_csv_missing_udfs"
-    thread = threading.Thread(target=run_server, args=(file_path,))
+    thread = threading.Thread(target=run_server, args=(file_path, HOST, PORT,))
     thread.daemon = True
     thread.start()
     time.sleep(0.1)
