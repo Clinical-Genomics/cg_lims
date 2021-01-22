@@ -4,8 +4,7 @@ from genologics.lims import Lims
 from operator import attrgetter
 from typing import List
 
-
-from cg_lims.exceptions import QueueArtifactsError, MissingArtifactError
+from cg_lims.exceptions import MissingArtifactError, FileError
 
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
@@ -24,6 +23,18 @@ def get_artifacts(process: Process, input: bool) -> List[Artifact]:
     else:
         artifacts = [a for a in process.all_outputs(unique=True) if a.type == "Analyte"]
     return artifacts
+
+
+def get_artifact_by_name(process: Process, name: str) -> Artifact:
+    """Searches for output artifacts with name <file_name>
+    Raises error if more than one artifact with same name!"""
+
+    artifacts = list(filter(lambda a: a.name in [name], process.all_outputs()))
+
+    if len(artifacts) > 1:
+        raise FileError(f'more than one output artifact named {name}')
+
+    return artifacts[0]
 
 
 def get_qc_output_artifacts(lims: Lims, process: Process) -> List[Artifact]:
@@ -45,7 +56,7 @@ def filter_artifacts(artifacts: List[Artifact], udf: str, value) -> List[Artifac
 
 
 def get_latest_artifact(
-    lims: Lims, sample_id: str, process_type: List[str]
+        lims: Lims, sample_id: str, process_type: List[str]
 ) -> Artifact:
     """Getting the most recently generated artifact by process_type and sample_id.
 
@@ -65,4 +76,3 @@ def get_latest_artifact(
     sorted(artifacts, key=attrgetter("parent_process.date_run"))
 
     return artifacts[-1]
-

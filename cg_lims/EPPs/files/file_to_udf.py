@@ -37,7 +37,7 @@ def make_well_dict(process, lims, input):
 def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, result_file: Path):
     """Reads the csv and sets the value for each sample"""
 
-    failed_arts = False
+    error_msg = ''
     passed_arts = 0
     csv_reader = pd.read_csv(result_file, encoding='latin1')
     data = csv_reader.transpose().to_dict()
@@ -45,7 +45,7 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
         well = sample.get(well_field)
         value = sample.get(value_field)
         if not value or math.isnan(value) or well not in well_dict:
-            failed_arts = True
+            error_msg = 'Some samples in the step were not represented in the file.'
             continue
         art = well_dict[well]
         art.udf[udf] = value
@@ -53,9 +53,11 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
         passed_arts += 1
 
     if passed_arts < len(well_dict.keys()):
-        raise MissingArtifactError(' Some samples in the step were not represented in the file.')
-    if failed_arts:
-        raise MissingArtifactError(' Some of the samples in the csv file are not represented as samples in the step.')
+        error_msg = f'{error_msg} Some samples in the step were not represented in the file.'
+
+    if error_msg:
+        raise MissingArtifactError(error_msg)
+
 
 
 @click.command()
@@ -74,10 +76,17 @@ def csv_well_to_udf(ctx, file, well_field, value_field, udf, input, local_file):
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
 
+    if local_file:
+        file_path = local_file
+    else:
+        file_art = get_artifact_by_name(process=process, name=file)
+        file_path = get_file_path(file_art)
+
     try:
+        if not Path(file_path).is_file():
+            raise MissingFileError(f'No such file: {file_path}')
         well_dict = make_well_dict(process, lims, input)
-        file = get_result_file(process=process, file_name=file, file_path=local_file)
-        set_udfs(well_field, value_field, udf, well_dict, file)
-        click.echo("The file was sucessfully generated.")
+        set_udfs(well_field, value_field, udf, well_dict, file_path)
+        click.echo("The udfs were sucessfully populated.")
     except LimsError as e:
         sys.exit(e.message)
