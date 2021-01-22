@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 
 from cg_lims.exceptions import LimsError, MissingArtifactError
@@ -53,12 +52,10 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
         art.put()
         passed_arts += 1
 
-    if passed_arts< len(well_dict.keys()):
+    if passed_arts < len(well_dict.keys()):
         raise MissingArtifactError(' Some samples in the step were not represented in the file.')
     if failed_arts:
         raise MissingArtifactError(' Some of the samples in the csv file are not represented as samples in the step.')
-
-
 
 
 @click.command()
@@ -68,11 +65,11 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
 @options.well_field()
 @options.value_field()
 @options.input()
-
 @click.pass_context
 def csv_well_to_udf(ctx, file, well_field, value_field, udf, input, local_file):
     """Script to copy data from file to udf based on well position
     """
+
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
