@@ -69,7 +69,7 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
 @options.value_field()
 @options.input()
 @click.pass_context
-def csv_well_to_udf(ctx, file, well_field, value_field, udf, input, local_file):
+def csv_well_to_udf(ctx, file: str, well_field: str, value_field: str, udf: str, input: bool, local_file: str):
     """Script to copy data from file to udf based on well position
     """
 
