@@ -2,3 +2,4 @@ genologics
 click
 pathlib
 PyYAML
+pandas

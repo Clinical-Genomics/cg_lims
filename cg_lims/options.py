@@ -18,6 +18,12 @@ def stage_id(help: str = "Stage id.") -> click.option:
 def udf(help: str = "UDF name",) -> click.option:
     return click.option("-u", "--udf", required=True, help=help)
 
+def well_field(help: str = "Well field in file",) -> click.option:
+    return click.option("-wf", "--well-field", required=True, help=help)
+
+def value_field(help: str = "Value field in file",) -> click.option:
+    return click.option("-vf", "--value-field", required=True, help=help)
+
 def sample_qc_udf(help: str = "UDF name",) -> click.option:
     return click.option("-qc", "--sample-qc-udf", default="" ,required=False, help=help)
 
@@ -31,7 +37,10 @@ def log(help: str = "Path to log file.",) -> click.option:
     return click.option("-l", "--log", required=True, help=help)
 
 def file_placeholder(help: str = "File.",) -> click.option:
-    return click.option("-f", "--file", required=True, help=help)
+    return click.option("-f", "--file", required=False, help=help)
+
+def local_file(help="local file path for debug purposes.") -> click.option:
+    return click.option("-lf", "--local_file", required=False, help=help)
 
 def input(
     help: str = "Use this flag if you run the script from a QC step.",

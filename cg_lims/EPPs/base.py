@@ -8,7 +8,6 @@ import pathlib
 
 from genologics.entities import Process
 
-
 # commands
 from cg_lims.EPPs.move import move
 from cg_lims.EPPs.files import files
