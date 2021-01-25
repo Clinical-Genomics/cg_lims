@@ -1,14 +1,12 @@
 from cg_lims.exceptions import FailingQCError, MissingUDFsError, MissingSampleError
 from genologics.entities import Artifact, Sample
-from genologics.lims import Lims
 from cg_lims.EPPs.udf.calculate.twist_qc_amount import calculate_amount_and_set_qc
 
 import pytest
 
 
-def test_calculate_amount_and_set_qc(server_flat_tests):
+def test_calculate_amount_and_set_qc(server_flat_tests, lims):
     # GIVEN: A list of  artifacts as below
-    lims = Lims("http://127.0.0.1:8000", 'dummy', 'dummy')
 
     a1 = Artifact(lims, id='1')
     a1.udf["Volume (ul)"] = 35
@@ -58,9 +56,8 @@ def test_calculate_amount_and_set_qc(server_flat_tests):
     assert a7.qc_flag == "PASSED"
 
 
-def test_calculate_amount_and_set_qc_missing_udf(server_flat_tests):
+def test_calculate_amount_and_set_qc_missing_udf(server_flat_tests, lims):
     # GIVEN: A list of two artifacts with missing udfs
-    lims = Lims("http://127.0.0.1:8000", 'dummy', 'dummy')
 
     a1 = Artifact(lims, id='1')
     a1.udf["Volume (ul)"] = 35

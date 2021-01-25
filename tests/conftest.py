@@ -1,23 +1,15 @@
 import pytest
 from pathlib import Path
-import json
 from click.testing import CliRunner
-from genologics_mock.lims import MockLims
-from genologics_mock.entities import (
-    MockArtifact,
-    MockProcess,
-    MockSample,
-)
-from .helpers import Helpers
+from genologics.lims import Lims
+
 import threading
 import time
 
-############# limsmock server fixtures #############
-
 from limsmock.server import run_server
+
 PORT = 8000
 HOST = '127.0.0.1'
-
 
 @pytest.fixture
 def server_flat_tests():
@@ -36,6 +28,7 @@ def server_test_get_artifacts():
     thread.start()
     time.sleep(0.1)
 
+
 @pytest.fixture
 def server_make_kapa_csv():
     file_path = f"tests/fixtures/test_make_kapa_csv"
@@ -43,6 +36,7 @@ def server_make_kapa_csv():
     thread.daemon = True
     thread.start()
     time.sleep(0.1)
+
 
 @pytest.fixture
 def server_make_kapa_csv_missing_udfs():
@@ -52,47 +46,18 @@ def server_make_kapa_csv_missing_udfs():
     thread.start()
     time.sleep(0.1)
 
-########### ########## ######### ############# #############
+@pytest.fixture
+def lims():
+    """Get genologics lims instance"""
+    lims = Lims(f"http://{HOST}:{PORT}", 'dummy', 'dummy')
+    return lims
+
 
 @pytest.fixture
 def config():
     """Get file path to config"""
 
     return "tests/fixtures/config.yaml"
-
-
-@pytest.fixture
-def kapa_csv_data():
-    """Get file path to make_kapa_csv_data.json"""
-
-    with open("tests/fixtures/make_kapa_csv_data.json") as file:
-        return json.load(file)
-
-
-@pytest.fixture
-def lims():
-    return MockLims()
-
-
-@pytest.fixture
-def sample():
-    return MockSample()
-
-
-@pytest.fixture
-def artifact():
-    return MockArtifact()
-
-
-@pytest.fixture
-def process():
-    return MockProcess()
-
-
-@pytest.fixture(name="helpers")
-def fixture_helpers():
-    """Return a class with small helper functions"""
-    return Helpers()
 
 
 @pytest.fixture
