@@ -107,10 +107,10 @@ def sample_2(lims) -> Sample:
 
 
 @pytest.fixture
-def config() -> str:
+def config() -> Path:
     """Get file path to config"""
 
-    return "tests/fixtures/config.yaml"
+    return Path("tests/fixtures/config.yaml")
 
 
 @pytest.fixture
