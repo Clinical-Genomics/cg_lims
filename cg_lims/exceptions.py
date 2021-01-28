@@ -11,6 +11,10 @@ class QueueArtifactsError(LimsError):
     pass
 
 
+class MissingFileError(LimsError):
+    pass
+
+
 class DuplicateSampleError(LimsError):
     """Raise when you excpect one sample, but find more.
     Eg: Two pools in a run contain the same sample."""

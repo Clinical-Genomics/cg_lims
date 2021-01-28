@@ -10,7 +10,7 @@ import pandas as pd
 from genologics.entities import Artifact
 
 from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingArtifactError
+from cg_lims.exceptions import LimsError, MissingArtifactError, MissingFileError
 from cg_lims.get.artifacts import get_artifact_by_name
 from cg_lims.get.files import get_file_path
 
