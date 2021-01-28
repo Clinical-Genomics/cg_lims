@@ -41,7 +41,7 @@ def calculate_amount_ng(ctx):
             raise MissingUDFsError(
                 f"Udf missing for {missing_udfs_count} sample(s): {','.join(samples_with_missing_udf)}."
             )
-        message = "Amounts have been calculated and qc flags set for all samples."
+        message = "Amounts have been calculated for all samples."
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
