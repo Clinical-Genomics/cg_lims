@@ -2,6 +2,7 @@ import pytest
 from pathlib import Path
 from click.testing import CliRunner
 from genologics.lims import Lims
+from genologics.entities import Artifact, Sample
 
 import threading
 import time
@@ -54,6 +55,25 @@ def lims():
 
 
 @pytest.fixture
+def artifact_1(lims):
+    """Basic artifact with id 1. Containing no udfs.
+    Related to sample_1."""
+
+    artifact = Artifact(lims, id='1')
+
+    return artifact
+
+
+@pytest.fixture
+def sample_1(lims):
+    """Basic sample with id S1. Containing no udfs.
+    Related to artifact_1."""
+
+    sample = Sample(lims, id='S1')
+
+    return sample
+
+@pytest.fixture
 def config():
     """Get file path to config"""
 
@@ -89,3 +109,5 @@ def fixture_cli_runner():
     """Create a CliRunner"""
     runner = CliRunner()
     return runner
+
+
