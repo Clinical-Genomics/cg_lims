@@ -37,8 +37,9 @@ def get_pools_and_samples_to_queue(
         cust = sample.udf.get("customer")
         if not cust:
             LOG.warning(f"Sample {sample.id} has no customer.")
-            continue
             break_send_to_next_step = True
+            continue
+
         elif cust == "cust001":
             ## this is a RML - get pools from sort step
             try:
