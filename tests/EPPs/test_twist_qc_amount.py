@@ -1,6 +1,8 @@
-from cg_lims.exceptions import FailingQCError, MissingUDFsError, MissingSampleError
+from cg_lims.exceptions import FailingQCError, MissingUDFsError
 from genologics.entities import Artifact, Sample
+from genologics.lims import Lims
 from cg_lims.EPPs.udf.calculate.twist_qc_amount import calculate_amount_and_set_qc
+from tests.conftest import server
 
 import pytest
 
@@ -8,11 +10,11 @@ import pytest
 @pytest.mark.parametrize("volume,concentration,source",
                          [(3, 1, "blood"), (10, 0.1, "cfDNA"), (50, 300, "blood"), (300, 2, "blood"),
                           (10, 10, "blood")])
-def test_calculate_amount_and_set_qc_failing(volume, concentration, source, server_flat_tests, artifact_1,
-                                             sample_1):
+def test_calculate_amount_and_set_qc_failing(volume: int, concentration: float, source: int, artifact_1: Artifact,
+                                             sample_1: Sample):
     # GIVEN: A sample with udf Source: <source>,
     # and a related Artifact with udfs: Concentration: <concentration> and  Volume (ul): <volume>
-
+    server('flat_tests')
     artifact_1.udf["Volume (ul)"] = volume
     artifact_1.udf["Concentration"] = concentration
     artifact_1.qc_flag == "UNKNOWN"
@@ -28,10 +30,10 @@ def test_calculate_amount_and_set_qc_failing(volume, concentration, source, serv
 
 
 @pytest.mark.parametrize("volume,concentration,source", [(35, 10, "cfDNA"), (50, 50, "blood")])
-def test_calculate_amount_and_set_qc_passing(volume, concentration, source, server_flat_tests, artifact_1, sample_1):
+def test_calculate_amount_and_set_qc_passing(volume: int, concentration: float, source: int, artifact_1: Artifact, sample_1: Sample):
     # GIVEN: A sample with udf Source: <source>,
     # and a related Artifact with udfs: Concentration: <concentration> and  Volume (ul): <volume>
-
+    server('flat_tests')
     artifact_1.udf["Volume (ul)"] = volume
     artifact_1.udf["Concentration"] = concentration
     artifact_1.qc_flag == "UNKNOWN"
@@ -48,9 +50,9 @@ def test_calculate_amount_and_set_qc_passing(volume, concentration, source, serv
 
 
 
-def test_calculate_amount_and_set_qc_missing_udf(server_flat_tests, lims, artifact_1, artifact_2):
+def test_calculate_amount_and_set_qc_missing_udf(lims: Lims, artifact_1: Artifact, artifact_2: Artifact):
     # GIVEN: A list of two artifacts with missing udfs Volume (ul) or Concentration
-
+    server('flat_tests')
     artifact_1.udf["Volume (ul)"] = 35
     artifact_1.put()
     artifact_2.udf["Concentration"] = 1

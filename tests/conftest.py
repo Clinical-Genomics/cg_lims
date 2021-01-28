@@ -13,50 +13,14 @@ PORT = 8000
 HOST = '127.0.0.1'
 
 
-@pytest.fixture
-def server_flat_tests():
-    """Fixture for simple tests that don't assume specific nested relations between entities.
-    Entities in this fixture should not have any udfs set from the beginning."""
+def server(file_name: str):
+    """Starting up a server based on file_path"""
 
-    file_path = f"tests/fixtures/flat_tests"
+    file_path = f"tests/fixtures/{file_name}"
     thread = threading.Thread(target=run_server, args=(file_path, HOST, PORT,))
     thread.daemon = True
     thread.start()
     time.sleep(0.1)
-
-
-@pytest.fixture
-def server_test_get_artifacts():
-    """Specific fixture for get_artifacts test. """
-
-    file_path = f"tests/fixtures/test_get_artifacts"
-    thread = threading.Thread(target=run_server, args=(file_path, HOST, PORT,))
-    thread.daemon = True
-    thread.start()
-    time.sleep(0.1)
-
-
-@pytest.fixture
-def server_make_kapa_csv():
-    """Specific fixture for make_kapa_csv test."""
-
-    file_path = f"tests/fixtures/test_make_kapa_csv"
-    thread = threading.Thread(target=run_server, args=(file_path, HOST, PORT,))
-    thread.daemon = True
-    thread.start()
-    time.sleep(0.1)
-
-
-@pytest.fixture
-def server_make_kapa_csv_missing_udfs():
-    """Specific fixture for make_kapa_csv test with missing udfs."""
-
-    file_path = f"tests/fixtures/make_kapa_csv_missing_udfs"
-    thread = threading.Thread(target=run_server, args=(file_path, HOST, PORT,))
-    thread.daemon = True
-    thread.start()
-    time.sleep(0.1)
-
 
 @pytest.fixture
 def lims() -> Lims:

@@ -1,5 +1,5 @@
 from cg_lims.exceptions import MissingUDFsError, MissingArtifactError
-
+from tests.conftest import server
 from pathlib import Path
 
 from cg_lims.EPPs.files.make_kapa_csv import get_file_data_and_write
@@ -8,14 +8,13 @@ import pytest
 
 
 
-def test_get_file_data_and_write_KAPA_library_preparation(
-    server_make_kapa_csv, kapa_library_preparation_file, lims):
+def test_get_file_data_and_write_KAPA_library_preparation(kapa_library_preparation_file, lims):
     # GIVEN: A file name. and a lims with two samples that has been run
     # through a process of type <amount_step>. There  they got udf: Amount needed (ng) set.
     # The two samples are now in another step where they have location and
     # reagent labels set.
     # (See entety_json_data for details)
-
+    server('test_make_kapa_csv')
     file_name = "some_file_name"
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST v2"
     file = Path(file_name)
@@ -31,14 +30,13 @@ def test_get_file_data_and_write_KAPA_library_preparation(
     file.unlink()
 
 
-def test_get_file_data_and_write_Enzymatic_fragmentation(
-    server_make_kapa_csv, enzymatic_fragmentation_file, lims):
+def test_get_file_data_and_write_Enzymatic_fragmentation(enzymatic_fragmentation_file, lims):
     # GIVEN: A file name. and a lims with two samples that has been run
     # through a process of type <amount_step>. There  they got udf: Amount needed (ng) set.
     # The two samples are now in another step where they have location but no
     # reagent labels set.
     # (See entety_json_data for details)
-
+    server('test_make_kapa_csv')
     file_name = "some_file_id"
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST v2"
     file = Path(file_name)
@@ -56,14 +54,13 @@ def test_get_file_data_and_write_Enzymatic_fragmentation(
     file.unlink()
 
 
-def test_get_file_data_and_write_missing_udf(
-        server_make_kapa_csv_missing_udfs, kapa_library_preparation_file_missing_udf, lims):
+def test_get_file_data_and_write_missing_udf(kapa_library_preparation_file_missing_udf, lims):
     # GIVEN: A file name. and a lims with two samples that has been run
     # through a process of type <amount_step>. There one sample did not get the udf: Amount needed (ng) set.
     # The two samples are now in another step where they have location and
     # reagent labels set.
     # (See entety_json_data for details)
-
+    server('make_kapa_csv_missing_udfs')
     file_name = "some_file_name"
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST v2"
     file = Path(file_name)
@@ -78,15 +75,14 @@ def test_get_file_data_and_write_missing_udf(
     file.unlink()
 
 
-def test_get_file_data_and_write_missing_artifact(
-    server_make_kapa_csv_missing_udfs, kapa_library_preparation_file_missing_udf, lims
+def test_get_file_data_and_write_missing_artifact(kapa_library_preparation_file_missing_udf, lims
 ):
     # GIVEN: A file name. and a lims with two samples that has NOT been run
     # through a process of type <amount_step>.
     # The two samples are now in another step where they have location and
     # reagent labels set.
     # (See entety_json_data for details)
-
+    server('make_kapa_csv_missing_udfs')
     file_name = "some_file_name"
     amount_step = "Aliquot samples for enzymatic fragmentation TWIST v2"
     file = Path(file_name)
