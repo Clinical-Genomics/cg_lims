@@ -128,7 +128,7 @@ def resolve_file_extension(extension: str) -> str:
 @options.file_placeholder(help="Hamilton file.")
 @options.file_extension()
 @click.pass_context
-def make_kapa_csv(ctx, file, extension, process_type):
+def make_kapa_csv(ctx: click.Context, file: str, extension: str, process_type: str):
     """Script to make a csv file for hamilton. See AM doc #2125"""
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
@@ -142,6 +142,6 @@ def make_kapa_csv(ctx, file, extension, process_type):
 
     try:
         get_file_data_and_write(lims, process_type, artifacts, file_name)
-        click.echo("The file was sucessfully generated.")
+        click.echo("The file was successfully generated.")
     except LimsError as e:
         sys.exit(e.message)
