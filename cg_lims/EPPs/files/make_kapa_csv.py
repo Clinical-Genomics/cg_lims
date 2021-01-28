@@ -38,12 +38,11 @@ def get_pcr_plate(amount):
     """
 
     if amount < 50:
-        plate = "Plate3"
+        return "Plate3"
     elif amount < 200:
-        plate = "Plate2"
+        return "Plate2"
     else:
-        plate = "Plate1"
-    return plate
+        return "Plate1"
 
 
 def get_index_well(art):
@@ -61,10 +60,9 @@ def get_index_well(art):
         # Picking out column and removing zeros by int():
         index_well_col = int(index_well_with_zero[1:])
         index_well_row = index_well_with_zero[0]
-        index_well = f"{index_well_row}{index_well_col}"
+        return f"{index_well_row}{index_well_col}"
     else:
-        index_well = "-"
-    return index_well
+        return "-"
 
 
 def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file: str) -> dict:

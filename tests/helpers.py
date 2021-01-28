@@ -81,15 +81,10 @@ class Helpers:
     def create_artifact(samples: list = [], type: str = "") -> MockArtifact:
         """Create a mock artifact"""
 
-        artifact = MockArtifact(samples=samples, type=type)
-        return artifact
+        return MockArtifact(samples=samples, type=type)
 
     @staticmethod
     def create_many_artifacts(nr_of_artifacts: int, type: str = "") -> List[MockArtifact]:
         """Create a list of mock aritfacts"""
 
-        artifacts = []
-        for i in range(nr_of_artifacts):
-            artifacts.append(MockArtifact(id=i, type=type))
-
-        return artifacts
+        return [MockArtifact(id=i, type=type) for i in range(nr_of_artifacts)]
