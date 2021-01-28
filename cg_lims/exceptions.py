@@ -42,3 +42,11 @@ class FailingQCError(LimsError):
 class MissingCgFieldError(LimsError):
     """Raise when field missing"""
     pass
+
+class FileError(LimsError):
+    """Raise when error with file"""
+    pass
+
+class MissingValueError(LimsError):
+    """Raise when value """
+    pass
