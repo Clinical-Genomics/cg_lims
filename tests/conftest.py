@@ -26,8 +26,7 @@ def server(file_name: str):
 def lims() -> Lims:
     """Get genologics lims instance"""
 
-    lims = Lims(f"http://{HOST}:{PORT}", 'dummy', 'dummy')
-    return lims
+    return Lims(f"http://{HOST}:{PORT}", 'dummy', 'dummy')
 
 
 @pytest.fixture
