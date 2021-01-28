@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-from cg_lims.exceptions import LimsError, MissingUDFsError
-
-from cg_lims.get.artifacts import get_artifacts
-from cg_lims import options
-from genologics.lims import Lims
-from genologics.entities import Process
-
 import logging
-import click
 import sys
+
+import click
+from genologics.entities import Process
+from genologics.lims import Lims
+
+from cg_lims import options
+from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.get.artifacts import get_artifacts
 
 
 def udf_copy_artifact_to_sample(
@@ -16,9 +16,9 @@ def udf_copy_artifact_to_sample(
 ) -> None:
     """Function to copy artifact udf and qc to sample level.
 
-    For each artifact in the artifacts list, copying the art_udf and qc_flagg 
-    to all samples related to the artifact. If a art is a pool, art.samples 
-    is a list with many samples. Otherwiese a list with only one sample. 
+    For each artifact in the artifacts list, copying the art_udf and qc_flagg
+    to all samples related to the artifact. If a art is a pool, art.samples
+    is a list with many samples. Otherwiese a list with only one sample.
 
     Arguments:
         artifacts: list of artifacts to copy from
@@ -67,4 +67,3 @@ def artifact_to_sample(ctx, sample_udf, artifact_udf, input, sample_qc_udf):
         click.echo("Udfs have been set on all samples.")
     except LimsError as e:
         sys.exit(e.message)
-

@@ -1,14 +1,11 @@
-import pytest
-from pathlib import Path
 import json
+from pathlib import Path
+
+import pytest
 from click.testing import CliRunner
+from genologics_mock.entities import MockArtifact, MockProcess, MockProcessType, MockSample
 from genologics_mock.lims import MockLims
-from genologics_mock.entities import (
-    MockArtifact,
-    MockProcess,
-    MockProcessType,
-    MockSample,
-)
+
 from .helpers import Helpers
 
 

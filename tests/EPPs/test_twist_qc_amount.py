@@ -1,8 +1,7 @@
-from cg_lims.exceptions import FailingQCError, MissingUDFsError, MissingSampleError
+import pytest
 
 from cg_lims.EPPs.udf.calculate.twist_qc_amount import calculate_amount_and_set_qc
-
-import pytest
+from cg_lims.exceptions import FailingQCError, MissingSampleError, MissingUDFsError
 
 
 def test_calculate_amount_and_set_qc(lims, helpers):
@@ -13,7 +12,10 @@ def test_calculate_amount_and_set_qc(lims, helpers):
             "samples": [{"udf": {"Source": "cfDNA"}}],
             "udf": {"Volume (ul)": 35, "Concentration": 10},
         },
-        {"samples": [{"udf": {"Source": "blood"}}], "udf": {"Volume (ul)": 3, "Concentration": 1},},
+        {
+            "samples": [{"udf": {"Source": "blood"}}],
+            "udf": {"Volume (ul)": 3, "Concentration": 1},
+        },
         {
             "samples": [{"udf": {"Source": "cfDNA"}}],
             "udf": {"Volume (ul)": 10, "Concentration": 0.1},
@@ -36,7 +38,10 @@ def test_calculate_amount_and_set_qc(lims, helpers):
         },
     ]
 
-    artifacts = helpers.ensure_lims_artifacts(lims=lims, artifacts_data=artifacts_data,)
+    artifacts = helpers.ensure_lims_artifacts(
+        lims=lims,
+        artifacts_data=artifacts_data,
+    )
 
     # WHEN running calculate_amount_and_set_qc
     # THEN FailingQCError is being raised and the artifacts should get the expected qc flags
@@ -55,11 +60,20 @@ def test_calculate_amount_and_set_qc_missing_udf(lims, helpers):
     # GIVEN: A list of two artifacts with missing udfs
 
     artifacts_data = [
-        {"samples": [{"udf": {}}], "udf": {"Volume (ul)": 35, "Concentration": 10},},
-        {"samples": [{"udf": {"Source": "blood"}}], "udf": {"Concentration": 1},},
+        {
+            "samples": [{"udf": {}}],
+            "udf": {"Volume (ul)": 35, "Concentration": 10},
+        },
+        {
+            "samples": [{"udf": {"Source": "blood"}}],
+            "udf": {"Concentration": 1},
+        },
     ]
 
-    artifacts = helpers.ensure_lims_artifacts(lims=lims, artifacts_data=artifacts_data,)
+    artifacts = helpers.ensure_lims_artifacts(
+        lims=lims,
+        artifacts_data=artifacts_data,
+    )
 
     # WHEN running calculate_amount_and_set_qc
     # THEN MissingUDFsError is being raised
@@ -71,11 +85,18 @@ def test_calculate_amount_and_set_qc_missing_samples(lims, helpers):
     # GIVEN: A list of two artifacts with missing udfs
 
     artifacts_data = [
-        {"udf": {"Concentration": 10},},
-        {"udf": {"Volume (ul)": 3, "Concentration": 1},},
+        {
+            "udf": {"Concentration": 10},
+        },
+        {
+            "udf": {"Volume (ul)": 3, "Concentration": 1},
+        },
     ]
 
-    artifacts = helpers.ensure_lims_artifacts(lims=lims, artifacts_data=artifacts_data,)
+    artifacts = helpers.ensure_lims_artifacts(
+        lims=lims,
+        artifacts_data=artifacts_data,
+    )
 
     # WHEN running calculate_amount_and_set_qc
     # THEN MissingSampleError is being raised

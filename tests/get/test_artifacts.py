@@ -1,7 +1,7 @@
-from cg_lims.get.artifacts import get_latest_artifact, get_artifacts
-from cg_lims.exceptions import MissingArtifactError
-
 import pytest
+
+from cg_lims.exceptions import MissingArtifactError
+from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
 
 
 def test_get_latest_artifact(lims, sample, helpers):
@@ -85,4 +85,3 @@ def test_get_artifacts_with_input_artifacts(process, helpers):
 
     # THEN assert input_artifacts are five
     assert len(input_artifacts) == 5
-

@@ -1,18 +1,17 @@
 #!/usr/bin/env python
-from cg_lims.exceptions import LimsError, MissingUDFsError
-
-from cg_lims.get.artifacts import get_artifacts
-from cg_lims import options
-
 import logging
-import click
 import sys
+
+import click
+
+from cg_lims import options
+from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
 
 
-def udf_copy_sample_to_artifact(
-        artifacts: list, sample_udf: str, art_udf: str) -> None:
+def udf_copy_sample_to_artifact(artifacts: list, sample_udf: str, art_udf: str) -> None:
     """Function to copy sample udf to artifact.
 
     For each artifact in the artifacts list, picking the first sample in the art.samples list.
@@ -39,7 +38,9 @@ def udf_copy_sample_to_artifact(
             continue
         art.udf[art_udf] = udf
         art.put()
-        LOG.info(f"copied udf {sample_udf} from sample {sample.id} to artifact: {art.id}, udf: {art_udf}")
+        LOG.info(
+            f"copied udf {sample_udf} from sample {sample.id} to artifact: {art.id}, udf: {art_udf}"
+        )
         passed_udfs += 1
 
     if failed_udfs:

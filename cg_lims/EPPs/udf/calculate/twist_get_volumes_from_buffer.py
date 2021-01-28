@@ -29,8 +29,8 @@ def get_volumes_from_buffer(ctx, process_type: List[str]) -> None:
     for artifact in artifacts:
         try:
             buffer_artifact = get_latest_artifact(
-            lims=lims, sample_id=artifact.samples[0].id, process_type=list(process_type)
-        )
+                lims=lims, sample_id=artifact.samples[0].id, process_type=list(process_type)
+            )
         except:
             continue
         if buffer_artifact.udf.get("Volume Elution (ul)"):

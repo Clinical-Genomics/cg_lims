@@ -1,13 +1,21 @@
-import string
 import csv
+import string
 
 
-def make_plate_file(file: str, rows: dict, headers: list, col_range: int=13, row_range: int=8, newline='\n', delimiter=','):
+def make_plate_file(
+    file: str,
+    rows: dict,
+    headers: list,
+    col_range: int = 13,
+    row_range: int = 8,
+    newline="\n",
+    delimiter=",",
+):
     """Creating a plate file.
-    
+
     Arguments:
         file: file path
-        headers: Header list. 
+        headers: Header list.
         rows: dict of rows
             keys: plate position: eg A1, B1, E4, H2...
             values: list of file rows. Same length as the headers list."""
