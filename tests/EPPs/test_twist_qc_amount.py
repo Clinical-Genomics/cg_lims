@@ -36,29 +36,27 @@ def test_calculate_amount_and_set_qc_passing(volume, concentration, source, serv
     artifact_1.udf["Concentration"] = concentration
     artifact_1.qc_flag == "UNKNOWN"
     artifact_1.put()
-    print(source)
+
     sample_1.udf["Source"] = source
     sample_1.put()
 
     # WHEN running calculate_amount_and_set_qc
     calculate_amount_and_set_qc(artifacts=[artifact_1])
-    
+
     # THEN the artifacts should be PASSED
     assert artifact_1.qc_flag == "PASSED"
 
 
 
-def test_calculate_amount_and_set_qc_missing_udf(server_flat_tests, lims):
-    # GIVEN: A list of two artifacts with missing udfs
+def test_calculate_amount_and_set_qc_missing_udf(server_flat_tests, lims, artifact_1, artifact_2):
+    # GIVEN: A list of two artifacts with missing udfs Volume (ul) or Concentration
 
-    a1 = Artifact(lims, id='1')
-    a1.udf["Volume (ul)"] = 35
-    a1.put()
-    a2 = Artifact(lims, id='2')
-    a2.udf["Concentration"] = 1
-    a2.put()
+    artifact_1.udf["Volume (ul)"] = 35
+    artifact_1.put()
+    artifact_2.udf["Concentration"] = 1
+    artifact_2.put()
 
-    artifacts = [a1, a2]
+    artifacts = [artifact_1, artifact_2]
 
     # WHEN running calculate_amount_and_set_qc
     # THEN MissingUDFsError is being raised

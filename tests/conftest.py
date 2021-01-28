@@ -73,6 +73,26 @@ def sample_1(lims):
 
     return sample
 
+
+@pytest.fixture
+def artifact_2(lims):
+    """Basic artifact with id 2. Containing no udfs.
+    Related to sample_2."""
+
+    artifact = Artifact(lims, id='2')
+
+    return artifact
+
+
+@pytest.fixture
+def sample_2(lims):
+    """Basic sample with id S2. Containing no udfs.
+    Related to artifact_2."""
+
+    sample = Sample(lims, id='S2')
+
+    return sample
+
 @pytest.fixture
 def config():
     """Get file path to config"""
