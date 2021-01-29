@@ -12,9 +12,9 @@ LOG = logging.getLogger(__name__)
 
 
 @click.command()
-@options.concentration_keyword_option()
-@options.amount_keyword_option()
-@options.volume_keyword_option()
+@options.concentration_udf_option()
+@options.amount_udf_option()
+@options.volume_udf_option()
 @click.pass_context
 def calculate_amount_ng(
     ctx: click.Context, amount_udf: str, volume_udf: str, concentration_udf: str
@@ -32,14 +32,14 @@ def calculate_amount_ng(
         samples_with_missing_udf = []
         for artifact in artifacts:
             sample = get_one_sample_from_artifact(artifact)
-            vol = artifact.udf.get(volume_keyword)
-            conc = artifact.udf.get(concentration_keyword)
+            vol = artifact.udf.get(volume_udf)
+            conc = artifact.udf.get(concentration_udf)
             if None in [conc, vol]:
                 missing_udfs_count += 1
                 samples_with_missing_udf.append(sample.id)
                 continue
 
-            artifact.udf[amount_keyword] = conc * vol
+            artifact.udf[amount_udf] = conc * vol
             artifact.put()
         if missing_udfs_count:
             raise MissingUDFsError(
