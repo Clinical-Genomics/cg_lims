@@ -17,7 +17,7 @@ LOG = logging.getLogger(__name__)
 @options.volume_keyword_option()
 @click.pass_context
 def calculate_amount_ng(
-    ctx: click.Context, amount_keyword: str, volume_keyword: str, concentration_keyword: str
+    ctx: click.Context, amount_udf: str, volume_udf: str, concentration_udf: str
 ):
     """Calculates and auto-fills the quantities of DNA in sample from concentration and volume measurements"""
 

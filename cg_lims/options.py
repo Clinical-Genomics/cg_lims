@@ -98,14 +98,14 @@ def process_type(help: str = "Process type name.") -> click.option:
 
 
 def amount_keyword_option(help: str = "String of UDF used to get amount value") -> click.option:
-    return click.option("--amount-keyword", required=True, help=help)
+    return click.option("--amount-udf", required=True, help=help)
 
 
 def volume_keyword_option(help: str = "String of UDF used to get volume value") -> click.option:
-    return click.option("--volume-keyword", required=True, help=help)
+    return click.option("--volume-udf", required=True, help=help)
 
 
 def concentration_keyword_option(
     help: str = "String of UDF used to get concentration value",
 ) -> click.option:
-    return click.option("--concentration-keyword", required=True, help=help)
+    return click.option("--concentration-udf", required=True, help=help)
