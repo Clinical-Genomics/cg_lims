@@ -10,11 +10,8 @@ from cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer import get_volumes
 # commands
 from cg_lims.EPPs.udf.calculate.twist_pool import twist_pool
 from cg_lims.EPPs.udf.calculate.twist_qc_amount import twist_qc_amount
-<<<<<<< HEAD
-=======
 from cg_lims.EPPs.udf.calculate.get_missing_reads import get_missing_reads
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng import calculate_amount_ng
->>>>>>> master
 
 
 @click.group(invoke_without_command=True)
