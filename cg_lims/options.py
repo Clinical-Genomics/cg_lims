@@ -59,12 +59,6 @@ def sample_udf(
     return click.option("-sudf", "--sample-udf", required=True, help=help)
 
 
-def log(
-    help: str = "Path to log file.",
-) -> click.option:
-    return click.option("-l", "--log", required=True, help=help)
-
-
 def file_placeholder(
     help: str = "File.",
 ) -> click.option:
@@ -99,3 +93,17 @@ def process_type(help: str = "Process type name.") -> click.option:
 
 def file_extension(help: str = "Define file extension") -> click.option:
     return click.option("-e", "--extension", required=False, default="", help=help)
+
+
+def amount_udf_option(help: str = "String of UDF used to get amount value") -> click.option:
+    return click.option("--amount-udf", required=True, help=help)
+
+
+def volume_udf_option(help: str = "String of UDF used to get volume value") -> click.option:
+    return click.option("--volume-udf", required=True, help=help)
+
+
+def concentration_udf_option(
+    help: str = "String of UDF used to get concentration value",
+) -> click.option:
+    return click.option("--concentration-udf", required=True, help=help)
