@@ -1,11 +1,10 @@
-from cg_lims.exceptions import MissingUDFsError, MissingArtifactError
-
-from pathlib import Path
 import json
-
-from cg_lims.EPPs.files.make_kapa_csv import get_file_data_and_write
+from pathlib import Path
 
 import pytest
+
+from cg_lims.EPPs.files.make_kapa_csv import get_file_data_and_write
+from cg_lims.exceptions import MissingArtifactError, MissingUDFsError
 
 
 def test_get_file_data_and_write_KAPA_library_preparation(

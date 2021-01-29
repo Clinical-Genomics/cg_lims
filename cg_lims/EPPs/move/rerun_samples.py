@@ -1,23 +1,17 @@
 #!/usr/bin/env python
 
-from cg_lims.exceptions import (
-    LimsError,
-    DuplicateSampleError,
-    MissingArtifactError,
-)
-
-from cg_lims.get.artifacts import get_latest_artifact, get_artifacts, filter_artifacts
-from cg_lims.put.queue import queue_artifacts
-
-from cg_lims import options
-
-from genologics.lims import Lims
-from genologics.entities import Process, Stage, Artifact
-
-from typing import List
 import logging
 import sys
+from typing import List
+
 import click
+from genologics.entities import Artifact, Process, Stage
+from genologics.lims import Lims
+
+from cg_lims import options
+from cg_lims.exceptions import DuplicateSampleError, LimsError, MissingArtifactError
+from cg_lims.get.artifacts import filter_artifacts, get_artifacts, get_latest_artifact
+from cg_lims.put.queue import queue_artifacts
 
 LOG = logging.getLogger(__name__)
 
@@ -37,9 +31,7 @@ def get_artifacts_to_requeue(
     for art in rerun_arts:
         representative_sample_id = art.samples[0].id  ## hantera med if samples..
         try:
-            requeue_art = get_latest_artifact(
-                lims, representative_sample_id, process_type
-            )
+            requeue_art = get_latest_artifact(lims, representative_sample_id, process_type)
         except MissingArtifactError as e:
             LOG.warning(e.message)
             break_rerun = True
@@ -75,21 +67,16 @@ def check_same_sample_in_many_rerun_pools(rerun_arts: List[Artifact]) -> None:
 @options.udf(help="UDF that will tell wich artifacts to move.")
 @click.pass_context
 def rerun_samples(ctx, workflow_id, stage_id, udf, process_type):
-    """Script to requeue samples for sequencing.
-    
-    """
+    """Script to requeue samples for sequencing."""
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
     artifacts = get_artifacts(process, False)
     rerun_arts = filter_artifacts(artifacts, udf, True)
     if rerun_arts:
         try:
-            artifacts_to_requeue = get_artifacts_to_requeue(
-                lims, rerun_arts, process_type
-            )
+            artifacts_to_requeue = get_artifacts_to_requeue(lims, rerun_arts, process_type)
             check_same_sample_in_many_rerun_pools(artifacts_to_requeue)
             queue_artifacts(lims, artifacts_to_requeue, workflow_id, stage_id)
             click.echo("Artifacts have been queued.")
         except LimsError as e:
             sys.exit(e.message)
-

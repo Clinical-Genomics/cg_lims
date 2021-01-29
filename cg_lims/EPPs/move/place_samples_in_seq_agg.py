@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 
+import logging
+import sys
+from typing import List
+
+import click
+from genologics.entities import Artifact, Process, Sample
+from genologics.lims import Lims
+
+from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingArtifactError
 from cg_lims.get.artifacts import get_latest_artifact, get_sample_artifact
 from cg_lims.get.samples import get_process_samples
 from cg_lims.put.queue import queue_artifacts
-
-from cg_lims import options
-from genologics.lims import Lims
-from genologics.entities import Process, Artifact, Sample
-
-from typing import List
-import logging
-import sys
-import click
 
 LOG = logging.getLogger(__name__)
 
@@ -37,8 +37,9 @@ def get_pools_and_samples_to_queue(
         cust = sample.udf.get("customer")
         if not cust:
             LOG.warning(f"Sample {sample.id} has no customer.")
-            continue
             break_send_to_next_step = True
+            continue
+
         elif cust == "cust001":
             ## this is a RML - get pools from sort step
             try:
@@ -52,9 +53,7 @@ def get_pools_and_samples_to_queue(
             artifact = get_sample_artifact(lims, sample)
         send_to_next_step.append(artifact)
     if break_send_to_next_step:
-        raise MissingArtifactError(
-            "Issues getting pools and or samples to queue. See log"
-        )
+        raise MissingArtifactError("Issues getting pools and or samples to queue. See log")
     return list(set(send_to_next_step))
 
 
@@ -80,4 +79,3 @@ def place_samples_in_seq_agg(ctx, workflow_id, stage_id, process_type):
         click.echo("Artifacts have been queued.")
     except LimsError as e:
         sys.exit(e.message)
-

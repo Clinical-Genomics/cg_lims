@@ -1,15 +1,9 @@
-from typing import List
 from copy import deepcopy
 from pathlib import Path
+from typing import List
 
-
+from genologics_mock.entities import MockArtifact, MockProcess, MockProcessType, MockSample
 from genologics_mock.lims import MockLims
-from genologics_mock.entities import (
-    MockArtifact,
-    MockProcess,
-    MockProcessType,
-    MockSample,
-)
 
 
 class Helpers:
@@ -22,9 +16,9 @@ class Helpers:
 
     @staticmethod
     def ensure_lims_process(lims: MockLims, data: List[dict]) -> MockProcess:
-        """Creating a MockProcess defined by <data>. 
+        """Creating a MockProcess defined by <data>.
         Appending the new MockProcess to the given MockLims instance.
-        If output artifacts are provided in data, 
+        If output artifacts are provided in data,
             Creating MockArtifacts defined by output
             setting parent_process of the artifacts to the new MockProcess.
         Returning the new MockProcess."""
@@ -49,7 +43,7 @@ class Helpers:
 
     @staticmethod
     def ensure_lims_artifacts(lims: MockLims, artifacts_data: List[dict]) -> List[MockArtifact]:
-        """Creating MockArtifacts defined by <artifacts_data>. 
+        """Creating MockArtifacts defined by <artifacts_data>.
         Appending the new MockArtifacts to the given MockLims instance.
         Returning the new MockArtifacts"""
 
@@ -87,15 +81,10 @@ class Helpers:
     def create_artifact(samples: list = [], type: str = "") -> MockArtifact:
         """Create a mock artifact"""
 
-        artifact = MockArtifact(samples=samples, type=type)
-        return artifact
+        return MockArtifact(samples=samples, type=type)
 
     @staticmethod
     def create_many_artifacts(nr_of_artifacts: int, type: str = "") -> List[MockArtifact]:
         """Create a list of mock aritfacts"""
 
-        artifacts = []
-        for i in range(nr_of_artifacts):
-            artifacts.append(MockArtifact(id=i, type=type))
-
-        return artifacts
+        return [MockArtifact(id=i, type=type) for i in range(nr_of_artifacts)]

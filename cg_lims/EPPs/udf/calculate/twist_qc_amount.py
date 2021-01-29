@@ -1,11 +1,11 @@
-from genologics.entities import Artifact
-
 import logging
 import sys
-import click
 from typing import List
 
-from cg_lims.exceptions import LimsError, MissingUDFsError, FailingQCError
+import click
+from genologics.entities import Artifact
+
+from cg_lims.exceptions import FailingQCError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_qc_output_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
 

@@ -1,10 +1,9 @@
-
-from genologics.entities import Artifact
-
 import logging
 import sys
-import click
 from typing import List
+
+import click
+from genologics.entities import Artifact
 
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
@@ -18,19 +17,19 @@ MAXIMUM_SAMPLE_AMOUNT = 250
 
 
 def set_amount_needed(artifacts: List[Artifact]):
-    """The maximum amount taken into the prep is MAXIMUM_SAMPLE_AMOUNT. 
+    """The maximum amount taken into the prep is MAXIMUM_SAMPLE_AMOUNT.
     Any amount below this can be used in the prep if the total amount is limited."""
 
     missing_udfs = 0
     for art in artifacts:
-        amount = art.udf.get('Amount (ng)')
+        amount = art.udf.get("Amount (ng)")
         if not amount:
             missing_udfs += 1
             continue
         if amount >= MAXIMUM_SAMPLE_AMOUNT:
-            art.udf['Amount needed (ng)'] = MAXIMUM_SAMPLE_AMOUNT
+            art.udf["Amount needed (ng)"] = MAXIMUM_SAMPLE_AMOUNT
         else:
-            art.udf['Amount needed (ng)'] = amount
+            art.udf["Amount needed (ng)"] = amount
         art.put()
 
     if missing_udfs:
@@ -49,7 +48,7 @@ def twist_aliquot_amount(ctx):
     try:
         artifacts = get_artifacts(process=process, input=False)
         set_amount_needed(artifacts)
-        message =  "Amount needed has been calculated for all samples."
+        message = "Amount needed has been calculated for all samples."
         LOG.info(message)
         click.echo(message)
     except LimsError as e:

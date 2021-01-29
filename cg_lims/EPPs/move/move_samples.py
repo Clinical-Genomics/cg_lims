@@ -1,17 +1,19 @@
 #!/usr/bin/env python
 
-from cg_lims.exceptions import LimsError
-from cg_lims.get.artifacts import get_artifacts, filter_artifacts
-from cg_lims.put.queue import queue_artifacts
-from cg_lims import options
-from genologics.lims import Lims
-from genologics.entities import Process
-
 import logging
 import sys
+
 import click
+from genologics.entities import Process
+from genologics.lims import Lims
+
+from cg_lims import options
+from cg_lims.exceptions import LimsError
+from cg_lims.get.artifacts import filter_artifacts, get_artifacts
+from cg_lims.put.queue import queue_artifacts
 
 LOG = logging.getLogger(__name__)
+
 
 @click.command()
 @options.workflow_id(help="Destination workflow id.")
@@ -21,9 +23,9 @@ LOG = logging.getLogger(__name__)
     help="Use this flag if you want to queue the input artifacts of the current process. Default is to queue the output artifacts (analytes) of the process."
 )
 @click.pass_context
-def move_samples(ctx, workflow_id: str, stage_id: str, udf: str, input:bool):
+def move_samples(ctx, workflow_id: str, stage_id: str, udf: str, input: bool):
     """Script to move aritfats to another stage.
-    
+
     Queueing artifacts with <udf==True>, to stage with <stage-id>
     in workflow with <workflow-id>. Raising error if quiueing fails."""
 
