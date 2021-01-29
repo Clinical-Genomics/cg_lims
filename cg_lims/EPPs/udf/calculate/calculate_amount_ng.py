@@ -6,13 +6,19 @@ import click
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_qc_output_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
+from cg_lims import options
 
 LOG = logging.getLogger(__name__)
 
 
 @click.command()
+@options.concentration_keyword_option()
+@options.amount_keyword_option()
+@options.volume_keyword_option()
 @click.pass_context
-def calculate_amount_ng(ctx):
+def calculate_amount_ng(
+    ctx: click.Context, amount_keyword: str, volume_keyword: str, concentration_keyword: str
+):
     """Calculates amount of samples for qc validation."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -26,14 +32,14 @@ def calculate_amount_ng(ctx):
         samples_with_missing_udf = []
         for artifact in artifacts:
             sample = get_one_sample_from_artifact(artifact)
-            vol = artifact.udf.get("Volume (ul)")
-            conc = artifact.udf.get("Concentration")
+            vol = artifact.udf.get(volume_keyword)
+            conc = artifact.udf.get(concentration_keyword)
             if None in [conc, vol]:
                 missing_udfs_count += 1
                 samples_with_missing_udf.append(sample.id)
                 continue
 
-            artifact.udf["Amount (ng)"] = conc * vol
+            artifact.udf[amount_keyword] = conc * vol
             artifact.put()
         if missing_udfs_count:
             raise MissingUDFsError(
