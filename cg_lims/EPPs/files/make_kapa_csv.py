@@ -114,6 +114,7 @@ def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file:
 
 
 def resolve_file_extension(extension: str) -> str:
+    """Appends a period symbol to extension string if none is present. Otherwise, returns given extension string"""
     if extension:
         if extension.startswith("."):
             return extension
