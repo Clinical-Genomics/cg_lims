@@ -1,10 +1,12 @@
-from cg_lims.exceptions import MissingUDFsError, MissingArtifactError
 from tests.conftest import server
 from pathlib import Path
 
-from cg_lims.EPPs.files.make_kapa_csv import get_file_data_and_write
 from genologics.entities import Artifact
+
 import pytest
+
+from cg_lims.EPPs.files.make_kapa_csv import get_file_data_and_write
+from cg_lims.exceptions import MissingArtifactError, MissingUDFsError
 
 
 

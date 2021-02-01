@@ -30,7 +30,8 @@ def test_calculate_amount_and_set_qc_failing(volume: int, concentration: float, 
 
 
 @pytest.mark.parametrize("volume,concentration,source", [(35, 10, "cfDNA"), (50, 50, "blood")])
-def test_calculate_amount_and_set_qc_passing(volume: int, concentration: float, source: int, artifact_1: Artifact, sample_1: Sample):
+def test_calculate_amount_and_set_qc_passing(volume: int, concentration: float, source: int, artifact_1: Artifact,
+                                             sample_1: Sample):
     # GIVEN: A sample with udf Source: <source>,
     # and a related Artifact with udfs: Concentration: <concentration> and  Volume (ul): <volume>
     server('flat_tests')
@@ -47,7 +48,6 @@ def test_calculate_amount_and_set_qc_passing(volume: int, concentration: float, 
 
     # THEN the artifacts should be PASSED
     assert artifact_1.qc_flag == "PASSED"
-
 
 
 def test_calculate_amount_and_set_qc_missing_udf(lims: Lims, artifact_1: Artifact, artifact_2: Artifact):

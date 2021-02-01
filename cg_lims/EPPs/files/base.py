@@ -2,9 +2,10 @@
 
 import click
 
+from cg_lims.EPPs.files.file_to_udf import csv_well_to_udf
+
 # commands
 from cg_lims.EPPs.files.make_kapa_csv import make_kapa_csv
-from cg_lims.EPPs.files.file_to_udf import csv_well_to_udf
 
 
 @click.group(invoke_without_command=True)

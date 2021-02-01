@@ -1,7 +1,9 @@
+from pathlib import Path
+
 import pytest
 from click.testing import CliRunner
+
 from cg_lims.commands.base import cli
-from pathlib import Path
 
 
 def test_cli_existing_log_file(config):
@@ -12,9 +14,7 @@ def test_cli_existing_log_file(config):
 
     # WHEN running cli base command
     runner = CliRunner()
-    result = runner.invoke(
-        cli, ["-c", config, "epps", "-l", file_path, "-p", "some_process_id"]
-    )
+    result = runner.invoke(cli, ["-c", config, "epps", "-l", file_path, "-p", "some_process_id"])
     file.unlink()
 
     # THEN assert no error
@@ -27,10 +27,7 @@ def test_cli_not_existing_log_file(config):
 
     # WHEN running cli base command
     runner = CliRunner()
-    result = runner.invoke(
-        cli, ["-c", config, "epps", "-l", file_path, "-p", "some_process_id"]
-    )
+    result = runner.invoke(cli, ["-c", config, "epps", "-l", file_path, "-p", "some_process_id"])
 
     # THEN assert no error
     assert result.exit_code == 0
-
