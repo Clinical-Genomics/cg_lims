@@ -1,0 +1,155 @@
+<art:artifact xmlns:udf="http://genologics.com/ri/userdefined" xmlns:file="http://genologics.com/ri/file" xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1133509?state=855235" limsid="2-1133509">
+<name>Pool #1</name>
+<type>Analyte</type>
+<output-type>Analyte</output-type>
+<parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-160122" limsid="24-160122"/>
+<qc-flag>UNKNOWN</qc-flag>
+<location>
+<container uri="http://127.0.0.1:8000/api/v2/containers/27-116793" limsid="27-116793"/>
+<value>A:1</value>
+</location>
+<working-flag>true</working-flag>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A1" limsid="ACC7236A1"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A2" limsid="ACC7236A2"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A3" limsid="ACC7236A3"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A4" limsid="ACC7236A4"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A5" limsid="ACC7236A5"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A6" limsid="ACC7236A6"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A7" limsid="ACC7236A7"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A8" limsid="ACC7236A8"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A9" limsid="ACC7236A9"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A10" limsid="ACC7236A10"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A11" limsid="ACC7236A11"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A12" limsid="ACC7236A12"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A13" limsid="ACC7236A13"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A14" limsid="ACC7236A14"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A15" limsid="ACC7236A15"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A16" limsid="ACC7236A16"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A17" limsid="ACC7236A17"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A18" limsid="ACC7236A18"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A19" limsid="ACC7236A19"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A20" limsid="ACC7236A20"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A21" limsid="ACC7236A21"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A22" limsid="ACC7236A22"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A23" limsid="ACC7236A23"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A24" limsid="ACC7236A24"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A25" limsid="ACC7236A25"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A26" limsid="ACC7236A26"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A27" limsid="ACC7236A27"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A28" limsid="ACC7236A28"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A29" limsid="ACC7236A29"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A30" limsid="ACC7236A30"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A31" limsid="ACC7236A31"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A32" limsid="ACC7236A32"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A33" limsid="ACC7236A33"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A34" limsid="ACC7236A34"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A35" limsid="ACC7236A35"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A36" limsid="ACC7236A36"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A37" limsid="ACC7236A37"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A38" limsid="ACC7236A38"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A39" limsid="ACC7236A39"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A40" limsid="ACC7236A40"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A41" limsid="ACC7236A41"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A42" limsid="ACC7236A42"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A43" limsid="ACC7236A43"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A44" limsid="ACC7236A44"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A45" limsid="ACC7236A45"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A46" limsid="ACC7236A46"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A47" limsid="ACC7236A47"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A48" limsid="ACC7236A48"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A49" limsid="ACC7236A49"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A50" limsid="ACC7236A50"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A51" limsid="ACC7236A51"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A52" limsid="ACC7236A52"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A53" limsid="ACC7236A53"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A54" limsid="ACC7236A54"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A55" limsid="ACC7236A55"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A56" limsid="ACC7236A56"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A57" limsid="ACC7236A57"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A58" limsid="ACC7236A58"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A59" limsid="ACC7236A59"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A60" limsid="ACC7236A60"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A61" limsid="ACC7236A61"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A62" limsid="ACC7236A62"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A63" limsid="ACC7236A63"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A64" limsid="ACC7236A64"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A65" limsid="ACC7236A65"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A66" limsid="ACC7236A66"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A67" limsid="ACC7236A67"/>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7236A68" limsid="ACC7236A68"/>
+<reagent-label name="A01 IDT_10nt_541 (ATTCCACACT-AACAAGACCA)"/>
+<reagent-label name="B01 IDT_10nt_553 (TACTAGAGGA-AGACCGGTTC)"/>
+<reagent-label name="C01 IDT_10nt_568 (TGTGAGCGAA-AACTCCGATC)"/>
+<reagent-label name="D01 IDT_10nt_581 (GATGAAGGAT-AGCCTTATTC)"/>
+<reagent-label name="E01 IDT_10nt_595 (AACAACCTCA-CTTAGTCCAA)"/>
+<reagent-label name="F01 IDT_10nt_607 (AGATCTTCCA-AGATCAACAC)"/>
+<reagent-label name="G02 IDT_10nt_621 (GTTGGACGGT-ACAGTGTCCT)"/>
+<reagent-label name="H02 IDT_10nt_637 (CCGGTTCATG-CAAGACGTCT)"/>
+<reagent-label name="A03 IDT_10nt_543 (TTGGCCATAC-TGCACTAGGC)"/>
+<reagent-label name="B03 IDT_10nt_555 (TCGCTTAAGC-ACACGCCTAG)"/>
+<reagent-label name="C03 IDT_10nt_570 (AAGACAGCTT-AGGTCAGCGA)"/>
+<reagent-label name="D03 IDT_10nt_583 (TATCACTCTC-AGAACAAGGT)"/>
+<reagent-label name="E03 IDT_10nt_597 (GCTGCTAACA-CACAAGAGCT)"/>
+<reagent-label name="F03 IDT_10nt_609 (AGCTATCTTC-CTAGCGACAC)"/>
+<reagent-label name="G03 IDT_10nt_622 (AGGTGGCTAC-CGTTACGTGG)"/>
+<reagent-label name="H03 IDT_10nt_639 (AGAGGAATCG-GATAGTCTGG)"/>
+<reagent-label name="A04 IDT_10nt_544 (TGCCACTGTA-TGACCTGCTG)"/>
+<reagent-label name="B04 IDT_10nt_556 (GACAATAGAG-GTGTACACTA)"/>
+<reagent-label name="C04 IDT_10nt_571 (AGACGGCATC-AGGTTACCTT)"/>
+<reagent-label name="D04 IDT_10nt_584 (ACTGGTGTCG-ACAGGACTTG)"/>
+<reagent-label name="A05 IDT_10nt_545 (CTTGTCTTGC-CACATTGGTT)"/>
+<reagent-label name="B05 IDT_10nt_557 (AACGACGCAT-CGTTGTAGTT)"/>
+<reagent-label name="C05 IDT_10nt_573 (TTGGCCAGTT-CAGGTAGCAT)"/>
+<reagent-label name="D05 IDT_10nt_586 (ATTGCGGCTG-TTGTAGGACA)"/>
+<reagent-label name="E05 IDT_10nt_599 (AGAGACTTAC-CCAACTCTTA)"/>
+<reagent-label name="F05 IDT_10nt_611 (GCTGCCGATA-ACGTAGGATA)"/>
+<reagent-label name="G05 IDT_10nt_624 (GAATGTCCAA-TACGGTATTC)"/>
+<reagent-label name="H05 IDT_10nt_642 (CTATACACCA-CCGTAGTTGG)"/>
+<reagent-label name="A06 IDT_10nt_546 (ATACCTGTGA-AGCACAATGC)"/>
+<reagent-label name="B06 IDT_10nt_558 (TCAGATTCAC-TCGCACTCCA)"/>
+<reagent-label name="C06 IDT_10nt_574 (AGAGATGGTA-TTCCGTAAGC)"/>
+<reagent-label name="D06 IDT_10nt_587 (ATGGAGACGG-GAACTCTCAG)"/>
+<reagent-label name="E06 IDT_10nt_600 (GTGTACGTCG-CCTGCTAGGA)"/>
+<reagent-label name="F06 IDT_10nt_612 (TCACCGTCAC-TAAGGAGTTG)"/>
+<reagent-label name="G06 IDT_10nt_625 (TGTGAAGCTA-TGAATCGCGT)"/>
+<reagent-label name="A07 IDT_10nt_547 (AACACAGCCG-ACCAAGGTCT)"/>
+<reagent-label name="B07 IDT_10nt_560 (CCGACTCCTT-CAAGGACAGT)"/>
+<reagent-label name="D07 IDT_10nt_588 (CCACTGTGAC-CATCTGTCCA)"/>
+<reagent-label name="G07 IDT_10nt_627 (TTATCGCTGA-CCAATCCTAA)"/>
+<reagent-label name="H07 IDT_10nt_644 (CGCTTAAGTA-GTGCAGTAAT)"/>
+<reagent-label name="A08 IDT_10nt_548 (TTACGGAACA-GACAGAGTCA)"/>
+<reagent-label name="B08 IDT_10nt_561 (CTATAGCGAG-CTAGTCGACT)"/>
+<reagent-label name="C08 IDT_10nt_576 (ACGCGGACTT-CGAGGCAATA)"/>
+<reagent-label name="A09 IDT_10nt_549 (TCAGCACCGT-CCTATTCAGT)"/>
+<reagent-label name="B09 IDT_10nt_563 (TCAAGTTCCT-CTAGAACTTG)"/>
+<reagent-label name="C09 IDT_10nt_577 (AGACCTAGCT-GATACTTGTG)"/>
+<reagent-label name="D09 IDT_10nt_590 (GCCTTACTTA-GTTAAGGTGC)"/>
+<reagent-label name="A10 IDT_10nt_550 (ACTGTCAATC-GTTAAGGACG)"/>
+<reagent-label name="B10 IDT_10nt_564 (TTCACACAGT-AACACTGAAG)"/>
+<reagent-label name="C10 IDT_10nt_578 (CTGCGTACTC-TTGCCATCAG)"/>
+<reagent-label name="E10 IDT_10nt_604 (TGGATATGGC-ATACGCGCCA)"/>
+<reagent-label name="F10 IDT_10nt_616 (TATAACTCCG-AGGACACATA)"/>
+<reagent-label name="G10 IDT_10nt_631 (CTCTCATGCG-CAACCGACGT)"/>
+<reagent-label name="A11 IDT_10nt_551 (AATGTGGCGT-CTACCTGACA)"/>
+<reagent-label name="B11 IDT_10nt_566 (GCTACTGTCG-ATGGAGCAAG)"/>
+<reagent-label name="C11 IDT_10nt_579 (CGCAGAACTT-GACGTCGATA)"/>
+<reagent-label name="D11 IDT_10nt_592 (CCAAGACACT-CCATGTCGGT)"/>
+<reagent-label name="E11 IDT_10nt_605 (GTTCCACCGA-TAACAGCAGG)"/>
+<reagent-label name="F11 IDT_10nt_617 (GACGTTCTCT-TAGCTCTACT)"/>
+<reagent-label name="G11 IDT_10nt_632 (GCATACTCTA-TATCTCGCTA)"/>
+<reagent-label name="H11 IDT_10nt_648 (GAGCTCCACA-TTCTGTTCTG)"/>
+<reagent-label name="C07 IDT_10nt_575 (GACGAACGTA-TGAAGGACGA)"/>
+<reagent-label name="E07 IDT_10nt_601 (GAGCATCCAT-GTGGACGTGA)"/>
+<reagent-label name="F07 IDT_10nt_613 (GTTATTAGGC-GTTCATCGAG)"/>
+<reagent-label name="D08 IDT_10nt_589 (AGAATCCTTC-ACACCTGGCA)"/>
+<reagent-label name="E08 IDT_10nt_602 (CGGAACGAAG-AGGCGATGGT)"/>
+<reagent-label name="F08 IDT_10nt_614 (TATCGTTGTG-TGCGGACACA)"/>
+<reagent-label name="G08 IDT_10nt_628 (AACACAACGA-TTGGCTGCGT)"/>
+<udf:field type="Boolean" name="NovaSeq">true</udf:field>
+<workflow-stages>
+<workflow-stage status="COMPLETE" name="Define Run Format and Calculate Volumes (Nova Seq)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1401/stages/4479"/>
+<workflow-stage status="REMOVED" name="CG002 - Sort HiSeq Samples" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/801/stages/1532"/>
+<workflow-stage status="COMPLETE" name="Sequence Aggregation" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1401/stages/4487"/>
+</workflow-stages>
+<demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-1133509/demux"/>
+</art:artifact>

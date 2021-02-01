@@ -77,3 +77,4 @@ def get_latest_artifact(lims: Lims, sample_id: str, process_type: List[str]) -> 
     date, latest_art = artifacts[-1]
 
     return latest_art
+
