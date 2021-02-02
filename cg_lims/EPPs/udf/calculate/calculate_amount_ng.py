@@ -29,23 +29,22 @@ def calculate_amount_ng(
     try:
         artifacts = get_qc_output_artifacts(lims=lims, process=process)
         missing_udfs_count = 0
-        samples_with_missing_udf = []
+        artifacts_with_missing_udf = []
         for artifact in artifacts:
-            sample = get_one_sample_from_artifact(artifact)
             vol = artifact.udf.get(volume_udf)
             conc = artifact.udf.get(concentration_udf)
             if None in [conc, vol]:
                 missing_udfs_count += 1
-                samples_with_missing_udf.append(sample.id)
+                artifacts_with_missing_udf.append(artifact.id)
                 continue
 
             artifact.udf[amount_udf] = conc * vol
             artifact.put()
         if missing_udfs_count:
             raise MissingUDFsError(
-                f"Udf missing for {missing_udfs_count} sample(s): {','.join(samples_with_missing_udf)}."
+                f"Udf missing for {missing_udfs_count} artifact(s): {','.join(artifacts_with_missing_udf)}."
             )
-        message = "Amounts have been calculated for all samples."
+        message = "Amounts have been calculated for all artifacts."
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
