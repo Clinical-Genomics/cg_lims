@@ -1,0 +1,75 @@
+<ptp:process-type xmlns:file="http://genologics.com/ri/file" xmlns:ptp="http://genologics.com/ri/processtype" uri="http://127.0.0.1:8000/api/v2/processtypes/682" name="CG002 - Sort HiSeq Samples">
+<field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/2059" name="Comments"/>
+<field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/2058" name="Instructions"/>
+<parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/2101" name="Calculate Missing Reads For Pools">
+<string>bash -c "/home/glsai/miniconda3/envs/epp_master/bin/reads_missing_pool.py -p {processLuid}"</string>
+<run-program-per-event>false</run-program-per-event>
+<channel>limsserver</channel>
+<invocation-type>PostProcess</invocation-type>
+</parameter>
+<parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/2113" name="Move Samples to NovaSeq">
+<string>bash -c -l "conda activate cg_lims && lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid} move move-samples -w '1401' -s '4479' -u 'NovaSeq'"</string>
+<run-program-per-event>false</run-program-per-event>
+<channel>limsserver</channel>
+<invocation-type>PostProcess</invocation-type>
+</parameter>
+<parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1907" name="Next Step Remove">
+<string>bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/ngs-common/v5/EPP/ngs-extensions.jar -i {stepURI:v2} -u {username} -p {password} script:evaluateDynamicExpression -t false -h false -exp 'if (output.::HiSeq2500:: == true) { nextStep = ::REMOVE:: } else { nextStep = ::ADVANCE:: }' -log {compoundOutputFileLuid0}"</string>
+<run-program-per-event>false</run-program-per-event>
+<channel>limsserver</channel>
+<invocation-type>PostProcess</invocation-type>
+</parameter>
+<process-input>
+<artifact-type>Analyte</artifact-type>
+<display-name>Analyte</display-name>
+<remove-working-flag>false</remove-working-flag>
+</process-input>
+<process-output>
+<artifact-type>ResultFile</artifact-type>
+<display-name>ResultFile</display-name>
+<output-generation-type>PerAllInputs</output-generation-type>
+<variability-type>Fixed</variability-type>
+<number-of-outputs>1</number-of-outputs>
+<output-name>{LIST:log}</output-name>
+</process-output>
+<process-output>
+<artifact-type>Analyte</artifact-type>
+<display-name>Analyte</display-name>
+<output-generation-type>PerInput</output-generation-type>
+<variability-type>Fixed</variability-type>
+<number-of-outputs>1</number-of-outputs>
+<output-name>{InputItemName}</output-name>
+<assign-working-flag>true</assign-working-flag>
+</process-output>
+<process-type-attribute name="Enabled">true</process-type-attribute>
+<process-type-attribute name="Family">Configured</process-type-attribute>
+<process-type-attribute name="ContextCode">SOR</process-type-attribute>
+<process-type-attribute name="OutputContextCode">SO</process-type-attribute>
+<process-type-attribute name="InheritsQC">false</process-type-attribute>
+<process-type-attribute name="OutputSorting">Input LIMS ID</process-type-attribute>
+<process-type-attribute name="VolumeAdjustmentType">None</process-type-attribute>
+<process-type-attribute name="ConsumeVolume">true</process-type-attribute>
+<process-type-attribute name="ProcessGroup">3. MiSeq</process-type-attribute>
+<process-type-attribute name="QCAdjustmentType">None</process-type-attribute>
+<process-type-attribute name="ProcessTabView">Use the default display</process-type-attribute>
+<process-type-attribute name="SkipInputPanel">true</process-type-attribute>
+<process-type-attribute name="OnlyEnableDoneAtLastPanel">true</process-type-attribute>
+<process-type-attribute name="ModifyInputOutput">All</process-type-attribute>
+<permitted-containers>
+<container-type uri="http://127.0.0.1:8000/api/v2/containertypes/1" name="96 well plate"/>
+<container-type uri="http://127.0.0.1:8000/api/v2/containertypes/2" name="Tube"/>
+</permitted-containers>
+<permitted-reagent-categories/>
+<required-reagent-kits/>
+<permitted-control-types/>
+<permitted-instrument-types/>
+<queue-fields/>
+<ice-bucket-fields/>
+<step-fields/>
+<sample-fields/>
+<step-properties>
+<step-property value="0/{LIST:log}/isAutoAttached=true" name="autoAttachFiles"/>
+<step-property value="same shape" name="placementDefaultPattern"/>
+</step-properties>
+<epp-triggers/>
+</ptp:process-type>

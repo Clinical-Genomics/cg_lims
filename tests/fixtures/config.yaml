@@ -2,3 +2,4 @@ BASEURI: somebase.scilifelab.se
 HOST: somehoast.scilifelab.se
 USERNAME: someuser
 PASSWORD: somepassword
+CG_URL: https://something

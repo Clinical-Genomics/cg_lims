@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 
-from cg_lims.exceptions import LimsError, MissingArtifactError
-from cg_lims.get.files import get_file_path
-from cg_lims.get.artifacts import get_artifact_by_name
-from cg_lims import options
-from pathlib import Path
-from genologics.entities import Artifact
-import pandas as pd
-
 import logging
-import click
-import sys
 import math
+import sys
+from pathlib import Path
+
+import click
+import pandas as pd
+from genologics.entities import Artifact
+
+from cg_lims import options
+from cg_lims.exceptions import LimsError, MissingArtifactError, MissingFileError
+from cg_lims.get.artifacts import get_artifact_by_name
+from cg_lims.get.files import get_file_path
 
 LOG = logging.getLogger(__name__)
 
@@ -26,10 +27,10 @@ def make_well_dict(process, lims, input):
     for inp, outp in process.input_output_maps:
         if outp.get("output-generation-type") == "PerAllInputs":
             continue
-        in_art = Artifact(lims, id=inp['limsid'])
-        out_art = Artifact(lims, id=outp['limsid'])
+        in_art = Artifact(lims, id=inp["limsid"])
+        out_art = Artifact(lims, id=outp["limsid"])
         source_art = in_art if input == True else out_art
-        col, row = source_art.location[1].split(':')
+        col, row = source_art.location[1].split(":")
         well = col + row
         well_dict[well] = out_art
     return well_dict
@@ -38,15 +39,15 @@ def make_well_dict(process, lims, input):
 def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, result_file: Path):
     """Reads the csv and sets the value for each sample"""
 
-    error_msg = ''
+    error_msg = ""
     passed_arts = 0
-    csv_reader = pd.read_csv(result_file, encoding='latin1')
+    csv_reader = pd.read_csv(result_file, encoding="latin1")
     data = csv_reader.transpose().to_dict()
     for _, sample in data.items():
         well = sample.get(well_field)
         value = sample.get(value_field)
         if not value or math.isnan(value) or well not in well_dict:
-            error_msg = 'Some samples in the step were not represented in the file.'
+            error_msg = "Some samples in the step were not represented in the file."
             continue
         art = well_dict[well]
         art.udf[udf] = value
@@ -54,11 +55,10 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
         passed_arts += 1
 
     if passed_arts < len(well_dict.keys()):
-        error_msg = f'{error_msg} Some samples in the step were not represented in the file.'
+        error_msg = f"{error_msg} Some samples in the step were not represented in the file."
 
     if error_msg:
         raise MissingArtifactError(error_msg)
-
 
 
 @click.command()
@@ -69,9 +69,10 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
 @options.value_field()
 @options.input()
 @click.pass_context
-def csv_well_to_udf(ctx, file: str, well_field: str, value_field: str, udf: str, input: bool, local_file: str):
-    """Script to copy data from file to udf based on well position
-    """
+def csv_well_to_udf(
+    ctx, file: str, well_field: str, value_field: str, udf: str, input: bool, local_file: str
+):
+    """Script to copy data from file to udf based on well position"""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
@@ -85,7 +86,7 @@ def csv_well_to_udf(ctx, file: str, well_field: str, value_field: str, udf: str,
 
     try:
         if not Path(file_path).is_file():
-            raise MissingFileError(f'No such file: {file_path}')
+            raise MissingFileError(f"No such file: {file_path}")
         well_dict = make_well_dict(process, lims, input)
         set_udfs(well_field, value_field, udf, well_dict, file_path)
         click.echo("The udfs were sucessfully populated.")

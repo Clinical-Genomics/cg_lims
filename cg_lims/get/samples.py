@@ -1,6 +1,8 @@
-from genologics.entities import Process, Sample, Artifact
-from cg_lims.exceptions import MissingSampleError
 from typing import List
+
+from genologics.entities import Artifact, Process, Sample
+
+from cg_lims.exceptions import MissingSampleError
 
 
 def get_process_samples(process: Process) -> List[Sample]:

@@ -1,0 +1,10 @@
+<smp:sample xmlns:udf="http://genologics.com/ri/userdefined" xmlns:ri="http://genologics.com/ri" xmlns:file="http://genologics.com/ri/file" xmlns:smp="http://genologics.com/ri/sample" uri="http://127.0.0.1:8000api/v2/samples/S1" limsid="ACC7271A5">
+<name>2020-29674-02</name>
+<date-received>2020-11-11</date-received>
+<project limsid="ACC7271" uri="http://127.0.0.1:8000api/v2/projects/ACC7271"/>
+<submitter uri="http://127.0.0.1:8000api/v2/researchers/3">
+<first-name>API</first-name>
+<last-name>Access</last-name>
+</submitter>
+<artifact limsid="ACC7271A5PA1" uri="http://127.0.0.1:8000api/v2/artifacts/ACC7271A5PA1?state=865507"/>
+</smp:sample>

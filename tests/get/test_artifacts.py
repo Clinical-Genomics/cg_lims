@@ -1,36 +1,20 @@
-from cg_lims.get.artifacts import get_latest_artifact, get_artifacts
-from cg_lims.exceptions import MissingArtifactError
+from genologics.entities import Process
+from genologics.lims import Lims
+from tests.conftest import server
 
 import pytest
 
+from cg_lims.exceptions import MissingArtifactError
+from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
 
-def test_get_latest_artifact(lims, sample, helpers):
+
+def test_get_latest_artifact(lims: Lims):
     # GIVEN a lims with a sample that has been run through the same
-    # type of process twise but on two diferent dates.
-    sample_id = "SomeSampleID"
-    process_type = "SomeTypeOfProcess"
-    first_date = "2019-01-01"
-    last_date = "2020-01-01"
-
-    sample.id = sample_id
-
-    helpers.ensure_lims_process(
-        lims=lims,
-        data={
-            "process_type": {"name": process_type},
-            "date_run": first_date,
-            "outputs": [{"samples": [{"sample_id": sample_id}], "type": "Analyte"}],
-        },
-    )
-
-    helpers.ensure_lims_process(
-        lims=lims,
-        data={
-            "process_type": {"name": process_type},
-            "date_run": last_date,
-            "outputs": [{"samples": [{"sample_id": sample_id}], "type": "Analyte"}],
-        },
-    )
+    # type of process three times but on different dates.
+    server("test_get_artifacts")
+    sample_id = "ACC7236A52"
+    process_type = "CG002 - Sort HiSeq Samples"
+    last_date = "2020-12-28"
 
     # WHEN running get_latest_artifact with the sample id and the process type name
     latest_artifact = get_latest_artifact(
@@ -41,48 +25,39 @@ def test_get_latest_artifact(lims, sample, helpers):
     assert latest_artifact.parent_process.date_run == last_date
 
 
-def test_get_latest_artifact_no_artifacts(lims):
-    # GIVEN a lims with no artifacts
-    sample_id = ""
-    process_types = []
+def test_get_latest_artifact_no_artifacts(lims: Lims):
+    # GIVEN a lims with no artifact related to a given sample id
+    server("test_get_artifacts")
+    sample_id = "SampleNotRelatedToArtifacts"
+    process_type = "CG002 - Sort HiSeq Samples"
 
     # WHEN running get_latest_artifact
     # THEN MissingArtifactError is raised
     with pytest.raises(MissingArtifactError):
         latest_artifact = get_latest_artifact(
-            lims=lims, sample_id=sample_id, process_type=process_types
+            lims=lims, sample_id=sample_id, process_type=process_type
         )
 
 
-def test_get_artifacts_no_output_artifacts(process):
-    # GIVEN a process with no output artifacts
+def test_get_artifacts_with_input_artifacts(lims: Lims):
+    # GIVEN a process with one input artifacts
+    server("test_get_artifacts")
+    process = Process(lims, id="24-160122")
+
     # WHEN running get_artifacts
-    artifacts = get_artifacts(process, input=False)
+    input_artifacts = get_artifacts(process, input=True)
 
-    # THEN artifacts is a empty list
-    assert artifacts == []
+    # THEN assert input_artifacts are one
+    assert len(input_artifacts) == 1
 
 
-def test_get_artifacts_with_output_artifacts(process, helpers):
+def test_get_artifacts_with_output_artifacts(lims: Lims):
     # GIVEN a process with five output artifacts
-    five_artifacts = helpers.create_many_artifacts(nr_of_artifacts=5, type="Analyte")
-    process.outputs = five_artifacts
+    server("test_get_artifacts")
+    process = Process(lims, id="24-160122")
 
     # WHEN running get_artifacts
     output_artifacts = get_artifacts(process, input=False)
 
     # THEN assert output_artifacts are five
-    assert len(output_artifacts) == 5
-
-
-def test_get_artifacts_with_input_artifacts(process, helpers):
-    # GIVEN a process with five output artifacts
-    five_artifacts = helpers.create_many_artifacts(nr_of_artifacts=5, type="Analyte")
-    process.input_artifact_list = five_artifacts
-
-    # WHEN running get_artifacts
-    input_artifacts = get_artifacts(process, input=True)
-
-    # THEN assert input_artifacts are five
-    assert len(input_artifacts) == 5
-
+    assert len(output_artifacts) == 1

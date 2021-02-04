@@ -1,37 +1,35 @@
-
-from genologics.entities import Artifact, Process
-
 import logging
 import sys
-import click
 from typing import List
+
+import click
+from genologics.entities import Artifact, Process
 
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
-
 
 LOG = logging.getLogger(__name__)
 
 
 def calculate_volumes(artifacts: List[Artifact], process: Process):
-    """Calculates volumes for diluting samples. The total volume differ depending on 
+    """Calculates volumes for diluting samples. The total volume differ depending on
     type of sample. It is given by the process udf 'Total Volume (ul)'."""
 
-    max_volume = process.udf.get('Total Volume (ul)')
+    max_volume = process.udf.get("Total Volume (ul)")
     if not max_volume:
-        raise MissingUDFsError('Process udf missing: Total Volume (ul)')
+        raise MissingUDFsError("Process udf missing: Total Volume (ul)")
 
     missing_udfs = 0
 
     for art in artifacts:
-        concentration = art.udf.get('Concentration')
-        amount = art.udf.get('Amount needed (ng)')
+        concentration = art.udf.get("Concentration")
+        amount = art.udf.get("Amount needed (ng)")
         if not amount or not concentration:
             missing_udfs += 1
             continue
 
-        art.udf['Sample Volume (ul)'] = amount/float(concentration)
-        art.udf['Volume H2O (ul)'] = max_volume - art.udf['Sample Volume (ul)']
+        art.udf["Sample Volume (ul)"] = amount / float(concentration)
+        art.udf["Volume H2O (ul)"] = max_volume - art.udf["Sample Volume (ul)"]
         art.put()
 
     if missing_udfs:

@@ -2,9 +2,10 @@
 
 import click
 
+from cg_lims.EPPs.udf.calculate import calculate
+
 # commands
 from cg_lims.EPPs.udf.copy import copy
-from cg_lims.EPPs.udf.calculate import calculate
 
 
 @click.group(invoke_without_command=True)
