@@ -31,6 +31,7 @@ def get_pools_and_samples_to_queue(
         rerun_arts: List # Artifacts with Rerun flag
         process_type: List[str] # Name of step(s) before the requeue step
     """
+
     break_send_to_next_step = False
     send_to_next_step = []
     for sample in samples:
@@ -52,9 +53,7 @@ def get_pools_and_samples_to_queue(
             artifact = get_sample_artifact(lims, sample)
         send_to_next_step.append(artifact)
     if break_send_to_next_step:
-        raise MissingArtifactError(
-            "Issues getting pools and or samples to queue. See log"
-        )
+        raise MissingArtifactError("Issues getting pools and or samples to queue. See log")
     return list(set(send_to_next_step))
 
 
@@ -80,4 +79,3 @@ def place_samples_in_seq_agg(ctx, workflow_id, stage_id, process_type):
         click.echo("Artifacts have been queued.")
     except LimsError as e:
         sys.exit(e.message)
-
