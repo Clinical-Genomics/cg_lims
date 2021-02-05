@@ -5,7 +5,7 @@ import sys
 from typing import List
 
 import click
-from genologics.entities import Artifact, Process, Sample
+from genologics.entities import Artifact, Sample
 from genologics.lims import Lims
 
 from cg_lims import options
@@ -35,13 +35,8 @@ def get_pools_and_samples_to_queue(
     break_send_to_next_step = False
     send_to_next_step = []
     for sample in samples:
-        cust = sample.udf.get("customer")
-        if not cust:
-            LOG.warning(f"Sample {sample.id} has no customer.")
-            break_send_to_next_step = True
-            continue
-
-        elif cust == "cust001":
+        pool_name = sample.udf.get("pool name")
+        if pool_name:
             ## this is a RML - get pools from sort step
             try:
                 artifact = get_latest_artifact(lims, sample.id, process_type)
