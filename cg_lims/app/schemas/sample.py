@@ -4,12 +4,10 @@ from typing import Optional
 
 
 class Sample(BaseModel):
-    ""
-
     id: str
     name: str
     project: str
-    comment: Optional[str]
+    comment: Optional[str] = None
     processing_time: Optional[dt.datetime] = None
     received_date: Optional[dt.date] = None
     prepared_date: Optional[dt.date] = None

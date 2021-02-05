@@ -10,7 +10,8 @@ def build_sample(sample_id: str):
     sample = {
         "id": sample_id,
         "name": genologics_sample.name,
-        "comment": udfs.get("comment"),
+        "project": genologics_sample.project.id,
+        "comment": fields.get_sample_comment(genologics_sample),
         "received_date": fields.get_received_date(genologics_sample),
         "prepared_date": fields.get_prepared_date(genologics_sample),
         "sequenced_date": fields.get_sequenced_date(genologics_sample),
