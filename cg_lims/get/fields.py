@@ -4,54 +4,38 @@ from genologics.entities import Sample
 from typing import Optional
 
 
-def get_received_date(sample: Sample) -> Optional[dt.date]:
-    """Get the date when a sample was received."""
-
+def get_udf_value(sample: Sample, get_string: str):
     try:
-        date = sample.udf.get("Received at")
+        return sample.udf.get(get_string)
     except HTTPError:
-        date = None
-    return date
+        return None
 
 
 def get_prepared_date(sample: Sample) -> Optional[dt.date]:
     """Get the date when a sample was prepared in the lab."""
 
-    try:
-        date = sample.udf.get("Library Prep Finished")
-    except HTTPError:
-        date = None
-    return date
+    return get_udf_value(sample, "Library Prep Finished")
+
+
+def get_received_date(sample: Sample) -> Optional[dt.date]:
+    """Get the date when a sample was received."""
+
+    return get_udf_value(sample, "Received at")
 
 
 def get_delivery_date(sample: Sample) -> Optional[dt.date]:
     """Get delivery date for a sample."""
-
-    try:
-        date = sample.udf.get("Delivered at")
-    except HTTPError:
-        date = None
-    return date
+    return get_udf_value(sample, "Delivered at")
 
 
 def get_sequenced_date(sample: Sample) -> Optional[dt.date]:
     """Get the date when a sample was sequenced."""
-
-    try:
-        date = sample.udf.get("Sequencing Finished")
-    except HTTPError:
-        date = None
-    return date
+    return get_udf_value(sample, "Sequencing Finished")
 
 
 def get_sample_comment(sample: Sample) -> Optional[str]:
     """Get sample comment udf"""
-
-    try:
-        date = sample.udf.get("comment")
-    except HTTPError:
-        date = None
-    return date
+    return get_udf_value(sample, "comment")
 
 
 def get_processing_time(sample: Sample) -> Optional[dt.datetime]:
