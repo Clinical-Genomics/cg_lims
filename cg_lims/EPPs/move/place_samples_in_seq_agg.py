@@ -31,6 +31,7 @@ def get_pools_and_samples_to_queue(
         rerun_arts: List # Artifacts with Rerun flag
         process_type: List[str] # Name of step(s) before the requeue step
     """
+
     break_send_to_next_step = False
     send_to_next_step = []
     for sample in samples:

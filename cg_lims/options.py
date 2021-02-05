@@ -81,6 +81,19 @@ def input(
     )
 
 
+def measurement(
+    help: str = "Use this flag if you run the script from a QC step and want "
+    "to get the measurement artifacts.",
+) -> click.option:
+    return click.option(
+        "-m",
+        "--measurement",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
 def process_type(help: str = "Process type name.") -> click.option:
     return click.option(
         "-n",
