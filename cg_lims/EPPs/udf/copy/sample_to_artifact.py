@@ -40,8 +40,6 @@ def udf_copy_sample_to_artifact(artifacts: list, sample_udf: str, art_udf: str, 
         udf = sample.udf.get(sample_udf)
         if not isinstance(udf, udf_type):
             try:
-                from datetime import date
-
                 udf = udf_type(udf)
             except:
                 failed_udfs += 1
