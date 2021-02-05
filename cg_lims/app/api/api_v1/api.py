@@ -1,6 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, FastAPI
 
-from app.api.api_v1.endpoints import sample
+from cg_lims.app.api.api_v1.endpoints import sample
 
-api_router = APIRouter()
-api_router.include_router(sample.router, prefix="/sample", tags=["sample"])
+app = FastAPI()
+
+# api_router = APIRouter()
+app.include_router(sample.router, prefix="/api/v1/samples", tags=["sample"])

@@ -1,20 +1,23 @@
-from typing import Any, List
+# from typing import Any, List
 
 from fastapi import APIRouter, Depends
-from starlette.requests import Request
+from cg_lims.app.build.sample import build_sample
 
-from app import models, schemas
-from app.api import deps
+from starlette.requests import Request
+from starlette.responses import Response
+
+
+from cg_lims.app import schemas
 
 router = APIRouter()
 
 
-@router.get("/samples/{sample_id}", )
-def get_sample(sample_id, request: Request):
+@router.get("/{sample_id}", response_model=schemas.Sample)
+def get_sample(sample_id: str):
     """
     get sample
     """
-    build_sample
 
-    sample=
-    return sample
+    # sample = build_sample(sample_id)
+
+    return {"id": sample_id}

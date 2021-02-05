@@ -1,5 +1,7 @@
-genologics                               
+genologics
 click
 pathlib
 PyYAML
 pandas
+pydantic
+fastapi
