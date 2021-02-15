@@ -5,6 +5,7 @@ from typing import Optional
 
 
 def get_udf_value(sample: Sample, get_string: str):
+    """Get sample udf based on udf name"""
     try:
         return sample.udf.get(get_string)
     except HTTPError:
