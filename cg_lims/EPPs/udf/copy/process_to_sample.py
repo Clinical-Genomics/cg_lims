@@ -17,7 +17,7 @@ from cg_lims.get.samples import get_process_samples
 @options.process_udf(help="Process udf to get.")
 @click.pass_context
 def process_to_sample(ctx, sample_udf, process_udf):
-    """Script to copy artifact udf to sample udf"""
+    """Script to copy Process udf to sample udf"""
 
     process = ctx.obj["process"]
     failed_samples = []
