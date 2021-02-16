@@ -59,6 +59,12 @@ def sample_udf(
     return click.option("-sudf", "--sample-udf", required=True, help=help)
 
 
+def process_udf(
+    help: str = "UDF name",
+) -> click.option:
+    return click.option("-pudf", "--process-udf", required=True, help=help)
+
+
 def file_placeholder(
     help: str = "File.",
 ) -> click.option:
