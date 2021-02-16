@@ -59,6 +59,12 @@ def sample_udf(
     return click.option("-sudf", "--sample-udf", required=True, help=help)
 
 
+def process_udf(
+    help: str = "UDF name",
+) -> click.option:
+    return click.option("-pudf", "--process-udf", required=True, help=help)
+
+
 def file_placeholder(
     help: str = "File.",
 ) -> click.option:
@@ -75,6 +81,19 @@ def input(
     return click.option(
         "-i",
         "--input",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
+def measurement(
+    help: str = "Use this flag if you run the script from a QC step and want "
+    "to get the measurement artifacts.",
+) -> click.option:
+    return click.option(
+        "-m",
+        "--measurement",
         default=False,
         is_flag=True,
         help=help,
