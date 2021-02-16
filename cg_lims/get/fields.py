@@ -2,6 +2,9 @@ import datetime as dt
 from requests.exceptions import HTTPError
 from genologics.entities import Sample
 from typing import Optional
+import logging
+
+LOG = logging.getLogger(__name__)
 
 
 def get_udf_value(sample: Sample, get_string: str):
@@ -9,6 +12,7 @@ def get_udf_value(sample: Sample, get_string: str):
     try:
         return sample.udf.get(get_string)
     except HTTPError:
+        LOG.info("Sample %s doesn't have the udf %s" % (sample.id, get_string))
         return None
 
 
@@ -46,4 +50,8 @@ def get_processing_time(sample: Sample) -> Optional[dt.datetime]:
     delivery_date = get_delivery_date(sample)
     if received_at and delivery_date:
         return delivery_date - received_at
+    LOG.info(
+        "Could not get recieved date or delivery date to generate the processing time for sample %s."
+        % sample.id
+    )
     return None
