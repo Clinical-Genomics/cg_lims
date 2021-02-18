@@ -3,10 +3,10 @@
 import logging
 import math
 import sys
+import csv
 from pathlib import Path
 
 import click
-import pandas as pd
 from genologics.entities import Artifact
 
 from cg_lims import options
@@ -41,18 +41,18 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
 
     error_msg = ""
     passed_arts = 0
-    csv_reader = pd.read_csv(result_file, encoding="latin1")
-    data = csv_reader.transpose().to_dict()
-    for _, sample in data.items():
-        well = sample.get(well_field)
-        value = sample.get(value_field)
-        if not value or math.isnan(value) or well not in well_dict:
-            error_msg = "Some samples in the step were not represented in the file."
-            continue
-        art = well_dict[well]
-        art.udf[udf] = value
-        art.put()
-        passed_arts += 1
+    with open(result_file, newline="", encoding="latin1") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for sample in reader:
+            well = sample.get(well_field)
+            value = sample.get(value_field)
+            if not value or math.isnan(value) or well not in well_dict:
+                error_msg = "Some samples in the step were not represented in the file."
+                continue
+            art = well_dict[well]
+            art.udf[udf] = value
+            art.put()
+            passed_arts += 1
 
     if passed_arts < len(well_dict.keys()):
         error_msg = f"{error_msg} Some samples in the step were not represented in the file."
