@@ -65,8 +65,9 @@ def udf_copy_sample_to_artifact(artifacts: list, sample_udf: str, art_udf: str, 
 @options.sample_udf(help="Sample udf to set.")
 @options.artifact_udf(help="Artifact udf to get.")
 @options.measurement(help="Udfs will be set on measurements.")
+@options.input(help="Udfs will be set on input artifacts.")
 @click.pass_context
-def sample_to_artifact(ctx, sample_udf, artifact_udf, measurement):
+def sample_to_artifact(ctx, sample_udf, artifact_udf, measurement, input):
     """Script to copy artifact udf to sample udf"""
 
     process = ctx.obj["process"]
@@ -75,6 +76,8 @@ def sample_to_artifact(ctx, sample_udf, artifact_udf, measurement):
     try:
         if measurement:
             artifacts = get_qc_output_artifacts(lims, process)
+        elif input:
+            artifacts = get_artifacts(process=process, input=True)
         else:
             artifacts = get_artifacts(process=process, input=False)
         udf_copy_sample_to_artifact(artifacts, sample_udf, artifact_udf, lims)
