@@ -6,8 +6,7 @@ import click
 from genologics.entities import Artifact, Process
 from cg_lims import options
 from cg_lims.exceptions import LimsError
-from cg_lims.get.artifacts import get_artifacts, get_artifact_by_name
-from cg_lims.get.files import get_file_path
+from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
 
@@ -40,7 +39,7 @@ def add_sample_info_headers(udfs: List[str]):
 def add_sample_info(sample: Artifact, sample_udfs: List[str]):
     html = []
     for udf in sample_udfs:
-        value = sample.udf.get(udf)
+        value = sample.udf.get(udf, '')
         if value is not None:
             html.append(f'<td class="" style="width: 7%;">{value}</td>')
     return "".join(html)
@@ -127,13 +126,15 @@ def make_html(
             <td class="" style="width: 7%;">{art.container.name}</td>
             <td class="" style="width: 7%;">{pool.name}</td>
             {add_sample_info(sample, sample_udfs)}
-            </tr>
+            </tr>""")
+        html.append("""
             </tbody>
             </table>
             <br><br>
             </html>"""
             )
-    return "".join(html).encode("utf-8")
+    html="".join(html)
+    return html
 
 
 @click.command()
@@ -148,8 +149,6 @@ def pool_map(ctx, file: str, sample_udfs: List[str], pool_udfs: List[str]):
     process = ctx.obj["process"]
 
     try:
-        file_art = get_artifact_by_name(process=process, name=file)
-        file_path = get_file_path(file_art)
         pools = get_artifacts(process=process, input=False)
         html = make_html(
             pools,
@@ -157,7 +156,7 @@ def pool_map(ctx, file: str, sample_udfs: List[str], pool_udfs: List[str]):
             pool_udfs,
             sample_udfs,
         )
-        file = open(f"{file_path}.html", "w")
+        file = open(f"{file}.html", "w")
         file.write(html)
         file.close()
     except LimsError as e:
