@@ -21,17 +21,17 @@ def calculate_volumes(artifacts: List[Artifact], process: Process):
 
     missing_udfs = 0
 
-    for art in artifacts:
-        sample_volume = art.udf.get("Volume (ul)")
+    for artifact in artifacts:
+        sample_volume = artifact.udf.get("Volume (ul)")
 
         if sample_volume is None:
             missing_udfs += 1
             continue
-        volume_wather = max_volume - sample_volume
-        if volume_wather < 0:
-            volume_wather = 0
-        art.udf["Volume H2O (ul)"] = volume_wather
-        art.put()
+        volume_water = max_volume - sample_volume
+        if volume_water < 0:
+            volume_water = 0
+        artifact.udf["Volume H2O (ul)"] = volume_water
+        artifact.put()
 
     if missing_udfs:
         raise MissingUDFsError(f"Udf missing for {missing_udfs} samples")
@@ -39,8 +39,8 @@ def calculate_volumes(artifacts: List[Artifact], process: Process):
 
 @click.command()
 @click.pass_context
-def volume_wather(ctx):
-    """Calculates wather volume for samples."""
+def volume_water(ctx):
+    """Calculates water volume for samples."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
