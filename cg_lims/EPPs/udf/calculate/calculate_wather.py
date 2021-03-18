@@ -24,7 +24,7 @@ def calculate_volumes(artifacts: List[Artifact], process: Process):
     for art in artifacts:
         sample_volume = art.udf.get("Volume (ul)")
 
-        if not sample_volume:
+        if sample_volume is None:
             missing_udfs += 1
             continue
         volume_wather = max_volume - sample_volume
