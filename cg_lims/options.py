@@ -110,6 +110,26 @@ def process_type(help: str = "Process type name.") -> click.option:
     )
 
 
+def sample_udfs(help: str = "Sample udfs.") -> click.option:
+    return click.option(
+        "-su",
+        "--sample-udfs",
+        required=False,
+        multiple=True,
+        help=help,
+    )
+
+
+def pool_udfs(help: str = "Pool udfs.") -> click.option:
+    return click.option(
+        "-pu",
+        "--pool-udfs",
+        required=False,
+        multiple=True,
+        help=help,
+    )
+
+
 def file_extension(help: str = "Define file extension") -> click.option:
     return click.option("-e", "--extension", required=False, default="", help=help)
 
