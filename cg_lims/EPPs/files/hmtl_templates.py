@@ -4,7 +4,7 @@ PLACEMENT_MAP_HEADER = """
     <style>table, th, td {{border: 1px solid black; border-collapse: collapse;}}</style>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <link href="../css/g/queue-print.css" rel="stylesheet" type="text/css" media="screen,print">
-    <title>{process_type}</title>
+    <title>Pooling Map</title>
     </head>
     <body>
     <div id="header">
