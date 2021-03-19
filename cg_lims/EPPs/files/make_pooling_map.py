@@ -1,41 +1,52 @@
 import logging
 import sys
-from typing import List
+from typing import List, Tuple
 from datetime import date
 import click
 from genologics.entities import Artifact, Process
 from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
-from .hmtl_templates import POOL_TEMPLATE
+from .hmtl_templates import (
+    PLACEMENT_MAP_HEADER,
+    POOL_HEADER,
+    SAMPLE_COLUMN_HEADERS,
+    SAMPLE_COLUMN_VALUES,
+)
+from .models import PlacementMapHeader, PoolSection, SampleTableSection
 
 LOG = logging.getLogger(__name__)
 
 
-def add_pool_info(pool_udfs: List[str], pool: Artifact):
+def add_pool_info(pool_udfs: List[str], pool: Artifact) -> str:
+    """Adding info about the pool"""
+
     html = []
     for udf in pool_udfs:
         value = pool.udf.get(udf)
         if value is not None:
             html.append(
-                f'<tr><td class="group-field-label">{udf}: </td><td class="group-field-value"></td></tr>{value}'
+                f'<tr><td class="group-field-label">{udf}: </td><td class="group-field-value">{value}</td></tr>'
             )
     return "".join(html)
 
 
-def add_sample_info_headers(udfs: List[str]):
+def add_sample_info_headers(udfs_headers: List[str]) -> str:
+    """Adding headers for more info about samples in the pool"""
+
     html = []
-    for udf in udfs:
-        html.append(f'<th style="width: 7%;" class="">{udf}</th>')
+    for header in udfs_headers:
+        html.append(f'<th style="width: 7%;" class="">{header}</th>')
     return "".join(html)
 
 
-def add_sample_info(sample: Artifact, sample_udfs: List[str]):
+def add_sample_info(artifact: Artifact, udfs: List[str]) -> str:
+    """Adding info about samples in the pool"""
+
     html = []
-    for udf in sample_udfs:
-        value = sample.udf.get(udf, "")
-        if value is not None:
-            html.append(f'<td class="" style="width: 7%;">{value}</td>')
+    for udf in udfs:
+        value = artifact.udf.get(udf, "")
+        html.append(f'<td class="" style="width: 7%;">{value}</td>')
     return "".join(html)
 
 
@@ -44,78 +55,43 @@ def make_html(
     process: Process,
     pool_udfs: List[str],
     sample_udfs: List[str],
-):
-    ### HEADER ###
-    html = []
-    html.append(
-        f"""
-        <html>
-        <head>
-        <style>table, th, td {{border: 1px solid black; border-collapse: collapse;}}</style>
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <link href="../css/g/queue-print.css" rel="stylesheet" type="text/css" media="screen,print">
-        <title>{process.type.name}</title>
-        </head>
-        <body>
-        <div id="header">
-        <h1 class="title">{process.type.name}</h1>
-        </div>
-        Created: {date.today().isoformat()}"""
-    )
+) -> str:
+    """Building the html for the pooling map"""
 
-    ### POOLS ###
+    html = []
+    header_info = PlacementMapHeader(process_type=process.type.name, date=date.today().isoformat())
+    html.append(PLACEMENT_MAP_HEADER.format(**header_info.dict()))
+
     for pool in pools:
-        artifacts = [(a.location[1], a) for a in pool.input_artifact_list()]
+        artifacts: List[Tuple[str, Artifact]] = [
+            (artifact.location[1], artifact) for artifact in pool.input_artifact_list()
+        ]
         # sorting on columns
         artifacts.sort(key=lambda tup: tup[0][1])
-        pool_info = {
-            "nr_samples": len(artifacts),
-            "pool_name": pool.name,
-            "pool_id": pool.id,
-            "pools_information": add_pool_info(pool_udfs, pool),
-        }
 
-        # Information about the pool
-        html.append(POOL_TEMPLATE.format(**pool_info))
-        # html.append(POOL_TEMPLATE.format(**pool_info.dict())
-
-        # Information about samples the pool
-        ## Columns Header
-        html.append(
-            f"""<tr>
-                <th style="width: 7%;" class="">Sample Lims ID</th>
-                <th style="width: 7%;" class="">Source Well</th>
-                <th style="width: 7%;" class="">Source Container</th>
-                <th style="width: 7%;" class="">Pool Name</th>
-                {add_sample_info_headers(sample_udfs)}
-                </tr>"""
+        pool_info = PoolSection(
+            nr_samples=len(artifacts),
+            pool_name=pool.name,
+            pool_id=pool.id,
+            pools_information=add_pool_info(pool_udfs, pool),
         )
-        html.append(
-            """</thead>
-            <tbody>"""
-        )
+        html.append(POOL_HEADER.format(**pool_info.dict()))
+        extra_sample_columns: str = add_sample_info_headers(sample_udfs)
+        html.append(SAMPLE_COLUMN_HEADERS.format(extra_sample_columns=extra_sample_columns))
+        html.append("""</thead><tbody>""")
 
-        ## artifact list
-        for location, art in artifacts:
-            sample = art.samples[0]
-
-            html.append(
-                f"""
-            <tr>
-            <td style="width: 7%;">{sample.id}</td>
-            <td class="" style="width: 7%;">{location}</td>
-            <td class="" style="width: 7%;">{art.container.name}</td>
-            <td class="" style="width: 7%;">{pool.name}</td>
-            {add_sample_info(sample, sample_udfs)}
-            </tr>"""
+        for location, artifact in artifacts:
+            sample = artifact.samples[0]
+            sample_table_values = SampleTableSection(
+                sample_id=sample.id,
+                source_well=location,
+                source_container=artifact.container.name,
+                pool_name=pool.name,
+                extra_sample_values=add_sample_info(artifact, sample_udfs),
             )
-        html.append(
-            """
-            </tbody>
-            </table>
-            <br><br>
-            </html>"""
-        )
+            html.append(SAMPLE_COLUMN_VALUES.format(**sample_table_values.dict()))
+        html.append("""</tbody></table><br><br></html>""")
+
     html = "".join(html)
     return html
 
@@ -142,5 +118,6 @@ def pool_map(ctx, file: str, sample_udfs: List[str], pool_udfs: List[str]):
         file = open(f"{file}.html", "w")
         file.write(html)
         file.close()
+        click.echo("The file was successfully generated.")
     except LimsError as e:
         sys.exit(e.message)

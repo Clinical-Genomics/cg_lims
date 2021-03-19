@@ -114,7 +114,7 @@ def sample_udfs(help: str = "Sample udfs.") -> click.option:
     return click.option(
         "-su",
         "--sample-udfs",
-        required=True,
+        required=False,
         multiple=True,
         help=help,
     )
@@ -124,7 +124,7 @@ def pool_udfs(help: str = "Pool udfs.") -> click.option:
     return click.option(
         "-pu",
         "--pool-udfs",
-        required=True,
+        required=False,
         multiple=True,
         help=help,
     )
