@@ -35,10 +35,8 @@ TABLE_HEADERS = """
 <th style="width: 7%;" class="">Project Name</th>
 <th style="width: 7%;" class="">Sample Name</th>
 <th style="width: 7%;" class="">Sample Lims ID</th>
-<th style="width: 7%;" class="">Original Container</th>
-<th style="width: 7%;" class="">Original Well</th>
-<th style="width: 7%;" class="">Source Container</th>
-<th style="width: 7%;" class="">Source Well</th>
+<th style="width: 7%;" class="">Container</th>
+<th style="width: 7%;" class="">Well</th>
 <th style="width: 7%;" class="">Dest. Well</th>
 </tr>"""
 
@@ -48,10 +46,8 @@ TABLE_ROWS = """
 <td style="width: 7%;">{project_name}</td>
 <td class="" style="width: 7%;">{sample_name}</td>
 <td class="" style="width: 7%;">{sample_id}</td>
-<td class="" style="width: 7%;">{orig_cont}</td>
-<td class="" style="width: 7%;">{orig_well}</td>
-<td class="" style="width: 7%;">{source_cont}</td>
-<td class="" style="width: 7%;">{source_well}</td>
+<td class="" style="width: 7%;">{container}</td>
+<td class="" style="width: 7%;">{well}</td>
 <td class="" style="width: 7%;">{dest_well}</td>
 </tr>"""
 

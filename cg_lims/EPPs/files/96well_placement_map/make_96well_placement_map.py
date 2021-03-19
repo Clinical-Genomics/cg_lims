@@ -103,11 +103,7 @@ def make_html(placement_map: dict):
         html.append("</thead>")
         html.append("<tbody>")
         for dest_well, well_data in container_info.items():
-            well_data = well_data.dict()
-            well_data.pop("exta_udf_info")
-            well_data.pop("container_type")
-            well_data.pop("well_type")
-            html.append(TABLE_ROWS.format(**well_data))
+            html.append(TABLE_ROWS.format(**well_data.dict()))
         html.append("</tbody></table><br><br>")
 
         ## VISUAL Platemap
@@ -146,18 +142,17 @@ def make_html(placement_map: dict):
 @options.original_well()
 @click.pass_context
 def placement_map(ctx, file: str, sample_udfs: List[str], original_well):
-    """Create a pool placement map."""
+    """Create a 96 well placement map."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
 
     try:
-        pools = get_placement_map_data(lims, process, sample_udfs, original_well)
+        placement_map_data = get_placement_map_data(lims, process, sample_udfs, original_well)
         html = make_html(
-            pools,
+            placement_map_data,
             process,
-            pool_udfs,
             sample_udfs,
         )
         file = open(f"{file}.html", "w")
