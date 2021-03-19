@@ -22,3 +22,4 @@ class WellInfo(BaseModel):
     well: str
     exta_udf_info: str
     dest_well: str
+    sample_type: str

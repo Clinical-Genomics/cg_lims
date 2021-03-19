@@ -14,7 +14,7 @@ from .hmtl_templates import (
     TABLE_HEADERS,
     TABLE_ROWS,
     VISUAL_PLACEMENT_MAP_HEADER,
-    VISUAL_PLACEMENT_MAP_WEL,
+    VISUAL_PLACEMENT_MAP_WELL,
 )
 
 LOG = logging.getLogger(__name__)
@@ -26,18 +26,18 @@ def get_placement_map_data(
     """collecting the data for the placement map."""
 
     placement_map = {}
-    for inp, outp in process.input_output_maps:
-        if outp.get("output-generation-type") == "PerAllInputs":
+    for input, output in process.input_output_maps:
+        if output.get("output-generation-type") == "PerAllInputs":
             continue
-        in_art = Artifact(lims, id=inp["limsid"])
-        out_art = Artifact(lims, id=outp["limsid"])
-        dest_cont = out_art.location[0]
-        dest_well = out_art.location[1]
-        if dest_cont:
-            if not dest_cont in placement_map:
-                placement_map[dest_cont] = {}
-            placement_map[dest_cont][dest_well] = make_source_dest_info(
-                in_art, out_art, original_well, udfs
+        input_artifact = Artifact(lims, id=input["limsid"])
+        output_artifact = Artifact(lims, id=output["limsid"])
+        destination_container = output_artifact.location[0]
+        destination_well = output_artifact.location[1]
+        if destination_container:
+            if not destination_container in placement_map:
+                placement_map[destination_container] = {}
+            placement_map[destination_container][destination_well] = make_source_dest_info(
+                input_artifact, output_artifact, original_well, udfs
             )
     return placement_map
 
@@ -48,6 +48,15 @@ def make_source_dest_info(
     """Collecting info about a well."""
 
     sample = source_artifact.samples[0]
+    if len(source_artifact.samples) > 1:
+        sample_name = source_artifact.name
+        sample_id = source_artifact.id
+        sample_type = "Pool"
+    else:
+        sample_name = sample.name
+        sample_id = sample.id
+        sample_type = "Sample"
+
     if original_well:
         container_type = "Original Container"
         container = sample.udf.get("Original Container", "")
@@ -60,8 +69,9 @@ def make_source_dest_info(
         well = source_artifact.location[1]
     return WellInfo(
         project_name=sample.project.name,
-        sample_name=sample.name,
-        sample_id=sample.id,
+        sample_name=sample_name,
+        sample_id=sample_id,
+        sample_type=sample_type,
         container_type=container_type,
         container=container,
         well_type=well_type,
@@ -125,7 +135,7 @@ def make_html(placement_map: dict, process: Process):
                     # This only happens if there is an artifact in the well
                     # This assumes that all artifacts have the required UDFs
                     well_info = container_info[well_location]
-                    html.append(VISUAL_PLACEMENT_MAP_WEL.format(**well_info.dict()))
+                    html.append(VISUAL_PLACEMENT_MAP_WELL.format(**well_info.dict()))
                 else:
                     # For wells that are empty:
                     html.append('<td class="well" style="">&nbsp;</td>')

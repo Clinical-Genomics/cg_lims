@@ -9,13 +9,13 @@ PLACEMENT_MAP_HEADER = """
     <div id="header">
     <h1 class="title">{process_type}</h1>
     </div>
-    Created: {date}
-    """
+    Created: {date}"""
 
 PLATE_HEADER_SECTION = """
 <tr>
 <th class="group-header" colspan="10"><h2>Sample placement map: {container_name}</h2>
-<table><tbody>
+<table>
+<tbody>
 <tr>
 <td class="group-field-label">{container_type}: </td>
 <td class="group-field-value">{container_name}</td>
@@ -24,7 +24,8 @@ PLATE_HEADER_SECTION = """
 <td class="group-field-label">Container LIMS ID: </td>
 <td class="group-field-value">{container_id}</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <br>
 </th>
 </tr>"""
@@ -32,8 +33,8 @@ PLATE_HEADER_SECTION = """
 TABLE_HEADERS = """
 <tr>
 <th style="width: 7%;" class="">Project Name</th>
-<th style="width: 7%;" class="">Sample Name</th>
-<th style="width: 7%;" class="">Sample Lims ID</th>
+<th style="width: 7%;" class="">Sample/Pool Name</th>
+<th style="width: 7%;" class="">Sample/Pool ID</th>
 <th style="width: 7%;" class="">Container</th>
 <th style="width: 7%;" class="">Well</th>
 <th style="width: 7%;" class="">Dest. Well</th>
@@ -73,11 +74,11 @@ VISUAL_PLACEMENT_MAP_HEADER = """
 </thead>
 """
 
-VISUAL_PLACEMENT_MAP_WEL = """
+VISUAL_PLACEMENT_MAP_WELL = """
 <td class="well" style="background-color: #CCC;">
 Project : {project_name}<br>
-Sample Name : {sample_name}<br>
-Sample ID : {sample_id}<br>
+{sample_type} Name : {sample_name}<br>
+{sample_type} ID : {sample_id}<br>
 {container_type} : {container}<br>
 {well_type} : {well}<br>
 {exta_udf_info}
