@@ -2,6 +2,11 @@ from pydantic import BaseModel
 
 
 class PlacementMapHeader(BaseModel):
+    process_type: str
+    date: str
+
+
+class PlateInfo(BaseModel):
     container_name: str
     container_type: str
     container_id: str

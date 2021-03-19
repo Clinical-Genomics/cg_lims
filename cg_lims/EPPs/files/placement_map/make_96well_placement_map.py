@@ -2,11 +2,12 @@ import logging
 import sys
 from typing import List
 import click
+from datetime import date
 from genologics.entities import Artifact, Process
 from genologics.lims import Lims
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError
+from .models import PlacementMapHeader, WellInfo, PlateInfo
 from .hmtl_templates import (
     PLACEMENT_MAP_HEADER,
     PLATE_HEADER_SECTION,
@@ -15,11 +16,6 @@ from .hmtl_templates import (
     VISUAL_PLACEMENT_MAP_HEADER,
     VISUAL_PLACEMENT_MAP_WEL,
 )
-from .models import (
-    PlacementMapHeader,
-    SampleTableSection,
-    WellInfo,
-)
 
 LOG = logging.getLogger(__name__)
 
@@ -27,7 +23,7 @@ LOG = logging.getLogger(__name__)
 def get_placement_map_data(
     lims: Lims, process: Process, udfs: List[str], original_well: str
 ) -> dict:
-    """"""
+    """collecting the data for the placement map."""
 
     placement_map = {}
     for inp, outp in process.input_output_maps:
@@ -46,10 +42,12 @@ def get_placement_map_data(
     return placement_map
 
 
-def make_source_dest_info(source_art, dest_art, original_well, udfs):
-    """"""
+def make_source_dest_info(
+    source_artifact: Artifact, dest_artifact: Artifact, original_well: str, udfs: List[str]
+) -> WellInfo:
+    """Collecting info about a well."""
 
-    sample = source_art.samples[0]
+    sample = source_artifact.samples[0]
     if original_well:
         container_type = "Original Container"
         container = sample.udf.get("Original Container", "")
@@ -57,10 +55,9 @@ def make_source_dest_info(source_art, dest_art, original_well, udfs):
         well = sample.udf.get("Original Well", "")
     else:
         container_type = "Source Container"
-        container = source_art.location[0]
+        container = source_artifact.location[0].id
         well_type = "Source Well"
-        well = source_art.location[1]
-
+        well = source_artifact.location[1]
     return WellInfo(
         project_name=sample.project.name,
         sample_name=sample.name,
@@ -69,7 +66,8 @@ def make_source_dest_info(source_art, dest_art, original_well, udfs):
         container=container,
         well_type=well_type,
         well=well,
-        exta_udf_info=more_sample_info(source_art, udfs),
+        exta_udf_info=more_sample_info(source_artifact, udfs),
+        dest_well=dest_artifact.location[1],
     )
 
 
@@ -86,19 +84,21 @@ def more_sample_info(artifact: Artifact, udfs: List[str]) -> str:
     return "".join(html)
 
 
-def make_html(placement_map: dict):
+def make_html(placement_map: dict, process: Process):
     """"""
 
     html = []
-    html.append(PLACEMENT_MAP_HEADER)
+    html.append("<html>")
+    header_info = PlacementMapHeader(process_type=process.type.name, date=date.today().isoformat())
+    html.append(PLACEMENT_MAP_HEADER.format(**header_info.dict()))
     for container, container_info in placement_map.items():
-        header_info = PlacementMapHeader(
+        plate_info = PlateInfo(
             container_name=container.name,
             container_type=container.type.name,
             container_id=container.id,
         )
         html.append(""""<table class="group-contents"><br><br><thead>""")
-        html.append(PLATE_HEADER_SECTION.format(**header_info.dict()))
+        html.append(PLATE_HEADER_SECTION.format(**plate_info.dict()))
         html.append(TABLE_HEADERS)
         html.append("</thead>")
         html.append("<tbody>")
@@ -111,7 +111,7 @@ def make_html(placement_map: dict):
         html.append(VISUAL_PLACEMENT_MAP_HEADER)
         html.append("<tbody>")
 
-        coulmns = range(1, 13)
+        coulmns = range(1, 14)
         rows = ["A", "B", "C", "D", "E", "F", "G", "H"]
         for rowname in rows:
             html.append(
@@ -119,17 +119,17 @@ def make_html(placement_map: dict):
                 <tr style="height: 12%;">
                 <td class="bold-column row-name">{rowname}</td>"""
             )
-            for col in coulmns:
-                well_location = f"{rowname}:{col}"
+            for column in coulmns:
+                well_location = f"{rowname}:{column}"
                 if well_location in container_info:
-                    well_info = container_info[well_location]
-                    html.append(VISUAL_PLACEMENT_MAP_WEL.format(**well_info.dict()))
                     # This only happens if there is an artifact in the well
                     # This assumes that all artifacts have the required UDFs
+                    well_info = container_info[well_location]
+                    html.append(VISUAL_PLACEMENT_MAP_WEL.format(**well_info.dict()))
                 else:
                     # For wells that are empty:
                     html.append('<td class="well" style="">&nbsp;</td>')
-                html.append("</td>")
+            html.append("</tr>")
         html.append("</body></table>")
     html.append("</html>")
     html = "".join(html)
@@ -150,11 +150,7 @@ def placement_map(ctx, file: str, sample_udfs: List[str], original_well):
 
     try:
         placement_map_data = get_placement_map_data(lims, process, sample_udfs, original_well)
-        html = make_html(
-            placement_map_data,
-            process,
-            sample_udfs,
-        )
+        html = make_html(placement_map_data, process)
         file = open(f"{file}.html", "w")
         file.write(html)
         file.close()
