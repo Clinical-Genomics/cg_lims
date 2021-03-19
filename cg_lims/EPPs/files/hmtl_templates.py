@@ -20,7 +20,7 @@ POOL_HEADER = """
     <table>
     <tbody>
     <tr>
-    <td class="group-field-label">Container LIMS ID: </td>
+    <td class="group-field-label">Pool LIMS ID: </td>
     <td class="group-field-value">{pool_id}</td>
     </tr>
     <tr>
