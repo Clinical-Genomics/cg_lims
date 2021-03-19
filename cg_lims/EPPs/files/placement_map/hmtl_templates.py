@@ -9,7 +9,7 @@ PLACEMENT_MAP_HEADER = """
     <div id="header">
     <h1 class="title">{process_type}</h1>
     </div>
-    Created: {date}"""
+    Created {date}"""
 
 PLATE_HEADER_SECTION = """
 <tr>
