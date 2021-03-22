@@ -82,7 +82,7 @@ def make_source_dest_info(
 
 
 def more_sample_info(artifact: Artifact, udfs: List[str]) -> str:
-    """Adding info about sample in the well"""
+    """Adding more udf info about sample in the well."""
 
     html = []
     for udf in udfs:
@@ -94,8 +94,8 @@ def more_sample_info(artifact: Artifact, udfs: List[str]) -> str:
     return "".join(html)
 
 
-def make_html(placement_map: dict, process: Process, original_well: str):
-    """"""
+def make_html(placement_map: dict, process: Process, original_well: str) -> str:
+    """Creating the html."""
 
     html = []
     html.append("<html>")
@@ -152,7 +152,7 @@ def make_html(placement_map: dict, process: Process, original_well: str):
 @options.sample_udfs(help="Sample UDFs to show in the placement map.")
 @options.original_well()
 @click.pass_context
-def placement_map(ctx, file: str, sample_udfs: List[str], original_well):
+def placement_map(ctx, file: str, sample_udfs: List[str], original_well: str):
     """Create a 96 well placement map."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
