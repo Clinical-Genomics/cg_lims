@@ -94,13 +94,14 @@ def more_sample_info(artifact: Artifact, udfs: List[str]) -> str:
     return "".join(html)
 
 
-def make_html(placement_map: dict, process: Process):
+def make_html(placement_map: dict, process: Process, original_well: str):
     """"""
 
     html = []
     html.append("<html>")
     header_info = PlacementMapHeader(process_type=process.type.name, date=date.today().isoformat())
     html.append(PLACEMENT_MAP_HEADER.format(**header_info.dict()))
+    container_type = "Original" if original_well else "Source"
     for container, container_info in placement_map.items():
         plate_info = PlateInfo(
             container_name=container.name,
@@ -109,7 +110,7 @@ def make_html(placement_map: dict, process: Process):
         )
         html.append(""""<table class="group-contents"><br><br><thead>""")
         html.append(PLATE_HEADER_SECTION.format(**plate_info.dict()))
-        html.append(TABLE_HEADERS)
+        html.append(TABLE_HEADERS.format(container_type=container_type))
         html.append("</thead>")
         html.append("<tbody>")
         for dest_well, well_data in container_info.items():
@@ -160,7 +161,7 @@ def placement_map(ctx, file: str, sample_udfs: List[str], original_well):
 
     try:
         placement_map_data = get_placement_map_data(lims, process, sample_udfs, original_well)
-        html = make_html(placement_map_data, process)
+        html = make_html(placement_map_data, process, original_well)
         file = open(f"{file}.html", "w")
         file.write(html)
         file.close()

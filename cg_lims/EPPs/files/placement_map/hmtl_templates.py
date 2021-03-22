@@ -35,8 +35,8 @@ TABLE_HEADERS = """
 <th style="width: 7%;" class="">Project Name</th>
 <th style="width: 7%;" class="">Sample/Pool Name</th>
 <th style="width: 7%;" class="">Sample/Pool ID</th>
-<th style="width: 7%;" class="">Container</th>
-<th style="width: 7%;" class="">Well</th>
+<th style="width: 7%;" class="">{container_type} Container</th>
+<th style="width: 7%;" class="">{container_type} Well</th>
 <th style="width: 7%;" class="">Dest. Well</th>
 </tr>"""
 
