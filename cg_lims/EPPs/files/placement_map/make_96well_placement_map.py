@@ -64,7 +64,7 @@ def make_source_dest_info(
         well = sample.udf.get("Original Well", "")
     else:
         container_type = "Source Container"
-        container = source_artifact.location[0].id
+        container = source_artifact.location[0].name
         well_type = "Source Well"
         well = source_artifact.location[1]
     return WellInfo(
