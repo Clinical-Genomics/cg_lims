@@ -130,6 +130,30 @@ def pool_udfs(help: str = "Pool udfs.") -> click.option:
     )
 
 
+def size_udf(help: str = "Udf for fetching size.") -> click.option:
+    return click.option(
+        "--size-udf",
+        required=True,
+        help=help,
+    )
+
+
+def concantration_udf(help: str = "Udf for Concantration (??).") -> click.option:
+    return click.option(
+        "--conc-udf",
+        required=True,
+        help=help,
+    )
+
+
+def concantration_nm_udf(help: str = "Udf for Concantration (nM).") -> click.option:
+    return click.option(
+        "--conc-nm-udf",
+        required=True,
+        help=help,
+    )
+
+
 def file_extension(help: str = "Define file extension") -> click.option:
     return click.option("-e", "--extension", required=False, default="", help=help)
 
