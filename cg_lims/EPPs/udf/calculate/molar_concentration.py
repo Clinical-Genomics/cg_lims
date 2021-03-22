@@ -27,7 +27,6 @@ def calculate_concentrations(
         art.udf[conc_nm_udf] = concentration * factor
         art.put()
         passed_arts += 1
-
     if missing_udfs_count:
         raise MissingUDFsError(
             f"Udf missing for {missing_udfs_count} sample(s). Concentration calculated for {passed_arts} samples."
