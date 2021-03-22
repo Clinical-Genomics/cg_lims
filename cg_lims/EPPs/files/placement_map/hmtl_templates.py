@@ -9,7 +9,7 @@ PLACEMENT_MAP_HEADER = """
     <div id="header">
     <h1 class="title">{process_type}</h1>
     </div>
-    Created {date}"""
+    <span>Created {date} </span>"""
 
 PLATE_HEADER_SECTION = """
 <tr>
@@ -71,8 +71,7 @@ VISUAL_PLACEMENT_MAP_HEADER = """
 <th>12</th>
 <th>13</th>
 </tr>
-</thead>
-"""
+</thead>"""
 
 VISUAL_PLACEMENT_MAP_WELL = """
 <td class="well" style="background-color: #CCC;">

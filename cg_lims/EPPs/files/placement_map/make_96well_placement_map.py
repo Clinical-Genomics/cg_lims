@@ -108,7 +108,7 @@ def make_html(placement_map: dict, process: Process, original_well: str) -> str:
             container_type=container.type.name,
             container_id=container.id,
         )
-        html.append(""""<table class="group-contents"><br><br><thead>""")
+        html.append("""<table class="group-contents"><br><br><thead>""")
         html.append(PLATE_HEADER_SECTION.format(**plate_info.dict()))
         html.append(TABLE_HEADERS.format(container_type=container_type))
         html.append("</thead>")
@@ -141,7 +141,7 @@ def make_html(placement_map: dict, process: Process, original_well: str) -> str:
                     # For wells that are empty:
                     html.append('<td class="well" style="">&nbsp;</td>')
             html.append("</tr>")
-        html.append("</body></table>")
+        html.append("</tbody></table>")
     html.append("</html>")
     html = "".join(html)
     return html
