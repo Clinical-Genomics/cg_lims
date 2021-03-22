@@ -32,10 +32,10 @@ def get_placement_map_data(
         input_artifact = Artifact(lims, id=input["limsid"])
         output_artifact = Artifact(lims, id=output["limsid"])
         destination_container = output_artifact.location[0]
-        destination_well = output_artifact.location[1]
         if destination_container:
-            if not destination_container in placement_map:
+            if destination_container not in placement_map:
                 placement_map[destination_container] = {}
+            destination_well = output_artifact.location[1]
             placement_map[destination_container][destination_well] = make_source_dest_info(
                 input_artifact, output_artifact, original_well, udfs
             )
@@ -97,8 +97,7 @@ def more_sample_info(artifact: Artifact, udfs: List[str]) -> str:
 def make_html(placement_map: dict, process: Process, original_well: str) -> str:
     """Creating the html."""
 
-    html = []
-    html.append("<html>")
+    html = ["<html>"]
     header_info = PlacementMapHeader(process_type=process.type.name, date=date.today().isoformat())
     html.append(PLACEMENT_MAP_HEADER.format(**header_info.dict()))
     container_type = "Original" if original_well else "Source"
@@ -162,9 +161,8 @@ def placement_map(ctx, file: str, sample_udfs: List[str], original_well: str):
     try:
         placement_map_data = get_placement_map_data(lims, process, sample_udfs, original_well)
         html = make_html(placement_map_data, process, original_well)
-        file = open(f"{file}.html", "w")
-        file.write(html)
-        file.close()
+        with open(f"{file}.html", "w") as file:
+            file.write(html)
         click.echo("The file was successfully generated.")
     except LimsError as e:
         sys.exit(e.message)
