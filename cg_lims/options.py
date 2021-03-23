@@ -87,6 +87,18 @@ def input(
     )
 
 
+def original_well(
+    help: str = "Use this flag if you want original well instead of source well.",
+) -> click.option:
+    return click.option(
+        "-o",
+        "--original-well",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
 def measurement(
     help: str = "Use this flag if you run the script from a QC step and want "
     "to get the measurement artifacts.",
