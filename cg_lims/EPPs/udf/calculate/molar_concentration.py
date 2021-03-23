@@ -13,18 +13,33 @@ LOG = logging.getLogger(__name__)
 
 
 def calculate_concentrations(
-    artifacts: List[Artifact], size_udf: str, conc_nm_udf: str, conc_udf: str
+    artifacts: List[Artifact], size_udf: str, molar_concentration_udf: str, concentration_udf: str
 ) -> None:
+    """
+    Formula to calculate molar concentration (nM) from weight concentration (ng/ul) and fragment size (bp) is:
+
+    molar_concentration = concentration * 1e6 / (average_molecular_weight * strands * fragment_size)
+
+    where:
+    fragment_size is the number of base pares of the DNA fragment (bp)
+    concentration is the concentration of dna (ng/ul)
+    average_molecular_weight = 328.3 is the average molecular weight of nucleotides, in g/mol.
+    strands = (one/two) for single or double stranded DNA
+    molar_concentration (nM)
+    """
+    average_molecular_weight = 328.3
+    strands = 2
+
     passed_arts = 0
     missing_udfs_count = 0
     for art in artifacts:
         size = art.udf.get(size_udf)
-        concentration = art.udf.get(conc_udf)
+        concentration = art.udf.get(concentration_udf)
         if None in [size, concentration]:
             missing_udfs_count += 1
             continue
-        factor = 1e6 / (328.3 * 2 * float(size))
-        art.udf[conc_nm_udf] = concentration * factor
+        factor = 1e6 / (average_molecular_weight * strands * float(size))
+        art.udf[molar_concentration_udf] = concentration * factor
         art.put()
         passed_arts += 1
     if missing_udfs_count:
@@ -40,10 +55,7 @@ def calculate_concentrations(
 @options.concantration_udf()
 @click.pass_context
 def molar_concentration(ctx, input: bool, size_udf: str, conc_nm_udf: str, conc_udf: str) -> None:
-    """Script to calculate molar concentration given the
-    weight concentration, in Clarity LIMS. Before updating the artifacts,
-    the script verifies that 'Concentration' and 'Size (bp)' udf:s are not blank,
-    Artifacts that do not fulfill the requirements, will not be updated."""
+    """Script to calculate molar concentration given the weight concentration and fragment size. """
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
@@ -52,7 +64,10 @@ def molar_concentration(ctx, input: bool, size_udf: str, conc_nm_udf: str, conc_
     try:
         artifacts = get_artifacts(process=process, input=input)
         calculate_concentrations(
-            artifacts=artifacts, size_udf=size_udf, conc_nm_udf=conc_nm_udf, conc_udf=conc_udf
+            artifacts=artifacts,
+            size_udf=size_udf,
+            molar_concentration_udf=conc_nm_udf,
+            concentration_udf=conc_udf,
         )
         message = "Concentration (nM) have been calculated for all samples."
         LOG.info(message)
