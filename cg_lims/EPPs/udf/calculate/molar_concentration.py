@@ -1,6 +1,6 @@
 import logging
 import sys
-from typing import List
+from typing import List, Optional
 
 import click
 from genologics.entities import Artifact
@@ -8,6 +8,7 @@ from genologics.entities import Artifact
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims import options
+from pydantic import BaseModel, Field
 
 LOG = logging.getLogger(__name__)
 
@@ -48,13 +49,39 @@ def calculate_concentrations(
         )
 
 
+class ArtifactUDFs(BaseModel):
+    size_base_pairs: Optional[int] = Field(None, alias="Size (bp)")
+    average_size_base_pairs: Optional[float] = Field(None, alias="Average Size (bp)")
+    concentration: float = Field(..., alias="Concentration")
+
+
+AVERAGE_MOLECULAR_WEIGHT = 328.3
+STRANDS = 2
+FORMULA = 1e6 / (AVERAGE_MOLECULAR_WEIGHT * STRANDS)
+
+
+def calculate_concentration(udf: ArtifactUDFs) -> float:
+
+    return udf.concentration / udf.size_base_pairs * FORMULA
+
+
+def add_concentration(artifact: Artifact, conc_nm_udf: str) -> None:
+    udf_object = ArtifactUDFs(**artifact.udf)
+    artifact.udf[conc_nm_udf] = calculate_concentrations(udf_object)
+    artifact.put()
+
+
+def update_artifacts(artifacts: List[Artifact], conc_nm_udf: str) -> None:
+    for artifact in artifacts:
+        add_concentration(artifact=artifact, conc_nm_udf=conc_nm_udf)
+
+
 @click.command()
 @options.input()
-@options.size_udf()
+@click.option("--size-average", is_flag=True)
 @options.concantration_nm_udf()
-@options.concantration_udf()
 @click.pass_context
-def molar_concentration(ctx, input: bool, size_udf: str, conc_nm_udf: str, conc_udf: str) -> None:
+def molar_concentration(ctx, input: bool, size_average: bool, conc_nm_udf: str) -> None:
     """Script to calculate molar concentration given the weight concentration and fragment size. """
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -62,7 +89,8 @@ def molar_concentration(ctx, input: bool, size_udf: str, conc_nm_udf: str, conc_
     process = ctx.obj["process"]
 
     try:
-        artifacts = get_artifacts(process=process, input=input)
+        artifacts: List[Artifact] = get_artifacts(process=process, input=input)
+
         calculate_concentrations(
             artifacts=artifacts,
             size_udf=size_udf,
