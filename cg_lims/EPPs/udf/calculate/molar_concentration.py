@@ -42,7 +42,6 @@ def calculate_concentrations(
         artifact.put()
     if missing_udfs_count:
         passed_artifacts = len(artifacts) - missing_udfs_count
-        print("jkjkkl")
         raise MissingUDFsError(
             f"Udf missing for {missing_udfs_count} sample(s). Concentration calculated for {passed_artifacts} samples."
         )
