@@ -29,22 +29,22 @@ def calculate_concentrations(
     """
     average_molecular_weight = 328.3
     strands = 2
-
-    passed_arts = 0
     missing_udfs_count = 0
-    for art in artifacts:
-        size = art.udf.get(size_udf)
-        concentration = art.udf.get(concentration_udf)
+
+    for artifact in artifacts:
+        size = artifact.udf.get(size_udf)
+        concentration = artifact.udf.get(concentration_udf)
         if None in [size, concentration]:
             missing_udfs_count += 1
             continue
         factor = 1e6 / (average_molecular_weight * strands * float(size))
-        art.udf[molar_concentration_udf] = concentration * factor
-        art.put()
-        passed_arts += 1
+        artifact.udf[molar_concentration_udf] = concentration * factor
+        artifact.put()
     if missing_udfs_count:
+        passed_artifacts = len(artifacts) - missing_udfs_count
+        print("jkjkkl")
         raise MissingUDFsError(
-            f"Udf missing for {missing_udfs_count} sample(s). Concentration calculated for {passed_arts} samples."
+            f"Udf missing for {missing_udfs_count} sample(s). Concentration calculated for {passed_artifacts} samples."
         )
 
 
