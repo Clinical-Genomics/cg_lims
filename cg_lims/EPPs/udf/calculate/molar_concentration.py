@@ -21,11 +21,11 @@ def calculate_concentrations(
     molar_concentration = concentration * 1e6 / (average_molecular_weight * strands * fragment_size)
 
     where:
-    fragment_size is the number of base pares of the DNA fragment (bp)
-    concentration is the concentration of dna (ng/ul)
-    average_molecular_weight = 328.3 is the average molecular weight of nucleotides, in g/mol.
-    strands = (one/two) for single or double stranded DNA
-    molar_concentration (nM)
+    - fragment_size is the number of base pairs of the DNA fragment (bp)
+    - concentration is the concentration of dna (ng/ul)
+    - average_molecular_weight = 328.3 is the average molecular weight of nucleotides, in g/mol.
+    - strands = (one/two) for single or double stranded DNA
+    - molar_concentration (nM)
     """
     average_molecular_weight = 328.3
     strands = 2
