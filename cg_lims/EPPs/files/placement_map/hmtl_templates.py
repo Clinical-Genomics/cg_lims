@@ -35,8 +35,8 @@ TABLE_HEADERS = """
 <th style="width: 7%;" class="">Project Name</th>
 <th style="width: 7%;" class="">Sample/Pool Name</th>
 <th style="width: 7%;" class="">Sample/Pool ID</th>
-<th style="width: 7%;" class="">{container_type} Container</th>
-<th style="width: 7%;" class="">{container_type} Well</th>
+<th style="width: 7%;" class="">{container_source} Container</th>
+<th style="width: 7%;" class="">{container_source} Well</th>
 <th style="width: 7%;" class="">Dest. Well</th>
 </tr>"""
 
@@ -46,7 +46,7 @@ TABLE_ROWS = """
 <td style="width: 7%;">{project_name}</td>
 <td class="" style="width: 7%;">{sample_name}</td>
 <td class="" style="width: 7%;">{sample_id}</td>
-<td class="" style="width: 7%;">{container}</td>
+<td class="" style="width: 7%;">{container_name}</td>
 <td class="" style="width: 7%;">{well}</td>
 <td class="" style="width: 7%;">{dest_well}</td>
 </tr>"""
@@ -78,7 +78,7 @@ VISUAL_PLACEMENT_MAP_WELL = """
 Project : {project_name}<br>
 {sample_type} Name : {sample_name}<br>
 {sample_type} ID : {sample_id}<br>
-{container_type} : {container}<br>
-{well_type} : {well}<br>
+{container_source} : {container_name}<br>
+{well_source} : {well}<br>
 {exta_udf_info}
 </td>"""
