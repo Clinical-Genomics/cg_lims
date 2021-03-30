@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import logging
-import math
 import sys
 import csv
 from pathlib import Path
@@ -46,7 +45,7 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
         for sample in reader:
             well = sample.get(well_field)
             value = sample.get(value_field)
-            if not value or math.isnan(value) or well not in well_dict:
+            if value is None or well not in well_dict:
                 error_msg = "Some samples in the step were not represented in the file."
                 continue
             art = well_dict[well]
