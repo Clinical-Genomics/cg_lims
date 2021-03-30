@@ -45,8 +45,6 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
         for sample in reader:
             well = sample.get(well_field)
             value = sample.get(value_field)
-            print(type(value))
-            print(value)
             if value is None or well not in well_dict:
                 error_msg = "Some samples in the step were not represented in the file."
                 continue
