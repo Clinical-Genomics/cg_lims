@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import logging
-import math
 import sys
 import csv
 from pathlib import Path
@@ -39,26 +38,33 @@ def make_well_dict(process, lims, input):
 def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, result_file: Path):
     """Reads the csv and sets the value for each sample"""
 
-    error_msg = ""
+    error_msg = []
     passed_arts = 0
     with open(result_file, newline="", encoding="latin1") as csvfile:
         reader = csv.DictReader(csvfile)
         for sample in reader:
             well = sample.get(well_field)
             value = sample.get(value_field)
-            if not value or math.isnan(value) or well not in well_dict:
-                error_msg = "Some samples in the step were not represented in the file."
+            if value is None:
+                error_msg.append("Some samples in the file hade missing values.")
+                continue
+            elif well not in well_dict:
+                error_msg.append("Some samples in the step were not represented in the file.")
                 continue
             art = well_dict[well]
-            art.udf[udf] = value
+            try:
+            	art.udf[udf] = str(value)
+            except:
+                art.udf[udf] = float(value)
             art.put()
             passed_arts += 1
 
     if passed_arts < len(well_dict.keys()):
-        error_msg = f"{error_msg} Some samples in the step were not represented in the file."
+        error_msg.append("Some samples in the step were not represented in the file.")
 
+    error_string = ' '.join(list(set(error_msg)))
     if error_msg:
-        raise MissingArtifactError(error_msg)
+        raise MissingArtifactError(error_string)
 
 
 @click.command()
