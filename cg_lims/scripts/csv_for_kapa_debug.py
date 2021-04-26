@@ -6,7 +6,7 @@ import yaml
 from genologics.lims import Lims
 from pydantic import BaseModel, Field
 
-from cg_lims.app.schemas.workflows.master_steps import (
+from cg_lims.app.schemas.master_steps import (
     HybridizeLibraryTWIST,
     AliquotsamplesforenzymaticfragmentationTWIST,
     KAPALibraryPreparation,
