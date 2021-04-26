@@ -8,6 +8,7 @@ from cg_lims.cgface_api import CgFace
 
 # commands
 from cg_lims.EPPs import epps
+from cg_lims.commands.twist import twist
 
 
 @click.group(invoke_without_command=True)
@@ -25,3 +26,4 @@ def cli(ctx, config):
 
 
 cli.add_command(epps)
+cli.add_command(twist)
