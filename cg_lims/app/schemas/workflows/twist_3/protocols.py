@@ -1,5 +1,4 @@
-from pydantic import BaseModel, Field
-from .steps import *
+from cg_lims.app.schemas.workflows.master_steps import *
 
 
 class PreProcessingTWISTv2(BaseModel):
