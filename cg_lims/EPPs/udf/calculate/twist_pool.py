@@ -35,8 +35,13 @@ class TwistPool(Pool):
         for art in self.artifact.input_artifact_list():
             reads = art.samples[0].udf.get("Reads missing (M)")
             concentration = art.udf.get("Concentration")
+            total_amount = self.artifact.udf.get("Total Amount (ng)")
+            if None in [reads, concentration, total_amount]:
+                self.qc_flag = "FAILED"
+                self.amount_fail = True
+                continue
             fract_of_pool = reads / float(self.total_reads_missing)
-            amount_to_pool = self.artifact.udf.get("Total Amount (ng)") * fract_of_pool
+            amount_to_pool = total_amount * fract_of_pool
             vol = amount_to_pool / concentration
             if vol > AVALIBLE_SAMPLE_VOLUME:
                 vol = AVALIBLE_SAMPLE_VOLUME
@@ -80,7 +85,7 @@ def calculate_volumes_for_pooling(pools: List[Artifact]):
 
     if amount_failed_for_some_pool:
         raise LowAmountError(
-            "Input amount low for samples in some pool. Generate placement map for more info."
+            "Input amount low for samples in some pool or udfs missing. Generate placement map for more info."
         )
 
 
