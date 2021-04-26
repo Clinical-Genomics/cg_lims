@@ -1,7 +1,8 @@
 import csv
-from pathlib import Path
 from typing import List
 
+import click
+import yaml
 from genologics.lims import Lims
 from pydantic import BaseModel, Field
 
@@ -142,9 +143,25 @@ def build_sample_row(lims: Lims, sample_id: str) -> list:
     return [sample_row_dict.get(header) for header in HEADERS]
 
 
-def build_csv(lims: Lims, samples: List[str]):
+@click.command()
+@click.option("--config")
+@click.option("--sample_file")
+def build_csv(config: str, sample_file: str):
+    with open(config) as file:
+        config_data = yaml.load(file, Loader=yaml.FullLoader)
+    lims = Lims(config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"])
+
+    with open(sample_file, "r") as samples:
+        sample_list = [sample_id.strip("\n") for sample_id in samples.readlines()]
+
     with open("twist.csv", "w", newline="\n") as new_csv:
         wr = csv.writer(new_csv, delimiter=",")
         wr.writerow(HEADERS)
-        sample_rows: List[List[str]] = [build_sample_row(lims, sample_id) for sample_id in samples]
+        sample_rows: List[List[str]] = [
+            build_sample_row(lims, sample_id) for sample_id in sample_list
+        ]
         wr.writerows(sample_rows)
+
+
+if __name__ == "__main__":
+    build_csv()
