@@ -9,10 +9,6 @@ def process(help: str = "Lims id for current Process.") -> click.option:
     return click.option("-p", "--process", required=True, help=help)
 
 
-def sample_id(help: str = "Lims id for sample.") -> click.option:
-    return click.option("-s", "--sample-id", required=True, help=help)
-
-
 def log(
     help: str = "Path to log file.",
 ) -> click.option:
