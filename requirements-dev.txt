@@ -2,4 +2,3 @@ pytest>=5.2
 pytest-cov
 coveralls
 pylint
-genologics_mock
