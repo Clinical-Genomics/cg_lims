@@ -1,0 +1,3 @@
+ignore-failures:
+    python:
+      - genologics
