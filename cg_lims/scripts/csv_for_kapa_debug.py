@@ -161,6 +161,7 @@ def build_csv(config: str, sample_file: str):
             build_sample_row(lims, sample_id) for sample_id in sample_list
         ]
         wr.writerows(sample_rows)
+    click.echo("Twist csv file has been generated.")
 
 
 if __name__ == "__main__":
