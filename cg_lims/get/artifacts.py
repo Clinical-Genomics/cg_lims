@@ -73,7 +73,6 @@ def get_latest_artifact(lims: Lims, sample_id: str, process_type: List[str]) -> 
         )
 
     artifacts = [(a.parent_process.date_run, a.id, a) for a in artifacts]
-    print(artifacts)
     artifacts.sort()
     date, id, latest_art = artifacts[-1]
 
