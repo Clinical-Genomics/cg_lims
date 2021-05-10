@@ -116,7 +116,7 @@ def make_hamilton_barcode_file(ctx: click.Context, file: str):
     print(artifacts)
     try:
         get_file_data_and_write(
-            lims=lims, artifacts=artifacts, file=f"{file}-hamilton-barcodes.txt"
+            lims=lims, artifacts=artifacts, file=f"{file}-hamilton-normalization.txt"
         )
         click.echo("The file was successfully generated.")
     except LimsError as e:
