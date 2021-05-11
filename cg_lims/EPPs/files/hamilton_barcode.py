@@ -44,7 +44,7 @@ class BarcodeFileRow(BaseModel):
     source_labware: str = Field(..., alias="Source Labware")
     barcode_source_container: str = Field(..., alias="Barcode Source Container")
     source_well: str = Field(..., alias="Source Well")
-    sample_volume: str = Field(..., alias="Sample Volume")
+    volume: str = Field(..., alias="Sample Volume")
     destination_labware: str = Field(..., alias="Destination Labware")
     barcode_destination_container: str = Field(..., alias="Barcode Destination Container")
     destination_well: str = Field(..., alias="Destination Well")
@@ -54,7 +54,9 @@ class BarcodeFileRow(BaseModel):
         allow_population_by_field_name = True
 
 
-def get_file_data_and_write(lims: Lims, artifacts: List[Artifact], file: str):
+def get_file_data_and_write(
+    lims: Lims, artifacts: List[Artifact], file: str, volume_udf: str, buffer_udf: str
+):
     """Getting row data for hamilton file based on amount and reagent label"""
 
     failed_samples = []
@@ -62,6 +64,7 @@ def get_file_data_and_write(lims: Lims, artifacts: List[Artifact], file: str):
     for artifact in artifacts:
 
         source_artifacts = artifact.input_artifact_list()
+        pool: bool = len(source_artifacts) > 1
 
         for source_artifact in source_artifacts:
             try:
@@ -69,11 +72,15 @@ def get_file_data_and_write(lims: Lims, artifacts: List[Artifact], file: str):
                     source_labware=source_artifact.location[0].type.name,
                     barcode_source_container=source_artifact.udf.get("Barcode"),
                     source_well=source_artifact.location[1].replace(":", ""),
-                    sample_volume=artifact.udf.get("Sample Volume (ul)"),
+                    volume=(
+                        source_artifact.udf.get(volume_udf)
+                        if pool
+                        else artifact.udf.get(volume_udf)
+                    ),
                     destination_labware=artifact.location[0].type.name,
                     barcode_destination_container=artifact.udf.get("Barcode"),
                     destination_well=artifact.location[1].replace(":", ""),
-                    buffer_volume=artifact.udf.get("Volume H2O (ul)"),
+                    buffer_volume=artifact.udf.get(buffer_udf),
                 )
             except:
                 failed_samples.append(source_artifact.id)
@@ -92,16 +99,23 @@ def get_file_data_and_write(lims: Lims, artifacts: List[Artifact], file: str):
 
 @click.command()
 @options.file_placeholder(help="Hamilton Noramlization File")
+@options.buffer_udf()
+@options.volume_udf()
 @click.pass_context
-def make_hamilton_barcode_file(ctx: click.Context, file: str):
-    """Script to make a csv file for hamilton. See AM doc #2125"""
+def make_hamilton_barcode_file(ctx: click.Context, file: str, volume_udf: str, buffer_udf: str):
+    """Script to make a """
+
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
     artifacts = get_artifacts(process=process, input=False)
     try:
         get_file_data_and_write(
-            lims=lims, artifacts=artifacts, file=f"{file}-hamilton-normalization.txt"
+            lims=lims,
+            artifacts=artifacts,
+            file=f"{file}-hamilton-normalization.txt",
+            volume_udf=volume_udf,
+            buffer_udf=buffer_udf,
         )
         click.echo("The file was successfully generated.")
     except LimsError as e:

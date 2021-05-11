@@ -29,6 +29,18 @@ def udf(
     return click.option("-u", "--udf", required=True, help=help)
 
 
+def buffer_udf(
+    help: str = "UDF name",
+) -> click.option:
+    return click.option("-b", "--buffer-udf", required=True, help=help)
+
+
+def volume_udf(
+    help: str = "UDF name",
+) -> click.option:
+    return click.option("-v", "--volume-udf", required=True, help=help)
+
+
 def well_field(
     help: str = "Well field in file",
 ) -> click.option:
