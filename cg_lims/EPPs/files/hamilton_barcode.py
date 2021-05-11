@@ -62,29 +62,25 @@ def get_file_data_and_write(lims: Lims, artifacts: List[Artifact], file: str):
     for artifact in artifacts:
 
         source_artifacts = artifact.input_artifact_list()
-        if len(source_artifacts) != 1:
-            # warn
-            continue
-        source_artifact = source_artifacts[0]
 
-        try:
-            row_data = BarcodeFileRow(
-                source_labware=source_artifact.location[0].type.name,
-                barcode_source_container=source_artifact.udf.get("Barcode"),
-                source_well=source_artifact.location[1].replace(":", ""),
-                sample_volume=artifact.udf.get("Sample Volume (ul)"),
-                destination_labware=artifact.location[0].type.name,
-                barcode_destination_container=artifact.udf.get("Barcode"),
-                destination_well=artifact.location[1].replace(":", ""),
-                buffer_volume=artifact.udf.get("Volume H2O (ul)"),
-            )
-        except:
-            failed_samples.append(artifact.id)
-            continue
+        for source_artifact in source_artifacts:
+            try:
+                row_data = BarcodeFileRow(
+                    source_labware=source_artifact.location[0].type.name,
+                    barcode_source_container=source_artifact.udf.get("Barcode"),
+                    source_well=source_artifact.location[1].replace(":", ""),
+                    sample_volume=artifact.udf.get("Sample Volume (ul)"),
+                    destination_labware=artifact.location[0].type.name,
+                    barcode_destination_container=artifact.udf.get("Barcode"),
+                    destination_well=artifact.location[1].replace(":", ""),
+                    buffer_volume=artifact.udf.get("Volume H2O (ul)"),
+                )
+            except:
+                failed_samples.append(source_artifact.id)
+                continue
 
-        row_data_dict = row_data.dict(by_alias=True)
-
-        file_rows.append([row_data_dict[header] for header in HEADERS])
+            row_data_dict = row_data.dict(by_alias=True)
+            file_rows.append([row_data_dict[header] for header in HEADERS])
 
     build_csv(file_name=file, rows=file_rows, headers=HEADERS)
 
