@@ -1,0 +1,324 @@
+<prc:process xmlns:udf="http://genologics.com/ri/userdefined" xmlns:file="http://genologics.com/ri/file" xmlns:prc="http://genologics.com/ri/process" uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193823" limsid="24-193823">
+<type uri="https://clinical-lims-stage.scilifelab.se/api/v2/processtypes/1357">Aliquot samples for enzymatic fragmentation TWIST v2</type>
+<technician uri="https://clinical-lims-stage.scilifelab.se/api/v2/researchers/157">
+<first-name>Maya</first-name>
+<last-name>Brandi</last-name>
+</technician>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" limsid="ACC7905A1PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450809?state=1111170" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450809"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" limsid="ACC7905A1PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" limsid="ACC7905A1PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" limsid="ACC7905A1PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" limsid="ACC7905A1PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A1PA1?state=1110970" limsid="ACC7905A1PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" limsid="ACC7905A2PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450810?state=1111171" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450810"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" limsid="ACC7905A2PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" limsid="ACC7905A2PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" limsid="ACC7905A2PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" limsid="ACC7905A2PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A2PA1?state=1110971" limsid="ACC7905A2PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" limsid="ACC7905A3PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450811?state=1111172" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450811"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" limsid="ACC7905A3PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" limsid="ACC7905A3PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" limsid="ACC7905A3PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" limsid="ACC7905A3PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A3PA1?state=1110972" limsid="ACC7905A3PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" limsid="ACC7905A4PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450812?state=1111173" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450812"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" limsid="ACC7905A4PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" limsid="ACC7905A4PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" limsid="ACC7905A4PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" limsid="ACC7905A4PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/ACC7905A4PA1?state=1110973" limsid="ACC7905A4PA1"/>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" limsid="2-1450463">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450813?state=1111174" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450813"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" limsid="2-1450463">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" limsid="2-1450463">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" limsid="2-1450463">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" limsid="2-1450463">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450463?state=1110964" limsid="2-1450463">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" limsid="2-1450464">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450814?state=1111175" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450814"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" limsid="2-1450464">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" limsid="2-1450464">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" limsid="2-1450464">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" limsid="2-1450464">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450464?state=1110965" limsid="2-1450464">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" limsid="2-1450465">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450815?state=1111176" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450815"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" limsid="2-1450465">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" limsid="2-1450465">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" limsid="2-1450465">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" limsid="2-1450465">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450465?state=1110966" limsid="2-1450465">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" limsid="2-1450466">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450816?state=1111177" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450816"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" limsid="2-1450466">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" limsid="2-1450466">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" limsid="2-1450466">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" limsid="2-1450466">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450466?state=1110967" limsid="2-1450466">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" limsid="2-1450467">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450817?state=1111178" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450817"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" limsid="2-1450467">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" limsid="2-1450467">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" limsid="2-1450467">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" limsid="2-1450467">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450467?state=1110968" limsid="2-1450467">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" limsid="2-1450468">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450818?state=1111179" output-generation-type="PerInput" output-type="Analyte" limsid="2-1450818"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" limsid="2-1450468">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450819?state=1111180" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450819"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" limsid="2-1450468">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450820?state=1111181" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450820"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" limsid="2-1450468">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450821?state=1111182" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450821"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" limsid="2-1450468">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450822?state=1111183" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450822"/>
+</input-output-map>
+<input-output-map>
+<input post-process-uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450468?state=1110969" limsid="2-1450468">
+<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/24-193803" limsid="24-193803"/>
+</input>
+<output uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/92-1450823?state=1111184" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1450823"/>
+</input-output-map>
+<udf:field type="String" name="Method Document Version">1</udf:field>
+<udf:field type="String" name="Nuclease free water">1</udf:field>
+<udf:field type="Numeric" name="Total Volume (ul)">30</udf:field>
+<udf:field type="String" name="Method document">1993</udf:field>
+<process-parameter name="Hamilton Normalization File"/>
+</prc:process>

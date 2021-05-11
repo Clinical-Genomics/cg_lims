@@ -43,7 +43,7 @@ class BarcodeFileRow(BaseModel):
 
 
 def get_file_data_and_write(
-    lims: Lims, artifacts: List[Artifact], file: str, volume_udf: str, buffer_udf: str
+    lims: Lims, destination_artifacts: List[Artifact], file: str, volume_udf: str, buffer_udf: str
 ):
     """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells.
 
@@ -52,25 +52,28 @@ def get_file_data_and_write(
 
     failed_samples = []
     file_rows = []
-    for destination_artifact in artifacts:
+    for destination_artifact in destination_artifacts:
         source_artifacts = destination_artifact.input_artifact_list()
-        pool: bool = len(source_artifacts) > 1
-
+        samples_in_pool: int = len(source_artifacts)
+        pool: bool = samples_in_pool > 1
         for source_artifact in source_artifacts:
             try:
+                sample_volume = (
+                    source_artifact.udf.get(volume_udf)
+                    if pool
+                    else destination_artifact.udf.get(volume_udf)
+                )
+                total_buffer = destination_artifact.udf.get(buffer_udf)
+                buffer_volume = total_buffer / samples_in_pool if pool else total_buffer
                 row_data = BarcodeFileRow(
                     source_labware=source_artifact.location[0].type.name,
                     barcode_source_container=source_artifact.udf.get("Barcode"),
                     source_well=source_artifact.location[1].replace(":", ""),
-                    sample_volume=(
-                        source_artifact.udf.get(volume_udf)
-                        if pool
-                        else destination_artifact.udf.get(volume_udf)
-                    ),
+                    sample_volume=sample_volume,
                     destination_labware=destination_artifact.location[0].type.name,
                     barcode_destination_container=destination_artifact.udf.get("Barcode"),
                     destination_well=destination_artifact.location[1].replace(":", ""),
-                    buffer_volume=destination_artifact.udf.get(buffer_udf),
+                    buffer_volume=buffer_volume,
                 )
             except:
                 failed_samples.append(source_artifact.id)
@@ -102,7 +105,7 @@ def make_hamilton_barcode_file(ctx: click.Context, file: str, volume_udf: str, b
     try:
         get_file_data_and_write(
             lims=lims,
-            artifacts=artifacts,
+            destination_artifacts=artifacts,
             file=f"{file}-hamilton-normalization.txt",
             volume_udf=volume_udf,
             buffer_udf=buffer_udf,
