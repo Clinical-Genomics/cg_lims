@@ -1,5 +1,7 @@
 import csv
 import string
+from pathlib import Path
+from typing import List
 
 
 def make_plate_file(
@@ -28,3 +30,15 @@ def make_plate_file(
                 row = rows.get(f"{row}{col}")
                 if row:
                     wr.writerow(row)
+
+
+def build_csv(rows: List[List[str]], file_name: str, headers: List[str]) -> Path:
+    """Build csv."""
+
+    file = Path(file_name)
+    with open(file_name, "w", newline="\n") as new_csv:
+        wr = csv.writer(new_csv, delimiter=",")
+        wr.writerow(headers)
+        wr.writerows(rows)
+
+    return file

@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
-from cg_lims.files.make_csv import make_plate_file
+from cg_lims.files.make_csv import make_plate_file, build_csv
 from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
 
 LOG = logging.getLogger(__name__)
@@ -28,23 +28,11 @@ HEADERS = [
 ]
 
 
-def build_csv(rows: List[List[str]], file_name: str, headers: List[str]) -> Path:
-    """Build csv."""
-
-    file = Path(file_name)
-    with open(file_name, "w", newline="\n") as new_csv:
-        wr = csv.writer(new_csv, delimiter=",")
-        wr.writerow(headers)
-        wr.writerows(rows)
-
-    return file
-
-
 class BarcodeFileRow(BaseModel):
     source_labware: str = Field(..., alias="Source Labware")
     barcode_source_container: str = Field(..., alias="Barcode Source Container")
     source_well: str = Field(..., alias="Source Well")
-    volume: str = Field(..., alias="Sample Volume")
+    sample_volume: str = Field(..., alias="Sample Volume")
     destination_labware: str = Field(..., alias="Destination Labware")
     barcode_destination_container: str = Field(..., alias="Barcode Destination Container")
     destination_well: str = Field(..., alias="Destination Well")
@@ -57,13 +45,15 @@ class BarcodeFileRow(BaseModel):
 def get_file_data_and_write(
     lims: Lims, artifacts: List[Artifact], file: str, volume_udf: str, buffer_udf: str
 ):
-    """Getting row data for hamilton file based on amount and reagent label"""
+    """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells.
+
+    If the script is being used in a pooling step (pool=True), the sample volume is fetched from input artifact,
+    otherwise output artifact."""
 
     failed_samples = []
     file_rows = []
-    for artifact in artifacts:
-
-        source_artifacts = artifact.input_artifact_list()
+    for destination_artifact in artifacts:
+        source_artifacts = destination_artifact.input_artifact_list()
         pool: bool = len(source_artifacts) > 1
 
         for source_artifact in source_artifacts:
@@ -72,15 +62,15 @@ def get_file_data_and_write(
                     source_labware=source_artifact.location[0].type.name,
                     barcode_source_container=source_artifact.udf.get("Barcode"),
                     source_well=source_artifact.location[1].replace(":", ""),
-                    volume=(
+                    sample_volume=(
                         source_artifact.udf.get(volume_udf)
                         if pool
-                        else artifact.udf.get(volume_udf)
+                        else destination_artifact.udf.get(volume_udf)
                     ),
-                    destination_labware=artifact.location[0].type.name,
-                    barcode_destination_container=artifact.udf.get("Barcode"),
-                    destination_well=artifact.location[1].replace(":", ""),
-                    buffer_volume=artifact.udf.get(buffer_udf),
+                    destination_labware=destination_artifact.location[0].type.name,
+                    barcode_destination_container=destination_artifact.udf.get("Barcode"),
+                    destination_well=destination_artifact.location[1].replace(":", ""),
+                    buffer_volume=destination_artifact.udf.get(buffer_udf),
                 )
             except:
                 failed_samples.append(source_artifact.id)
@@ -103,7 +93,7 @@ def get_file_data_and_write(
 @options.volume_udf()
 @click.pass_context
 def make_hamilton_barcode_file(ctx: click.Context, file: str, volume_udf: str, buffer_udf: str):
-    """Script to make a """
+    """Script to make a hamilton normalization file"""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
