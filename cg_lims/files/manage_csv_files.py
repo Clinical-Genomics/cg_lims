@@ -2,6 +2,7 @@ import csv
 import string
 from pathlib import Path
 from typing import List
+import pandas as pd
 
 
 def make_plate_file(
@@ -32,13 +33,18 @@ def make_plate_file(
                     wr.writerow(row)
 
 
-def build_csv(rows: List[List[str]], file_name: str, headers: List[str]) -> Path:
+def build_csv(rows: List[List[str]], file: Path, headers: List[str]) -> Path:
     """Build csv."""
 
-    file = Path(file_name)
-    with open(file_name, "w", newline="\n") as new_csv:
+    with open(file.absolute(), "w", newline="\n") as new_csv:
         wr = csv.writer(new_csv, delimiter=",")
         wr.writerow(headers)
         wr.writerows(rows)
 
     return file
+
+
+def sort_csv(file: Path, columns: List[str]):
+    df = pd.read_csv(file.absolute(), delimiter=",")
+    df = df.sort_values(columns)
+    df.to_csv(file.absolute(), index=False)

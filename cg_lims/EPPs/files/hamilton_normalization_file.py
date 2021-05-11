@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
-from cg_lims.files.make_csv import make_plate_file, build_csv
+from cg_lims.files.manage_csv_files import make_plate_file, build_csv, sort_csv
 from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
 
 LOG = logging.getLogger(__name__)
@@ -54,25 +54,45 @@ def get_file_data_and_write(
     file_rows = []
     for destination_artifact in destination_artifacts:
         source_artifacts = destination_artifact.input_artifact_list()
-        samples_in_pool: int = len(source_artifacts)
-        pool: bool = samples_in_pool > 1
+        pool: bool = len(source_artifacts) > 1
+        pool_buffer_set = False
         for source_artifact in source_artifacts:
             try:
-                sample_volume = (
-                    source_artifact.udf.get(volume_udf)
-                    if pool
-                    else destination_artifact.udf.get(volume_udf)
-                )
-                total_buffer = destination_artifact.udf.get(buffer_udf)
-                buffer_volume = total_buffer / samples_in_pool if pool else total_buffer
+                if pool:
+                    sample_volume = source_artifact.udf.get(volume_udf)
+                    if pool_buffer_set:
+                        buffer_volume = 0
+                    else:
+                        buffer_volume = destination_artifact.udf.get(buffer_udf)
+                        pool_buffer_set = True
+                else:
+                    sample_volume = destination_artifact.udf.get(volume_udf)
+                    buffer_volume = destination_artifact.udf.get(buffer_udf)
+
+                barcode_source_container = source_artifact.udf.get("Barcode")
+                barcode_destination_container = destination_artifact.udf.get("Barcode")
+
+                source_labware = source_artifact.location[0].type.name
+                destination_labware = destination_artifact.location[0].type.name
+
+                if source_labware == "Tube":
+                    source_well = barcode_source_container
+                else:
+                    source_well = source_artifact.location[1].replace(":", "")
+
+                if destination_labware == "Tube":
+                    destination_well = barcode_destination_container
+                else:
+                    destination_well = destination_artifact.location[1].replace(":", "")
+
                 row_data = BarcodeFileRow(
-                    source_labware=source_artifact.location[0].type.name,
-                    barcode_source_container=source_artifact.udf.get("Barcode"),
-                    source_well=source_artifact.location[1].replace(":", ""),
+                    source_labware=source_labware,
+                    barcode_source_container=barcode_source_container,
+                    source_well=source_well,
                     sample_volume=sample_volume,
-                    destination_labware=destination_artifact.location[0].type.name,
-                    barcode_destination_container=destination_artifact.udf.get("Barcode"),
-                    destination_well=destination_artifact.location[1].replace(":", ""),
+                    destination_labware=destination_labware,
+                    barcode_destination_container=barcode_destination_container,
+                    destination_well=destination_well,
                     buffer_volume=buffer_volume,
                 )
             except:
@@ -82,7 +102,10 @@ def get_file_data_and_write(
             row_data_dict = row_data.dict(by_alias=True)
             file_rows.append([row_data_dict[header] for header in HEADERS])
 
-    build_csv(file_name=file, rows=file_rows, headers=HEADERS)
+    build_csv(file=Path(file), rows=file_rows, headers=HEADERS)
+    sort_csv(
+        file=Path(file), columns=["Barcode Source Container", "Source Well", "Destination Well"]
+    )
 
     if failed_samples:
         raise MissingUDFsError(
