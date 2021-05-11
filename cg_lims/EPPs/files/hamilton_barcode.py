@@ -66,16 +66,6 @@ def get_file_data_and_write(lims: Lims, artifacts: List[Artifact], file: str):
             # warn
             continue
         source_artifact = source_artifacts[0]
-        row_data = BarcodeFileRow(
-            source_labware=source_artifact.location[0].type.name,
-            barcode_source_container=source_artifact.udf.get("Barcode"),
-            source_well=source_artifact.location[1].replace(":", ""),
-            sample_volume=artifact.udf.get("Sample Volume (ul)"),
-            destination_labware=artifact.location[0].type.name,
-            barcode_destination_container=artifact.udf.get("Barcode"),
-            destination_well=artifact.location[1].replace(":", ""),
-            buffer_volume=artifact.udf.get("Volume H2O (ul)"),
-        )
 
         try:
             row_data = BarcodeFileRow(
@@ -113,7 +103,6 @@ def make_hamilton_barcode_file(ctx: click.Context, file: str):
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
     artifacts = get_artifacts(process=process, input=False)
-    print(artifacts)
     try:
         get_file_data_and_write(
             lims=lims, artifacts=artifacts, file=f"{file}-hamilton-normalization.txt"
