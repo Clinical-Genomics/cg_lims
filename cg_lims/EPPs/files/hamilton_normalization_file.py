@@ -92,7 +92,7 @@ class BarcodeFileRow(BaseModel):
 
 
 def get_file_data_and_write(
-    destination_artifacts: List[Artifact], file: str, volume_udf: str, buffer_udf: str
+    destination_artifacts: List[Artifact], file: str, volume_udf: str, buffer_udf: str, pool: bool
 ):
     """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells."""
 
@@ -100,7 +100,6 @@ def get_file_data_and_write(
     file_rows = []
     for destination_artifact in destination_artifacts:
         source_artifacts = destination_artifact.input_artifact_list()
-        pool: bool = len(source_artifacts) > 1
         buffer_not_set = True
         for source_artifact in source_artifacts:
             try:
@@ -137,8 +136,11 @@ def get_file_data_and_write(
 @options.file_placeholder(help="Hamilton Noramlization File")
 @options.buffer_udf()
 @options.volume_udf()
+@options.pooling_step()
 @click.pass_context
-def make_hamilton_barcode_file(ctx: click.Context, file: str, volume_udf: str, buffer_udf: str):
+def make_hamilton_barcode_file(
+    ctx: click.Context, file: str, volume_udf: str, buffer_udf: str, pooling_step: bool
+):
     """Script to make a hamilton normalization file"""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -146,6 +148,7 @@ def make_hamilton_barcode_file(ctx: click.Context, file: str, volume_udf: str, b
     artifacts = get_artifacts(process=process, input=False)
     try:
         get_file_data_and_write(
+            pool=pooling_step,
             destination_artifacts=artifacts,
             file=f"{file}-hamilton-normalization.txt",
             volume_udf=volume_udf,

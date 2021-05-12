@@ -23,6 +23,7 @@ def test_make_hamilton_normalization_file(hamilton_normalization_file, lims):
 
     # WHEN running get_file_data_and_write
     get_file_data_and_write(
+        pool=False,
         destination_artifacts=artifacts,
         file=file,
         volume_udf="Sample Volume (ul)",

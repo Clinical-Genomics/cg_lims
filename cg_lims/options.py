@@ -154,6 +154,18 @@ def pool_udfs(help: str = "Pool udfs.") -> click.option:
     )
 
 
+def pooling_step(
+    help: str = "True if run from a pooling step",
+) -> click.option:
+    return click.option(
+        "-p",
+        "--pooling-step",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
 def size_udf(help: str = "Udf for fetching size.") -> click.option:
     return click.option(
         "--size-udf",
