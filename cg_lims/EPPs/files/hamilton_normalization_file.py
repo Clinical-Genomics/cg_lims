@@ -42,13 +42,64 @@ class BarcodeFileRow(BaseModel):
         allow_population_by_field_name = True
 
 
-def get_file_data_and_write(
-    lims: Lims, destination_artifacts: List[Artifact], file: str, volume_udf: str, buffer_udf: str
-):
-    """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells.
+def get_file_row_data(
+    pool: bool,
+    pool_buffer_set: bool,
+    source_artifact: Artifact,
+    destination_artifact: Artifact,
+    volume_udf: str,
+    buffer_udf: str,
+) -> BarcodeFileRow:
+    """
+    The file row content depend on:
+        - If the script is being used in a pooling step (destination artifact is pool)
+            then the sample volume is fetched from input artifact, otherwise output artifact.
+        - If samples are placed in Tubes
+            then the well position field in the file is replaced by barcode.
+    """
 
-    If the script is being used in a pooling step (pool=True), the sample volume is fetched from input artifact,
-    otherwise output artifact."""
+    if pool:
+        sample_volume = source_artifact.udf.get(volume_udf)
+        if pool_buffer_set:
+            buffer_volume = 0
+        else:
+            buffer_volume = destination_artifact.udf.get(buffer_udf)
+    else:
+        sample_volume = destination_artifact.udf.get(volume_udf)
+        buffer_volume = destination_artifact.udf.get(buffer_udf)
+
+    barcode_source_container = source_artifact.udf.get("Barcode")
+    barcode_destination_container = destination_artifact.udf.get("Barcode")
+
+    source_labware = source_artifact.location[0].type.name
+    destination_labware = destination_artifact.location[0].type.name
+
+    if source_labware == "Tube":
+        source_well = barcode_source_container
+    else:
+        source_well = source_artifact.location[1].replace(":", "")
+
+    if destination_labware == "Tube":
+        destination_well = barcode_destination_container
+    else:
+        destination_well = destination_artifact.location[1].replace(":", "")
+
+    return BarcodeFileRow(
+        source_labware=source_labware,
+        barcode_source_container=barcode_source_container,
+        source_well=source_well,
+        sample_volume=sample_volume,
+        destination_labware=destination_labware,
+        barcode_destination_container=barcode_destination_container,
+        destination_well=destination_well,
+        buffer_volume=buffer_volume,
+    )
+
+
+def get_file_data_and_write(
+    destination_artifacts: List[Artifact], file: str, volume_udf: str, buffer_udf: str
+):
+    """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells."""
 
     failed_samples = []
     file_rows = []
@@ -58,43 +109,15 @@ def get_file_data_and_write(
         pool_buffer_set = False
         for source_artifact in source_artifacts:
             try:
-                if pool:
-                    sample_volume = source_artifact.udf.get(volume_udf)
-                    if pool_buffer_set:
-                        buffer_volume = 0
-                    else:
-                        buffer_volume = destination_artifact.udf.get(buffer_udf)
-                        pool_buffer_set = True
-                else:
-                    sample_volume = destination_artifact.udf.get(volume_udf)
-                    buffer_volume = destination_artifact.udf.get(buffer_udf)
-
-                barcode_source_container = source_artifact.udf.get("Barcode")
-                barcode_destination_container = destination_artifact.udf.get("Barcode")
-
-                source_labware = source_artifact.location[0].type.name
-                destination_labware = destination_artifact.location[0].type.name
-
-                if source_labware == "Tube":
-                    source_well = barcode_source_container
-                else:
-                    source_well = source_artifact.location[1].replace(":", "")
-
-                if destination_labware == "Tube":
-                    destination_well = barcode_destination_container
-                else:
-                    destination_well = destination_artifact.location[1].replace(":", "")
-
-                row_data = BarcodeFileRow(
-                    source_labware=source_labware,
-                    barcode_source_container=barcode_source_container,
-                    source_well=source_well,
-                    sample_volume=sample_volume,
-                    destination_labware=destination_labware,
-                    barcode_destination_container=barcode_destination_container,
-                    destination_well=destination_well,
-                    buffer_volume=buffer_volume,
+                row_data: BarcodeFileRow = get_file_row_data(
+                    pool=pool,
+                    pool_buffer_set=pool_buffer_set,
+                    source_artifact=source_artifact,
+                    destination_artifact=destination_artifact,
+                    volume_udf=volume_udf,
+                    buffer_udf=buffer_udf,
                 )
+                pool_buffer_set = True
             except:
                 failed_samples.append(source_artifact.id)
                 continue
@@ -123,11 +146,9 @@ def make_hamilton_barcode_file(ctx: click.Context, file: str, volume_udf: str, b
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
-    lims = ctx.obj["lims"]
     artifacts = get_artifacts(process=process, input=False)
     try:
         get_file_data_and_write(
-            lims=lims,
             destination_artifacts=artifacts,
             file=f"{file}-hamilton-normalization.txt",
             volume_udf=volume_udf,
