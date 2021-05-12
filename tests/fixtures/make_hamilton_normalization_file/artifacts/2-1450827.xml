@@ -1,24 +1,19 @@
-<art:artifact xmlns:udf="http://genologics.com/ri/userdefined" xmlns:file="http://genologics.com/ri/file" xmlns:art="http://genologics.com/ri/artifact" uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450807?state=1111067" limsid="2-1450807">
-<name>Pool #2</name>
+<art:artifact xmlns:udf="http://genologics.com/ri/userdefined" xmlns:file="http://genologics.com/ri/file" xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1450827?state=1111206" limsid="2-1450827">
+<name>CA041P</name>
 <type>Analyte</type>
 <output-type>Analyte</output-type>
-<parent-process uri="https://clinical-lims-stage.scilifelab.se/api/v2/processes/122-193822" limsid="122-193822"/>
-<qc-flag>FAILED</qc-flag>
+<parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-193824" limsid="24-193824"/>
+<qc-flag>PASSED</qc-flag>
 <location>
-<container uri="https://clinical-lims-stage.scilifelab.se/api/v2/containers/27-143270" limsid="27-143270"/>
-<value>A:2</value>
+<container uri="http://127.0.0.1:8000/api/v2/containers/27-143272" limsid="27-143272"/>
+<value>C:2</value>
 </location>
 <working-flag>true</working-flag>
-<sample uri="https://clinical-lims-stage.scilifelab.se/api/v2/samples/ACC7905A1" limsid="ACC7905A1"/>
-<sample uri="https://clinical-lims-stage.scilifelab.se/api/v2/samples/ACC7905A8" limsid="ACC7905A8"/>
-<sample uri="https://clinical-lims-stage.scilifelab.se/api/v2/samples/ACC7905A9" limsid="ACC7905A9"/>
-<reagent-label name="A05 IDT_10nt_439 (TGCTCATTCA-CCGATGACGT)"/>
-<reagent-label name="A04 IDT_10nt_437 (GCAATGATGC-CTCAACGGAG)"/>
-<reagent-label name="A06 IDT_10nt_440 (CTTGGAGCGA-TATGGTTCTC)"/>
-<udf:field type="String" name="Barcode">Barcode5</udf:field>
-<udf:field type="Numeric" name="Volume H2O (ul)">15</udf:field>
-<udf:field type="Numeric" name="Total Amount (ng)">1500</udf:field>
-<udf:field type="Numeric" name="Total Volume (ul)">45</udf:field>
+<sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7905A10" limsid="ACC7905A10"/>
+<udf:field type="Numeric" name="Amount (ng)">22</udf:field>
+<udf:field type="Numeric" name="Sample Volume (ul)">4</udf:field>
+<udf:field type="Numeric" name="Volume H2O (ul)">4</udf:field>
+<udf:field type="Numeric" name="Concentration">12</udf:field>
+<udf:field type="String" name="Barcode">newbarcode</udf:field>
 <workflow-stages/>
-<demux uri="https://clinical-lims-stage.scilifelab.se/api/v2/artifacts/2-1450807/demux"/>
 </art:artifact>
