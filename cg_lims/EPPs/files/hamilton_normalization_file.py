@@ -44,7 +44,6 @@ class BarcodeFileRow(BaseModel):
 
 def get_file_row_data(
     pool: bool,
-    pool_buffer_set: bool,
     source_artifact: Artifact,
     destination_artifact: Artifact,
     volume_udf: str,
@@ -60,10 +59,7 @@ def get_file_row_data(
 
     if pool:
         sample_volume = source_artifact.udf.get(volume_udf)
-        if pool_buffer_set:
-            buffer_volume = 0
-        else:
-            buffer_volume = destination_artifact.udf.get(buffer_udf)
+        buffer_volume = 0
     else:
         sample_volume = destination_artifact.udf.get(volume_udf)
         buffer_volume = destination_artifact.udf.get(buffer_udf)
@@ -106,18 +102,20 @@ def get_file_data_and_write(
     for destination_artifact in destination_artifacts:
         source_artifacts = destination_artifact.input_artifact_list()
         pool: bool = len(source_artifacts) > 1
-        pool_buffer_set = False
+        buffer_not_set = True
         for source_artifact in source_artifacts:
             try:
                 row_data: BarcodeFileRow = get_file_row_data(
                     pool=pool,
-                    pool_buffer_set=pool_buffer_set,
                     source_artifact=source_artifact,
                     destination_artifact=destination_artifact,
                     volume_udf=volume_udf,
                     buffer_udf=buffer_udf,
                 )
-                pool_buffer_set = True
+                if buffer_not_set:
+                    row_data.buffer_volume = destination_artifact.udf.get(buffer_udf)
+                    buffer_not_set = False
+
             except:
                 failed_samples.append(source_artifact.id)
                 continue
