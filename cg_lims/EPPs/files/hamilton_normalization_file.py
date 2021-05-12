@@ -3,11 +3,11 @@ import csv
 import logging
 import sys
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import click
 from genologics.lims import Lims, Artifact
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
@@ -29,67 +29,66 @@ HEADERS = [
 
 
 class BarcodeFileRow(BaseModel):
-    source_labware: str = Field(..., alias="Source Labware")
-    barcode_source_container: str = Field(..., alias="Barcode Source Container")
-    source_well: str = Field(..., alias="Source Well")
-    sample_volume: str = Field(..., alias="Sample Volume")
-    destination_labware: str = Field(..., alias="Destination Labware")
-    barcode_destination_container: str = Field(..., alias="Barcode Destination Container")
-    destination_well: str = Field(..., alias="Destination Well")
-    buffer_volume: str = Field(..., alias="Buffer Volume")
+    source_artifact: Artifact
+    destination_artifact: Artifact
+    pool: bool
+    source_labware: Optional[str] = Field(alias="Source Labware")
+    barcode_source_container: Optional[str] = Field(alias="Barcode Source Container")
+    source_well: Optional[str] = Field(alias="Source Well")
+    sample_volume: str = Field(alias="Sample Volume")
+    destination_labware: Optional[str] = Field(alias="Destination Labware")
+    barcode_destination_container: Optional[str] = Field(alias="Barcode Destination Container")
+    destination_well: Optional[str] = Field(alias="Destination Well")
+    buffer_volume: str = Field(alias="Buffer Volume")
+
+    @validator("barcode_source_container", always=True, pre=True)
+    def set_barcode_source_container(cls, v, values: dict) -> Optional[str]:
+        return values["source_artifact"].udf.get("Barcode")
+
+    @validator("barcode_destination_container", always=True, pre=True)
+    def set_barcode_destination_container(cls, v, values: dict) -> Optional[str]:
+        return values["destination_artifact"].udf.get("Barcode")
+
+    @validator("source_labware", always=True, pre=True)
+    def set_source_labware(cls, v, values: dict) -> Optional[str]:
+        return values["source_artifact"].location[0].type.name
+
+    @validator("destination_labware", always=True, pre=True)
+    def set_sdestination_labware(cls, v, values: dict) -> Optional[str]:
+        return values["destination_artifact"].location[0].type.name
+
+    @validator("sample_volume", always=True, pre=True)
+    def set_sample_volume(cls, v, values: dict) -> str:
+        if values["pool"]:
+            return values["source_artifact"].udf.get(v)
+        else:
+            return values["destination_artifact"].udf.get(v)
+
+    @validator("buffer_volume", always=True, pre=True)
+    def set_buffer_volume(cls, v, values: dict) -> str:
+        if values["pool"]:
+            return 0
+        else:
+            return values["destination_artifact"].udf.get(v)
+
+    @validator("source_well", always=True, pre=True)
+    def set_source_well(cls, v, values: dict) -> str:
+        if values["source_labware"] == "Tube":
+            return values["barcode_source_container"]
+        else:
+            return values["source_artifact"].location[1].replace(":", "")
+
+    @validator("destination_well", always=True, pre=True)
+    def set_destination_well(cls, v, values: dict) -> str:
+        if values["destination_labware"] == "Tube":
+            return values["barcode_destination_container"]
+        else:
+            return values["destination_artifact"].location[1].replace(":", "")
 
     class Config:
         allow_population_by_field_name = True
-
-
-def get_file_row_data(
-    pool: bool,
-    source_artifact: Artifact,
-    destination_artifact: Artifact,
-    volume_udf: str,
-    buffer_udf: str,
-) -> BarcodeFileRow:
-    """
-    The file row content depend on:
-        - If the script is being used in a pooling step (destination artifact is pool)
-            then the sample volume is fetched from input artifact, otherwise output artifact.
-        - If samples are placed in Tubes
-            then the well position field in the file is replaced by barcode.
-    """
-
-    if pool:
-        sample_volume = source_artifact.udf.get(volume_udf)
-        buffer_volume = 0
-    else:
-        sample_volume = destination_artifact.udf.get(volume_udf)
-        buffer_volume = destination_artifact.udf.get(buffer_udf)
-
-    barcode_source_container = source_artifact.udf.get("Barcode")
-    barcode_destination_container = destination_artifact.udf.get("Barcode")
-
-    source_labware = source_artifact.location[0].type.name
-    destination_labware = destination_artifact.location[0].type.name
-
-    if source_labware == "Tube":
-        source_well = barcode_source_container
-    else:
-        source_well = source_artifact.location[1].replace(":", "")
-
-    if destination_labware == "Tube":
-        destination_well = barcode_destination_container
-    else:
-        destination_well = destination_artifact.location[1].replace(":", "")
-
-    return BarcodeFileRow(
-        source_labware=source_labware,
-        barcode_source_container=barcode_source_container,
-        source_well=source_well,
-        sample_volume=sample_volume,
-        destination_labware=destination_labware,
-        barcode_destination_container=barcode_destination_container,
-        destination_well=destination_well,
-        buffer_volume=buffer_volume,
-    )
+        arbitrary_types_allowed = True
+        validate_assignment = True
 
 
 def get_file_data_and_write(
@@ -105,14 +104,14 @@ def get_file_data_and_write(
         buffer_not_set = True
         for source_artifact in source_artifacts:
             try:
-                row_data: BarcodeFileRow = get_file_row_data(
-                    pool=pool,
+                row_data = BarcodeFileRow(
                     source_artifact=source_artifact,
                     destination_artifact=destination_artifact,
-                    volume_udf=volume_udf,
-                    buffer_udf=buffer_udf,
+                    pool=pool,
+                    sample_volume=volume_udf,
+                    buffer_volume=buffer_udf,
                 )
-                if buffer_not_set:
+                if pool and buffer_not_set:
                     row_data.buffer_volume = destination_artifact.udf.get(buffer_udf)
                     buffer_not_set = False
 
