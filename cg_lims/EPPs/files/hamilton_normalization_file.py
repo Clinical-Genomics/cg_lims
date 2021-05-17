@@ -32,6 +32,7 @@ class BarcodeFileRow(BaseModel):
     source_artifact: Artifact
     destination_artifact: Artifact
     pool: bool
+    buffer: bool
     source_labware: Optional[str] = Field(alias="Source Labware")
     barcode_source_container: Optional[str] = Field(alias="Barcode Source Container")
     source_well: Optional[str] = Field(alias="Source Well")
@@ -66,10 +67,10 @@ class BarcodeFileRow(BaseModel):
 
     @validator("buffer_volume", always=True, pre=True)
     def set_buffer_volume(cls, v, values: dict) -> str:
-        if values["pool"]:
-            return 0
-        else:
+        if values["buffer"]:
             return values["destination_artifact"].udf.get(v)
+        else:
+            return 0
 
     @validator("source_well", always=True, pre=True)
     def set_source_well(cls, v, values: dict) -> str:
@@ -100,20 +101,19 @@ def get_file_data_and_write(
     file_rows = []
     for destination_artifact in destination_artifacts:
         source_artifacts = destination_artifact.input_artifact_list()
-        buffer_not_set = True
+        buffer = True
         for source_artifact in source_artifacts:
             try:
                 row_data = BarcodeFileRow(
                     source_artifact=source_artifact,
                     destination_artifact=destination_artifact,
                     pool=pool,
+                    buffer=buffer,
                     sample_volume=volume_udf,
                     buffer_volume=buffer_udf,
                 )
-                if pool and buffer_not_set:
-                    row_data.buffer_volume = destination_artifact.udf.get(buffer_udf)
-                    buffer_not_set = False
-
+                if pool:
+                    buffer = False
             except:
                 failed_samples.append(source_artifact.id)
                 continue
