@@ -44,11 +44,11 @@ class BarcodeFileRow(BaseModel):
 
     @validator("barcode_source_container", always=True, pre=True)
     def set_barcode_source_container(cls, v, values: dict) -> Optional[str]:
-        return values["source_artifact"].udf.get("Barcode")
+        return values["source_artifact"].udf.get("Output Container Barcode")
 
     @validator("barcode_destination_container", always=True, pre=True)
     def set_barcode_destination_container(cls, v, values: dict) -> Optional[str]:
-        return values["destination_artifact"].udf.get("Barcode")
+        return values["destination_artifact"].udf.get("Output Container Barcode")
 
     @validator("source_labware", always=True, pre=True)
     def set_source_labware(cls, v, values: dict) -> Optional[str]:
