@@ -119,11 +119,14 @@ def get_file_data_and_write(
                 continue
 
             row_data_dict = row_data.dict(by_alias=True)
+
             file_rows.append([row_data_dict[header] for header in HEADERS])
 
     build_csv(file=Path(file), rows=file_rows, headers=HEADERS)
     sort_csv(
-        file=Path(file), columns=["Barcode Source Container", "Source Well", "Destination Well"]
+        file=Path(file),
+        columns=["Barcode Source Container", "Source Well", "Destination Well"],
+        well_columns=["Source Well", "Destination Well"],
     )
 
     if failed_samples:

@@ -44,7 +44,20 @@ def build_csv(rows: List[List[str]], file: Path, headers: List[str]) -> Path:
     return file
 
 
-def sort_csv(file: Path, columns: List[str]):
+def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
+    """Sort csv.
+    columns: list of columns to sort on.
+
+    well_columns: Optional. Sub set of columns. Will be sorted by second field:
+                (A1, B1, C1, A2, B2, C2), not (A1, A2, B1, B2, C1, C2).
+    """
+
     df = pd.read_csv(file.absolute(), delimiter=",")
-    df = df.sort_values(columns)
+
+    for well_column in well_columns:
+        df[well_column] = df[well_column].transform(lambda x: x[::-1])
+    df.sort_values(by=columns, inplace=True)
+    for well_column in well_columns:
+        df[well_column] = df[well_column].transform(lambda x: x[::-1])
+
     df.to_csv(file.absolute(), index=False)
