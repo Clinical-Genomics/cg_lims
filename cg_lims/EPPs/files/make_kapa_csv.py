@@ -10,7 +10,7 @@ from genologics.lims import Lims
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
-from cg_lims.files.make_csv import make_plate_file
+from cg_lims.files.manage_csv_files import make_plate_file
 from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
 
 LOG = logging.getLogger(__name__)
