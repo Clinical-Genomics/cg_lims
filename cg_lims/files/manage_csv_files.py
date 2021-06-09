@@ -48,16 +48,24 @@ def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
     """Sort csv.
     columns: list of columns to sort on.
 
-    well_columns: Optional. Sub set of columns. Will be sorted by second field:
+    well_columns: Optional. Sub set of columns! Will be sorted by second field:
                 (A1, B1, C1, A2, B2, C2), not (A1, A2, B1, B2, C1, C2).
     """
 
-    df = pd.read_csv(file.absolute(), delimiter=",")
+    data = pd.read_csv(file.absolute(), delimiter=",")
+    temp_sort_columns = []
+    sort_columns = []
+    for column in columns:
+        if column in well_columns:
+            well_row = f"{column}_row"
+            well_col = f"{column}_col"
+            data[well_row] = data[column].transform(lambda x: x[0])
+            data[well_col] = data[column].transform(lambda x: int(x[1:]))
+            sort_columns += [well_col, well_row]
+            temp_sort_columns += [well_col, well_row]
+        else:
+            sort_columns.append(column)
 
-    for well_column in well_columns:
-        df[well_column] = df[well_column].transform(lambda x: x[::-1])
-    df.sort_values(by=columns, inplace=True)
-    for well_column in well_columns:
-        df[well_column] = df[well_column].transform(lambda x: x[::-1])
-
-    df.to_csv(file.absolute(), index=False)
+    data.sort_values(by=sort_columns, inplace=True)
+    sorted_data = data.drop(temp_sort_columns, axis=1)
+    sorted_data.to_csv(file.absolute(), index=False)

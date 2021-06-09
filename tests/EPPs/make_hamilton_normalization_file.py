@@ -2,7 +2,7 @@ from tests.conftest import server
 from pathlib import Path
 
 from genologics.entities import Artifact
-from cg_lims.EPPs.files.hamilton_normalization_file import get_file_data_and_write
+from cg_lims.EPPs.files.hamilton.normalization_file import get_file_data_and_write
 
 
 def test_make_hamilton_normalization_file(hamilton_normalization_file, lims):
