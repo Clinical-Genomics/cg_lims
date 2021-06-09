@@ -27,13 +27,12 @@ def get_file_data_and_write(destination_artifacts: List[Artifact], file: str, po
     for destination_artifact in destination_artifacts:
         source_artifacts: List[Artifact] = destination_artifact.input_artifact_list()
         for source_artifact in source_artifacts:
-            index_artifact = source_artifacts if pool else destination_artifact
             try:
                 row_data = CovidPrepFileRow(
                     lims_id=source_artifact.samples[0].id,
                     sample_well=get_artifact_well(source_artifact),
                     destination_well=get_artifact_well(destination_artifact),
-                    index_well=get_index_well(artifact=index_artifact),
+                    index_well="-" if pool else get_index_well(artifact=destination_artifact),
                 )
             except:
                 failed_samples.append(source_artifact.id)

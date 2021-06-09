@@ -53,6 +53,7 @@ def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
     """
 
     data = pd.read_csv(file.absolute(), delimiter=",")
+    print(data)
     temp_sort_columns = []
     sort_columns = []
     for column in columns:
