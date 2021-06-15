@@ -66,7 +66,9 @@ def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
             temp_sort_columns += [well_col, well_row]
         else:
             sort_columns.append(column)
-
+    print(data)
     data.sort_values(by=sort_columns, inplace=True)
+    print(data)
     sorted_data = data.drop(temp_sort_columns, axis=1)
+    print(sorted_data)
     sorted_data.to_csv(file.absolute(), index=False)
