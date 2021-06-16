@@ -121,6 +121,24 @@ def hamilton_normalization_file() -> str:
     return file.read_text()
 
 
+@pytest.fixture
+def hamilton_sars_cov2_pooling_file() -> str:
+    """Get file path to valid json"""
+
+    file_path = "tests/fixtures/sars-cov2-hamilton-prep-pooling.txt"
+    file = Path(file_path)
+    return file.read_text()
+
+
+@pytest.fixture
+def hamilton_sars_cov2_indexing_file() -> str:
+    """Get file path to valid json"""
+
+    file_path = "tests/fixtures/sars-cov2-hamilton-prep-indexing.txt"
+    file = Path(file_path)
+    return file.read_text()
+
+
 @pytest.fixture(name="cli_runner")
 def fixture_cli_runner() -> CliRunner:
     """Create a CliRunner"""

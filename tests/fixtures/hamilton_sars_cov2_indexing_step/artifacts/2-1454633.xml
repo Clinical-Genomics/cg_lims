@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454633?state=1113640" limsid="2-1454633">
+    <name>21CS501356 (qPCR)</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-196204" limsid="151-196204" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-143639" limsid="27-143639" />
+        <value>B:6</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A73" limsid="ACC7892A73" />
+    <reagent-label name="A10 UDP0073 (CCTGCGGAAC-ATCATAGGCT)" />
+    <workflow-stages />
+</art:artifact>
