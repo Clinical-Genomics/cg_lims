@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 
 import logging
-import string
 import sys
 
 import click
-from genologics.entities import Process
 from genologics.lims import Lims
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import make_plate_file
 from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
+from cg_lims.get.fields import get_index_well
 
 LOG = logging.getLogger(__name__)
 
@@ -43,26 +42,6 @@ def get_pcr_plate(amount):
         return "Plate2"
     else:
         return "Plate1"
-
-
-def get_index_well(art):
-    """Parsing out the index well position from the reagent label string wich
-    typically looks like this: 'A05 IDT_10nt_446 (AGCGTGACCT-CCATCCGAGT)'
-    """
-
-    if art.reagent_labels:
-        # Assuming one reagent label per artifact (reagent_labels is a list):
-        reagent_label = art.reagent_labels[0]
-
-        # Getting the index well:
-        index_well_with_zero = reagent_label.split(" ")[0]
-
-        # Picking out column and removing zeros by int():
-        index_well_col = int(index_well_with_zero[1:])
-        index_well_row = index_well_with_zero[0]
-        return f"{index_well_row}{index_well_col}"
-    else:
-        return "-"
 
 
 def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file: str) -> dict:

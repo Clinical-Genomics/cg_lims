@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454177?state=1113239" limsid="2-1454177">
+    <name>Pool #2</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-194650" limsid="122-194650" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-143637" limsid="27-143637" />
+        <value>B:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A15" limsid="ACC7901A15" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A60" limsid="ACC7901A60" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A61" limsid="ACC7901A61" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A62" limsid="ACC7901A62" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A63" limsid="ACC7901A63" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A64" limsid="ACC7901A64" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A65" limsid="ACC7901A65" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A66" limsid="ACC7901A66" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A83" limsid="ACC7901A83" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A86" limsid="ACC7901A86" />
+    <reagent-label name="G02 UDP0207 v2 (GAATATGCGG-ACGAGACTGA)" />
+    <reagent-label name="A09 UDP0257 v2 (GTAACAATCT-CTCTGTATAC)" />
+    <reagent-label name="H08 UDP0256 v2 (TGCAAGATAA-TTGAGGACGG)" />
+    <reagent-label name="G08 UDP0255 v2 (TCAGTCTCGT-CACGGATTAT)" />
+    <reagent-label name="F08 UDP0254 v2 (AAGCATCTTG-CATTCAACAA)" />
+    <reagent-label name="E08 UDP0253 v2 (TCTCAATACC-GACGTTCGCG)" />
+    <reagent-label name="F11 UDP0278 v2 (GTGGACAAGT-CCGTGGCCTT)" />
+    <reagent-label name="C11 UDP0275 v2 (AGCTAAGCGG-ATTAATACGC)" />
+    <reagent-label name="B09 UDP0258 v2 (CCATGGTATA-TCTCGCGGAG)" />
+    <reagent-label name="D08 UDP0252 v2 (CCGAATCTGG-ATGAATCAAG)" />
+    <workflow-stages />
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454177/demux" />
+</art:artifact>

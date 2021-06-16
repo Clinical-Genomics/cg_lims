@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:file="http://genologics.com/ri/file" uri="http://127.0.0.1:8000/api/v2/artifacts/92-1454172?state=1113234" limsid="92-1454172">
+    <name>EPP Log</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-194650" limsid="122-194650" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A1" limsid="ACC7901A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A2" limsid="ACC7901A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A6" limsid="ACC7901A6" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A10" limsid="ACC7901A10" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A12" limsid="ACC7901A12" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A13" limsid="ACC7901A13" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A14" limsid="ACC7901A14" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A15" limsid="ACC7901A15" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A60" limsid="ACC7901A60" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A61" limsid="ACC7901A61" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A62" limsid="ACC7901A62" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A63" limsid="ACC7901A63" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A64" limsid="ACC7901A64" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A65" limsid="ACC7901A65" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A66" limsid="ACC7901A66" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A83" limsid="ACC7901A83" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A86" limsid="ACC7901A86" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A90" limsid="ACC7901A90" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A91" limsid="ACC7901A91" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A92" limsid="ACC7901A92" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A93" limsid="ACC7901A93" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A94" limsid="ACC7901A94" />
+    <reagent-label name="G02 UDP0207 v2 (GAATATGCGG-ACGAGACTGA)" />
+    <reagent-label name="F02 UDP0206 v2 (CTGGAACTGT-CGTAATTAAC)" />
+    <reagent-label name="E02 UDP0205 v2 (TCCTCGGACT-AACGCCAGAG)" />
+    <reagent-label name="D02 UDP0204 v2 (GTAACTGAAG-GGAGTCGCGA)" />
+    <reagent-label name="B02 UDP0202 v2 (TGTGATAACT-CAGGCGCCAT)" />
+    <reagent-label name="F01 UDP0198 v2 (TAATTCTGCT-TCTCATCAAT)" />
+    <reagent-label name="B01 UDP0194 v2 (CGAGGCCAAG-GTGTTACCGG)" />
+    <reagent-label name="A01 UDP0193 v2 (TCTCATGATA-AACACGTGGA)" />
+    <reagent-label name="A09 UDP0257 v2 (GTAACAATCT-CTCTGTATAC)" />
+    <reagent-label name="H08 UDP0256 v2 (TGCAAGATAA-TTGAGGACGG)" />
+    <reagent-label name="G08 UDP0255 v2 (TCAGTCTCGT-CACGGATTAT)" />
+    <reagent-label name="F08 UDP0254 v2 (AAGCATCTTG-CATTCAACAA)" />
+    <reagent-label name="E08 UDP0253 v2 (TCTCAATACC-GACGTTCGCG)" />
+    <reagent-label name="C12 UDP0283 v2 (CCTGACCACT-TCTTGGCTAT)" />
+    <reagent-label name="B12 UDP0282 v2 (AGAATTCGCC-CGGCAAGCTC)" />
+    <reagent-label name="F11 UDP0278 v2 (GTGGACAAGT-CCGTGGCCTT)" />
+    <reagent-label name="C11 UDP0275 v2 (AGCTAAGCGG-ATTAATACGC)" />
+    <reagent-label name="B09 UDP0258 v2 (CCATGGTATA-TCTCGCGGAG)" />
+    <reagent-label name="D08 UDP0252 v2 (CCGAATCTGG-ATGAATCAAG)" />
+    <reagent-label name="F12 UDP0286 v2 (CATAGTAAGG-ACCAAGTTAC)" />
+    <reagent-label name="E12 UDP0285 v2 (TGATAACGAG-GTTCCGCAGG)" />
+    <reagent-label name="D12 UDP0284 v2 (AGCTGGAATG-ACGGAATGCG)" />
+    <file:file limsid="40-54453" uri="http://127.0.0.1:8000/api/v2/files/40-54453" />
+    <workflow-stages />
+</art:artifact>
