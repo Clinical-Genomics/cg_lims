@@ -1,0 +1,6 @@
+genologics
+click
+pathlib
+PyYAML
+pydantic
+fastapi
