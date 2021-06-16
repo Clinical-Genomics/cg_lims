@@ -59,7 +59,7 @@ def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
           (A1, B1, C1, A2, B2, C2), not (A1, A2, B1, B2, C1, C2).
     """
 
-    data = pd.read_csv(file.absolute(), delimiter=",")
+    csv_data_frame = pd.read_csv(file.absolute(), delimiter=",")
     temp_sort_columns = []
     sort_columns = []  # columns to sort on
 
@@ -67,7 +67,7 @@ def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
         raise CSVColumnError(message="well_columns must be subset of columns")
 
     for column in columns:
-        if column not in data.columns:
+        if column not in csv_data_frame.columns:
             raise CSVColumnError(message=f"Column {column} is not in the csv file.")
         if column not in well_columns:
             # If the column is not a well_column, just append it to sort_columns
@@ -76,17 +76,17 @@ def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
         # Splitting the well_column into two temporary sort columns that are added to the data frame and to sort_columns
         well_row = f"{column}_row"
         well_col = f"{column}_col"
-        data[well_row] = data[column].transform(lambda x: x[0])
-        data[well_col] = data[column].transform(lambda x: int(x[1:]))
+        csv_data_frame[well_row] = csv_data_frame[column].transform(lambda x: x[0])
+        csv_data_frame[well_col] = csv_data_frame[column].transform(lambda x: int(x[1:]))
         sort_columns += [well_col, well_row]
         temp_sort_columns += [well_col, well_row]
 
     # Now the data frame has two extra sort columns for each well column
 
     # sorting by sort_columns
-    data.sort_values(by=sort_columns, inplace=True)
+    csv_data_frame.sort_values(by=sort_columns, inplace=True)
 
     # dropping the temp_sort_columns
-    sorted_data = data.drop(temp_sort_columns, axis=1)
+    sorted_data = csv_data_frame.drop(temp_sort_columns, axis=1)
 
     sorted_data.to_csv(file.absolute(), index=False)

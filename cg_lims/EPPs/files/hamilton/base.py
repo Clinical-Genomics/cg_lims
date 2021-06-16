@@ -9,7 +9,7 @@ from cg_lims.EPPs.files.hamilton.sars_cov2_prep_file import sars_cov2_prep_file
 @click.group(invoke_without_command=True)
 @click.pass_context
 def hamilton(ctx):
-    """Main entry point of file commands"""
+    """Main entry point of hamilton file commands"""
     pass
 
 
