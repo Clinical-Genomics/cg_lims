@@ -50,6 +50,11 @@ def add_file(entity: Entity, entity_dir: Path) -> None:
         replace="clinical-lims-stage.scilifelab.se",
         replace_with="127.0.0.1:8000",
     )
+    replace_str(
+        file=new_file,
+        replace="https:",
+        replace_with="http:",
+    )
 
 
 def add_entities(entities: List[Entity], entity_dir: Path):
