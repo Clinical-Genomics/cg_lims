@@ -3,7 +3,7 @@ import sys
 from typing import List
 
 import click
-import yaml
+import logging
 from genologics.lims import Lims
 
 from cg_lims import options
@@ -20,6 +20,8 @@ from cg_lims.app.schemas.master_steps import (
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifact_by_name
 from cg_lims.get.files import get_file_path
+
+LOG = logging.getLogger(__name__)
 
 
 def build_sample_row(lims: Lims, sample_id: str) -> list:
@@ -44,9 +46,10 @@ def build_sample_row(lims: Lims, sample_id: str) -> list:
 @options.local_file()
 @click.pass_context
 def trouble_shoot_kapa(ctx, samples_file: str, file: str, local_file: str):
+    LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
+
     lims = ctx.obj["lims"]
     process = ctx.obj["process"]
-
     if local_file:
         file_path = local_file
     else:
@@ -66,4 +69,5 @@ def trouble_shoot_kapa(ctx, samples_file: str, file: str, local_file: str):
             wr.writerows(sample_rows)
         click.echo("Twist csv file has been generated.")
     except LimsError as e:
+        LOG.info(e.message)
         sys.exit(e.message)
