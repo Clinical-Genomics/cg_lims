@@ -86,7 +86,7 @@ def file_placeholder(
 def samples_file(help: str = "Txt file with sample ids") -> click.option:
     return click.option(
         "--samples-file",
-        required=True,
+        required=False,
         help=help,
     )
 
