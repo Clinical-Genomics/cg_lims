@@ -40,11 +40,11 @@ def build_sample_row(lims: Lims, sample_id: str) -> list:
 @options.samples_file(help="Txt file with sample ids")
 @options.file_placeholder(help="File placeholder name.")
 @click.pass_context
-def trouble_shoot_kapa(ctx, sample_file: str, file: str):
+def trouble_shoot_kapa(ctx, samples_file: str, file: str):
     lims = ctx.obj["lims"]
 
     try:
-        with open(sample_file, "r") as samples:
+        with open(samples_file, "r") as samples:
             sample_list = [sample_id.strip("\n") for sample_id in samples.readlines()]
 
         with open(f"{file}_kapa_debug.csv", "w", newline="\n") as new_csv:
