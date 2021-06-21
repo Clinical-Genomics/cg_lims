@@ -83,6 +83,14 @@ def file_placeholder(
     return click.option("-f", "--file", required=False, help=help)
 
 
+def samples_file(help: str = "Txt file with sample ids") -> click.option:
+    return click.option(
+        "--samples-file",
+        required=True,
+        help=help,
+    )
+
+
 def local_file(help="local file path for debug purposes.") -> click.option:
     return click.option("-lf", "--local_file", required=False, help=help)
 
@@ -206,11 +214,3 @@ def concentration_udf_option(
     help: str = "String of UDF used to get concentration value",
 ) -> click.option:
     return click.option("--concentration-udf", required=True, help=help)
-
-
-def samples_file(help: str = "Txt file with sample ids") -> click.option:
-    return click.option(
-        "--samples-file",
-        required=True,
-        help=help,
-    )
