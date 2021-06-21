@@ -1,53 +1,6 @@
-import csv
-from typing import List
-
-import click
-import yaml
-from genologics.lims import Lims
 from pydantic import BaseModel, Field
 
-from cg_lims.app.schemas.master_steps import (
-    HybridizeLibraryTWIST,
-    AliquotsamplesforenzymaticfragmentationTWIST,
-    KAPALibraryPreparation,
-    PoolsamplesforhybridizationTWIST,
-    CaptureandWashTWIST,
-    BeadPurificationTWIST,
-    BufferExchange,
-)
-
-
-HEADERS = [
-    "SampleID",
-    "HybridizeBaitSet",
-    "HybridizeCaptureKit",
-    "HybridizeContainerName",
-    "HybridizeTwistEnrichmentKit",
-    "HybridizeBlockers",
-    "HybridizeKit",
-    "HybridizeThermalCycler",
-    "HybridizeMethodDocument",
-    "HybridizeDocumentVersion",
-    "AliquotBatchNoPrepPerformanceNA24143",
-    "AliquotBatchNoGMCKsolidHD827",
-    "AliquotBatchNoGMSlymphoidHD829",
-    "AliquotBatchNoGMSmyeloidHD829",
-    "AliquotAmountNeeded",
-    "KapaLabel",
-    "KapaMethodDocument",
-    "KapaDocumentVersion",
-    "KapaPrepKit",
-    "KapaWell",
-    "KapaContainerName",
-    "PreHybLibrarySize",
-    "PreHybConcentration",
-    "PoolAmount",
-    "CaptureEnrichmentKit",
-    "CaptureHybridizationTime",
-    "BufferExchangeConcentration",
-    "PostHybLibrarySize",
-    "PostHybConcentration",
-]
+from cg_lims.app.schemas.master_steps import HybridizeLibraryTWIST
 
 
 class DebugKapaCSV(BaseModel):
@@ -127,42 +80,34 @@ class DebugKapaCSV(BaseModel):
         self.buff_concentration = buffer.concentration
 
 
-def build_sample_row(lims: Lims, sample_id: str) -> list:
-    sample_row = DebugKapaCSV(SampleID=sample_id)
-    sample_row.set_hybridize(hybridize=HybridizeLibraryTWIST(lims=lims, sample_id=sample_id))
-    sample_row.set_aliquot(
-        aliquot=AliquotsamplesforenzymaticfragmentationTWIST(lims=lims, sample_id=sample_id)
-    )
-    sample_row.set_kapa(kapa=KAPALibraryPreparation(lims=lims, sample_id=sample_id))
-    sample_row.set_pool(pool=PoolsamplesforhybridizationTWIST(lims=lims, sample_id=sample_id))
-    sample_row.set_capture(capture=CaptureandWashTWIST(lims=lims, sample_id=sample_id))
-    sample_row.set_bead(bead=BeadPurificationTWIST(lims=lims, sample_id=sample_id))
-    sample_row.set_buffer(buffer=BufferExchange(lims=lims, sample_id=sample_id))
-
-    sample_row_dict = sample_row.dict(by_alias=True)
-    return [sample_row_dict.get(header) for header in HEADERS]
-
-
-@click.command()
-@click.option("--config")
-@click.option("--sample_file")
-def build_csv(config: str, sample_file: str):
-    with open(config) as file:
-        config_data = yaml.load(file, Loader=yaml.FullLoader)
-    lims = Lims(config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"])
-
-    with open(sample_file, "r") as samples:
-        sample_list = [sample_id.strip("\n") for sample_id in samples.readlines()]
-
-    with open("twist.csv", "w", newline="\n") as new_csv:
-        wr = csv.writer(new_csv, delimiter=",")
-        wr.writerow(HEADERS)
-        sample_rows: List[List[str]] = [
-            build_sample_row(lims, sample_id) for sample_id in sample_list
-        ]
-        wr.writerows(sample_rows)
-    click.echo("Twist csv file has been generated.")
-
-
-if __name__ == "__main__":
-    build_csv()
+HEADERS = [
+    "SampleID",
+    "HybridizeBaitSet",
+    "HybridizeCaptureKit",
+    "HybridizeContainerName",
+    "HybridizeTwistEnrichmentKit",
+    "HybridizeBlockers",
+    "HybridizeKit",
+    "HybridizeThermalCycler",
+    "HybridizeMethodDocument",
+    "HybridizeDocumentVersion",
+    "AliquotBatchNoPrepPerformanceNA24143",
+    "AliquotBatchNoGMCKsolidHD827",
+    "AliquotBatchNoGMSlymphoidHD829",
+    "AliquotBatchNoGMSmyeloidHD829",
+    "AliquotAmountNeeded",
+    "KapaLabel",
+    "KapaMethodDocument",
+    "KapaDocumentVersion",
+    "KapaPrepKit",
+    "KapaWell",
+    "KapaContainerName",
+    "PreHybLibrarySize",
+    "PreHybConcentration",
+    "PoolAmount",
+    "CaptureEnrichmentKit",
+    "CaptureHybridizationTime",
+    "BufferExchangeConcentration",
+    "PostHybLibrarySize",
+    "PostHybConcentration",
+]

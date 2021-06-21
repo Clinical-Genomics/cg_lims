@@ -83,6 +83,14 @@ def file_placeholder(
     return click.option("-f", "--file", required=False, help=help)
 
 
+def samples_file(help: str = "Txt file with sample ids") -> click.option:
+    return click.option(
+        "--samples-file",
+        required=False,
+        help=help,
+    )
+
+
 def local_file(help="local file path for debug purposes.") -> click.option:
     return click.option("-lf", "--local_file", required=False, help=help)
 
