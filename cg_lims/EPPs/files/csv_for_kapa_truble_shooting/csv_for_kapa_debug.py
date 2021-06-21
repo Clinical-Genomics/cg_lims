@@ -18,7 +18,7 @@ from cg_lims.app.schemas.master_steps import (
     BeadPurificationTWIST,
     BufferExchange,
 )
-from cg_lims.exceptions import LimsError
+from cg_lims.exceptions import LimsError, FileError
 from cg_lims.get.artifacts import get_artifact_by_name
 from cg_lims.get.files import get_file_path
 
@@ -69,9 +69,11 @@ def trouble_shoot_kapa(ctx, samples_file: str, file: str, local_file: str):
     try:
         if not file_path.exists():
             LOG.error("File not existing")
+            raise FileError(message="File not existing")
 
         if file_has_comma(file=file_path):
             LOG.error("File wrong format.")
+            raise FileError(message="File wrong format.")
 
         with open(file_path_str, "r") as samples:
             sample_list = [sample_id.strip("\n") for sample_id in samples.readlines()]
