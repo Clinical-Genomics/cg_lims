@@ -15,6 +15,7 @@ def serve_command(ctx, reload: bool):
     This command will serve the user interface (external) as default
     """
     api_context = APIContextObject(**ctx.obj)
-    app = f"app.api.api_v1.api:app"
     LOG.info("Running api on host:%s and port:%s", api_context.host, api_context.port)
-    uvicorn.run(app=app, host=api_context.host, port=api_context.port, reload=reload)
+    uvicorn.run(
+        app="app.api.api_v1.api:app", host=api_context.host, port=api_context.port, reload=reload
+    )
