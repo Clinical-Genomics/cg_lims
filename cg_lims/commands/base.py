@@ -8,6 +8,7 @@ from cg_lims.cgface_api import CgFace
 
 # commands
 from cg_lims.EPPs import epps
+from cg_lims.commands.serve import serve_command
 
 
 @click.group(invoke_without_command=True)
@@ -22,6 +23,9 @@ def cli(ctx, config):
     ctx.ensure_object(dict)
     ctx.obj["lims"] = lims
     ctx.obj["cgface"] = cgface
+    ctx.obj["host"] = config_data["CG_LIMS_HOST"]
+    ctx.obj["port"] = config_data["CG_LIMS_PORT"]
 
 
 cli.add_command(epps)
+cli.add_command(serve_command)
