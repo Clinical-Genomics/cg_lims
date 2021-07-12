@@ -60,7 +60,7 @@ class Sample(BaseModel):
 
     @validator("processing_time", always=True)
     def set_processing_time(cls, v, values: dict) -> Optional[dt.datetime]:
-        """Joining the warnings for a sample to a text string"""
+        """Calculating sample processing time."""
         received_at: Optional[dt.date] = values.get("received_at")
         delivery_date: Optional[dt.date] = values.get("delivery_date")
         if received_at and delivery_date:
