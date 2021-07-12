@@ -6,11 +6,21 @@ import logging
 LOG = logging.getLogger(__name__)
 
 
+def get_number_of_days(first_date: dt, second_date: dt) -> Optional[int]:
+    """Get number of days between different time stamps."""
+
+    days = None
+    if first_date and second_date:
+        time_span = second_date - first_date
+        days = time_span.days
+
+    return days
+
+
 class Sample(BaseModel):
     id: str
     name: str
     project: str
-    processing_time: Optional[dt.datetime]
     received_date: Optional[dt.date] = Field(None, alias="Received at")
     prepared_date: Optional[dt.date] = Field(None, alias="Library Prep Finished")
     sequenced_date: Optional[dt.date] = Field(None, alias="Sequencing Finished")
@@ -20,8 +30,8 @@ class Sample(BaseModel):
     capture_kit: Optional[str] = Field(None, alias="Capture Library version")
     collection_date: Optional[dt.date] = Field(None, alias="Collection Date")
     comment: Optional[str] = Field(None, alias="Comment")
-    concentration: Optional[str] = Field(None, alias="Concentration (nM)")
-    concentration_sample: Optional[str] = Field(None, alias="Sample Conc.")
+    concentration: Optional[float] = Field(None, alias="Concentration (nM)")
+    concentration_sample: Optional[float] = Field(None, alias="Sample Conc.")
     customer: Optional[str] = Field(None, alias="customer")
     data_analysis: Optional[str] = Field(None, alias="Data Analysis")
     data_delivery: Optional[str] = Field(None, alias="Data Delivery")
@@ -55,21 +65,40 @@ class Sample(BaseModel):
     tumour: Optional[str] = Field(None, alias="tumor")
     tumour_purity: Optional[str] = Field(None, alias="tumour purity")
     verified_organism: Optional[str] = Field(None, alias="Verified organism")
-    volume: Optional[str] = Field(None, alias="Volume (uL)")
+    volume: Optional[float] = Field(None, alias="Volume (uL)")
     well_position_rml: Optional[str] = Field(None, alias="RML well position")
+    processing_time: Optional[int]
+    sequenced_to_delivered: Optional[int]
+    prepped_to_sequenced: Optional[int]
+    received_to_prepped: Optional[int]
 
     @validator("processing_time", always=True)
-    def set_processing_time(cls, v, values: dict) -> Optional[dt.datetime]:
+    def set_processing_time(cls, v, values: dict) -> Optional[int]:
         """Calculating sample processing time."""
-        received_at: Optional[dt.date] = values.get("received_at")
+        received_date: Optional[dt.date] = values.get("received_date")
         delivery_date: Optional[dt.date] = values.get("delivery_date")
-        if received_at and delivery_date:
-            return delivery_date - received_at
-        LOG.info(
-            "Could not get recieved date or delivery date to generate the processing time for sample %s."
-            % values["id"]
-        )
-        return None
+        return get_number_of_days(first_date=received_date, second_date=delivery_date)
+
+    @validator("sequenced_to_delivered", always=True)
+    def set_sequenced_to_delivered(cls, v, values: dict) -> Optional[int]:
+        """Calculating sample processing time."""
+        received_date: Optional[dt.date] = values.get("sequenced_date")
+        delivery_date: Optional[dt.date] = values.get("delivered_date")
+        return get_number_of_days(first_date=received_date, second_date=delivery_date)
+
+    @validator("prepped_to_sequenced", always=True)
+    def set_prepped_to_sequenced(cls, v, values: dict) -> Optional[int]:
+        """Calculating sample processing time."""
+        received_date: Optional[dt.date] = values.get("prepared_date")
+        delivery_date: Optional[dt.date] = values.get("sequenced_date")
+        return get_number_of_days(first_date=received_date, second_date=delivery_date)
+
+    @validator("received_to_prepped", always=True)
+    def set_received_to_prepped(cls, v, values: dict) -> Optional[int]:
+        """Calculating sample processing time."""
+        received_date: Optional[dt.date] = values.get("received_date")
+        delivery_date: Optional[dt.date] = values.get("prepared_date")
+        return get_number_of_days(first_date=received_date, second_date=delivery_date)
 
     class Config:
         allow_population_by_alias = True
