@@ -17,5 +17,8 @@ def serve_command(ctx, reload: bool):
     api_context = APIContextObject(**ctx.obj)
     LOG.info("Running api on host:%s and port:%s", api_context.host, api_context.port)
     uvicorn.run(
-        app="app.api.api_v1.api:app", host=api_context.host, port=api_context.port, reload=reload
+        app="cg_lims.app.api.api_v1.api:app",
+        host=api_context.host,
+        port=api_context.port,
+        reload=reload,
     )
