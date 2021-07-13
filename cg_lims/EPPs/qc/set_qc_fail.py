@@ -15,3 +15,5 @@ def set_qc_fail(ctx):
         artifact.qc_flag = "FAILED"
         artifact.put()
     click.echo("QC-flags have been set.")
+    process.udf["QC Process ID"] = ""
+    process.put()
