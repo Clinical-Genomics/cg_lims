@@ -32,8 +32,8 @@ def get_final_conc_and_amount_dna(
                 break
         step = art.parent_process
 
-    sample.udf["amount"] = amount_art.udf.get(amount_udf) if amount_art else None
-    sample.udf["concentration"] = concentration_art.udf.get(concentration_udf)
+    sample.udf["lucigen_amount"] = amount_art.udf.get(amount_udf) if amount_art else None
+    sample.udf["lucigen_concentration"] = concentration_art.udf.get(concentration_udf)
     sample.put()
 
 
