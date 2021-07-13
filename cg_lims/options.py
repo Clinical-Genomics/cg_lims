@@ -174,6 +174,14 @@ def pooling_step(
     )
 
 
+def amount_udf(help: str = "Udf for fetching amount.") -> click.option:
+    return click.option(
+        "--amount-udf",
+        required=True,
+        help=help,
+    )
+
+
 def size_udf(help: str = "Udf for fetching size.") -> click.option:
     return click.option(
         "--size-udf",
