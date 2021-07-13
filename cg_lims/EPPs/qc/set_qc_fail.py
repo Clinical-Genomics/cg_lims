@@ -11,15 +11,15 @@ def set_qc_fail(ctx):
      where the process is defined by the udf "QC Process ID".
      The script is supposed to be run from within a script process."""
 
-    this_process = ctx.obj["process"]
+    process = ctx.obj["process"]
     lims = ctx.obj["lims"]
 
-    qc_process_id = this_process.udf.get("QC Process ID")
+    qc_process_id = process.udf.get("QC Process ID")
     qc_process = Process(lims=lims, id=qc_process_id)
     artifacts = qc_process.all_outputs(unique=True)
     for artifact in artifacts:
         artifact.qc_flag = "FAILED"
         artifact.put()
     click.echo("QC-flags have been set.")
-    this_process.udf["QC Process ID"] = ""
-    this_process.put()
+    process.udf["QC Process ID"] = ""
+    process.put()
