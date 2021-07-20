@@ -4,3 +4,4 @@ PyYAML
 pydantic
 fastapi
 pandas
+gunicorn
