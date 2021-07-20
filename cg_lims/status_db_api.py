@@ -3,7 +3,7 @@ import json
 import requests
 
 
-class CgFace(object):
+class StatusDBAPI(object):
     def __init__(self, url=None):
         self.url = url
 

@@ -1,11 +1,11 @@
 from genologics.lims import Lims
 from pydantic import BaseModel
-from cg_lims.cgface_api import CgFace
+from cg_lims.status_db_api import StatusDBAPI
 
 
 class EPPContextObject(BaseModel):
     lims: Lims
-    cgface: CgFace
+    cgface: StatusDBAPI
 
     class Config:
         arbitrary_types_allowed = True
