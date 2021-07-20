@@ -3,3 +3,4 @@ click
 PyYAML
 pydantic
 fastapi
+pandas
