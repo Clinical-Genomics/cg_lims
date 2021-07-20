@@ -5,3 +5,4 @@ pydantic
 fastapi
 pandas
 gunicorn
+uvicorn
