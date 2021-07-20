@@ -23,8 +23,8 @@ def cli(ctx, config):
     ctx.ensure_object(dict)
     ctx.obj["lims"] = lims
     ctx.obj["status_db"] = status_db
-    ctx.obj["host"] = config_data["CG_LIMS_HOST"]
-    ctx.obj["port"] = config_data["CG_LIMS_PORT"]
+    ctx.obj["host"] = config_data.get("CG_LIMS_HOST")
+    ctx.obj["port"] = config_data.get("CG_LIMS_PORT")
 
 
 cli.add_command(epps)
