@@ -1,3 +1,4 @@
+import subprocess
 import sys
 import click
 from genologics.entities import Artifact
@@ -8,6 +9,9 @@ from cg_lims.get.artifacts import get_latest_artifact
 from cg_lims.get.samples import get_one_sample_from_artifact
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
+import logging
+
+LOG = logging.getLogger(__name__)
 
 
 def get_final_conc_and_amount_dna(
@@ -38,11 +42,11 @@ def get_final_conc_and_amount_dna(
 
 
 @click.command()
-@options.concantration_udf
-@options.amount_udf
+@options.concantration_udf()
+@options.amount_udf()
 @options.process_type(help="Process from where to fetch the Amount")
 @click.pass_context
-def get_final_conc_and_amount_dna(
+def lucigen_conc_and_amount_to_sample(
     ctx, process_type: str, amount_udf: str, concentration_udf: str
 ) -> None:
     """Run from within a concentration step.
@@ -64,6 +68,41 @@ def get_final_conc_and_amount_dna(
                 amount_udf=amount_udf,
                 concentration_udf=concentration_udf,
             )
-        click.echo("Udfs have been set on all samples.")
+        LOG.info("Udfs have been set on all samples.")
     except LimsError as e:
-        sys.exit(e.message)
+        LOG.error(e.message)
+
+
+@click.command()
+@options.concantration_udf()
+@options.amount_udf()
+@options.process_type(help="Process from where to fetch the Amount")
+@click.pass_context
+def lucigen_conc_and_amount_to_sample_with_sub_process(
+    ctx, process_type: str, amount_udf: str, conc_udf: str
+) -> None:
+    """"""
+
+    config_path = ctx.obj["config_path"]
+    log_path = ctx.obj["log_path"]
+    process_id = ctx.obj["process"].id
+
+    command_line = [
+        "lims",
+        "-c",
+        config_path,
+        "epps",
+        "-l",
+        log_path,
+        "-p",
+        process_id,
+        "udf",
+        "copy",
+        "lucigen-conc-and-amount-to-sample",
+        "--conc-udf",
+        conc_udf,
+        "--amount-udf",
+        amount_udf,
+        "--process-type",
+        process_type,
+    ]

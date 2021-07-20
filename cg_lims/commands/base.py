@@ -22,6 +22,7 @@ def cli(ctx, config):
     ctx.ensure_object(dict)
     ctx.obj["lims"] = lims
     ctx.obj["cgface"] = cgface
+    ctx.obj["config_path"]: str = config
 
 
 cli.add_command(epps)

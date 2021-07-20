@@ -31,6 +31,7 @@ def epps(ctx, log: str, process: Process):
     logging.basicConfig(filename=str(log_path.absolute()), filemode="a", level=logging.INFO)
     process = Process(ctx.obj["lims"], id=process)
     ctx.obj["process"] = process
+    ctx.obj["log_path"]: str = log
 
 
 epps.add_command(move)
