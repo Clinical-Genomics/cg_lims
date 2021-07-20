@@ -1,7 +1,7 @@
 
 name: Push cg_lims image to Docker Hub on push event
 
-on: [push]
+on: [pull_request]
 
 jobs:
   docker-image-push:
