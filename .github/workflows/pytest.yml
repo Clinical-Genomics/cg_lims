@@ -1,6 +1,6 @@
 name: Tests CI
 
-on: ["push"]
+on: ["pull_request"]
 
 jobs:
   runs-on: ubuntu-latest
@@ -22,10 +22,9 @@ jobs:
         pip install pytest-cov coveralls
 
     - name: Test with pytest & Coveralls
-        run: |
-          pytest --cov=cg_lims/
-          coveralls
-        env:
-          GITHUB: 1
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      run: |
+        pytest --cov=cg_lims/
+        coveralls
+      env:
+        GITHUB: 1
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
