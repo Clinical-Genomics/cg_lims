@@ -1,4 +1,4 @@
-# cg_lims [![Coverage Status](https://coveralls.io/repos/github/Clinical-Genomics/cg_lims/badge.svg?branch=master)](https://coveralls.io/github/Clinical-Genomics/cg_lims?branch=master) [![Build Status](https://travis-ci.com/Clinical-Genomics/cg_lims.svg?branch=master)](https://travis-ci.org/Clinical-Genomics/cg_lims) ![Latest Release](https://img.shields.io/github/v/release/clinical-genomics/cg_lims)
+# cg_lims [![Coverage Status](https://coveralls.io/repos/github/Clinical-Genomics/cg_lims/badge.svg)](https://coveralls.io/github/Clinical-Genomics/cg_lims)  ![Latest Release](https://img.shields.io/github/v/release/clinical-genomics/cg_lims)
 
 A new package for lims interactions. The aim is to replace all other lims interactions at CG with this new package.
 

@@ -1,11 +1,11 @@
-### This PR adds | fixes:
-- 
+### Added
+
+### Changed
+
+### Fixed
 
 
-
-
-
-**Steps to concider while deploying**
+**Steps to consider while deploying**
 - Configuration changes:
 - Documentation updates:
 - Inform users by email:
