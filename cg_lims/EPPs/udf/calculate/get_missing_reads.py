@@ -10,7 +10,7 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 
-def missing_reads(artifacts: list, cgface) -> tuple:
+def missing_reads(artifacts: list, status_db) -> tuple:
     failed_arts = 0
     passed_arts = 0
     for art in artifacts:
@@ -22,8 +22,8 @@ def missing_reads(artifacts: list, cgface) -> tuple:
             failed_arts += 1
             continue
         try:
-            target_amount_reads = cgface.apptag(tag_name=app_tag, key="target_reads")
-            guaranteed_fraction = 0.01 * cgface.apptag(
+            target_amount_reads = status_db.apptag(tag_name=app_tag, key="target_reads")
+            guaranteed_fraction = 0.01 * status_db.apptag(
                 tag_name=app_tag, key="percent_reads_guaranteed"
             )
         except ConnectionError:
@@ -59,11 +59,11 @@ def get_missing_reads(ctx):
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
     process = ctx.obj["process"]
-    cgface = ctx.obj["cgface"]
+    status_db = ctx.obj["status_db"]
 
     try:
         artifacts = get_artifacts(process=process, input=False)
-        passed_arts, failed_arts = missing_reads(artifacts=artifacts, cgface=cgface)
+        passed_arts, failed_arts = missing_reads(artifacts=artifacts, status_db=status_db)
         message = f"Updataed {passed_arts}. Ignored {failed_arts} due to missing UDFs"
         if failed_arts:
             LOG.error(message)

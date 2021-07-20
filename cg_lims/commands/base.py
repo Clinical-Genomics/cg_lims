@@ -18,11 +18,11 @@ def cli(ctx, config):
     with open(config) as file:
         config_data = yaml.load(file, Loader=yaml.FullLoader)
     lims = Lims(config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"])
-    cgface = StatusDBAPI(config_data["CG_URL"])
+    status_db = StatusDBAPI(config_data["CG_URL"])
 
     ctx.ensure_object(dict)
     ctx.obj["lims"] = lims
-    ctx.obj["cgface"] = cgface
+    ctx.obj["status_db"] = status_db
     ctx.obj["host"] = config_data["CG_LIMS_HOST"]
     ctx.obj["port"] = config_data["CG_LIMS_PORT"]
 
