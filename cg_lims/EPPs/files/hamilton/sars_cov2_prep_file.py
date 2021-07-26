@@ -59,7 +59,7 @@ def get_file_data_and_write(destination_artifacts: List[Artifact], file: str, po
 @options.file_suffix()
 @options.pooling_step()
 @click.pass_context
-def sars_cov2_prep_file(ctx: click.Context, file: str, pooling_step: bool, file_suffix: str):
+def sars_cov2_prep_file(ctx: click.Context, file: str, pooling_step: bool, suffix: str):
     """Script to make a hamilton normalization file"""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -69,7 +69,7 @@ def sars_cov2_prep_file(ctx: click.Context, file: str, pooling_step: bool, file_
         get_file_data_and_write(
             pool=pooling_step,
             destination_artifacts=artifacts,
-            file=f"{file}-{file_suffix}.txt",
+            file=f"{file}-{suffix}.txt",
         )
         click.echo("The file was successfully generated.")
     except LimsError as e:
