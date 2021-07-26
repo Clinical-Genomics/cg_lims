@@ -43,18 +43,19 @@ class TwistPool(Pool):
             fract_of_pool = reads / float(self.total_reads_missing)
             amount_to_pool = total_amount * fract_of_pool
             vol = amount_to_pool / concentration
-            if vol > AVALIBLE_SAMPLE_VOLUME:
-                vol = AVALIBLE_SAMPLE_VOLUME
+            vol = min(vol, AVALIBLE_SAMPLE_VOLUME)
             self.total_volume += vol
             art.udf["Amount taken (ng)"] = amount_to_pool
             art.udf["Volume of sample (ul)"] = vol
-            art.put()
-            if (
-                amount_to_pool > art.udf.get("Amount (ng)")
-                or amount_to_pool < MINIMUM_SAMPLE_AMOUNT
-            ):
+
+            if amount_to_pool > art.udf.get("Amount (ng)"):
+                art.udf["Warning"] = "Amount to pool higher than amount available."
+            elif amount_to_pool < MINIMUM_SAMPLE_AMOUNT:
+                art.udf["Warning"] = "Amount to pool lower than minimum amount."
+            if art.udf.get("Warning"):
                 self.qc_flag = "FAILED"
                 self.amount_fail = True
+            art.put()
 
 
 def calculate_volumes_for_pooling(pools: List[Artifact]):

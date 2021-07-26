@@ -15,7 +15,9 @@ class PoolSection(BaseModel):
 
 class SampleTableSection(BaseModel):
     sample_id: str
+    sample_warning_color: str
     source_well: str
     source_container: str
+    source_container_color: str
     pool_name: str
     extra_sample_values: str
