@@ -202,6 +202,10 @@ def file_extension(help: str = "Define file extension") -> click.option:
     return click.option("-e", "--extension", required=False, default="", help=help)
 
 
+def file_suffix(help: str = "Define file name suffix") -> click.option:
+    return click.option("--suffix", required=False, default="", help=help)
+
+
 def amount_udf_option(help: str = "String of UDF used to get amount value") -> click.option:
     return click.option("--amount-udf", required=True, help=help)
 
