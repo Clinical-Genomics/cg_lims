@@ -7,7 +7,7 @@ The lims ststem is built upon a postgress database. Illumina provides a [REST AP
 
 ## Release model
 
-cg_lims is using github flow branching model as described in our development manual.
+cg_lims is using github flow release model as described in our development manual.
 
 
 ### Steps to make a new release:
