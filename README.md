@@ -13,7 +13,7 @@ cg_lims is using github flow branching model as described in our development man
 ### Steps to make a new release:
 
 1) Get you PR approved.
-2) Append the version bump to PR title. Eg, 'Update README' becomes 'Update Readme (patch)'
+2) Append the version bump to PR title. Eg. __Update README__ becomes __Update Readme (patch)__
 3) Write a change log comment in the conversation.
 4) Merge.
 
