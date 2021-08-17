@@ -28,7 +28,7 @@ def sum_reads(artifacts: list) -> Tuple[int, int]:
                 break
             missing_reads_pool.append(sample.udf["Reads missing (M)"])
         if missing_reads_pool:
-            artifact.udf["Reads to sequence (M)"] = sum(missing_reads_pool)
+            artifact.udf["Missing reads Pool (M)"] = sum(missing_reads_pool)
             artifact.put()
             passed_arts += 1
     return passed_arts, failed_arts

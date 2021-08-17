@@ -101,4 +101,4 @@ class Sample(BaseModel):
         return get_number_of_days(first_date=received_date, second_date=delivery_date)
 
     class Config:
-        allow_population_by_alias = True
+        allow_population_by_field_name = True
