@@ -10,7 +10,7 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 
-def sum_reads(artifacts: list) -> Tuple[int, int]:
+def sum_reads_in_ppol(artifacts: list) -> Tuple[int, int]:
     """Summing the missing reads for all samples in one pool."""
 
     failed_arts = 0
