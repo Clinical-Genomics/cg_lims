@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454715?state=1113673" limsid="2-1454715">
+    <name>tga210426_B1_Solid</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-196210" limsid="24-196210" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-143643" limsid="27-143643" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7239A44" limsid="ACC7239A44" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7241A6" limsid="ACC7241A6" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7241A10" limsid="ACC7241A10" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7245A1" limsid="ACC7245A1" />
+    <reagent-label name="C11 IDT_10nt_473 (TGCTCCTAAC-TTCCTAGCCG)" />
+    <reagent-label name="A11 IDT_10nt_447 (CTAGCAGTTA-ACAGAGCTGG)" />
+    <reagent-label name="H11 IDT_10nt_539 (AGGCGATCTG-AATTACGACG)" />
+    <reagent-label name="E12 IDT_10nt_501 (GTTCGATAAG-GCCAGATACG)" />
+    <udf:field type="String" name="Reads to sequence (M)">0</udf:field>
+    <workflow-stages />
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454715/demux" />
+</art:artifact>

@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC7117A12" limsid="ACC7117A12">
+    <name>Prep-performance-NA24143-250-EXO-12</name>
+    <date-received>2020-09-10</date-received>
+    <project limsid="ACC7117" uri="http://127.0.0.1:8000/api/v2/projects/ACC7117" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC7117A12PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC7117A12PA1?state=800311" />
+    <udf:field type="String" name="Comment">Reference sample for tga-batches to study prep performance. Use 250ng.</udf:field>
+    <udf:field type="String" name="customer">cust900</udf:field>
+    <udf:field type="String" name="Data Analysis">Balsamic</udf:field>
+    <udf:field type="Date" name="Library Prep Finished">2021-04-29</udf:field>
+    <udf:field type="Boolean" name="Sample Delivered">true</udf:field>
+    <udf:field type="Date" name="Sequencing Finished">2021-05-02</udf:field>
+    <udf:field type="Date" name="Received at">2020-11-10</udf:field>
+    <udf:field type="String" name="Passed Initial QC">True</udf:field>
+    <udf:field type="String" name="Passed Library QC">True</udf:field>
+    <udf:field type="String" name="Passed Sequencing QC">True</udf:field>
+    <udf:field type="String" name="familyID">Prep-performance-NA24143-250-EXO12</udf:field>
+    <udf:field type="String" name="Gender">unknown</udf:field>
+    <udf:field type="String" name="priority">research</udf:field>
+    <udf:field type="String" name="Process only if QC OK">yes</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">3</udf:field>
+    <udf:field type="String" name="Sample Buffer">Nuclease-free water</udf:field>
+    <udf:field type="Numeric" name="Total Reads (M)">45.246112</udf:field>
+    <udf:field type="String" name="tumor">yes</udf:field>
+    <udf:field type="String" name="Source">cell line</udf:field>
+    <udf:field type="String" name="Original Container">Prep-performance-NA24143-250-EXO</udf:field>
+    <udf:field type="String" name="Original Well">D:2</udf:field>
+    <udf:field type="Date" name="Delivered at">2021-05-03</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">EXOKTTR020</udf:field>
+</smp:sample>

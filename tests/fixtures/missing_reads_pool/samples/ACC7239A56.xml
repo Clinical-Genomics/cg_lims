@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC7239A56" limsid="ACC7239A56">
+    <name>Tumor109</name>
+    <date-received>2020-10-30</date-received>
+    <project limsid="ACC7239" uri="http://127.0.0.1:8000/api/v2/projects/ACC7239" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC7239A56PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC7239A56PA1?state=855632" />
+    <udf:field type="String" name="customer">cust108</udf:field>
+    <udf:field type="String" name="Data Analysis">Balsamic</udf:field>
+    <udf:field type="String" name="Capture Library version">GMCKsolid</udf:field>
+    <udf:field type="Date" name="Library Prep Finished">2021-04-29</udf:field>
+    <udf:field type="Date" name="Sequencing Finished">2021-05-02</udf:field>
+    <udf:field type="Date" name="Received at">2020-10-21</udf:field>
+    <udf:field type="String" name="Passed Initial QC">True</udf:field>
+    <udf:field type="String" name="Passed Library QC">False</udf:field>
+    <udf:field type="String" name="Passed Sequencing QC">True</udf:field>
+    <udf:field type="String" name="familyID">SynSarcPatient92</udf:field>
+    <udf:field type="String" name="Gender">F</udf:field>
+    <udf:field type="String" name="priority">research</udf:field>
+    <udf:field type="String" name="Process only if QC OK">no</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">0</udf:field>
+    <udf:field type="String" name="Sample Buffer">Nuclease-free water</udf:field>
+    <udf:field type="Numeric" name="Total Reads (M)">108.077486</udf:field>
+    <udf:field type="String" name="tumor">yes</udf:field>
+    <udf:field type="String" name="Source">tissue (FFPE)</udf:field>
+    <udf:field type="String" name="Original Container">Plate1</udf:field>
+    <udf:field type="String" name="Original Well">A:11</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">PALKTTR040</udf:field>
+</smp:sample>
