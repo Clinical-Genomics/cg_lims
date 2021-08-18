@@ -10,7 +10,7 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 
-def sum_reads_in_ppol(artifacts: list) -> Tuple[int, int]:
+def sum_reads_in_pool(artifacts: list) -> Tuple[int, int]:
     """Summing the missing reads for all samples in one pool."""
 
     failed_arts = 0
@@ -45,7 +45,7 @@ def missing_reads_in_pool(ctx):
 
     try:
         artifacts = get_artifacts(process=process, input=False)
-        passed_arts, failed_arts = sum_reads(artifacts=artifacts)
+        passed_arts, failed_arts = sum_reads_in_pool(artifacts=artifacts)
         message = f"Updated {passed_arts}. Ignored {failed_arts} due to missing Sample UDFs: 'Reads missing (M)'"
         if failed_arts:
             LOG.error(message)
