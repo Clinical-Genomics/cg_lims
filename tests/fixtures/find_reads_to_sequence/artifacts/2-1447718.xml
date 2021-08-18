@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1447718?state=1108547" limsid="2-1447718">
+    <name>S-aureus-Hackflex-1</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-192879" limsid="24-192879" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-143102" limsid="27-143102" />
+        <value>C:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7904A3" limsid="ACC7904A3" />
+    <reagent-label name="C11 UDP0371 (CTGAGCCGGT-CCTTCACGTA)" />
+    <udf:field type="Boolean" name="HiSeq2500">false</udf:field>
+    <workflow-stages>
+        <workflow-stage status="IN_PROGRESS" name="Define Run Format and Calculate Volumes (Nova Seq)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1652/stages/5361" />
+    </workflow-stages>
+</art:artifact>
