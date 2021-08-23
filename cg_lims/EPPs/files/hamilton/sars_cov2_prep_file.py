@@ -65,7 +65,7 @@ def sars_cov2_prep_file(ctx: click.Context, file: str, pooling_step: bool, suffi
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
     artifacts = get_artifacts(process=process, input=False)
-    container_name = artifacts[0].location.container.name
+    container_name = artifacts[0].location[0].name
     try:
         get_file_data_and_write(
             pool=pooling_step,
