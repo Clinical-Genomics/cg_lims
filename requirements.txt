@@ -6,3 +6,4 @@ fastapi
 pandas
 gunicorn
 uvicorn
+matplotlib

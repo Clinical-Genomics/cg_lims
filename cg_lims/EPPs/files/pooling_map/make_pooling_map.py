@@ -18,7 +18,9 @@ from cg_lims.EPPs.files.pooling_map.models import (
     PoolSection,
     SampleTableSection,
 )
+from matplotlib import colors
 
+COLORS = list(colors.TABLEAU_COLORS.values())
 LOG = logging.getLogger(__name__)
 
 
@@ -38,9 +40,8 @@ def add_pool_info(pool_udfs: List[str], pool: Artifact) -> str:
 def add_sample_info_headers(udfs_headers: List[str]) -> str:
     """Adding headers for more info about samples in the pool"""
 
-    html = []
-    for header in udfs_headers:
-        html.append(f'<th style="width: 7%;" class="">{header}</th>')
+    html = [f'<th style="width: 7%;" class="">{header}</th>' for header in udfs_headers]
+
     return "".join(html)
 
 
@@ -83,13 +84,20 @@ def make_html(
         extra_sample_columns: str = add_sample_info_headers(sample_udfs)
         html.append(SAMPLE_COLUMN_HEADERS.format(extra_sample_columns=extra_sample_columns))
         html.append("""</thead><tbody>""")
-
+        source_containers = []
         for location, artifact in artifacts:
             sample = artifact.samples[0]
+            sample_warning_color = "#F08080" if artifact.udf.get("Warning") else "#FFFFFF"
+            if artifact.container.name not in source_containers:
+                source_container_color = COLORS[0]
+                COLORS.pop(0)
+            source_containers.append(artifact.container.name)
             sample_table_values = SampleTableSection(
                 sample_id=sample.id,
+                sample_warning_color=sample_warning_color,
                 source_well=location,
                 source_container=artifact.container.name,
+                source_container_color=source_container_color,
                 pool_name=pool.name,
                 extra_sample_values=add_sample_info(artifact, sample_udfs),
             )
@@ -119,9 +127,8 @@ def pool_map(ctx, file: str, sample_udfs: List[str], pool_udfs: List[str]):
             pool_udfs,
             sample_udfs,
         )
-        file = open(f"{file}.html", "w")
-        file.write(html)
-        file.close()
+        with open(f"{file}.html", "w") as file:
+            file.write(html)
         click.echo("The file was successfully generated.")
     except LimsError as e:
         sys.exit(e.message)

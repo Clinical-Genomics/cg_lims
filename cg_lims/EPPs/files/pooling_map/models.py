@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -15,7 +17,9 @@ class PoolSection(BaseModel):
 
 class SampleTableSection(BaseModel):
     sample_id: str
+    sample_warning_color: Optional[str]
     source_well: str
     source_container: str
+    source_container_color: str
     pool_name: str
     extra_sample_values: str
