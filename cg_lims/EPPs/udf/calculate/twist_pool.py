@@ -52,6 +52,8 @@ class TwistPool(Pool):
                 art.udf["Warning"] = "Amount to pool higher than amount available."
             elif amount_to_pool < MINIMUM_SAMPLE_AMOUNT:
                 art.udf["Warning"] = "Amount to pool lower than minimum amount."
+            else:
+                art.udf["Warning"] = ""
             if art.udf.get("Warning"):
                 self.qc_flag = "FAILED"
                 self.amount_fail = True
