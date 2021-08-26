@@ -55,7 +55,7 @@ def calculate_volumes(artifacts: List[Artifact]):
         beads_volume = calculate_beads_volume(sample_volume, h2o_volume)
         artifact.udf["Volume Elution (ul)"] = elution_volume
         artifact.udf["Volume H2O (ul)"] = h2o_volume
-        artifact.udf["Volume beads (ul)"] = beads_volume
+        artifact.udf["Volume Beads (ul)"] = beads_volume
         artifact.put()
 
     if missing_udfs:
