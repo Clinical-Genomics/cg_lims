@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1439512?state=1101573" limsid="2-1439512">
+    <name>tga210426_B1_Solid</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-191880" limsid="24-191880" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-142117" limsid="27-142117" />
+        <value>B:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7239A44" limsid="ACC7239A44" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7241A6" limsid="ACC7241A6" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7241A10" limsid="ACC7241A10" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7245A1" limsid="ACC7245A1" />
+    <reagent-label name="C11 IDT_10nt_473 (TGCTCCTAAC-TTCCTAGCCG)" />
+    <reagent-label name="A11 IDT_10nt_447 (CTAGCAGTTA-ACAGAGCTGG)" />
+    <reagent-label name="H11 IDT_10nt_539 (AGGCGATCTG-AATTACGACG)" />
+    <reagent-label name="E12 IDT_10nt_501 (GTTCGATAAG-GCCAGATACG)" />
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Bead Purification (post hybridization) TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1601/stages/5113" />
+        <workflow-stage status="IN_PROGRESS" name="Bead Purification (post hybridization) TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1601/stages/5113" />
+    </workflow-stages>
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-1439512/demux" />
+</art:artifact>

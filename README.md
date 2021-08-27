@@ -1,14 +1,22 @@
-# cg_lims [![Coverage Status](https://coveralls.io/repos/github/Clinical-Genomics/cg_lims/badge.svg?branch=master)](https://coveralls.io/github/Clinical-Genomics/cg_lims?branch=master) [![Build Status](https://travis-ci.com/Clinical-Genomics/cg_lims.svg?branch=master)](https://travis-ci.org/Clinical-Genomics/cg_lims) ![Latest Release](https://img.shields.io/github/v/release/clinical-genomics/cg_lims)
+# cg_lims [![Coverage Status](https://coveralls.io/repos/github/Clinical-Genomics/cg_lims/badge.svg)](https://coveralls.io/github/Clinical-Genomics/cg_lims)  ![Latest Release](https://img.shields.io/github/v/release/clinical-genomics/cg_lims)
 
 A new package for lims interactions. The aim is to replace all other lims interactions at CG with this new package.
 
 ## Database access
 The lims ststem is built upon a postgress database. Illumina provides a [REST API](https://clinical-lims-stage.scilifelab.se/api/v2/) for accessing the database. On top of that there is a python API, the [genologics](https://github.com/SciLifeLab/genologics) packge wich simply translates the rest into python. cg_lims is hevily depending upon the genologics python API. 
 
-## Branching model
+## Release model
 
-cg_lims is using github flow branching model as described in our development manual.
+cg_lims is using github flow release model as described in our development manual.
 
+
+### Steps to make a new release:
+
+1) Get you PR approved.
+2) Append the version bump to PR title. Eg. __Update README__ becomes __Update Readme (patch)__
+3) Select __squash and merge__
+4) Write a change log comment.
+5) Merge.
 
 ## Config files
    

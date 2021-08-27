@@ -1,0 +1,5 @@
+Source Labware,Barcode Source Container,Source Well,Sample Volume,Destination Labware,Barcode Destination Container,Destination Well,Buffer Volume
+Tube,barcode1,barcode1,543,96 well plate,newbarcode,F1,12
+Tube,barcode1,barcode1,55,96 well plate,newbarcode,G2,2
+96 well plate,barcode2,E1,2,96 well plate,newbarcode,B2,33
+96 well plate,barcode2,F1,4,96 well plate,newbarcode,C2,4

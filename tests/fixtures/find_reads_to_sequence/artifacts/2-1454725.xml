@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454725?state=1113683" limsid="2-1454725">
+    <name>cov210504_plate3</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-196211" limsid="24-196211" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-143644" limsid="27-143644" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A1" limsid="ACC7892A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A2" limsid="ACC7892A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A3" limsid="ACC7892A3" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A4" limsid="ACC7892A4" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A5" limsid="ACC7892A5" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A6" limsid="ACC7892A6" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A7" limsid="ACC7892A7" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A8" limsid="ACC7892A8" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A9" limsid="ACC7892A9" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A10" limsid="ACC7892A10" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A11" limsid="ACC7892A11" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A12" limsid="ACC7892A12" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A13" limsid="ACC7892A13" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A14" limsid="ACC7892A14" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A15" limsid="ACC7892A15" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A16" limsid="ACC7892A16" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A17" limsid="ACC7892A17" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A18" limsid="ACC7892A18" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A19" limsid="ACC7892A19" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A20" limsid="ACC7892A20" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A21" limsid="ACC7892A21" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A22" limsid="ACC7892A22" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A23" limsid="ACC7892A23" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A24" limsid="ACC7892A24" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A25" limsid="ACC7892A25" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A26" limsid="ACC7892A26" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A27" limsid="ACC7892A27" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A28" limsid="ACC7892A28" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A29" limsid="ACC7892A29" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A30" limsid="ACC7892A30" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A31" limsid="ACC7892A31" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A32" limsid="ACC7892A32" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A33" limsid="ACC7892A33" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A34" limsid="ACC7892A34" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A35" limsid="ACC7892A35" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A36" limsid="ACC7892A36" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A37" limsid="ACC7892A37" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A38" limsid="ACC7892A38" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A39" limsid="ACC7892A39" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A40" limsid="ACC7892A40" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A41" limsid="ACC7892A41" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A42" limsid="ACC7892A42" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A43" limsid="ACC7892A43" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A44" limsid="ACC7892A44" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A45" limsid="ACC7892A45" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A46" limsid="ACC7892A46" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A47" limsid="ACC7892A47" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A48" limsid="ACC7892A48" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A49" limsid="ACC7892A49" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A50" limsid="ACC7892A50" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A51" limsid="ACC7892A51" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A52" limsid="ACC7892A52" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A53" limsid="ACC7892A53" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A54" limsid="ACC7892A54" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A55" limsid="ACC7892A55" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A56" limsid="ACC7892A56" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A57" limsid="ACC7892A57" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A58" limsid="ACC7892A58" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A59" limsid="ACC7892A59" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A60" limsid="ACC7892A60" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A61" limsid="ACC7892A61" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A62" limsid="ACC7892A62" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A63" limsid="ACC7892A63" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A64" limsid="ACC7892A64" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A65" limsid="ACC7892A65" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A66" limsid="ACC7892A66" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A67" limsid="ACC7892A67" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A68" limsid="ACC7892A68" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A69" limsid="ACC7892A69" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A70" limsid="ACC7892A70" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A71" limsid="ACC7892A71" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A72" limsid="ACC7892A72" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A73" limsid="ACC7892A73" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A74" limsid="ACC7892A74" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A75" limsid="ACC7892A75" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A76" limsid="ACC7892A76" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A77" limsid="ACC7892A77" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A78" limsid="ACC7892A78" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A79" limsid="ACC7892A79" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A80" limsid="ACC7892A80" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A81" limsid="ACC7892A81" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A82" limsid="ACC7892A82" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A83" limsid="ACC7892A83" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A84" limsid="ACC7892A84" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A85" limsid="ACC7892A85" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A86" limsid="ACC7892A86" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A87" limsid="ACC7892A87" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A88" limsid="ACC7892A88" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A89" limsid="ACC7892A89" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A90" limsid="ACC7892A90" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A91" limsid="ACC7892A91" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A92" limsid="ACC7892A92" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A93" limsid="ACC7892A93" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A94" limsid="ACC7892A94" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A95" limsid="ACC7892A95" />
+    <reagent-label name="D06 UDP0044 (CTGCGAGCCA-AATCCGGCCA)" />
+    <reagent-label name="C06 UDP0043 (CCATCTCGCC-TTCTATGGTT)" />
+    <reagent-label name="B06 UDP0042 (GTCTAATGGC-AGTGGTCAGG)" />
+    <reagent-label name="A06 UDP0041 (ACTCGGCAAT-GACAACTGAA)" />
+    <reagent-label name="H05 UDP0040 (TATGTAGTCA-CGCACTAATG)" />
+    <reagent-label name="G05 UDP0039 (CAATCGGCTG-GCTGTAGGAA)" />
+    <reagent-label name="F05 UDP0038 (GTGCAGACAG-TACCATCCGT)" />
+    <reagent-label name="E05 UDP0037 (TGTAATCGAC-GATCACCGCG)" />
+    <reagent-label name="D05 UDP0036 (ACCGGCCGTA-TGGCAATATT)" />
+    <reagent-label name="C05 UDP0035 (GGTAACTCGC-AAGTTGGTGA)" />
+    <reagent-label name="B05 UDP0034 (CAGCCGCGTA-ACTAGCCGTG)" />
+    <reagent-label name="A05 UDP0033 (TGATTATACG-GTCGATTACA)" />
+    <reagent-label name="H04 UDP0032 (ACAGTGTATG-GAACATACGG)" />
+    <reagent-label name="G04 UDP0031 (GTGACACGCA-GCTTACGGAC)" />
+    <reagent-label name="F04 UDP0030 (CCACCAGGCA-CTTATGGAAT)" />
+    <reagent-label name="E04 UDP0029 (GCCGCACTCT-TCCGACCTCG)" />
+    <reagent-label name="D04 UDP0028 (ACCACGACAT-TCGTATGCGG)" />
+    <reagent-label name="C04 UDP0027 (TAAGCATCCA-TCAATCCATT)" />
+    <reagent-label name="B04 UDP0026 (GGTTGCGAGG-AATAGAGCAA)" />
+    <reagent-label name="A04 UDP0025 (AACCATAGAA-GGCGAGATGG)" />
+    <reagent-label name="E03 UDP0021 (ATGGTTGACT-GGCCTGTCCT)" />
+    <reagent-label name="D03 UDP0020 (GATAGGCCGA-CGCACATGGC)" />
+    <reagent-label name="C03 UDP0019 (CCATCATTAG-GGTTGCCTCT)" />
+    <reagent-label name="B03 UDP0018 (AGAGGCAACC-CTAATGATGG)" />
+    <reagent-label name="A03 UDP0017 (GAGAATGGTT-TCGGCAGCAA)" />
+    <reagent-label name="H02 UDP0016 (CGGTTACGGC-AAGACTATAG)" />
+    <reagent-label name="G02 UDP0015 (TCCATTGCCG-GAATGCACGA)" />
+    <reagent-label name="F02 UDP0014 (GAAGCGGCAC-CGGCTCTACT)" />
+    <reagent-label name="E02 UDP0013 (CTTGCCATTA-ATCACGAAGG)" />
+    <reagent-label name="D02 UDP0012 (GAGTCATAGG-GTGTGGCGCT)" />
+    <reagent-label name="C02 UDP0011 (CCGTATGTTC-CATACACTGT)" />
+    <reagent-label name="B02 UDP0010 (AGTCAGACGA-ACCAGCGACA)" />
+    <reagent-label name="A02 UDP0009 (GACTGAGTAG-GTTGATAGTG)" />
+    <reagent-label name="H01 UDP0008 (GATCAAGGCA-CCTTGTTAAT)" />
+    <reagent-label name="G01 UDP0007 (CTAGTGCTCT-TGGAACAGTA)" />
+    <reagent-label name="F01 UDP0006 (AACATCGCGC-GTCCACTTGT)" />
+    <reagent-label name="E01 UDP0005 (GACGAGATTA-ACATTATCCT)" />
+    <reagent-label name="D01 UDP0004 (ATTCCATAAG-TGCCTGGTGG)" />
+    <reagent-label name="C01 UDP0003 (CGTCTCATAT-TATAGTAGCT)" />
+    <reagent-label name="B01 UDP0002 (AGGTCAGATA-CTACAAGATA)" />
+    <reagent-label name="A01 UDP0001 (GAACTGAGCG-TCGTGGAGCG)" />
+    <reagent-label name="F09 UDP0070 (GTATTGACGT-GGAATTCCAA)" />
+    <reagent-label name="E09 UDP0069 (TGGAGTACTT-TCTGTGTGGA)" />
+    <reagent-label name="D09 UDP0068 (CACGGAACAA-AACCTAGCAC)" />
+    <reagent-label name="C09 UDP0067 (AGGATGTGCT-TTACAATTCC)" />
+    <reagent-label name="B09 UDP0066 (ATACCAACGC-AATTGCTGCG)" />
+    <reagent-label name="A09 UDP0065 (TAATGTGTCT-GTAAGGCATA)" />
+    <reagent-label name="H08 UDP0064 (TGGCGCGAAC-AACTGATACT)" />
+    <reagent-label name="G08 UDP0063 (ATTGCGCGGT-TTGGCTCCGC)" />
+    <reagent-label name="F08 UDP0062 (AACACTGTTA-GCAAGTCTCA)" />
+    <reagent-label name="E08 UDP0061 (TGGCTAATCA-AGGCATGTAG)" />
+    <reagent-label name="D08 UDP0060 (TTACCTGGAA-ACAGTTCCAG)" />
+    <reagent-label name="C08 UDP0059 (CTGTTGGTCC-ATAGACCGTT)" />
+    <reagent-label name="B08 UDP0058 (CTCGCTTCGG-TACTAGTCAA)" />
+    <reagent-label name="A08 UDP0057 (TCTATCCTAA-CGTCGACTGG)" />
+    <reagent-label name="H07 UDP0056 (AACGCACGAG-GCCTCGGATA)" />
+    <reagent-label name="G07 UDP0055 (CTGAGGAATA-CTTAACCACT)" />
+    <reagent-label name="F07 UDP0054 (GCATAAGCTT-TTCCGTCGCA)" />
+    <reagent-label name="E07 UDP0053 (GGAATTGTAA-AGCACATCCT)" />
+    <reagent-label name="D07 UDP0052 (TGATGTAAGA-GTGCGTCCTT)" />
+    <reagent-label name="C07 UDP0051 (CCTGTCTGTC-ACTGTTGTGA)" />
+    <reagent-label name="B07 UDP0050 (GACACCATGT-TCAACGTGTA)" />
+    <reagent-label name="A07 UDP0049 (AGTGTTGCAC-CTGGTACACG)" />
+    <reagent-label name="H06 UDP0048 (CAGTGGCACT-TAACAATAGG)" />
+    <reagent-label name="G06 UDP0047 (GTCCTGGATA-CGGTGGCGAA)" />
+    <reagent-label name="F06 UDP0046 (AGATCCATTA-ATCTCTACCA)" />
+    <reagent-label name="E06 UDP0045 (CGTTATTCTA-CCATAAGGTT)" />
+    <reagent-label name="H03 UDP0024 (TTCTACATAC-CTAACTGTAA)" />
+    <reagent-label name="G03 UDP0023 (ACGCCTTGTT-TAAGGAACGT)" />
+    <reagent-label name="F03 UDP0022 (TATTGCGCTC-CTGTGTTAGG)" />
+    <reagent-label name="G12 UDP0095 (GTATTCCACC-ATGTAGACAA)" />
+    <reagent-label name="F12 UDP0094 (TCATAGATTG-GATTAAGGTG)" />
+    <reagent-label name="E12 UDP0093 (ACATATCCAG-TATGTGCAAT)" />
+    <reagent-label name="D12 UDP0092 (GCGTTGGTAT-ACATACTTCC)" />
+    <reagent-label name="C12 UDP0091 (TCAGAAGGCG-GGCCATCATA)" />
+    <reagent-label name="B12 UDP0090 (ACTTCAAGCG-GAACCATGAA)" />
+    <reagent-label name="A12 UDP0089 (GTCCGTAAGC-CGTGTATCTT)" />
+    <reagent-label name="H11 UDP0088 (GGAGCGTGTA-ATCCGTAAGT)" />
+    <reagent-label name="G11 UDP0087 (CCTCTACATG-GATACCTCCT)" />
+    <reagent-label name="F11 UDP0086 (TTGGAATTCC-ACGTCAATAC)" />
+    <reagent-label name="E11 UDP0085 (TGGTACCTAA-CATGAGTACT)" />
+    <reagent-label name="D11 UDP0084 (ACAAGTGGAC-GCGCGATGTT)" />
+    <reagent-label name="C11 UDP0083 (TATGCCTTAC-AGACACATTA)" />
+    <reagent-label name="B11 UDP0082 (ACCGTTACAA-CTCATAGCGA)" />
+    <reagent-label name="A11 UDP0081 (TGTCGCTGGT-TCGTCTGACT)" />
+    <reagent-label name="H10 UDP0080 (GGCAAGCCAG-CAAGCATCCG)" />
+    <reagent-label name="G10 UDP0079 (ACGGTCAGGA-CGGCCTCGTT)" />
+    <reagent-label name="F10 UDP0078 (CATTAGTGCG-TGACTACATA)" />
+    <reagent-label name="E10 UDP0077 (TCTGGTATCC-CGTTGCTTAC)" />
+    <reagent-label name="D10 UDP0076 (CTGACTCTAC-ACGGCCGTCA)" />
+    <reagent-label name="C10 UDP0075 (CTCTGCAGCG-GATGGATGTA)" />
+    <reagent-label name="B10 UDP0074 (TTCATAAGGT-TGTTAGAAGG)" />
+    <reagent-label name="A10 UDP0073 (CCTGCGGAAC-ATCATAGGCT)" />
+    <reagent-label name="H09 UDP0072 (ACACAGGTGG-TGAGCGTTGT)" />
+    <reagent-label name="G09 UDP0071 (CTTGTACACC-AAGCGCGCTT)" />
+    <udf:field type="String" name="Reads to sequence (M)">190</udf:field>
+    <workflow-stages />
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454725/demux" />
+</art:artifact>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454176?state=1113238" limsid="2-1454176">
+    <name>Pool #1</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-194650" limsid="122-194650" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-143637" limsid="27-143637" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A1" limsid="ACC7901A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A2" limsid="ACC7901A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A6" limsid="ACC7901A6" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A10" limsid="ACC7901A10" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A12" limsid="ACC7901A12" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A13" limsid="ACC7901A13" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7901A14" limsid="ACC7901A14" />
+    <reagent-label name="F02 UDP0206 v2 (CTGGAACTGT-CGTAATTAAC)" />
+    <reagent-label name="E02 UDP0205 v2 (TCCTCGGACT-AACGCCAGAG)" />
+    <reagent-label name="D02 UDP0204 v2 (GTAACTGAAG-GGAGTCGCGA)" />
+    <reagent-label name="B02 UDP0202 v2 (TGTGATAACT-CAGGCGCCAT)" />
+    <reagent-label name="F01 UDP0198 v2 (TAATTCTGCT-TCTCATCAAT)" />
+    <reagent-label name="B01 UDP0194 v2 (CGAGGCCAAG-GTGTTACCGG)" />
+    <reagent-label name="A01 UDP0193 v2 (TCTCATGATA-AACACGTGGA)" />
+    <workflow-stages />
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454176/demux" />
+</art:artifact>

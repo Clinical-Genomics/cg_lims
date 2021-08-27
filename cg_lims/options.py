@@ -29,6 +29,18 @@ def udf(
     return click.option("-u", "--udf", required=True, help=help)
 
 
+def buffer_udf(
+    help: str = "UDF name",
+) -> click.option:
+    return click.option("-b", "--buffer-udf", required=True, help=help)
+
+
+def volume_udf(
+    help: str = "UDF name",
+) -> click.option:
+    return click.option("-v", "--volume-udf", required=True, help=help)
+
+
 def well_field(
     help: str = "Well field in file",
 ) -> click.option:
@@ -69,6 +81,14 @@ def file_placeholder(
     help: str = "File.",
 ) -> click.option:
     return click.option("-f", "--file", required=False, help=help)
+
+
+def samples_file(help: str = "Txt file with sample ids") -> click.option:
+    return click.option(
+        "--samples-file",
+        required=False,
+        help=help,
+    )
 
 
 def local_file(help="local file path for debug purposes.") -> click.option:
@@ -142,6 +162,18 @@ def pool_udfs(help: str = "Pool udfs.") -> click.option:
     )
 
 
+def pooling_step(
+    help: str = "True if run from a pooling step",
+) -> click.option:
+    return click.option(
+        "-p",
+        "--pooling-step",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
 def size_udf(help: str = "Udf for fetching size.") -> click.option:
     return click.option(
         "--size-udf",
@@ -168,6 +200,10 @@ def concantration_nm_udf(help: str = "Udf for Concantration (nM).") -> click.opt
 
 def file_extension(help: str = "Define file extension") -> click.option:
     return click.option("-e", "--extension", required=False, default="", help=help)
+
+
+def file_suffix(help: str = "Define file name suffix") -> click.option:
+    return click.option("--suffix", required=False, default="", help=help)
 
 
 def amount_udf_option(help: str = "String of UDF used to get amount value") -> click.option:

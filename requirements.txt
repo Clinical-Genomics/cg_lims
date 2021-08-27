@@ -1,6 +1,9 @@
 genologics
 click
-pathlib
 PyYAML
 pydantic
 fastapi
+pandas
+gunicorn
+uvicorn
+matplotlib
