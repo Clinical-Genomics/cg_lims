@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:file="http://genologics.com/ri/file" uri="http://127.0.0.1:8000/api/v2/artifacts/92-1454640?state=1113647" limsid="92-1454640">
+    <name>Hamilton Prep File</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-196204" limsid="151-196204" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A1" limsid="ACC7892A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A5" limsid="ACC7892A5" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A9" limsid="ACC7892A9" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A13" limsid="ACC7892A13" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A16" limsid="ACC7892A16" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A57" limsid="ACC7892A57" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A64" limsid="ACC7892A64" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A65" limsid="ACC7892A65" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A70" limsid="ACC7892A70" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A73" limsid="ACC7892A73" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A78" limsid="ACC7892A78" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A81" limsid="ACC7892A81" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A92" limsid="ACC7892A92" />
+    <file:file limsid="40-54466" uri="http://127.0.0.1:8000/api/v2/files/40-54466" />
+    <workflow-stages />
+</art:artifact>

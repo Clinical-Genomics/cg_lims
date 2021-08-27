@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC7871A4" limsid="ACC7871A4">
+    <name>2021-11181-03</name>
+    <date-received>2021-04-23</date-received>
+    <project limsid="ACC7871" uri="http://127.0.0.1:8000/api/v2/projects/ACC7871" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC7871A4PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC7871A4PA1?state=1088712" />
+    <udf:field type="String" name="Comment">EDTA i buffert</udf:field>
+    <udf:field type="String" name="customer">cust002</udf:field>
+    <udf:field type="String" name="Data Analysis">mip-dna</udf:field>
+    <udf:field type="Date" name="Library Prep Finished">2021-04-29</udf:field>
+    <udf:field type="Date" name="Sequencing Finished">2021-05-02</udf:field>
+    <udf:field type="Date" name="Received at">2021-04-23</udf:field>
+    <udf:field type="String" name="Passed Initial QC">True</udf:field>
+    <udf:field type="String" name="Passed Library QC">True</udf:field>
+    <udf:field type="String" name="Passed Sequencing QC">True</udf:field>
+    <udf:field type="String" name="familyID">F0033533</udf:field>
+    <udf:field type="String" name="Gender">M</udf:field>
+    <udf:field type="String" name="priority">standard</udf:field>
+    <udf:field type="String" name="Process only if QC OK">no</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">0</udf:field>
+    <udf:field type="String" name="Sample Buffer">Other (specify in "Comments")</udf:field>
+    <udf:field type="Numeric" name="Total Reads (M)">111.279974</udf:field>
+    <udf:field type="String" name="tumor">no</udf:field>
+    <udf:field type="String" name="Source">blood</udf:field>
+    <udf:field type="String" name="Volume (uL)">50</udf:field>
+    <udf:field type="String" name="Original Container">2021-11181-03</udf:field>
+    <udf:field type="String" name="Original Well">1:1</udf:field>
+    <udf:field type="Numeric" name="Level of Multiplexing">8</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">EXOKTTR040</udf:field>
+</smp:sample>

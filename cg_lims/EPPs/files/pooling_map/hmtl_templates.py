@@ -44,9 +44,9 @@ SAMPLE_COLUMN_HEADERS = """
 
 SAMPLE_COLUMN_VALUES = """
     <tr>
-    <td style="width: 7%;">{sample_id}</td>
+    <td style="background-color: {sample_warning_color}; width: 7%;">{sample_id}</td>
     <td class="" style="width: 7%;">{source_well}</td>
-    <td class="" style="width: 7%;">{source_container}</td>
+    <td class="" style="background-color: {source_container_color}; width: 7%;">{source_container}</td>
     {extra_sample_values}
     </tr>
     """

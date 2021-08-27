@@ -54,7 +54,7 @@ def check_same_sample_in_many_rerun_pools(rerun_arts: List[Artifact]) -> None:
     duplicate_samples = list(set(all_samples))
     if duplicate_samples:
         raise DuplicateSampleError(
-            f"Waring same sample in many pools: {' ,'.join(duplicate_samples)}"
+            f"Waring same sample in many pools: {' ,'.join([sample.id for sample in duplicate_samples])}"
         )
 
 

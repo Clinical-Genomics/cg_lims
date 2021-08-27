@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454723?state=1113681" limsid="2-1454723">
+    <name>S-aureus-Hackflex-1</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-196211" limsid="24-196211" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-143644" limsid="27-143644" />
+        <value>D:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7904A3" limsid="ACC7904A3" />
+    <reagent-label name="C11 UDP0371 (CTGAGCCGGT-CCTTCACGTA)" />
+    <udf:field type="String" name="Reads to sequence (M)">6</udf:field>
+    <workflow-stages />
+</art:artifact>

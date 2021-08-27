@@ -73,6 +73,12 @@ class FileError(LimsError):
 
 
 class MissingValueError(LimsError):
-    """Raise when value """
+    """Raise when value missing"""
+
+    pass
+
+
+class CSVColumnError(LimsError):
+    """Raise when handling errors with csv columns"""
 
     pass

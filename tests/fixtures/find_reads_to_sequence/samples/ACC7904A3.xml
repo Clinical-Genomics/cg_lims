@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC7904A3" limsid="ACC7904A3">
+    <name>S-aureus-Hackflex-1</name>
+    <date-received>2021-05-03</date-received>
+    <project limsid="ACC7904" uri="http://127.0.0.1:8000/api/v2/projects/ACC7904" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC7904A3PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC7904A3PA1?state=1108122" />
+    <udf:field type="String" name="customer">cust000</udf:field>
+    <udf:field type="String" name="Data Analysis">microsalt</udf:field>
+    <udf:field type="Date" name="Library Prep Finished">2021-05-03</udf:field>
+    <udf:field type="Date" name="Received at">2021-05-03</udf:field>
+    <udf:field type="String" name="Passed Initial QC">True</udf:field>
+    <udf:field type="String" name="Passed Library QC">True</udf:field>
+    <udf:field type="String" name="familyID">NA</udf:field>
+    <udf:field type="String" name="Gender">unknown</udf:field>
+    <udf:field type="String" name="priority">research</udf:field>
+    <udf:field type="String" name="Process only if QC OK">no</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">6</udf:field>
+    <udf:field type="String" name="Reference Genome Microbial">NC_002951</udf:field>
+    <udf:field type="String" name="Sample Buffer">Nuclease-free water</udf:field>
+    <udf:field type="String" name="Strain">S. aureus</udf:field>
+    <udf:field type="String" name="tumor">no</udf:field>
+    <udf:field type="String" name="Source">NA</udf:field>
+    <udf:field type="String" name="Volume (uL)">50</udf:field>
+    <udf:field type="String" name="Extraction method">Other (specify in "Comments")</udf:field>
+    <udf:field type="String" name="Verified organism">no</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">MWRNXTR003</udf:field>
+</smp:sample>

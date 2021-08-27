@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A64" limsid="ACC7892A64">
+    <name>21CS501347</name>
+    <date-received>2021-04-29</date-received>
+    <project limsid="ACC7892" uri="http://127.0.0.1:8000/api/v2/projects/ACC7892" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC7892A64PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC7892A64PA1?state=1102644" />
+    <udf:field type="String" name="Comment">Amplikon genererade med Illumina COVIDSeq</udf:field>
+    <udf:field type="Date" name="Library Prep Finished">2021-05-04</udf:field>
+    <udf:field type="Date" name="Received at">2021-05-04</udf:field>
+    <udf:field type="String" name="Passed Initial QC">True</udf:field>
+    <udf:field type="String" name="Passed Library QC">True</udf:field>
+    <udf:field type="String" name="customer">cust124</udf:field>
+    <udf:field type="String" name="familyID">NA</udf:field>
+    <udf:field type="String" name="Gender">unknown</udf:field>
+    <udf:field type="String" name="priority">priority</udf:field>
+    <udf:field type="String" name="Process only if QC OK">no</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">2</udf:field>
+    <udf:field type="String" name="Reference Genome Microbial">NC_045512</udf:field>
+    <udf:field type="String" name="Sample Buffer">Other (specify in "Comments")</udf:field>
+    <udf:field type="String" name="Strain">SARS-CoV-2</udf:field>
+    <udf:field type="String" name="tumor">no</udf:field>
+    <udf:field type="String" name="Source">NA</udf:field>
+    <udf:field type="String" name="Volume (uL)">50</udf:field>
+    <udf:field type="String" name="Extraction method">MagNaPure 96</udf:field>
+    <udf:field type="String" name="Original Container">F36-21</udf:field>
+    <udf:field type="String" name="Original Well">H:8</udf:field>
+    <udf:field type="String" name="Verified organism">no</udf:field>
+    <udf:field type="String" name="Data Analysis">sars-cov-2</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">VWGDPTR001</udf:field>
+    <udf:field type="String" name="Selection Criteria">1. Allmän övervakning</udf:field>
+    <udf:field type="String" name="Lab Code">SE100 Karolinska</udf:field>
+    <udf:field type="String" name="Region Code">01 Region Stockholm</udf:field>
+    <udf:field type="String" name="Pre Processing Method">COVIDSeq</udf:field>
+</smp:sample>
