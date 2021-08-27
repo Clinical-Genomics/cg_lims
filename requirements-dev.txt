@@ -3,3 +3,4 @@ pytest-cov
 pytest-mock
 coveralls
 pylint
+mock
