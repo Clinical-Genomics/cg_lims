@@ -5,7 +5,7 @@ from pydantic import Field
 
 class PrepCollection(BaseModel):
     prep_id: str
-    workflow: str = Literal["RNA", "TWIST", "COV", "WGS-PCR-free", "Microbial-WGS"]  # ??
+    # workflow: str = Literal["RNA", "TWIST", "COV", "WGS-PCR-free", "Microbial-WGS"]  # ??
     # prep_type: str = Literal['SureSelect', 'exo']  # ??
     sample_ids: List[str]
     id: Optional[str] = Field(..., alias="_id")
