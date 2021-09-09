@@ -1,14 +1,14 @@
 from typing import List, Literal, Optional
 from pydantic.main import BaseModel
-
-from cg_lims.models.database import SampleCollection
+from pydantic import Field
 
 
 class PrepCollection(BaseModel):
-    prep_id: int
+    prep_id: str
     workflow: str = Literal["RNA", "TWIST", "COV", "WGS-PCR-free", "Microbial-WGS"]  # ??
     # prep_type: str = Literal['SureSelect', 'exo']  # ??
     sample_ids: List[str]
+    id: Optional[str] = Field(..., alias="_id")
 
 
 class PrepCollectionWGSPCRFree(PrepCollection):

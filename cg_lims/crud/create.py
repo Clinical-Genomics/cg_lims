@@ -35,13 +35,12 @@ def create_prep(adapter: CgLimsAdapter, prep: PrepCollection) -> str:
     return result.inserted_id
 
 
-def create_preps(
-        adapter: CgLimsAdapter, preps: List[PrepCollection]) -> List[str]:
+def create_preps(adapter: CgLimsAdapter, preps: List[PrepCollection]) -> List[str]:
     """Load a preps into the database"""
 
     prep_dicts = []
     for prep in preps:
-        prep_dict: dict = prep.dict(exclude_none=True)
+        prep_dict: dict = prep.dict(exclude_none=True, by_alias=True)
         prep_dicts.append(prep_dict)
     try:
         result: InsertManyResult = adapter.prep_collection.insert_many(prep_dicts)

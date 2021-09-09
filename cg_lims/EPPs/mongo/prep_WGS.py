@@ -21,6 +21,7 @@ def build_document(artifact: Artifact, workflow: str):
     sample_ids: List[str] = [sample.id for sample in artifact.samples]
 
     return PrepCollectionWGSPCRFree(
+        _id=artifact.id,
         workflow=workflow,
         prep_id=artifact.id,
         sample_ids=sample_ids,
@@ -44,7 +45,8 @@ def wgs_prep_document(ctx):
             build_document(artifact=artifact, workflow=workflow) for artifact in artifacts
         ]
         document_ids: List[str] = create_preps(adapter=adapter, preps=prep_documents)
-        message = f"Created documents {' ,'.join(document_ids)} in prep collection"
+        document_ids_str = [str(document_id) for document_id in document_ids]
+        message = f"Created documents {' ,'.join(document_ids_str)} in prep collection"
         LOG.info(message)
         click.echo(message)
     except LimsError as e:

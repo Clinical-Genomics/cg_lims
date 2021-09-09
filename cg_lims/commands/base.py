@@ -25,6 +25,8 @@ def cli(ctx, config):
     ctx.obj["status_db"] = status_db
     ctx.obj["host"] = config_data.get("CG_LIMS_HOST")
     ctx.obj["port"] = config_data.get("CG_LIMS_PORT")
+    ctx.obj["db_uri"] = config_data.get("DB_URI")
+    ctx.obj["db_name"] = config_data.get("DB_NAME")
 
 
 cli.add_command(epps)
