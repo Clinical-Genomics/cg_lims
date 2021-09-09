@@ -45,6 +45,6 @@ def create_preps(adapter: CgLimsAdapter, preps: List[PrepCollection]) -> List[st
     try:
         result: InsertManyResult = adapter.prep_collection.insert_many(prep_dicts)
         LOG.info("Added prep documents.")
-    except:
-        raise InsertError(f"Prep keys already in database.")
+    except InsertError as e:
+        raise InsertError(e.message)
     return result.inserted_ids
