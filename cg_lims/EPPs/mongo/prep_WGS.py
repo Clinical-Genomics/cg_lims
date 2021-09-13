@@ -9,7 +9,7 @@ from cg_lims.adapter.plugin import get_cg_lims_adapter
 from cg_lims.exceptions import LimsError
 from cg_lims.exeptions import InsertError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.models.database.prepp import PrepCollectionWGSPCRFree
+from cg_lims.models.database.prepp_ import PrepCollectionWGSPCRFree
 from cg_lims.crud.create import create_preps
 
 LOG = logging.getLogger(__name__)
