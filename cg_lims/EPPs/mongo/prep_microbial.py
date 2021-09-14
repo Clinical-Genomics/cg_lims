@@ -5,11 +5,10 @@ import click
 from genologics.lims import Lims, Process
 
 from cg_lims.adapter.plugin import get_cg_lims_adapter
-from cg_lims.exceptions import MissingArtifactError
 from cg_lims.exeptions import InsertError
-from cg_lims.get.artifacts import get_latest_artifact
 from cg_lims.get.samples import get_process_samples
-from cg_lims.models.database.prep import (
+from cg_lims.get.udfs import filter_process_udfs_by_model, filter_process_artifact_udfs_by_model
+from cg_lims.models.database.microbial_prep import (
     MicrobialLibraryPrepNexteraProcessUDFS,
     PostPCRBeadPurificationProcessUDFS,
     PostPCRBeadPurificationArtifactUDF,
@@ -22,32 +21,6 @@ from cg_lims.models.database.prep import (
 from cg_lims.crud.create import create_preps
 
 LOG = logging.getLogger(__name__)
-
-
-def filter_process_udfs_by_model(lims: Lims, sample_id: str, process_type: str, model):
-    """"""
-    try:
-        artifact = get_latest_artifact(lims=lims, sample_id=sample_id, process_type=[process_type])
-    except MissingArtifactError as e:
-        LOG.info(e.message)
-        return dict()
-    process_udfs = dict(artifact.parent_process.udf.items())
-    udf_model = model(**process_udfs)
-    return udf_model.dict(exclude_none=True)
-
-
-def filter_process_artifact_udfs_by_model(
-    lims: Lims, sample_id: str, process_type: str, model
-) -> dict:
-    """"""
-    try:
-        artifact = get_latest_artifact(lims=lims, sample_id=sample_id, process_type=[process_type])
-    except MissingArtifactError as e:
-        LOG.info(e.message)
-        return dict()
-    artifact_udfs = dict(artifact.udf.items())
-    udf_model = model(**artifact_udfs)
-    return udf_model.dict(exclude_none=True)
 
 
 def build_microbial_document(sample_id: str, process_id: str, lims: Lims):
