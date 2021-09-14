@@ -1,12 +1,12 @@
 """CLI module to set Reads Missing (M) udf on new samples"""
 import logging
 import sys
-from typing import List
+from typing import List, Tuple
 
 import click
 from genologics.entities import Sample
 
-from cg_lims.exceptions import LimsError, MissingCgFieldError, MissingUDFsError
+from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.status_db_api import StatusDBAPI
 
@@ -15,7 +15,7 @@ PASSED = "PASSED"
 FAILED = "FAILED"
 
 
-def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI):
+def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:
     """ """
     app_tag = get_app_tag(sample)
     target_amount = get_target_amount(app_tag, status_db)
@@ -23,7 +23,7 @@ def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI):
     sample.put()
 
 
-def get_app_tag(sample: Sample):
+def get_app_tag(sample: Sample) -> str:
     """ """
     try:
         return sample.udf["Sequencing Analysis"]
@@ -33,7 +33,7 @@ def get_app_tag(sample: Sample):
         )
 
 
-def get_target_amount(app_tag: str, status_db: StatusDBAPI):
+def get_target_amount(app_tag: str, status_db: StatusDBAPI) -> int:
     """ """
     try:
         return status_db.apptag(tag_name=app_tag, key="target_reads")
@@ -41,15 +41,20 @@ def get_target_amount(app_tag: str, status_db: StatusDBAPI):
         raise LimsError(message="No connection to clinical-api!")
 
 
-def set_reads_missing(samples: List[Sample], status_db: StatusDBAPI):
+def set_reads_missing(
+    samples: List[Sample], status_db: StatusDBAPI
+) -> Tuple[int, List[str]]:
     """ """
-    failed_samples = 0
+    failed_samples_count = 0
+    failed_samples = []
     for sample in samples:
         try:
             set_reads_missing_on_sample(sample, status_db)
         except Exception:
-            failed_samples += 1
-    return failed_samples
+            failed_samples_count += 1
+            failed_samples.append(sample.id)
+
+    return failed_samples_count, failed_samples
 
 
 @click.command()
@@ -64,9 +69,13 @@ def set_reads_missing_on_new_samples(context: click.Context):
 
     try:
         samples = get_process_samples(process=process)
-        failed_samples = set_reads_missing(samples, status_db)
-        message = "Reads Missing (M) udf set on samples."
-        if failed_samples:
+        failed_samples_count, failed_samples = set_reads_missing(samples, status_db)
+        message = f"Reads Missing (M) udf set on samples."
+        if failed_samples_count:
+            message += (
+                f" Failed {failed_samples_count} samples: {', '.join(failed_samples)}"
+            )
+        if failed_samples_count:
             LOG.error(message)
             click.echo(message)
         else:
