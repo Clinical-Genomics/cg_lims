@@ -2,7 +2,7 @@
 
 import click
 
-from cg_lims.EPPs.mongo.prep_WGS import wgs_prep_document
+from cg_lims.EPPs.mongo.prep_microbial import microbial_prep_document
 
 
 @click.group(invoke_without_command=True)
@@ -12,5 +12,4 @@ def mongo(ctx):
     pass
 
 
-mongo.add_command(wgs_prep_document)
-
+mongo.add_command(microbial_prep_document)
