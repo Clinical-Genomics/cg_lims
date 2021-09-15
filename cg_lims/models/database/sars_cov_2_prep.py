@@ -8,16 +8,17 @@ from cg_lims.models.database.prep import PrepCollection
 
 
 
-"Buffer Exchange v1"
+"InitialQC(cov)"
 Artifact-udfs:
 "Condentration" - optional
 
 Process-udfs:
 
 
-class BufferExchangeArtifactUDF(BaseModel):
-    """Buffer Exchange v1"""
+class ?ArtifactUDF(BaseModel):
+    """?"""
     sample_concentration: Optional[float] = Field(None, alias="Concentration")
+    sample_size: Optional[float] = Field(None, alias="Peak Size")
 
 
 class BufferExchangeProcessUDFS(BaseModel):
@@ -37,14 +38,17 @@ class NormalizationOfMicrobialSamplesProcessUDFS(BaseModel):
     )
 
 
-class MicrobialLibraryPrepNexteraProcessUDFS:
-    lot_nr_tagmentation_buffer: str = Field(..., alias="Lot nr: Tagmentation buffer (TD-buffer)")
-    lot_nr_tagmentation_enzyme: str = Field(..., alias="Lot nr: Tagmentation enzyme (TDE1)")
-    lot_nr_index: str = Field(..., alias="Lot nr: Index")
-    lot_nr_pcr_mix: str = Field(..., alias="Lot nr: KAPA HiFi HotStart ReadyMix (2X)")
-    pcr_instrument_incubation: str = Field(..., alias="PCR instrument incubation")
-    pcr_instrument_amplification: str = Field(..., alias="PCR instrument amplification")
-    nr_pcr_cycles: int = Field(..., alias="Nr PCR cycles")
+class LibraryPreparationCovv1ProcessUDFS(BaseModel):
+    lot_nr_tagmentation_beads: str = Field(..., alias="Tagmentation beads")
+    lot_nr__stop_tagment_buffer: str = Field(..., alias="Stop Tagment Buffer")
+    lot_nr_index: str = Field(..., alias="Index")
+    lot_nr_pcr_mix: str = Field(..., alias="PCR-mix")
+    lot_nr_tagmentation_wash_buffer: str = Field(..., alias="Tagmentation Wash Buffer")
+    lot_nr_nuclease_free_water: str = Field(..., alias="Nuclease-free water")
+    lot_nr_TB1: str = Field(..., alias="TB1 HT")
+    pcr_instrument_tagmentation: str = Field(..., alias="PCR machine: Tagmentation")
+    pcr_instrument_amplification: str = Field(..., alias="PCR machine: Amplification")    
+    library_preparation_method: str = Field(..., alias="Method document")
 
 
 class PostPCRBeadPurificationProcessUDFS(BaseModel):
