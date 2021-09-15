@@ -49,12 +49,16 @@ class LibraryPreparationCovv1ProcessUDFS(BaseModel):
     pcr_instrument_tagmentation: str = Field(..., alias="PCR machine: Tagmentation")
     pcr_instrument_amplification: str = Field(..., alias="PCR machine: Amplification")    
     library_preparation_method: str = Field(..., alias="Method document")
+    liquid_handling_system: str = Field(..., alias="Instrument")
 
 
-class PostPCRBeadPurificationProcessUDFS(BaseModel):
-    lot_nr_beads_library_prep: str = Field(..., alias="Lot nr: Beads")
-    lot_nr_etoh_library_prep: str = Field(..., alias="Lot nr: EtOH")
-    lot_nr_h2o_library_prep: str = Field(..., alias="Lot nr: H2O")
+class PoolingAndCleanUpCovv1ProcessUDFS(BaseModel):
+    pooling_method: str = Field(..., alias="Method document (pooling)")
+    clean-up_method: str = Field(..., alias="Method document (Clean-up)")
+    lot_nr_beads_clean_up: str = Field(..., alias="Purification beads")
+    lot_nr_etoh_clean_up: str = Field(..., alias="Ethanol")
+    lot_nr_h2o_clean_up: str = Field(..., alias="Nuclease-free water")
+    lot_nr_resuspension_buffer_clean_up: str = Field(..., alias="Resuspension buffer")
 
 
 class PostPCRBeadPurificationArtifactUDF(BaseModel):
