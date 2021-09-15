@@ -99,7 +99,7 @@ def test_set_reads_missing_one_sample(
     samples = [sample_1]
 
     # WHEN setting the reads missing on that sample
-    failed_samples_count, failed_samples = set_reads_missing(
+    failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
         samples, status_db=mock_status_db
     )
 
@@ -107,6 +107,7 @@ def test_set_reads_missing_one_sample(
     mock_set_reads_missing_on_sample.assert_called_with(sample_1, mock_status_db)
     # AND there should be no failed samples
     assert failed_samples_count == 0
+    assert succeeded_samples_count == 1
     assert bool(failed_samples) is False
 
 
@@ -121,7 +122,7 @@ def test_set_reads_missing_multiple_samples(
     samples = [sample_1, sample_2]
 
     # WHEN setting the reads missing on those samples
-    failed_samples_count, failed_samples = set_reads_missing(
+    failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
         samples, status_db=mock_status_db
     )
 
@@ -132,6 +133,7 @@ def test_set_reads_missing_multiple_samples(
     ]
     # AND there should be no failed samples
     assert failed_samples_count == 0
+    assert succeeded_samples_count == 2
     assert bool(failed_samples) is False
 
 
@@ -149,11 +151,14 @@ def test_set_reads_missing_one_sample_exception(
 
     # WHEN setting the reads missing on that sample leads to an exception  being raised
     mock_set_reads_missing_on_sample.side_effect = Exception
-    failed_samples_count, failed_samples = set_reads_missing(samples, mock_status_db)
+    failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
+        samples, mock_status_db
+    )
 
     # AND one failed sample should be counted, and it's id should be returned
     mock_set_reads_missing_on_sample.assert_called_with(sample_1, mock_status_db)
     assert failed_samples_count == 1
+    assert succeeded_samples_count == 0
     assert failed_samples == ["S1"]
 
 
@@ -172,7 +177,9 @@ def test_set_reads_missing_multiple_samples_exception_on_first_sample(
 
     # WHEN setting the reads missing on those samples and the second sample leads to an exception being raised
     mock_set_reads_missing_on_sample.side_effect = (None, Exception)
-    failed_samples_count, failed_samples = set_reads_missing(samples, mock_status_db)
+    failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
+        samples, mock_status_db
+    )
 
     # THEN setting the missing reads should be attempted for both samples
     assert mock_set_reads_missing_on_sample.mock_calls == [
@@ -181,6 +188,7 @@ def test_set_reads_missing_multiple_samples_exception_on_first_sample(
     ]
     # AND one failed sample should be counted, and it's id should be returned
     assert failed_samples_count == 1
+    assert succeeded_samples_count == 1
     assert failed_samples == ["S2"]
 
 
@@ -201,7 +209,9 @@ def test_set_reads_missing_multiple_samples_exception_on_second_sample(
     # WHEN setting the reads missing on those samples and the first sample leads to an exception being raised
 
     mock_set_reads_missing_on_sample.side_effect = (Exception, None)
-    failed_samples_count, failed_samples = set_reads_missing(samples, mock_status_db)
+    failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
+        samples, mock_status_db
+    )
 
     # THEN setting the missing reads should be attempted for both samples
     assert mock_set_reads_missing_on_sample.mock_calls == [
@@ -210,6 +220,7 @@ def test_set_reads_missing_multiple_samples_exception_on_second_sample(
     ]
     # AND one failed sample should be counted
     assert failed_samples_count == 1
+    assert succeeded_samples_count == 1
     assert failed_samples == ["S1"]
 
 
@@ -229,7 +240,9 @@ def test_set_reads_missing_multiple_samples_exception_on_both_samples(
 
     # WHEN setting the reads missing on those samples and both samples leads to an exception being raised
     mock_set_reads_missing_on_sample.side_effect = (Exception, Exception)
-    failed_samples_count, failed_samples = set_reads_missing(samples, mock_status_db)
+    failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
+        samples, mock_status_db
+    )
 
     # THEN setting the missing reads should be attempted for both samples
     assert mock_set_reads_missing_on_sample.mock_calls == [
@@ -238,4 +251,5 @@ def test_set_reads_missing_multiple_samples_exception_on_both_samples(
     ]
     # AND two failed sample should be counted, and their id's should be returned
     assert failed_samples_count == 2
+    assert succeeded_samples_count == 0
     assert failed_samples == ["S1", "S2"]

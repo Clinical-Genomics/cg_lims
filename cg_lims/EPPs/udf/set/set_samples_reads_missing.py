@@ -43,18 +43,20 @@ def get_target_amount(app_tag: str, status_db: StatusDBAPI) -> int:
 
 def set_reads_missing(
     samples: List[Sample], status_db: StatusDBAPI
-) -> Tuple[int, List[str]]:
+) -> Tuple[int, int, List[str]]:
     """ """
     failed_samples_count = 0
+    succeeded_samples_count = 0
     failed_samples = []
     for sample in samples:
         try:
             set_reads_missing_on_sample(sample, status_db)
+            succeeded_samples_count += 1
         except Exception:
             failed_samples_count += 1
             failed_samples.append(sample.id)
 
-    return failed_samples_count, failed_samples
+    return failed_samples_count, succeeded_samples_count, failed_samples
 
 
 @click.command()
@@ -69,11 +71,15 @@ def set_reads_missing_on_new_samples(context: click.Context):
 
     try:
         samples = get_process_samples(process=process)
-        failed_samples_count, failed_samples = set_reads_missing(samples, status_db)
-        message = f"Reads Missing (M) udf set on samples."
+        (
+            failed_samples_count,
+            succeeded_samples_count,
+            failed_samples,
+        ) = set_reads_missing(samples, status_db)
+        message = f"Reads Missing (M) udf set {succeeded_samples_count} on sample(s)."
         if failed_samples_count:
             message += (
-                f" Failed {failed_samples_count} samples: {', '.join(failed_samples)}"
+                f" Failed {failed_samples_count} sample(s): {', '.join(failed_samples)}"
             )
         if failed_samples_count:
             LOG.error(message)
