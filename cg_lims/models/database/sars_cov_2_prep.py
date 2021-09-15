@@ -8,15 +8,9 @@ from cg_lims.models.database.prep import PrepCollection
 
 
 
-"InitialQC(cov)"
-Artifact-udfs:
-"Condentration" - optional
-
-Process-udfs:
 
 
-class ?ArtifactUDF(BaseModel):
-    """?"""
+class ???ArtifactUDF(BaseModel):
     sample_concentration: Optional[float] = Field(None, alias="Concentration")
     sample_size: Optional[float] = Field(None, alias="Peak Size")
 
@@ -30,12 +24,8 @@ class BufferExchangeProcessUDFS(BaseModel):
 
 class NormalizationOfMicrobialSamplesProcessUDFS(BaseModel):
     sample_normalization_method: Optional[str] = Field(None, alias="Method document")
-    normalized_sample_concentration: Optional[float] = Field(
-        None, alias="Final Concentration (ng/ul)"
-    )
-    lot_nr_dilution_buffer_sample_normalization: Optional[str] = Field(
-        None, alias="Dilution buffer lot no"
-    )
+    normalized_sample_concentration: Optional[float] = Field(None, alias="Final Concentration (ng/ul)")
+    lot_nr_dilution_buffer_sample_normalization: Optional[str] = Field(None, alias="Dilution buffer lot no")
 
 
 class LibraryPreparationCovv1ProcessUDFS(BaseModel):
@@ -52,6 +42,7 @@ class LibraryPreparationCovv1ProcessUDFS(BaseModel):
     liquid_handling_system: str = Field(..., alias="Instrument")
 
 
+        ""Obs pool från och med här""
 class PoolingAndCleanUpCovv1ProcessUDFS(BaseModel):
     pooling_method: str = Field(..., alias="Method document (pooling)")
     clean-up_method: str = Field(..., alias="Method document (Clean-up)")
@@ -61,18 +52,8 @@ class PoolingAndCleanUpCovv1ProcessUDFS(BaseModel):
     lot_nr_resuspension_buffer_clean_up: str = Field(..., alias="Resuspension buffer")
 
 
-class PostPCRBeadPurificationArtifactUDF(BaseModel):
+class PoolingAndCleanUpCovv1ArtifactUDF(BaseModel):
     finished_library_concentration: float = Field(..., alias="Concentration")
     finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
     finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
-    finished_library_average_size: float = Field(..., alias="Average Size (bp)")
 
-
-class NormalizationOfMicrobialSamplesForSequencingProcessUDFS(BaseModel):
-    lot_nr_dilution_buffer_library_normalization: Optional[str] = Field(
-        None, alias="Dilution buffer lot no"
-    )
-    normalized_library_concentration: Optional[float] = Field(
-        None, alias="Final Concentration (nM)"
-    )
-    library_normalization_method: Optional[str] = Field(None, alias="Method document")
