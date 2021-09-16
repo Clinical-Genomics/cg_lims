@@ -40,8 +40,10 @@ def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:
 
 
 def set_reads_missing(
-    samples: List[Sample], status_db: StatusDBAPI
-) -> Tuple[int, int, List[str]]:
+    samples: List[Sample],
+    status_db: StatusDBAPI
+    # ) -> Tuple[int, int, List[str]]:
+) -> None:
     """ """
     failed_samples_count = 0
     succeeded_samples_count = 0
@@ -54,7 +56,10 @@ def set_reads_missing(
             failed_samples_count += 1
             failed_samples.append(sample.id)
 
-    return failed_samples_count, succeeded_samples_count, failed_samples
+    if failed_samples_count:
+        raise LimsError(
+            f"Reads Missing (M) set on {succeeded_samples_count} sample(s), {failed_samples_count} sample(s) failed"
+        )
 
 
 @click.command()
@@ -70,21 +75,10 @@ def set_reads_missing_on_new_samples(context: click.Context):
     samples = get_process_samples(process=process)
 
     try:
-        (
-            failed_samples_count,
-            succeeded_samples_count,
-            failed_samples,
-        ) = set_reads_missing(samples, status_db)
-        message = f"Reads Missing (M) udf set {succeeded_samples_count} on sample(s)."
-        if failed_samples_count:
-            message += (
-                f" Failed {failed_samples_count} sample(s): {', '.join(failed_samples)}"
-            )
-            LOG.warning(message)
-            click.echo(message)
-        else:
-            LOG.info(message)
-            click.echo(message)
+        set_reads_missing(samples, status_db)
+        message = f"Reads Missing (M) udf set on all sample(s)."
+        LOG.info(message)
+        click.echo(message)
     except LimsError as e:
         LOG.error(e.message)
         sys.exit(e.message)
