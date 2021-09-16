@@ -9,24 +9,12 @@ from cg_lims.models.database.prep import PrepCollection
 
 
 
-
-class ???ArtifactUDF(BaseModel):
+""Vet ej vilket steg jag ska skriva""
+class AggregateQCDNACovv1ArtifactUDF(BaseModel):
     sample_concentration: Optional[float] = Field(None, alias="Concentration")
     sample_size: Optional[float] = Field(None, alias="Peak Size")
 
-
-class BufferExchangeProcessUDFS(BaseModel):
-    lot_nr_beads_buffer_exchange: Optional[str] = Field(None, alias="Lot Nr: Purification Beads")
-    lot_nr_etoh_buffer_exchange: Optional[str] = Field(None, alias="Lot Nr: EtOH")
-    lot_nr_h2o_buffer_exchange: Optional[str] = Field(None, alias="Lot Nr: Nuclease-free water")
-    buffer_exchange_method: Optional[str] = Field(None, alias="Method document")
-
-
-class NormalizationOfMicrobialSamplesProcessUDFS(BaseModel):
-    sample_normalization_method: Optional[str] = Field(None, alias="Method document")
-    normalized_sample_concentration: Optional[float] = Field(None, alias="Final Concentration (ng/ul)")
-    lot_nr_dilution_buffer_sample_normalization: Optional[str] = Field(None, alias="Dilution buffer lot no")
-
+        
 
 class LibraryPreparationCovv1ProcessUDFS(BaseModel):
     lot_nr_tagmentation_beads: str = Field(..., alias="Tagmentation beads")
@@ -40,6 +28,7 @@ class LibraryPreparationCovv1ProcessUDFS(BaseModel):
     pcr_instrument_amplification: str = Field(..., alias="PCR machine: Amplification")    
     library_preparation_method: str = Field(..., alias="Method document")
     liquid_handling_system: str = Field(..., alias="Instrument")
+        ""Går det att få fram antal prover/pool?""
 
 
         ""Obs pool från och med här""
