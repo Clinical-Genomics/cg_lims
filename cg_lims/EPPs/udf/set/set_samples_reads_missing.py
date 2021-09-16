@@ -82,4 +82,3 @@ def set_reads_missing_on_new_samples(context: click.Context):
     except LimsError as e:
         LOG.error(e.message)
         sys.exit(e.message)
-        pass
