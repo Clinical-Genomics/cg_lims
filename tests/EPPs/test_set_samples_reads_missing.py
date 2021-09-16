@@ -1,6 +1,5 @@
 import mock
 import pytest
-from click.testing import CliRunner
 from genologics.entities import Sample
 
 from cg_lims.EPPs.udf.set.set_samples_reads_missing import (
