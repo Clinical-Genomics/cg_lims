@@ -4,6 +4,7 @@ from typing import List
 import click
 from genologics.lims import Lims, Process
 
+from cg_lims.adapter.plugin import get_cg_lims_adapter
 from cg_lims.exeptions import InsertError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.get.udfs import filter_process_udfs_by_model, filter_process_artifact_udfs_by_model
@@ -15,10 +16,9 @@ from cg_lims.models.database.prep.microbial_prep import (
     BufferExchangeProcessUDFS,
     NormalizationOfMicrobialSamplesProcessUDFS,
     BufferExchangeArtifactUDF,
+    PrepCollectionMicrobial,
 )
-from cg_lims.models.database.prep import Prep
-import requests
-from requests import Response
+from cg_lims.crud.create import create_preps
 
 LOG = logging.getLogger(__name__)
 
@@ -100,24 +100,18 @@ def microbial_prep_document(ctx):
 
     process: Process = ctx.obj["process"]
     lims = ctx.obj["lims"]
-    arnold_host = ctx.obj["arnold_host"]
+    adapter = get_cg_lims_adapter(db_uri=ctx.obj["db_uri"], db_name=ctx.obj["db_name"])
     samples = get_process_samples(process=process)
 
     try:
-        prep_documents: List[Prep] = [
+        prep_documents: List[PrepCollectionMicrobial] = [
             build_microbial_document(sample_id=sample.id, process_id=process.id, lims=lims)
             for sample in samples
         ]
-
-        for prep_document in prep_documents:
-            response: Response = requests.post(
-                url=f"{arnold_host}/insert/prep",
-                headers={"Content-Type": "application/json"},
-                data=prep_document.json(exclude_none=True),
-            )
-            if not response.ok:
-                raise InsertError(response.text)
-            LOG.info("Arnold output: %s", response.text)
-
+        document_ids: List[str] = create_preps(adapter=adapter, preps=prep_documents)
+        document_ids_str = [str(document_id) for document_id in document_ids]
+        message = f"Created documents {' ,'.join(document_ids_str)} in prep collection"
+        LOG.info(message)
+        click.echo(message)
     except:
-        raise InsertError("Failed to insert docs")
+        raise InsertError(message="Failed to insert document.")

@@ -59,7 +59,7 @@ class NormalizationOfMicrobialSamplesForSequencingProcessUDFS(BaseModel):
     library_normalization_method: Optional[str] = Field(None, alias="Method document")
 
 
-class PrepCollectionMicrobial(
+class MicrobialPrep(
     PrepCollection,
     NormalizationOfMicrobialSamplesForSequencingProcessUDFS,
     PostPCRBeadPurificationProcessUDFS,
@@ -69,7 +69,5 @@ class PrepCollectionMicrobial(
     BufferExchangeProcessUDFS,
     BufferExchangeArtifactUDF,
 ):
-    workflow: str = "Microbial-WGS"
-
     class Config:
         allow_population_by_field_name = True
