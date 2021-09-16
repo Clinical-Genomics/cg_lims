@@ -6,7 +6,7 @@ from cg_lims.EPPs.udf.calculate import calculate
 
 # commands
 from cg_lims.EPPs.udf.copy import copy
-from cg_lims.EPPs.udf.set import set_
+from cg_lims.EPPs.udf.set import set
 
 
 @click.group(invoke_without_command=True)
@@ -18,4 +18,4 @@ def udf(ctx):
 
 udf.add_command(copy)
 udf.add_command(calculate)
-udf.add_command(set_)
+udf.add_command(set)
