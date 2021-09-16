@@ -11,16 +11,6 @@ from cg_lims.get.samples import get_process_samples
 from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)
-PASSED = "PASSED"
-FAILED = "FAILED"
-
-
-def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:
-    """ """
-    app_tag = get_app_tag(sample)
-    target_amount = get_target_amount(app_tag, status_db)
-    sample.udf["Reads missing (M)"] = target_amount / 1000000
-    sample.put()
 
 
 def get_app_tag(sample: Sample) -> str:
@@ -41,6 +31,14 @@ def get_target_amount(app_tag: str, status_db: StatusDBAPI) -> int:
         raise LimsError(message="No connection to clinical-api!")
 
 
+def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:
+    """ """
+    app_tag = get_app_tag(sample)
+    target_amount = get_target_amount(app_tag, status_db)
+    sample.udf["Reads missing (M)"] = target_amount / 1000000
+    sample.put()
+
+
 def set_reads_missing(
     samples: List[Sample], status_db: StatusDBAPI
 ) -> Tuple[int, int, List[str]]:
@@ -52,7 +50,7 @@ def set_reads_missing(
         try:
             set_reads_missing_on_sample(sample, status_db)
             succeeded_samples_count += 1
-        except Exception:
+        except MissingUDFsError:
             failed_samples_count += 1
             failed_samples.append(sample.id)
 
@@ -69,8 +67,9 @@ def set_reads_missing_on_new_samples(context: click.Context):
     process = context.obj["process"]
     status_db = context.obj["status_db"]
 
+    samples = get_process_samples(process=process)
+
     try:
-        samples = get_process_samples(process=process)
         (
             failed_samples_count,
             succeeded_samples_count,
@@ -81,8 +80,7 @@ def set_reads_missing_on_new_samples(context: click.Context):
             message += (
                 f" Failed {failed_samples_count} sample(s): {', '.join(failed_samples)}"
             )
-        if failed_samples_count:
-            LOG.error(message)
+            LOG.warning(message)
             click.echo(message)
         else:
             LOG.info(message)

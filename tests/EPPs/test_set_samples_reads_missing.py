@@ -150,7 +150,7 @@ def test_set_reads_missing_one_sample_exception(
     samples = [sample_1]
 
     # WHEN setting the reads missing on that sample leads to an exception  being raised
-    mock_set_reads_missing_on_sample.side_effect = Exception
+    mock_set_reads_missing_on_sample.side_effect = MissingUDFsError("TEST MISSING UDF")
     failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
         samples, mock_status_db
     )
@@ -176,7 +176,10 @@ def test_set_reads_missing_multiple_samples_exception_on_first_sample(
     samples = [sample_1, sample_2]
 
     # WHEN setting the reads missing on those samples and the second sample leads to an exception being raised
-    mock_set_reads_missing_on_sample.side_effect = (None, Exception)
+    mock_set_reads_missing_on_sample.side_effect = (
+        None,
+        MissingUDFsError("TEST MISSING UDF"),
+    )
     failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
         samples, mock_status_db
     )
@@ -208,7 +211,10 @@ def test_set_reads_missing_multiple_samples_exception_on_second_sample(
 
     # WHEN setting the reads missing on those samples and the first sample leads to an exception being raised
 
-    mock_set_reads_missing_on_sample.side_effect = (Exception, None)
+    mock_set_reads_missing_on_sample.side_effect = (
+        MissingUDFsError("TEST MISSING UDF"),
+        None,
+    )
     failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
         samples, mock_status_db
     )
@@ -239,7 +245,10 @@ def test_set_reads_missing_multiple_samples_exception_on_both_samples(
     assert sample_1.udf.get("Sequencing Analysis") is None
 
     # WHEN setting the reads missing on those samples and both samples leads to an exception being raised
-    mock_set_reads_missing_on_sample.side_effect = (Exception, Exception)
+    mock_set_reads_missing_on_sample.side_effect = (
+        MissingUDFsError("TEST MISSING UDF"),
+        MissingUDFsError("TEST MISSING UDF"),
+    )
     failed_samples_count, succeeded_samples_count, failed_samples = set_reads_missing(
         samples, mock_status_db
     )
