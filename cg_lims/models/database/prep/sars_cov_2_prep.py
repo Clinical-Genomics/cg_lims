@@ -4,6 +4,9 @@ from pydantic import Field
 
 
 # ""Vet ej vilket steg jag ska skriva""
+from cg_lims.models.database.prep import Prep
+
+
 class AggregateQCDNACovv1ArtifactUDF(BaseModel):
     """Aggregate QC (DNA) (Cov) v1"""
 
@@ -50,6 +53,7 @@ class PoolingAndCleanUpCovArtifactUDF(BaseModel):
 
 
 class SarsCov2Prep(
+    Prep,
     PoolingAndCleanUpCovArtifactUDF,
     PoolingAndCleanUpCovProcessUDFS,
     LibraryPreparationCovProcessUDFS,

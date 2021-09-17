@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic.main import BaseModel
 from pydantic import Field
 
-from cg_lims.models.database.prep import PrepCollection
+from cg_lims.models.database.prep import Prep
 
 
 class BufferExchangeArtifactUDF(BaseModel):
@@ -60,7 +60,7 @@ class NormalizationOfMicrobialSamplesForSequencingProcessUDFS(BaseModel):
 
 
 class MicrobialPrep(
-    PrepCollection,
+    Prep,
     NormalizationOfMicrobialSamplesForSequencingProcessUDFS,
     PostPCRBeadPurificationProcessUDFS,
     PostPCRBeadPurificationArtifactUDF,
