@@ -4,7 +4,7 @@ from pydantic import Field
 
 
 # ""Vet ej vilket steg jag ska skriva""
-from cg_lims.models.database.prep import Prep
+from cg_lims.models.mongo.prep import Prep
 
 
 class AggregateQCDNACovv1ArtifactUDF(BaseModel):

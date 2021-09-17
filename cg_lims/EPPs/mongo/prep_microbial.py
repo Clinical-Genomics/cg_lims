@@ -4,10 +4,11 @@ from typing import List
 import click
 from genologics.lims import Lims, Process
 
-from cg_lims.exeptions import InsertError, CgLimsError
+from cg_lims.exeptions import CgLimsError
+from cg_lims.exceptions import InsertError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.get.udfs import filter_process_udfs_by_model, filter_process_artifact_udfs_by_model
-from cg_lims.models.database.prep.microbial_prep import (
+from cg_lims.models.mongo.prep.microbial_prep import (
     MicrobialLibraryPrepNexteraProcessUDFS,
     PostPCRBeadPurificationProcessUDFS,
     PostPCRBeadPurificationArtifactUDF,
@@ -17,7 +18,7 @@ from cg_lims.models.database.prep.microbial_prep import (
     BufferExchangeArtifactUDF,
     MicrobialPrep,
 )
-from cg_lims.models.database.prep import Prep
+from cg_lims.models.mongo.prep import Prep
 import requests
 from requests import Response
 import json
