@@ -4,8 +4,7 @@ from typing import List
 import click
 from genologics.lims import Lims, Process
 
-from cg_lims.exeptions import CgLimsError
-from cg_lims.exceptions import InsertError
+from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.get.udfs import filter_process_udfs_by_model, filter_process_artifact_udfs_by_model
 from cg_lims.models.mongo.prep.microbial_prep import (
@@ -119,6 +118,6 @@ def microbial_prep_document(ctx):
     )
     if not response.ok:
         LOG.info(response.text)
-        raise CgLimsError(response.text)
+        raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
