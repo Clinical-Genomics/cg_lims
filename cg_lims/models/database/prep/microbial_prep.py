@@ -2,8 +2,6 @@ from typing import Optional
 from pydantic.main import BaseModel
 from pydantic import Field
 
-from cg_lims.models.database.prep import PrepCollection
-
 
 class BufferExchangeArtifactUDF(BaseModel):
     sample_concentration: Optional[float] = Field(None, alias="Concentration")
@@ -26,7 +24,7 @@ class NormalizationOfMicrobialSamplesProcessUDFS(BaseModel):
     )
 
 
-class MicrobialLibraryPrepNexteraProcessUDFS:
+class MicrobialLibraryPrepNexteraProcessUDFS(BaseModel):
     lot_nr_tagmentation_buffer: str = Field(..., alias="Lot nr: Tagmentation buffer (TD-buffer)")
     lot_nr_tagmentation_enzyme: str = Field(..., alias="Lot nr: Tagmentation enzyme (TDE1)")
     lot_nr_index: str = Field(..., alias="Lot nr: Index")
@@ -60,7 +58,6 @@ class NormalizationOfMicrobialSamplesForSequencingProcessUDFS(BaseModel):
 
 
 class MicrobialPrep(
-    PrepCollection,
     NormalizationOfMicrobialSamplesForSequencingProcessUDFS,
     PostPCRBeadPurificationProcessUDFS,
     PostPCRBeadPurificationArtifactUDF,

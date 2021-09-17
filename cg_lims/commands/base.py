@@ -23,6 +23,7 @@ def cli(ctx, config):
     ctx.ensure_object(dict)
     ctx.obj["lims"] = lims
     ctx.obj["status_db"] = status_db
+    ctx.obj["arnold_host"] = config_data.get("ARNOLD_HOST")
     ctx.obj["host"] = config_data.get("CG_LIMS_HOST")
     ctx.obj["port"] = config_data.get("CG_LIMS_PORT")
     ctx.obj["db_uri"] = config_data.get("DB_URI")
