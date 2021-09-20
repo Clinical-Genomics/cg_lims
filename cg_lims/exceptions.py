@@ -34,6 +34,12 @@ class MissingArtifactError(LimsError):
     pass
 
 
+class MissingProcessError(LimsError):
+    """Raise when searching for process that don't exist.."""
+
+    pass
+
+
 class MissingSampleError(LimsError):
     """Raise when searching for samples that don't exist."""
 
