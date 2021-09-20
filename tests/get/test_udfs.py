@@ -5,11 +5,10 @@ from cg_lims.exceptions import MissingUDFsError
 from cg_lims.get.udfs import get_udf
 from tests.conftest import server
 
-server("flat_tests")
-
 
 def test_get_udf(sample_1: Sample):
     # GIVEN a sample with a udf "Sequencing Analysis"
+    server("flat_tests")
     sample_1.udf["Sequencing Analysis"] = "TESTAPPTAG"
 
     # WHEN getting the apptag for that sample
