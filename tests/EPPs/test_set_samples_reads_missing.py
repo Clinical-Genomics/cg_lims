@@ -11,6 +11,8 @@ from cg_lims.EPPs.udf.set.set_samples_reads_missing import (
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from tests.conftest import server
 
+server("flat_tests")
+
 
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")
 @mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.get_target_amount")
@@ -21,7 +23,6 @@ def test_set_reads_missing_on_sample(
     mock_status_db,
     sample_1: Sample,
 ):
-    server("flat_tests")
 
     # GIVEN A SAMPLE
     sample = sample_1

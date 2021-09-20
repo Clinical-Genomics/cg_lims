@@ -1,30 +1,21 @@
 """CLI module to set Reads Missing (M) udf on new samples"""
 import logging
 import sys
-from typing import List, Tuple
+from typing import List
 
 import click
 from genologics.entities import Sample
 
 from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.get.fields import get_app_tag
 from cg_lims.get.samples import get_process_samples
 from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)
 
 
-def get_app_tag(sample: Sample) -> str:
-    """ """
-    try:
-        return sample.udf["Sequencing Analysis"]
-    except Exception:
-        raise MissingUDFsError(
-            f"UDF Sequencing Analysis not found on sample {sample.id}!"
-        )
-
-
 def get_target_amount(app_tag: str, status_db: StatusDBAPI) -> int:
-    """ """
+    """Gets the target amount of reads from clinical-api"""
     try:
         return status_db.apptag(tag_name=app_tag, key="target_reads")
     except ConnectionError:
@@ -32,29 +23,23 @@ def get_target_amount(app_tag: str, status_db: StatusDBAPI) -> int:
 
 
 def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:
-    """ """
+    """Sets the udf "Reads missing (M)" on a sample to the target amount of reads bases on the app tag"""
     app_tag = get_app_tag(sample)
     target_amount = get_target_amount(app_tag, status_db)
     sample.udf["Reads missing (M)"] = target_amount / 1000000
     sample.put()
 
 
-def set_reads_missing(
-    samples: List[Sample],
-    status_db: StatusDBAPI
-    # ) -> Tuple[int, int, List[str]]:
-) -> None:
-    """ """
+def set_reads_missing(samples: List[Sample], status_db: StatusDBAPI) -> None:
+    """Attempts to set the udf "Reads missing (M)" on all samples"""
     failed_samples_count = 0
     succeeded_samples_count = 0
-    failed_samples = []
     for sample in samples:
         try:
             set_reads_missing_on_sample(sample, status_db)
             succeeded_samples_count += 1
         except MissingUDFsError:
             failed_samples_count += 1
-            failed_samples.append(sample.id)
 
     if failed_samples_count:
         raise LimsError(

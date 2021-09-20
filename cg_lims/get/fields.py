@@ -1,10 +1,12 @@
 import datetime as dt
+import logging
+from typing import Optional, Tuple
 
 from genologics.descriptors import LocationDescriptor
+from genologics.entities import Artifact, Sample
 from requests.exceptions import HTTPError
-from genologics.entities import Sample, Artifact
-from typing import Optional, Tuple
-import logging
+
+from cg_lims.exceptions import MissingUDFsError
 
 LOG = logging.getLogger(__name__)
 
@@ -84,3 +86,13 @@ def get_index_well(artifact: Artifact):
         return f"{index_well_row}{index_well_col}"
     else:
         return "-"
+
+
+def get_app_tag(sample: Sample) -> str:
+    """ """
+    try:
+        return sample.udf["Sequencing Analysis"]
+    except Exception:
+        raise MissingUDFsError(
+            f"UDF Sequencing Analysis not found on sample {sample.id}!"
+        )
