@@ -7,8 +7,8 @@ import click
 from genologics.entities import Sample
 
 from cg_lims.exceptions import LimsError, MissingUDFsError
-from cg_lims.get.fields import get_app_tag
 from cg_lims.get.samples import get_process_samples
+from cg_lims.get.udfs import get_udf
 from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ def get_target_amount(app_tag: str, status_db: StatusDBAPI) -> int:
 
 def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:
     """Sets the udf "Reads missing (M)" on a sample to the target amount of reads bases on the app tag"""
-    app_tag = get_app_tag(sample)
+    app_tag = get_udf(sample, "Sequencing Analysis")
     target_amount = get_target_amount(app_tag, status_db)
     sample.udf["Reads missing (M)"] = target_amount / 1000000
     sample.put()

@@ -3,8 +3,8 @@ import pytest
 from genologics.entities import Sample
 
 from cg_lims.EPPs.udf.set.set_samples_reads_missing import (
-    get_app_tag,
     get_target_amount,
+    get_udf,
     set_reads_missing,
     set_reads_missing_on_sample,
 )
@@ -16,9 +16,9 @@ server("flat_tests")
 
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")
 @mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.get_target_amount")
-@mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.get_app_tag")
+@mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.get_udf")
 def test_set_reads_missing_on_sample(
-    mock_get_app_tag,
+    mock_get_udf,
     mock_get_target_amount,
     mock_status_db,
     sample_1: Sample,
@@ -34,32 +34,6 @@ def test_set_reads_missing_on_sample(
 
     # THEN the udf "Reads missing (M)" on that sample should be set correctly
     assert sample.udf["Reads missing (M)"] == 9
-
-
-def test_get_app_tag(sample_1: Sample):
-    # GIVEN a sample with a udf "Sequencing Analysis"
-    sample_1.udf["Sequencing Analysis"] = "TESTAPPTAG"
-
-    # WHEN getting the apptag for that sample
-    result = get_app_tag(sample_1)
-
-    # THEN the apptag should be returned
-    assert result == "TESTAPPTAG"
-
-
-def test_get_app_tag_missing_udf(sample_1: Sample):
-    # GIVEN a sample with a missing udf "Sequencing Analysis"
-    assert sample_1.udf.get("Sequencing Analysis") is None
-
-    # WHEN getting the apptag for that sample
-    with pytest.raises(MissingUDFsError) as error_message:
-        get_app_tag(sample_1)
-
-    # THEN the correct exception should be raised
-    assert (
-        f"UDF Sequencing Analysis not found on sample {sample_1.id}"
-        in error_message.value.message
-    )
 
 
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")

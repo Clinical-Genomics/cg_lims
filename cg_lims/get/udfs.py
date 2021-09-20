@@ -1,6 +1,10 @@
-from genologics.lims import Lims
-from typing import Optional
 from datetime import date
+from typing import Optional
+
+from genologics.entities import Sample
+from genologics.lims import Lims
+
+from cg_lims.exceptions import MissingUDFsError
 
 
 def get_udf_type(lims: Lims, udf_name: str, attach_to_name: str) -> Optional:
@@ -19,3 +23,13 @@ def get_udf_type(lims: Lims, udf_name: str, attach_to_name: str) -> Optional:
     udf_type = udf_configs[0].root.attrib["type"]
 
     return udf_types[udf_type]
+
+
+def get_udf(sample: Sample, udf: str) -> str:
+    """ """
+    try:
+        return sample.udf[udf]
+    except Exception:
+        raise MissingUDFsError(
+            f"UDF Sequencing Analysis not found on sample {sample.id}!"
+        )
