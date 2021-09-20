@@ -21,7 +21,7 @@ def test_set_reads_missing_on_sample(
     mock_status_db,
     sample_1: Sample,
 ):
-    server("flat_tests")
+    # server("flat_tests")
     # GIVEN A SAMPLE
     sample = sample_1
 
