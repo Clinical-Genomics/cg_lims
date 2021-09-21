@@ -30,6 +30,4 @@ def get_udf(sample: Sample, udf: str) -> str:
     try:
         return sample.udf[udf]
     except Exception:
-        raise MissingUDFsError(
-            f"UDF Sequencing Analysis not found on sample {sample.id}!"
-        )
+        raise MissingUDFsError(f"UDF {udf} not found on sample {sample.id}!")

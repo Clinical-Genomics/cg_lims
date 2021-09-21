@@ -16,10 +16,7 @@ LOG = logging.getLogger(__name__)
 
 def get_target_amount(app_tag: str, status_db: StatusDBAPI) -> int:
     """Gets the target amount of reads from clinical-api"""
-    try:
-        return status_db.apptag(tag_name=app_tag, key="target_reads")
-    except ConnectionError:
-        raise LimsError(message="No connection to clinical-api!")
+    return status_db.apptag(tag_name=app_tag, key="target_reads")
 
 
 def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:
