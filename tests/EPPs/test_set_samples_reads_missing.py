@@ -4,12 +4,32 @@ from genologics.entities import Sample
 
 from cg_lims.EPPs.udf.set.set_samples_reads_missing import (
     get_target_amount,
-    get_udf,
     set_reads_missing,
     set_reads_missing_on_sample,
 )
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from tests.conftest import server
+
+
+@mock.patch("cg_lims.get.udfs.get_udf")
+@mock.patch("cg_lims.status_db_api.StatusDBAPI")
+def test_get_target_amount(mock_status_db, mock_get_udf, sample_1: Sample):
+    # GIVEN a sample with a udf "Sequencing Analysis" containing an app
+    # tag
+    server("flat_tests")
+    test_app_tag = "TESTAPPTAG"
+    sample_1.udf["Sequencing Analysis"] = test_app_tag
+
+    # WHEN getting the target amount of reads via the StatusDBAPI
+    mock_get_udf.return_value = test_app_tag
+    mock_status_db.apptag.return_value = 9_000_000
+    result = get_target_amount(test_app_tag, mock_status_db)
+
+    # THEN the target amount of reads should be retrieved via the StatusDBAPI
+    assert result == 9_000_000
+    assert mock_status_db.apptag.mock_calls == [
+        mock.call(tag_name=test_app_tag, key="target_reads")
+    ]
 
 
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")
@@ -21,7 +41,6 @@ def test_set_reads_missing_on_sample(
     mock_status_db,
     sample_1: Sample,
 ):
-    server("flat_tests")
     # GIVEN A SAMPLE
     sample = sample_1
 
@@ -32,33 +51,6 @@ def test_set_reads_missing_on_sample(
 
     # THEN the udf "Reads missing (M)" on that sample should be set correctly
     assert sample.udf["Reads missing (M)"] == 9
-
-
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
-def test_get_target_amount(mock_status_db):
-    # GIVEN an apptag
-    apptag = "TESTAPPTAG"
-
-    # WHEN fetching the target amount from clinical-api
-    mock_status_db.apptag.return_value = 9_000_000
-    result = get_target_amount(apptag, mock_status_db)
-
-    # THEN the get_target_amount should return that value
-    assert result == 9_000_000
-
-
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
-def test_get_target_amount_connection_error(mock_status_db):
-    # GIVEN a clinical-api can't be reached due to a connection error
-    apptag = "TESTAPPTAG"
-    mock_status_db.apptag.side_effect = ConnectionError
-
-    # WHEN fetching the target amount
-    with pytest.raises(LimsError) as error_message:
-        get_target_amount(apptag, mock_status_db)
-
-    # THEN the correct exception should be raised
-    assert f"No connection to clinical-api!" in error_message.value.message
 
 
 @mock.patch(
