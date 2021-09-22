@@ -26,7 +26,7 @@ def get_udf_type(lims: Lims, udf_name: str, attach_to_name: str) -> Optional:
 
 
 def get_udf(sample: Sample, udf: str) -> str:
-    """ """
+    """Returns the value of a udf on a sample"""
     try:
         return sample.udf[udf]
     except Exception:
