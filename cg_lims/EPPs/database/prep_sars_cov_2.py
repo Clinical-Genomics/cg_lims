@@ -27,15 +27,12 @@ def build_sars_cov_2_document(sample_id: str, process_id: str, lims: Lims) -> Sa
     pooling_and_cleanup_udfs: PoolingAndCleanUpCovUDF = get_pooling_and_cleanup_udfs(
         sample_id=sample_id, lims=lims
     )
-    print(pooling_and_cleanup_udfs)
     library_prep_cov_udfs: LibraryPreparationCovUDFS = get_library_prep_cov_udfs(
         sample_id=sample_id, lims=lims
     )
-    print(library_prep_cov_udfs)
     aggregate_qc_dna_cov_udfs: AggregateQCDNACovUDF = get_aggregate_qc_dna_cov_udfs(
         sample_id=sample_id, lims=lims
     )
-    print(aggregate_qc_dna_cov_udfs)
 
     return SarsCov2Prep(
         prep_id=f"{sample_id}_{process_id}",
