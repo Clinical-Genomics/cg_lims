@@ -1,20 +1,12 @@
 import logging
 
-from genologics.lims import Lims, Process, Artifact
+
 from pydantic.main import BaseModel
 from pydantic import Field
+from cg_lims.models.database.prep.base_step import BaseStep
 
-from cg_lims.models.database.base_prep import BasePrep
 
 LOG = logging.getLogger(__name__)
-
-
-class MicrobialLibraryPrepNextera(BasePrep):
-    def __init__(self, lims: Lims, sample_id: str):
-        super().__init__(lims=lims, sample_id=sample_id)
-        self.process_type = "CG002 - Microbial Library Prep (Nextera)"
-        self.process_udf_model = MicrobialLibraryPrepNexteraProcessUDFS
-        self.artifact = self.set_artifact()
 
 
 class MicrobialLibraryPrepNexteraProcessUDFS(BaseModel):
@@ -25,3 +17,8 @@ class MicrobialLibraryPrepNexteraProcessUDFS(BaseModel):
     pcr_instrument_incubation: str = Field(..., alias="PCR instrument incubation")
     pcr_instrument_amplification: str = Field(..., alias="PCR instrument amplification")
     nr_pcr_cycles: int = Field(..., alias="Nr PCR cycles")
+
+
+class MicrobialLibraryPrepNextera(BaseStep):
+    process_type: str = "CG002 - Microbial Library Prep (Nextera)"
+    process_udf_model = MicrobialLibraryPrepNexteraProcessUDFS

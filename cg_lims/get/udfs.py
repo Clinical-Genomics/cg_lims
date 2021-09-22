@@ -1,5 +1,5 @@
 from genologics.lims import Lims
-from typing import Optional
+from typing import Optional, Tuple
 from datetime import date
 import logging
 
@@ -27,21 +27,7 @@ def get_udf_type(lims: Lims, udf_name: str, attach_to_name: str) -> Optional:
     return udf_types[udf_type]
 
 
-def filter_process_udfs_by_model(lims: Lims, sample_id: str, process_type: str, model):
-    """"""
-    try:
-        artifact = get_latest_artifact(lims=lims, sample_id=sample_id, process_type=[process_type])
-    except MissingArtifactError as e:
-        LOG.info(e.message)
-        return dict()
-    process_udfs = dict(artifact.parent_process.udf.items())
-    udf_model = model(**process_udfs)
-    return udf_model.dict(exclude_none=True)
-
-
-def filter_process_artifact_udfs_by_model(
-    lims: Lims, sample_id: str, process_type: str, model
-) -> dict:
+def get_artifact_and_step_udfs(lims: Lims, sample_id: str, process_type: str) -> Tuple[dict, dict]:
     """"""
     try:
         artifact = get_latest_artifact(lims=lims, sample_id=sample_id, process_type=[process_type])
@@ -49,5 +35,5 @@ def filter_process_artifact_udfs_by_model(
         LOG.info(e.message)
         return dict()
     artifact_udfs = dict(artifact.udf.items())
-    udf_model = model(**artifact_udfs)
-    return udf_model.dict(exclude_none=True)
+    process_udfs = dict(artifact.parent_process.udf.items())
+    return artifact_udfs, process_udfs

@@ -1,18 +1,18 @@
 from cg_lims.models.database.base_prep import Prep
-from cg_lims.models.database.microbial_prep.buffer_exchange import (
+from cg_lims.models.database.prep.microbial_prep import (
     BufferExchangeProcessUDFS,
     BufferExchangeArtifactUDF,
 )
-from cg_lims.models.database.microbial_prep.microbial_library_prep_nextera import (
-    MicrobialLibraryPrepNexteraProcessUDFS,
+from cg_lims.models.database.prep.microbial_prep.microbial_library_prep_nextera import (
+    LibraryPrepNexteraProcessUDFS,
 )
-from cg_lims.models.database.microbial_prep.normailzation_of_microbial_samples_for_sequencing import (
+from cg_lims.models.database.prep.microbial_prep import (
     NormalizationOfMicrobialSamplesForSequencingProcessUDFS,
 )
-from cg_lims.models.database.microbial_prep.normalization_of_microbial_samples import (
+from cg_lims.models.database.prep.microbial_prep import (
     NormalizationOfMicrobialSamplesProcessUDFS,
 )
-from cg_lims.models.database.microbial_prep.post_pcr_bead_purification import (
+from cg_lims.models.database.prep.microbial_prep import (
     PostPCRBeadPurificationProcessUDFS,
     PostPCRBeadPurificationArtifactUDF,
 )
@@ -23,7 +23,7 @@ class MicrobialPrep(
     NormalizationOfMicrobialSamplesForSequencingProcessUDFS,
     PostPCRBeadPurificationProcessUDFS,
     PostPCRBeadPurificationArtifactUDF,
-    MicrobialLibraryPrepNexteraProcessUDFS,
+    LibraryPrepNexteraProcessUDFS,
     NormalizationOfMicrobialSamplesProcessUDFS,
     BufferExchangeProcessUDFS,
     BufferExchangeArtifactUDF,

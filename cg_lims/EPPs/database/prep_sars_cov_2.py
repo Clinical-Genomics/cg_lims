@@ -1,101 +1,66 @@
 import logging
+from typing import List
 
 import click
-from genologics.lims import Lims, Process
-
-from cg_lims.exceptions import LimsError
-from cg_lims.get.samples import get_process_samples
-from cg_lims.get.udfs import filter_process_udfs_by_model, filter_process_artifact_udfs_by_model
-from cg_lims.models.database.prep import Prep
+from genologics.lims import Lims, Process, Sample
 import requests
 from requests import Response
 import json
+from cg_lims.exceptions import LimsError
+from cg_lims.get.samples import get_process_samples
+from cg_lims.models.database.prep.sars_cov_2_prep import (
+    get_pooling_and_cleanup_udfs,
+    get_library_prep_cov_udfs,
+    get_aggregate_qc_dna_cov_udfs,
+    LibraryPreparationCovUDFS,
+    PoolingAndCleanUpCovUDF,
+    AggregateQCDNACovUDF,
+    SarsCov2Prep,
+)
 
 LOG = logging.getLogger(__name__)
 
 
-def build_sars_cov_2_document(sample_id: str, process_id: str, lims: Lims) -> Prep:
-    """Building a Prep with  document."""
+def build_sars_cov_2_document(sample_id: str, process_id: str, lims: Lims) -> SarsCov2Prep:
+    """Building a sars_cov_2 Prep."""
 
-    prep_document = dict(
-        _id=f"{sample_id}_{process_id}",
+    pooling_and_cleanup_udfs: PoolingAndCleanUpCovUDF = get_pooling_and_cleanup_udfs(
+        sample_id=sample_id, lims=lims
+    )
+    print(pooling_and_cleanup_udfs)
+    library_prep_cov_udfs: LibraryPreparationCovUDFS = get_library_prep_cov_udfs(
+        sample_id=sample_id, lims=lims
+    )
+    print(library_prep_cov_udfs)
+    aggregate_qc_dna_cov_udfs: AggregateQCDNACovUDF = get_aggregate_qc_dna_cov_udfs(
+        sample_id=sample_id, lims=lims
+    )
+    print(aggregate_qc_dna_cov_udfs)
+
+    return SarsCov2Prep(
         prep_id=f"{sample_id}_{process_id}",
         sample_id=sample_id,
+        **pooling_and_cleanup_udfs.dict(),
+        **library_prep_cov_udfs.dict(),
+        **aggregate_qc_dna_cov_udfs.dict(),
     )
-
-    artifact_udfs: dict = filter_process_artifact_udfs_by_model(
-        lims=lims,
-        sample_id=sample_id,
-        process_type="Buffer Exchange v1",
-        model=BufferExchangeArtifactUDF,
-    )
-    prep_document.update(artifact_udfs)
-
-    process_udfs: dict = filter_process_udfs_by_model(
-        lims=lims,
-        sample_id=sample_id,
-        process_type="Buffer Exchange v1",
-        model=BufferExchangeProcessUDFS,
-    )
-    prep_document.update(process_udfs)
-
-    process_udfs: dict = filter_process_udfs_by_model(
-        lims=lims,
-        sample_id=sample_id,
-        process_type="CG002 - Normalization of microbial samples",
-        model=NormalizationOfMicrobialSamplesProcessUDFS,
-    )
-    prep_document.update(process_udfs)
-
-    process_udfs: dict = filter_process_udfs_by_model(
-        lims=lims,
-        sample_id=sample_id,
-        process_type="CG002 - Microbial Library Prep (Nextera)",
-        model=MicrobialLibraryPrepNexteraProcessUDFS,
-    )
-    prep_document.update(process_udfs)
-
-    process_udfs: dict = filter_process_udfs_by_model(
-        lims=lims,
-        sample_id=sample_id,
-        process_type="Post-PCR bead purification v1",
-        model=PostPCRBeadPurificationProcessUDFS,
-    )
-    prep_document.update(process_udfs)
-
-    artifact_udfs: dict = filter_process_artifact_udfs_by_model(
-        lims=lims,
-        sample_id=sample_id,
-        process_type="Post-PCR bead purification v1",
-        model=PostPCRBeadPurificationArtifactUDF,
-    )
-    prep_document.update(artifact_udfs)
-
-    process_udfs = filter_process_udfs_by_model(
-        lims=lims,
-        sample_id=sample_id,
-        process_type="CG002 - Normalization of microbial samples for sequencing",
-        model=NormalizationOfMicrobialSamplesForSequencingProcessUDFS,
-    )
-    prep_document.update(process_udfs)
-    return MicrobialPrep(**prep_document)
 
 
 @click.command()
 @click.pass_context
-def microbial_prep_document(ctx):
-    """Creating PrepCollectionMicrobial documents in the prep collection."""
+def sars_cov_2_prep_document(ctx):
+    """Creating Prep documents in the arnold Prep collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
     process: Process = ctx.obj["process"]
-    lims = ctx.obj["lims"]
-    arnold_host = ctx.obj["arnold_host"]
-    samples = get_process_samples(process=process)
+    lims: Lims = ctx.obj["lims"]
+    arnold_host: str = ctx.obj["arnold_host"]
+    samples: List[Sample] = get_process_samples(process=process)
 
     prep_documents = []
     for sample in samples:
-        prep_document: Prep = build_microbial_document(
+        prep_document: SarsCov2Prep = build_sars_cov_2_document(
             sample_id=sample.id, process_id=process.id, lims=lims
         )
         prep_documents.append(prep_document.dict(exclude_none=True))

@@ -1,68 +1,72 @@
 import logging
+from typing import List
 
 import click
-from genologics.lims import Lims, Process
-
-from cg_lims.exceptions import LimsError
-from cg_lims.get.samples import get_process_samples
-from cg_lims.models.database.microbial_prep import MicrobialPrep
-from cg_lims.models.database.microbial_prep.buffer_exchange import BufferExchange
-from cg_lims.models.database.microbial_prep.microbial_library_prep_nextera import (
-    MicrobialLibraryPrepNextera,
-)
-from cg_lims.models.database.microbial_prep.normailzation_of_microbial_samples_for_sequencing import (
-    NormalizationOfMicrobialSamplesForSequencing,
-)
-from cg_lims.models.database.microbial_prep.normalization_of_microbial_samples import (
-    NormalizationOfMicrobialSamples,
-)
-from cg_lims.models.database.microbial_prep.post_pcr_bead_purification import (
-    PostPCRBeadPurification,
-)
+from genologics.lims import Lims, Process, Sample
 import requests
 from requests import Response
 import json
+from cg_lims.exceptions import LimsError
+from cg_lims.get.samples import get_process_samples
+from cg_lims.models.database.prep.microbial_prep import (
+    MicrobialPrep,
+    BufferExchangeUDFS,
+    get_buffer_exchange_udfs,
+    get_library_prep_nextera_udfs,
+    LibraryPrepUDFS,
+    NormalizationOfSamplesForSequencingUDFS,
+    get_normalization_of_samples_for_sequencing_udfs,
+    NormalizationOfMicrobialSamplesUDFS,
+    get_normalization_of_mictobial_samples_udfs,
+    PostPCRBeadPurificationUDF,
+    get_post_bead_pcr_purification_udfs,
+)
 
 LOG = logging.getLogger(__name__)
 
 
 def build_microbial_document(sample_id: str, process_id: str, lims: Lims) -> MicrobialPrep:
-    """Building a Prep with  document."""
+    """Building a Microbial Prep."""
 
-    prep_document = dict(
-        _id=f"{sample_id}_{process_id}",
-        prep_id=f"{sample_id}_{process_id}",
-        sample_id=sample_id,
+    library_prep_nextera_udfs: LibraryPrepUDFS = get_library_prep_nextera_udfs(
+        sample_id=sample_id, lims=lims
     )
 
-    microbial_workflow = [
-        BufferExchange(sample_id=sample_id, lims=lims),
-        MicrobialLibraryPrepNextera(sample_id=sample_id, lims=lims),
-        NormalizationOfMicrobialSamplesForSequencing(sample_id=sample_id, lims=lims),
-        NormalizationOfMicrobialSamples(sample_id=sample_id, lims=lims),
-        PostPCRBeadPurification(sample_id=sample_id, lims=lims),
-    ]
+    buffer_exchange_udfs: BufferExchangeUDFS = get_buffer_exchange_udfs(
+        sample_id=sample_id, lims=lims
+    )
+    normalization_of_samples_for_sequencing_udfs: NormalizationOfSamplesForSequencingUDFS = (
+        get_normalization_of_samples_for_sequencing_udfs(sample_id=sample_id, lims=lims)
+    )
+    normalization_of_mictobial_samples_udfs: NormalizationOfMicrobialSamplesUDFS = (
+        get_normalization_of_mictobial_samples_udfs(sample_id=sample_id, lims=lims)
+    )
+    post_bead_pcr_purification_udfs: PostPCRBeadPurificationUDF = (
+        get_post_bead_pcr_purification_udfs(sample_id=sample_id, lims=lims)
+    )
 
-    for step in microbial_workflow:
-        if step.artifact_udf_model:
-            prep_document.update(step.filter_artifact_udfs_by_model())
-        if step.process_udf_model:
-            prep_document.update(step.filter_process_udfs_by_model())
-
-    return MicrobialPrep(**prep_document)
+    return MicrobialPrep(
+        prep_id=f"{sample_id}_{process_id}",
+        sample_id=sample_id,
+        **library_prep_nextera_udfs.dict(),
+        **buffer_exchange_udfs.dict(),
+        **normalization_of_samples_for_sequencing_udfs.dict(),
+        **normalization_of_mictobial_samples_udfs.dict(),
+        **post_bead_pcr_purification_udfs.dict(),
+    )
 
 
 @click.command()
 @click.pass_context
 def microbial_prep_document(ctx):
-    """Creating PrepCollectionMicrobial documents in the prep collection."""
+    """Creating PrepCollectionMicrobial documents in the arnold Prep collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
     process: Process = ctx.obj["process"]
-    lims = ctx.obj["lims"]
-    arnold_host = ctx.obj["arnold_host"]
-    samples = get_process_samples(process=process)
+    lims: Lims = ctx.obj["lims"]
+    arnold_host: str = ctx.obj["arnold_host"]
+    samples: List[Sample] = get_process_samples(process=process)
 
     prep_documents = []
     for sample in samples:
