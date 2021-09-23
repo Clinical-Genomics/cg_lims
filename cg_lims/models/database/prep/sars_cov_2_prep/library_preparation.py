@@ -2,7 +2,7 @@ from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
-from cg_lims.models.database.prep.base_step import BaseStep
+from cg_lims.objects import BaseAnalyte
 
 
 class LibraryPreparationCovProcessUDFS(BaseModel):
@@ -30,7 +30,7 @@ class LibraryPreparationCovUDFS(LibraryPreparationCovProcessUDFS):
 
 
 def get_library_prep_cov_udfs(lims: Lims, sample_id: str) -> LibraryPreparationCovUDFS:
-    library_prep_cov = BaseStep(
+    library_prep_cov = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=LibraryPreparationCovProcessUDFS,

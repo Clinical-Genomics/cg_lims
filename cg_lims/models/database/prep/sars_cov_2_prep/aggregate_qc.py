@@ -3,7 +3,7 @@ from typing import Optional
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
-from cg_lims.models.database.prep.base_step import BaseStep
+from cg_lims.objects import BaseAnalyte
 
 
 class AggregateQCDNACovArtifactUDF(BaseModel):
@@ -19,12 +19,10 @@ class AggregateQCDNACovUDF(AggregateQCDNACovArtifactUDF):
 
 
 def get_aggregate_qc_dna_cov_udfs(lims: Lims, sample_id: str) -> AggregateQCDNACovUDF:
-    aggregate_qc_dna_cov = BaseStep(
+    aggregate_qc_dna_cov = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         artifact_udf_model=AggregateQCDNACovArtifactUDF,
-        process_type="Aggregate QC (DNA) (Cov) v1",
-        sample_artifact=True,
     )
 
     return AggregateQCDNACovUDF(**aggregate_qc_dna_cov.merge_process_and_artifact_udfs())

@@ -4,7 +4,7 @@ from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
-from cg_lims.models.database.prep.base_step import BaseStep
+from cg_lims.objects import BaseAnalyte
 
 
 class PoolingAndCleanUpCovProcessUDFS(BaseModel):
@@ -28,7 +28,7 @@ class PoolingAndCleanUpCovUDF(PoolingAndCleanUpCovProcessUDFS, PoolingAndCleanUp
 
 
 def get_pooling_and_cleanup_udfs(lims: Lims, sample_id: str) -> PoolingAndCleanUpCovUDF:
-    pooling_and_cleanup = BaseStep(
+    pooling_and_cleanup = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=PoolingAndCleanUpCovProcessUDFS,

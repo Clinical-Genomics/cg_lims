@@ -4,7 +4,7 @@ from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
-from cg_lims.models.database.prep.base_step import BaseStep
+from cg_lims.objects import BaseAnalyte
 
 
 class BufferExchangeArtifactUDF(BaseModel):
@@ -24,7 +24,7 @@ class BufferExchangeUDFS(BufferExchangeProcessUDFS, BufferExchangeArtifactUDF):
 
 
 def get_buffer_exchange_udfs(lims: Lims, sample_id: str) -> BufferExchangeUDFS:
-    buffer_exchange = BaseStep(
+    buffer_exchange = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=BufferExchangeProcessUDFS,

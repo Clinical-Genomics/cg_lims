@@ -2,7 +2,7 @@ from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
-from cg_lims.models.database.prep.base_step import BaseStep
+from cg_lims.objects import BaseAnalyte
 
 
 class LibraryPrepNexteraProcessUDFS(BaseModel):
@@ -21,7 +21,7 @@ class LibraryPrepUDFS(LibraryPrepNexteraProcessUDFS):
 
 
 def get_library_prep_nextera_udfs(lims: Lims, sample_id: str) -> LibraryPrepUDFS:
-    microbial_library_prep = BaseStep(
+    microbial_library_prep = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=LibraryPrepNexteraProcessUDFS,

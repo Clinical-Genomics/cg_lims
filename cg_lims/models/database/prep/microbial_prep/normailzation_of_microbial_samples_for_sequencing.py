@@ -4,7 +4,7 @@ from typing import Optional
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
-from cg_lims.models.database.prep.base_step import BaseStep
+from cg_lims.objects import BaseAnalyte
 
 LOG = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class NormalizationOfSamplesForSequencingUDFS(NormalizationOfSamplesForSequencin
 def get_normalization_of_samples_for_sequencing_udfs(
     lims: Lims, sample_id: str
 ) -> NormalizationOfSamplesForSequencingUDFS:
-    normalization_of_samples_for_sequencing = BaseStep(
+    normalization_of_samples_for_sequencing = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=NormalizationOfSamplesForSequencingProcessUDFS,

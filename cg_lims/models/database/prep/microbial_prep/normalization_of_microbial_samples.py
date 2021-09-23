@@ -4,7 +4,7 @@ from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
-from cg_lims.models.database.prep.base_step import BaseStep
+from cg_lims.objects import BaseAnalyte
 
 
 class NormalizationOfMicrobialSamplesProcessUDFS(BaseModel):
@@ -25,7 +25,7 @@ class NormalizationOfMicrobialSamplesUDFS(NormalizationOfMicrobialSamplesProcess
 def get_normalization_of_mictobial_samples_udfs(
     lims: Lims, sample_id: str
 ) -> NormalizationOfMicrobialSamplesUDFS:
-    normalization_of_mictobial_samples = BaseStep(
+    normalization_of_mictobial_samples = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=NormalizationOfMicrobialSamplesProcessUDFS,

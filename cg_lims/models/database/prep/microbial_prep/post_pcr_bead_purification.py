@@ -4,8 +4,7 @@ from typing import Optional
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
-from cg_lims.models.database.prep.base_step import BaseStep
-
+from cg_lims.objects import BaseAnalyte
 
 LOG = logging.getLogger(__name__)
 
@@ -31,7 +30,7 @@ class PostPCRBeadPurificationUDF(
 
 
 def get_post_bead_pcr_purification_udfs(lims: Lims, sample_id: str) -> PostPCRBeadPurificationUDF:
-    microbial_library_prep = BaseStep(
+    microbial_library_prep = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=PostPCRBeadPurificationProcessUDFS,
