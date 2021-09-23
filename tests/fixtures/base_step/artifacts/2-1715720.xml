@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1715720?state=1331034" limsid="2-1715720">
+    <name>PTC-HS271-24 (qPCR)</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-225661" limsid="24-225661" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-169603" limsid="27-169603" />
+        <value>C:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8083A1" limsid="ACC8083A1" />
+    <reagent-label name="pl4 A02 IDT_10nt_NXT_329 (GCTACAGGTC-TCCTGCATAA)" />
+    <udf:field type="Numeric" name="Concentration (nM)">3.3</udf:field>
+    <udf:field type="Numeric" name="Size (bp)">555</udf:field>
+    <udf:field type="String" name="Average Size (bp)">379.8</udf:field>
+    <udf:field type="Numeric" name="Concentration">4</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Microbial Library Validation QC v3" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1401/stages/4476" />
+        <workflow-stage status="QUEUED" name="CG002 - Normalization of microbial samples for sequencing" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1401/stages/4477" />
+    </workflow-stages>
+</art:artifact>
