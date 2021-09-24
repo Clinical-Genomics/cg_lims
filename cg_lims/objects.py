@@ -64,6 +64,8 @@ class BaseAnalyte:
         self.artifact: Optional[Artifact] = self.get_artifact()
 
     def get_artifact(self) -> Optional[Artifact]:
+        """Getting the analyte artifact based on sample_id and process_type.
+        If process_type is None, then the analyte is the original submitted sample."""
         if not self.process_type:
             sample = Sample(self.lims, id=self.sample_id)
             return get_sample_artifact(sample=sample, lims=self.lims)
@@ -78,7 +80,7 @@ class BaseAnalyte:
             raise e
 
     def filter_process_udfs_by_model(self) -> dict:
-
+        """Filtering process udfs by process_udf_model."""
         try:
             process_udfs = dict(self.artifact.parent_process.udf.items())
         except:
@@ -91,7 +93,7 @@ class BaseAnalyte:
         return udf_model.dict(exclude_none=True)
 
     def filter_artifact_udfs_by_model(self) -> dict:
-
+        """Filtering artifact udfs by artifact_udf_model."""
         try:
             artifact_udfs = dict(self.artifact.udf.items())
         except:
@@ -104,7 +106,7 @@ class BaseAnalyte:
         return udf_model.dict(exclude_none=True)
 
     def merge_process_and_artifact_udfs(self) -> dict:
-        """"""
+        """Merging process and artifact udfs into one dict."""
 
         if not self.artifact:
             return {}
