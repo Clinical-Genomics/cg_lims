@@ -8,7 +8,6 @@ from cg_lims.objects import BaseAnalyte
 class InitialQCwgsv4ArtifactUDF(BaseModel):
     sample_concentration: float = Field(..., alias="Concentration")
     sample_amount: float = Field(..., alias="Amount (ng)")
-    sample_priority: float = Field(..., alias="priority")
 
         
 class AliquotSamplesforCovarisArtifactUDF(BaseModel):        
@@ -32,6 +31,9 @@ class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessU
     lot_nr_resuspension_buffer_library_preparation: str = Field(..., alias="Lot no: Resuspension buffer")
     library_preparation_method: str = Field(..., alias="Method document")
     lot_nr_etoh_library_preparation: str = Field(..., alias="Ethanol lot")
+        
+    well_position_library_preparation: "well"
+    plate_name_library_preparation: "Container Name"
         
 class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAArtifactUDF(BaseModel):
     finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
