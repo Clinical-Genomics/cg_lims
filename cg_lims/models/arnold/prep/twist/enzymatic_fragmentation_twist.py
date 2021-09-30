@@ -5,6 +5,7 @@ from pydantic import Field, BaseModel
 
 from cg_lims.objects import BaseAnalyte
 
+""Obs, hela detta steg är optional""
 
 class enzymaticfragmentationTWISTv2ProcessUdfs(BaseModel):
     enzymatic_fragmentation_method: Optional[str] = Field(None, alias="Method document")
