@@ -19,7 +19,7 @@ class HybridizeLibraryTWISTArtifactUDFs(BaseModel):
 
 
 class HybridizeLibraryTWISTProcessUDFs(BaseModel):
-    lot_nr_enrichment_kit: Optional[str] = Field(None, alias="Twist enrichment kit")
+    lot_nr_enrichment_kit_hybridization: Optional[str] = Field(None, alias="Twist enrichment kit")
     lot_nr_blockers: str = Field(..., alias="Blockers")
     lot_nr_hybridization_kit: str = Field(..., alias="TWIST Hybridization kit")
     lot_nr_vapor_lock: str = Field(..., alias="Vapor lock")
