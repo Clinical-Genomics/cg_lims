@@ -7,8 +7,12 @@ from cg_lims.objects import BaseAnalyte
 
 
 class CaptureandWashProcessUDFs(BaseModel):
-    enrichment_kit: Optional[str] = Field(None, alias="Twist enrichment kit")
-    hybridization_time: Optional[str] = Field(None, alias="Total hybridization time (h)")
+    enrichment_kit_capture_and_wash: Optional[str] = Field(None, alias="Twist enrichment kit")
+    hybridization_time: str = Field(..., alias="Total hybridization time (h)")
+    lot_nr_h20_capture_and_wash: str = Field(..., alias="Nuclease free water")
+    capture_and_wash_method: str = Field(..., alias="Method document")
+        
+        ""Kan vara bra att ha well position and container name""
 
 
 class CaptureandWashUDFs(CaptureandWashProcessUDFs):
