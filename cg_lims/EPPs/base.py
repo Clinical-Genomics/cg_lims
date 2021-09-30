@@ -12,7 +12,7 @@ from cg_lims.EPPs.files import files
 from cg_lims.EPPs.move import move
 from cg_lims.EPPs.udf import udf
 from cg_lims.EPPs.qc import qc
-from cg_lims.EPPs.arnold import database_upload
+from cg_lims.EPPs.arnold import arnold_upload
 from cg_lims.get.files import get_log_content
 
 
@@ -39,4 +39,4 @@ epps.add_command(move)
 epps.add_command(files)
 epps.add_command(udf)
 epps.add_command(qc)
-epps.add_command(database_upload)
+epps.add_command(arnold_upload)

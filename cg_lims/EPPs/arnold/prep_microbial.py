@@ -8,7 +8,7 @@ from requests import Response
 import json
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
-from cg_lims.models.database.prep.microbial_prep import (
+from cg_lims.models.arnold.prep.microbial_prep import (
     MicrobialPrep,
     BufferExchangeUDFS,
     get_buffer_exchange_udfs,
@@ -85,3 +85,4 @@ def microbial_prep_document(ctx):
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
+    click.echo("Covid prep documents inserted to arnold database")

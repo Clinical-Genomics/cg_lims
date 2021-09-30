@@ -8,7 +8,7 @@ from requests import Response
 import json
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
-from cg_lims.models.database.prep.sars_cov_2_prep import (
+from cg_lims.models.arnold.prep.sars_cov_2_prep import (
     get_pooling_and_cleanup_udfs,
     get_library_prep_cov_udfs,
     get_aggregate_qc_dna_cov_udfs,
@@ -72,3 +72,4 @@ def sars_cov_2_prep_document(ctx):
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
+    click.echo("Arnold output: %s", response.text)

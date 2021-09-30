@@ -15,7 +15,7 @@ from .aggregate_qc import (
     get_aggregate_qc_dna_cov_udfs,
 )
 
-from cg_lims.models.database.prep.base_prep import Prep
+from cg_lims.models.arnold.prep.base_prep import Prep
 
 
 class SarsCov2Prep(

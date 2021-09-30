@@ -25,7 +25,7 @@ from .post_pcr_bead_purification import (
     PostPCRBeadPurificationProcessUDFS,
     get_post_bead_pcr_purification_udfs,
 )
-from cg_lims.models.database.prep.base_prep import Prep
+from cg_lims.models.arnold.prep.base_prep import Prep
 
 
 class MicrobialPrep(

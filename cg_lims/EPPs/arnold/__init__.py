@@ -1,1 +1,1 @@
-from .base import database_upload
+from .base import arnold_upload
