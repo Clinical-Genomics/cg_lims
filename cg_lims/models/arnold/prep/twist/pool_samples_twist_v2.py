@@ -9,6 +9,8 @@ from cg_lims.objects import BaseAnalyte
 
 class PoolsamplesforhybridizationArtifactUDFs(BaseStep):
     amount_of_sample: Optional[str] = Field(None, alias="Total Amount (ng)")
+    
+    ""Kan man få fram hur många prov per pool det är?""
 
 
 class PoolsamplesforhybridizationUDFs(PoolsamplesforhybridizationArtifactUDFs):
