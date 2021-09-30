@@ -11,6 +11,9 @@ class AliquotSamplesForEnzymaticFragmentationProcessUdfs(BaseModel):
     GMCKsolid_HD827: Optional[str] = Field(None, alias="Batch no GMCKsolid-HD827")
     GMSlymphoid_HD829: Optional[str] = Field(None, alias="Batch no GMSlymphoid-HD829")
     GMSmyeloid_HD829: Optional[str] = Field(None, alias="Batch no GMSmyeloid-HD829")
+    aliquot_samples_fragmentation_method: str = Field(..., alias="Method document 2")
+    enzymatic_fragmentation_method: str = Field(..., alias="Method document 1")
+    lot_nr_h2o_aliquot_samples_fragmentation: str = Field(..., alias="Nuclease-free water")
 
 
 class AliquotSamplesForEnzymaticFragmentationArtifactUdfs(BaseModel):
