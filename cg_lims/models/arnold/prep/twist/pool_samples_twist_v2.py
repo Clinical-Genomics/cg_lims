@@ -11,6 +11,12 @@ class PoolsamplesforhybridizationArtifactUDFs(BaseStep):
     amount_of_sample: Optional[str] = Field(None, alias="Total Amount (ng)")
     
     ""Kan man få fram hur många prov per pool det är?""
+    
+class LibraryPreparationCovProcessUDFS(BaseModel):
+   
+    speedvac_temp: str = Field(..., alias="SpeedVac temp")
+    speedvac_time: str = Field(..., alias="SpeedVac time (min)")
+
 
 
 class PoolsamplesforhybridizationUDFs(PoolsamplesforhybridizationArtifactUDFs):
