@@ -7,3 +7,5 @@ pandas
 gunicorn
 uvicorn
 matplotlib
+pymongo
+mongo_adapter

@@ -1,6 +1,5 @@
 from datetime import date
 from typing import Optional
-
 from genologics.entities import Sample
 from genologics.lims import Lims
 

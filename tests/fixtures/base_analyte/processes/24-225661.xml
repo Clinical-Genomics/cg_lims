@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-225661" limsid="24-225661">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1254">Some Process Type</type>
+    <date-run>2021-09-23</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/157">
+        <first-name>Maya</first-name>
+        <last-name>Brandi</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569716?state=1209678" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569716?state=1209678" limsid="2-1569716">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-207661" limsid="151-207661" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1715719?state=1331024" output-generation-type="PerInput" output-type="Analyte" limsid="2-1715719" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569721?state=1209683" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569721?state=1209683" limsid="2-1569721">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-207661" limsid="151-207661" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1715720?state=1331025" output-generation-type="PerInput" output-type="Analyte" limsid="2-1715720" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569729?state=1209691" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569729?state=1209691" limsid="2-1569729">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-207661" limsid="151-207661" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1715721?state=1331026" output-generation-type="PerInput" output-type="Analyte" limsid="2-1715721" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569737?state=1209699" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569737?state=1209699" limsid="2-1569737">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-207661" limsid="151-207661" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1715722?state=1331027" output-generation-type="PerInput" output-type="Analyte" limsid="2-1715722" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569738?state=1209700" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1569738?state=1209700" limsid="2-1569738">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-207661" limsid="151-207661" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1715723?state=1331028" output-generation-type="PerInput" output-type="Analyte" limsid="2-1715723" />
+    </input-output-map>
+    <udf:field type="String" name="Lot nr: Beads">12</udf:field>
+    <udf:field type="String" name="Lot nr: EtOH">2</udf:field>
+    <udf:field type="String" name="Lot nr: H2O">3</udf:field>
+    <udf:field type="Numeric" name="Document Version">12</udf:field>
+    <udf:field type="String" name="Method Document">1764</udf:field>
+</prc:process>

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from genologics.lims import Lims
 from genologics.entities import Artifact, Sample
 from pathlib import Path
@@ -9,6 +11,26 @@ import threading
 import time
 
 from limsmock.server import run_server
+from pydantic import BaseModel, Field
+
+
+class ProcessUDFModel(BaseModel):
+    lot_nr_beads_library_prep: str = Field(..., alias="Lot nr: Beads")
+    lot_nr_etoh_library_prep: str = Field(..., alias="Lot nr: EtOH")
+    lot_nr_h2o_library_prep: str = Field(..., alias="Lot nr: H2O")
+
+
+class ArtifactUDFModel(BaseModel):
+    finished_library_concentration: float = Field(..., alias="Concentration")
+    finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
+    finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
+    finished_library_average_size: float = Field(..., alias="Average Size (bp)")
+
+
+class MegedUdfModel(ProcessUDFModel, ArtifactUDFModel):
+    class Config:
+        allow_population_by_field_name = True
+
 
 PORT = 8000
 HOST = "127.0.0.1"
