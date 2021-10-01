@@ -1,26 +1,12 @@
+from typing import Optional
+
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
 from cg_lims.objects import BaseAnalyte
 
-""Från protocol Initial QC wgs v4:""
-class InitialQCwgsv4ArtifactUDF(BaseModel):
-    sample_concentration: float = Field(..., alias="Concentration")
-    sample_amount: float = Field(..., alias="Amount (ng)")
 
-        
-class AliquotSamplesforCovarisArtifactUDF(BaseModel):        
-    sample_amount_needed: float = Field(..., alias="Amount needed (ng)")
-        
-        
-class FragmentDNATruSeqDNAProcessUDFS(BaseModel):        
-    lot_nr_covaris_tube: str = Field(..., alias="Lot no: Covaris tube")
-    fragmentation_method: str = Field(..., alias="Method Document 1")
-    covaris_protocol: str = Field(..., alias="Protocol")
-    lot_nr_resuspension_buffer_fragmentation: str = Field(..., alias="Lot no: Resuspension Buffer")
-        
-        
 class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessUDFS(BaseModel):
     lot_nr_truseq_library_preparation_kit: Optional[float] = Field(None, alias="Lot no: TruSeq DNA PCR-Free Sample Prep Kit")
     lot_nr_index: str = Field(..., alias="Lot no: Adaptor Plate")
@@ -32,11 +18,28 @@ class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessU
     library_preparation_method: str = Field(..., alias="Method document")
     lot_nr_etoh_library_preparation: str = Field(..., alias="Ethanol lot")
         
-    well_position_library_preparation: "well"
-    plate_name_library_preparation: "Container Name"
+  #  well_position_library_preparation: "well"
+  #  plate_name_library_preparation: "Container Name"
         
 class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAArtifactUDF(BaseModel):
     finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
     finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
     finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
     
+
+
+class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS(EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessUDFS, EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAArtifactUDF):
+    class Config:
+        allow_population_by_field_name = True
+
+
+def get_end_repair_udfs(lims: Lims, sample_id: str) -> EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS:
+    end_repair = BaseAnalyte(
+        lims=lims,
+        sample_id=sample_id,
+        process_udf_model=EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessUDFS,
+        artifact_udf_model=EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAArtifactUDF,
+        process_type="Pooling and Clean-up (Cov) v1",
+    )
+
+    return EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS(**end_repair.merge_process_and_artifact_udfs())

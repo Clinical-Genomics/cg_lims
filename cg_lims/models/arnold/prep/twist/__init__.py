@@ -37,10 +37,10 @@ from .aliquot_samples_for_enzymatic_fragmentation_twist import (
     get_aliquot_samples_for_enzymatic_fragmentation_udfs,
 )
 
-from cg_lims.models.database.prep.base_prep import Prep
+from cg_lims.models.arnold.prep.base_prep import Prep
 
 
-class SarsCov2Prep(
+class TWISTPrep(
     Prep,
     PoolsamplesforhybridizationUDFs,
     HybridizeLibraryUDFs,
