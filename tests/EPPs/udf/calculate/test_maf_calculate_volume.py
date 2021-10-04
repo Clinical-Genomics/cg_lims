@@ -10,11 +10,36 @@ from cg_lims.EPPs.udf.calculate.maf_calculate_volume import (
     QC_PASSED,
     calculate_final_volume,
     calculate_volume,
+    calculate_volumes,
     get_sample_concentration,
 )
 from cg_lims.exceptions import LimsError
 
 LOG = logging.getLogger(__name__)
+
+
+@pytest.mark.parametrize(
+    "sample_concentration, final_volume, water_volume, sample_volume, qc_flag",
+    [
+        (20, 15.0, 12.0, 3, QC_PASSED),
+        (21, 15.75, 12.75, 3, QC_PASSED),
+        (239, 179.25, 176.25, 3, QC_PASSED),
+        (243, 182.25, 179.25, 3, QC_PASSED),
+        (244, 122.0, 120.0, 2, QC_FAILED),
+        (363, 181.5, 179.5, 2, QC_FAILED),
+        (364, 91.0, 90.0, 1, QC_FAILED),
+        (723, 180.75, 179.75, 1, QC_FAILED),
+        (724, 90.5, 90.0, 0.5, QC_FAILED),
+        (1443, 180.375, 179.875, 0.5, QC_FAILED),
+    ],
+)
+def test_new_volume_calculation_algorithm(
+    artifact_1, sample_concentration, sample_volume, final_volume, water_volume, qc_flag
+):
+    server("flat_tests")
+    artifact_1.udf["Concentration"] = sample_concentration
+    result = calculate_volumes(sample_concentration)
+    assert result == (final_volume, water_volume, sample_volume, qc_flag)
 
 
 def test_get_sample_concentration(artifact_1):
@@ -102,8 +127,8 @@ def test_maf_calculate_volume_too_high_concentration(
     with pytest.raises(LimsError) as error_message:
         calculate_volume(artifacts)
 
-    # THEN a warning will be  logged and LimsError exception is raised
-    assert "Could not calculate sample volume for" in caplog.text
+    # THEN a warning will be logged and LimsError exception is raised
+    assert "Sample concentration too high for sample" in caplog.text
     assert "MAF volume calculations failed for" in error_message.value.message
 
 
@@ -138,63 +163,3 @@ def test_maf_calculate_volume_low_concentration(
     assert artifact_1.udf["Final Volume (uL)"] == final_volume
     assert artifact_1.udf["Volume of sample (ul)"] == sample_volume
     assert artifact_1.udf["Volume H2O (ul)"] == final_volume - sample_volume
-
-
-@mock.patch("cg_lims.EPPs.udf.calculate.maf_calculate_volume.get_sample_concentration")
-@mock.patch("cg_lims.EPPs.udf.calculate.maf_calculate_volume.calculate_final_volume")
-@pytest.mark.parametrize(
-    "sample_concentration, sample_volume, final_volume, qc_flag",
-    [
-        (243, 3.0, 182.25, QC_PASSED),
-        (363, 2.0, 181.5, QC_FAILED),
-        (723, 1.0, 180.75, QC_FAILED),
-        (1443, 0.5, 180.375, QC_FAILED),
-    ],
-)
-def test_maf_calculate_volume(
-    mock_calculate_final_volume,
-    mock_sample_concentration,
-    sample_concentration,
-    sample_volume,
-    final_volume,
-    qc_flag,
-    artifact_1,
-):
-    # GIVEN a sample with a concentration between 244 and 20
-    server("flat_tests")
-    mock_sample_concentration.return_value = sample_concentration
-
-    # WHEN calculating the volumes
-    mock_calculate_final_volume.return_value = final_volume
-    artifacts = [artifact_1]
-    calculate_volume(artifacts)
-
-    # THEN the volumes are calculated using calculate_sample_volume and the QC flag should be set to the correct value
-    assert artifact_1.qc_flag == qc_flag
-    assert artifact_1.udf["Final Volume (uL)"] == final_volume
-    assert artifact_1.udf["Volume of sample (ul)"] == sample_volume
-    assert artifact_1.udf["Volume H2O (ul)"] == final_volume - sample_volume
-    mock_calculate_final_volume.assert_called_with(sample_volume, sample_concentration)
-
-
-@mock.patch("cg_lims.EPPs.udf.calculate.maf_calculate_volume.get_sample_concentration")
-@mock.patch("cg_lims.EPPs.udf.calculate.maf_calculate_volume.calculate_final_volume")
-def test_maf_calculate_volume_final_volume_too_low(
-    mock_calculate_final_volume, mock_sample_concentration, artifact_1, caplog
-):
-    # GIVEN a sample with a concentration between 244 and 20
-    server("flat_tests")
-
-    # WHEN calculating the volumes
-    artifacts = [artifact_1]
-    mock_sample_concentration.return_value = 10
-    mock_calculate_final_volume.return_value = 3
-    with pytest.raises(LimsError) as error_message:
-        calculate_volume(artifacts)
-
-    # THEN a warning will be  logged and LimsError exception is raised
-    assert (
-        "The final calculated volume is smaller than the minimum final volume for sample"
-        in caplog.text
-    )
-    assert "MAF volume calculations failed for" in error_message.value.message
