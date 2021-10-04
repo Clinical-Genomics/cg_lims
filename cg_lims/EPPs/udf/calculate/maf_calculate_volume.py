@@ -7,7 +7,7 @@ AM-document 1243 Method - Preparing Plate for Genotyping, section 3.3.2 Preparin
 
 import logging
 import sys
-from typing import List
+from typing import List, Tuple
 
 import click
 from genologics.entities import Artifact
@@ -36,16 +36,20 @@ def calculate_final_volume(sample_volume: float, sample_concentration: float) ->
     return sample_volume * sample_concentration / FINAL_CONCENTRATION
 
 
-def calculate_volume_for_low_concentration_samples(
+def calculate_volumes_for_low_concentration_samples(
     sample_concentration: float,
-) -> float:
+) -> Tuple[float, float, float, str]:
     """Calculates the sample volume. The sample volume is increased to reach a minimum final volume of 15 ul. This
     occurs at lower concentration levels where standard pipetting volumes are not enough to reach the desired final
     concentration and final volume."""
-    return MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
+    sample_volume = MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
+    final_volume = calculate_final_volume(sample_volume, sample_concentration)
+    water_volume = final_volume - sample_volume
+    qc_flag = QC_FAILED
+    return final_volume, water_volume, sample_volume, qc_flag
 
 
-def calculate_volumes(sample_concentration):
+def calculate_volumes(sample_concentration: float) -> Tuple[float, float, float, str]:
     """Calculates all volumes (final volume, water volume and sample volume) and sets the QC flag."""
     for sample_volume in PIPETTING_VOLUMES:
         final_volume = sample_concentration * sample_volume / FINAL_CONCENTRATION
@@ -74,11 +78,12 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
             continue
 
         if sample_concentration < 20:
-            sample_volume = calculate_volume_for_low_concentration_samples(
-                sample_concentration
-            )
-            final_volume = calculate_final_volume(sample_volume, sample_concentration)
-            water_volume = final_volume - sample_volume
+            (
+                final_volume,
+                water_volume,
+                sample_volume,
+                qc_flag,
+            ) = calculate_volumes_for_low_concentration_samples(sample_concentration)
         elif sample_concentration >= 20:
             final_volume, water_volume, sample_volume, qc_flag = calculate_volumes(
                 sample_concentration
