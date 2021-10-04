@@ -3,6 +3,3 @@ pytest-cov
 pytest-mock
 coveralls
 pylint
-mock
-pytest-watch
-limsmock
