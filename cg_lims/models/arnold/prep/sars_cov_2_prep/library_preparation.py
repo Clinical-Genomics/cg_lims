@@ -20,12 +20,12 @@ class LibraryPreparationCovProcessUDFS(BaseModel):
     library_preparation_method: str = Field(..., alias="Method document")
     liquid_handling_system: str = Field(..., alias="Instrument")
     # ""Går det att få fram antal prover/pool?""
-
-    #   ""Obs pool från och med här""
     
     
 # well position (optional)
 # container name (optional)
+# index name
+# Label group
 
 
 class LibraryPreparationCovUDFS(LibraryPreparationCovProcessUDFS):
