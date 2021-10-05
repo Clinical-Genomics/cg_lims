@@ -21,8 +21,8 @@ class PostPCRBeadPurificationArtifactUDF(BaseModel):
     finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
     finished_library_average_size: float = Field(..., alias="Average Size (bp)")
         
-# well position
-# container name
+# well position (optional)
+# container name (optional)
 
 
 class PostPCRBeadPurificationUDF(
