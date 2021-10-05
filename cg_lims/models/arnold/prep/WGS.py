@@ -12,6 +12,9 @@ class InitialQCwgsv4ArtifactUDF(BaseModel):
         
 class AliquotSamplesforCovarisArtifactUDF(BaseModel):        
     sample_amount_needed: float = Field(..., alias="Amount needed (ng)")
+
+# well position (optional)
+# container name (optional)
         
         
 class FragmentDNATruSeqDNAProcessUDFS(BaseModel):        
@@ -19,6 +22,9 @@ class FragmentDNATruSeqDNAProcessUDFS(BaseModel):
     fragmentation_method: str = Field(..., alias="Method Document 1")
     covaris_protocol: str = Field(..., alias="Protocol")
     lot_nr_resuspension_buffer_fragmentation: str = Field(..., alias="Lot no: Resuspension Buffer")
+        
+# well position (optional)
+# container name (optional)
         
         
 class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessUDFS(BaseModel):
@@ -32,8 +38,10 @@ class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessU
     library_preparation_method: str = Field(..., alias="Method document")
     lot_nr_etoh_library_preparation: str = Field(..., alias="Ethanol lot")
         
-    well_position_library_preparation: "well"
-    plate_name_library_preparation: "Container Name"
+# well position (optional)
+# container name (optional)
+# index name
+
         
 class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAArtifactUDF(BaseModel):
     finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
