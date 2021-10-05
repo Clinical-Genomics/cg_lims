@@ -23,5 +23,8 @@ def get_buffer_exchange_twist(lims: Lims, sample_id: str) -> BufferExchangeUDFs:
         artifact_udf_model=BufferExchangeArtifactUDFs,
         process_type="Buffer Exchange v2",
     )
+    
+# well position (optional)
+# container name (optional)
 
     return BufferExchangeUDFs(**buffer_exchange_twist.merge_process_and_artifact_udfs())
