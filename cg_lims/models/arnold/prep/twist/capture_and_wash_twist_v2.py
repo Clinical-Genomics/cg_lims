@@ -12,7 +12,8 @@ class CaptureandWashProcessUDFs(BaseModel):
     lot_nr_h20_capture_and_wash: str = Field(..., alias="Nuclease free water")
     capture_and_wash_method: str = Field(..., alias="Method document")
         
-        ""Kan vara bra att ha well position and container name""
+    # well position 
+    # container name
 
 
 class CaptureandWashUDFs(CaptureandWashProcessUDFs):
