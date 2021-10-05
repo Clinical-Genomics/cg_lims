@@ -25,6 +25,9 @@ class HybridizeLibraryTWISTProcessUDFs(BaseModel):
     lot_nr_vapor_lock: str = Field(..., alias="Vapor lock")
     pcr_instrument_hybridization: str = Field(..., alias="Thermal cycler")
     hybridization_method: str = Field(..., alias="Method document")
+        
+# well position (optional)
+# container name (optional)
 
 
 class HybridizeLibraryUDFs(HybridizeLibraryTWISTArtifactUDFs, HybridizeLibraryTWISTProcessUDFs):
