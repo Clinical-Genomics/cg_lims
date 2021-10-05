@@ -16,8 +16,8 @@ class NormalizationOfMicrobialSamplesProcessUDFS(BaseModel):
         None, alias="Dilution buffer lot no"
     )
         
-# well position 
-# container name
+# well position (optional)
+# container name (optional)
 
 
 class NormalizationOfMicrobialSamplesUDFS(NormalizationOfMicrobialSamplesProcessUDFS):
