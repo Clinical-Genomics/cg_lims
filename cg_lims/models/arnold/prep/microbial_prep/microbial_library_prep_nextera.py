@@ -13,6 +13,10 @@ class LibraryPrepNexteraProcessUDFS(BaseModel):
     pcr_instrument_incubation: str = Field(..., alias="PCR instrument incubation")
     pcr_instrument_amplification: str = Field(..., alias="PCR instrument amplification")
     nr_pcr_cycles: int = Field(..., alias="Nr PCR cycles")
+        
+# well position (optional)
+# container name (optional)
+# index name
 
 
 class LibraryPrepUDFS(LibraryPrepNexteraProcessUDFS):

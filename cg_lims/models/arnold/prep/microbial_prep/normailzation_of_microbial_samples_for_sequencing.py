@@ -17,6 +17,9 @@ class NormalizationOfSamplesForSequencingProcessUDFS(BaseModel):
         None, alias="Final Concentration (nM)"
     )
     library_normalization_method: Optional[str] = Field(None, alias="Method document")
+        
+# well position (optional)
+# container name (optional)
 
 
 class NormalizationOfSamplesForSequencingUDFS(NormalizationOfSamplesForSequencingProcessUDFS):

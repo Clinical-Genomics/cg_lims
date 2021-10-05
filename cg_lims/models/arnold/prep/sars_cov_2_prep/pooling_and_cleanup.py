@@ -14,6 +14,10 @@ class PoolingAndCleanUpCovProcessUDFS(BaseModel):
     lot_nr_etoh_clean_up: str = Field(..., alias="Ethanol")
     lot_nr_h2o_clean_up: str = Field(..., alias="Nuclease-free water")
     lot_nr_resuspension_buffer_clean_up: str = Field(..., alias="Resuspension buffer")
+        
+# well position (optional)
+# container name (optional)
+# Number of samples in pool
 
 
 class PoolingAndCleanUpCovArtifactUDF(BaseModel):

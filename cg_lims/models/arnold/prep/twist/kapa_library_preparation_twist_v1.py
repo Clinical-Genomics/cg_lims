@@ -5,8 +5,12 @@ from cg_lims.objects import BaseAnalyte
 
 
 class KAPALibraryPreparationArtifactUDFs(BaseModel):
-    size_bp: Optional[int] = Field(None, alias="Size (bp)")
-    concentration: Optional[str] = Field(None, alias="Concentration")
+    library_size_pre_hyb: str = Field(..., alias="Size (bp)")
+    library_concentration_pre_hyb: str = Field(..., alias="Concentration")
+    adapter_ligation_master_mix: str = Field(..., alias="Ligation Master Mix")
+    library_preparation_pcr_plate: str = Field(..., alias="PCR Plate")
+        
+        
     # label: Optional[str] = Field(None, alias="label (= index)")
     # well: Optional[str] = Field(None, alias="Well")
     # container_name: Optional[str] = Field(None, alias="Container Name")
@@ -35,9 +39,28 @@ class KAPALibraryPreparationArtifactUDFs(BaseModel):
 
 
 class KAPALibraryPreparationProcessUDFs(BaseModel):
-    method_document: Optional[str] = Field(None, alias="Method document")
-    document_version: Optional[int] = Field(None, alias="Document version")
-    prep_kit: Optional[str] = Field(None, alias="KAPA HyperPlus/Prep Kit")
+    method_document_library_preparation: str = Field(..., alias="Method document")   
+    library_preparation_kit: str = Field(..., alias="KAPA HyperPlus/Prep Kit")
+    lot_nr_h2o_library_preparation_pre_lab: str = Field(..., alias="Nuclease-free water (pre-lab)")
+    lot_nr_xgen_adapter: str = Field(..., alias="xGen Adapter")
+    lot_nr_index: str = Field(..., alias="Indexing Primer")
+    lot_nr_beads_library_preparation_pre_lab: str = Field(..., alias="DNA purification beads (pre-lab)")
+    lot_nr_etoh_library_preparation_pre_lab: str = Field(..., alias="Ethanol (pre-lab)")
+    pcr_instrument_end_repair_a_tail: str = Field(..., alias="PCR Machine: End Repair and A-tail")
+    pcr_instrument_adapter_ligation: str = Field(..., alias="PCR Machine: Adapter ligation")
+    pcr_instrument_amplification_plate1: Optional[str] = Field(None, alias="PCR Machine: Amplification Plate 1")
+    pcr_instrument_amplification_plate2: Optional[str] = Field(None, alias="PCR Machine: Amplification Plate 2")
+    pcr_instrument_amplification_plate3: Optional[str] = Field(None, alias="PCR Machine: Amplification Plate 3")
+    lot_nr_beads_library_preparation_post_lab: str = Field(..., alias="DNA purification beads (post-lab)")
+    lot_nr_etoh_library_preparation_post_lab: str = Field(..., alias="Ethanol (post-lab)")    
+    lot_nr_h2o_library_preparation_post_lab: str = Field(..., alias="Nuclease-free water (post-lab)")
+        
+
+# well position (optional)
+# container name (optional)
+# index name
+# Label gropus
+        
 
 
 class KAPALibraryPreparationUDFs(

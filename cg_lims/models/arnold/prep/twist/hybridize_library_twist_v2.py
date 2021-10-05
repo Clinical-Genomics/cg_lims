@@ -19,12 +19,15 @@ class HybridizeLibraryTWISTArtifactUDFs(BaseModel):
 
 
 class HybridizeLibraryTWISTProcessUDFs(BaseModel):
-    enrichment_kit: Optional[str] = Field(None, alias="Twist enrichment kit")
-    blockers: Optional[str] = Field(None, alias="Blockers")
-    hybridization_kit: Optional[str] = Field(None, alias="TWIST Hybridization kit")
-    thermal_cycler: Optional[str] = Field(None, alias="Thermal cycler")
-    method_document: Optional[str] = Field(None, alias="Method document")
-    document_version: Optional[str] = Field(None, alias="Document version")
+    lot_nr_enrichment_kit_hybridization: Optional[str] = Field(None, alias="Twist enrichment kit")
+    lot_nr_blockers: str = Field(..., alias="Blockers")
+    lot_nr_hybridization_kit: str = Field(..., alias="TWIST Hybridization kit")
+    lot_nr_vapor_lock: str = Field(..., alias="Vapor lock")
+    pcr_instrument_hybridization: str = Field(..., alias="Thermal cycler")
+    hybridization_method: str = Field(..., alias="Method document")
+        
+# well position (optional)
+# container name (optional)
 
 
 class HybridizeLibraryUDFs(HybridizeLibraryTWISTArtifactUDFs, HybridizeLibraryTWISTProcessUDFs):
