@@ -22,6 +22,10 @@ class LibraryPreparationCovProcessUDFS(BaseModel):
     # ""Går det att få fram antal prover/pool?""
 
     #   ""Obs pool från och med här""
+    
+    
+# well position (optional)
+# container name (optional)
 
 
 class LibraryPreparationCovUDFS(LibraryPreparationCovProcessUDFS):
