@@ -13,6 +13,9 @@ class BeadPurificationposthybTwistProcessUDFs(BaseModel):
     lot_nr_etoh_bead_purification_post_hyb: str = Field(..., alias="Ethanol")
     lot_nr_h2o_bead_purification_post_hyb: str = Field(..., alias="Nuclease free water")
     bead_purification_post_hyb_method: str = Field(..., alias="Method document")
+        
+# well position (optional)
+# container name (optional)
 
 
 
