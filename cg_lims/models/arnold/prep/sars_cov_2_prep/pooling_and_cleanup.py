@@ -17,6 +17,7 @@ class PoolingAndCleanUpCovProcessUDFS(BaseModel):
         
 # well position (optional)
 # container name (optional)
+# Number of samples in pool
 
 
 class PoolingAndCleanUpCovArtifactUDF(BaseModel):
