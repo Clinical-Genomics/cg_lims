@@ -15,6 +15,9 @@ class NormalizationOfMicrobialSamplesProcessUDFS(BaseModel):
     lot_nr_dilution_buffer_sample_normalization: Optional[str] = Field(
         None, alias="Dilution buffer lot no"
     )
+        
+# well position 
+# container name
 
 
 class NormalizationOfMicrobialSamplesUDFS(NormalizationOfMicrobialSamplesProcessUDFS):
