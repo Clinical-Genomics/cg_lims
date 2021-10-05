@@ -12,6 +12,6 @@ class enzymaticfragmentationTWISTv2ProcessUdfs(BaseModel):
     fragmentation_time: Optional[str] = Field(None, alias="Fragmentation time (min)")
     pcr_instrument_fragmentation: Optional[str] = Field(None, alias="Thermal cycler name")
     library_preparation_kit_fragmentation: Optional[str] = Field(None, alias="KAPA HyperPlus Kit")
-   
-      
-""Kan även vara bra att ha well position och container name""
+        
+# well position (optional)
+# container name (optional)
