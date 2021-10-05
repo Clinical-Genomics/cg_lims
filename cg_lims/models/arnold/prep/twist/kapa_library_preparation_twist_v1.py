@@ -55,8 +55,11 @@ class KAPALibraryPreparationProcessUDFs(BaseModel):
     lot_nr_etoh_library_preparation_post_lab: str = Field(..., alias="Ethanol (post-lab)")    
     lot_nr_h2o_library_preparation_post_lab: str = Field(..., alias="Nuclease-free water (post-lab)")
         
-        ""Kan även vara bra att ta med label groups (dvs index set)""
-        
+
+# well position (optional)
+# container name (optional)
+# index name
+# Label gropus
         
 
 
