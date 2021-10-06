@@ -62,6 +62,38 @@ class BaseAnalyte:
         self.process_udf_model = process_udf_model
         self.optional_step: bool = optional_step
         self.artifact: Optional[Artifact] = self.get_artifact()
+        self.container_name = self.get_container()
+        self.well = self.get_well()
+        self.index_name = self.get_index()
+        self.nr_samples = self.get_nr_samples()
+
+    def get_well(self) -> Optional[str]:
+        """Returning artifact well if existing."""
+        if not (self.artifact and self.artifact.location):
+            return None
+        return self.artifact.location[1]
+
+    def get_container(self) -> Optional[str]:
+        """Returning artifact container name if existing."""
+        if not (self.artifact and self.artifact.container and self.artifact.container.name):
+            return None
+        return self.artifact.container.name
+
+    def get_index(self) -> Optional[str]:
+        """Returning artifact index if existing."""
+        if not (
+            self.artifact
+            and self.artifact.reagent_labels
+            and len(self.artifact.reagent_labels) == 1
+        ):
+            return None
+        return self.artifact.reagent_labels[0]
+
+    def get_nr_samples(self) -> Optional[int]:
+        """Returning nr samples if existing."""
+        if not (self.artifact and self.artifact.samples):
+            return None
+        return len(self.artifact.samples)
 
     def get_artifact(self) -> Optional[Artifact]:
         """Getting the analyte artifact based on sample_id and process_type.
@@ -105,7 +137,7 @@ class BaseAnalyte:
         udf_model = self.artifact_udf_model(**artifact_udfs)
         return udf_model.dict(exclude_none=True)
 
-    def merge_process_and_artifact_udfs(self) -> dict:
+    def merge_analyte_fields(self) -> dict:
         """Merging process and artifact udfs into one dict."""
 
         if not self.artifact:
@@ -118,7 +150,12 @@ class BaseAnalyte:
             artifact_udfs: dict = self.filter_artifact_udfs_by_model()
         else:
             artifact_udfs = {}
-        merged_udfs = {}
-        merged_udfs.update(process_udfs)
-        merged_udfs.update(artifact_udfs)
-        return merged_udfs
+        merged_fields = dict(
+            well_position=self.well,
+            container_name=self.container_name,
+            index_name=self.index_name,
+            nr_samples=self.nr_samples,
+        )
+        merged_fields.update(process_udfs)
+        merged_fields.update(artifact_udfs)
+        return merged_fields

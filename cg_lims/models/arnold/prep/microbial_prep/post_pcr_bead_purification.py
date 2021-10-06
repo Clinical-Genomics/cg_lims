@@ -20,20 +20,20 @@ class PostPCRBeadPurificationArtifactUDF(BaseModel):
     finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
     finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
     finished_library_average_size: float = Field(..., alias="Average Size (bp)")
-        
-# well position (optional)
-# container name (optional)
 
 
 class PostPCRBeadPurificationUDF(
     PostPCRBeadPurificationProcessUDFS, PostPCRBeadPurificationArtifactUDF
 ):
+    e_well_position: Optional[str] = Field(None, alias="well_position")
+    e_container_name: Optional[str] = Field(None, alias="container_name")
+
     class Config:
         allow_population_by_field_name = True
 
 
 def get_post_bead_pcr_purification_udfs(lims: Lims, sample_id: str) -> PostPCRBeadPurificationUDF:
-    microbial_library_prep = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=PostPCRBeadPurificationProcessUDFS,
@@ -41,4 +41,6 @@ def get_post_bead_pcr_purification_udfs(lims: Lims, sample_id: str) -> PostPCRBe
         process_type="Post-PCR bead purification v1",
     )
 
-    return PostPCRBeadPurificationUDF(**microbial_library_prep.merge_process_and_artifact_udfs())
+    return PostPCRBeadPurificationUDF(
+        **analyte.merge_analyte_fields(),
+    )

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
@@ -20,25 +22,26 @@ class LibraryPreparationCovProcessUDFS(BaseModel):
     library_preparation_method: str = Field(..., alias="Method document")
     liquid_handling_system: str = Field(..., alias="Instrument")
     # ""Går det att få fram antal prover/pool?""
-    
-    
-# well position (optional)
-# container name (optional)
-# index name
-# Label group
 
 
 class LibraryPreparationCovUDFS(LibraryPreparationCovProcessUDFS):
+    well_position: Optional[str]
+    container_name: Optional[str]
+    label_group: Optional[str]
+    index_name: Optional[str]
+
     class Config:
         allow_population_by_field_name = True
 
 
 def get_library_prep_cov_udfs(lims: Lims, sample_id: str) -> LibraryPreparationCovUDFS:
-    library_prep_cov = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=LibraryPreparationCovProcessUDFS,
         process_type="Library Preparation (Cov) v1",
     )
 
-    return LibraryPreparationCovUDFS(**library_prep_cov.merge_process_and_artifact_udfs())
+    return LibraryPreparationCovUDFS(
+        **analyte.merge_analyte_fields(),
+    )

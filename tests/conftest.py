@@ -14,6 +14,16 @@ from limsmock.server import run_server
 from pydantic import BaseModel, Field
 
 
+class IndexProcessUDFModel(BaseModel):
+    lot_nr_tagmentation_buffer: str = Field(..., alias="Lot nr: Tagmentation buffer (TD-buffer)")
+    lot_nr_tagmentation_enzyme: str = Field(..., alias="Lot nr: Tagmentation enzyme (TDE1)")
+    lot_nr_index: str = Field(..., alias="Lot nr: Index")
+    lot_nr_pcr_mix: str = Field(..., alias="Lot nr: KAPA HiFi HotStart ReadyMix (2X)")
+    pcr_instrument_incubation: str = Field(..., alias="PCR instrument incubation")
+    pcr_instrument_amplification: str = Field(..., alias="PCR instrument amplification")
+    nr_pcr_cycles: int = Field(..., alias="Nr PCR cycles")
+
+
 class ProcessUDFModel(BaseModel):
     lot_nr_beads_library_prep: str = Field(..., alias="Lot nr: Beads")
     lot_nr_etoh_library_prep: str = Field(..., alias="Lot nr: EtOH")
@@ -27,7 +37,12 @@ class ArtifactUDFModel(BaseModel):
     finished_library_average_size: float = Field(..., alias="Average Size (bp)")
 
 
-class MegedUdfModel(ProcessUDFModel, ArtifactUDFModel):
+class MegedFieldsIndexModel(IndexProcessUDFModel):
+    container_name: Optional[str]
+    well_position: Optional[str]
+    index_name: Optional[str]
+    nr_samples: Optional[int]
+
     class Config:
         allow_population_by_field_name = True
 
@@ -65,9 +80,7 @@ def artifact_1(lims) -> Artifact:
     """Basic artifact with id 1. Containing no udfs.
     Related to sample_1."""
 
-    artifact = Artifact(lims, id="1")
-
-    return artifact
+    return Artifact(lims, id="1")
 
 
 @pytest.fixture
@@ -75,9 +88,7 @@ def sample_1(lims) -> Sample:
     """Basic sample with id S1. Containing no udfs.
     Related to artifact_1."""
 
-    sample = Sample(lims, id="S1")
-
-    return sample
+    return Sample(lims, id="S1")
 
 
 @pytest.fixture
@@ -85,9 +96,7 @@ def artifact_2(lims) -> Artifact:
     """Basic artifact with id 2. Containing no udfs.
     Related to sample_2."""
 
-    artifact = Artifact(lims, id="2")
-
-    return artifact
+    return Artifact(lims, id="2")
 
 
 @pytest.fixture
@@ -95,9 +104,7 @@ def sample_2(lims) -> Sample:
     """Basic sample with id S2. Containing no udfs.
     Related to artifact_2."""
 
-    sample = Sample(lims, id="S2")
-
-    return sample
+    return Sample(lims, id="S2")
 
 
 @pytest.fixture
@@ -164,5 +171,4 @@ def hamilton_sars_cov2_indexing_file() -> str:
 @pytest.fixture(name="cli_runner")
 def fixture_cli_runner() -> CliRunner:
     """Create a CliRunner"""
-    runner = CliRunner()
-    return runner
+    return CliRunner()

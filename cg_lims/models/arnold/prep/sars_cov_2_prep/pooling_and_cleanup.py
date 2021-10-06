@@ -14,10 +14,6 @@ class PoolingAndCleanUpCovProcessUDFS(BaseModel):
     lot_nr_etoh_clean_up: str = Field(..., alias="Ethanol")
     lot_nr_h2o_clean_up: str = Field(..., alias="Nuclease-free water")
     lot_nr_resuspension_buffer_clean_up: str = Field(..., alias="Resuspension buffer")
-        
-# well position (optional)
-# container name (optional)
-# Number of samples in pool
 
 
 class PoolingAndCleanUpCovArtifactUDF(BaseModel):
@@ -27,12 +23,16 @@ class PoolingAndCleanUpCovArtifactUDF(BaseModel):
 
 
 class PoolingAndCleanUpCovUDF(PoolingAndCleanUpCovProcessUDFS, PoolingAndCleanUpCovArtifactUDF):
+    well_position: Optional[str]
+    container_name: Optional[str]
+    nr_samples: Optional[int]
+
     class Config:
         allow_population_by_field_name = True
 
 
 def get_pooling_and_cleanup_udfs(lims: Lims, sample_id: str) -> PoolingAndCleanUpCovUDF:
-    pooling_and_cleanup = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=PoolingAndCleanUpCovProcessUDFS,
@@ -40,4 +40,6 @@ def get_pooling_and_cleanup_udfs(lims: Lims, sample_id: str) -> PoolingAndCleanU
         process_type="Pooling and Clean-up (Cov) v1",
     )
 
-    return PoolingAndCleanUpCovUDF(**pooling_and_cleanup.merge_process_and_artifact_udfs())
+    return PoolingAndCleanUpCovUDF(
+        **analyte.merge_analyte_fields(),
+    )

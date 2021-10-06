@@ -1,3 +1,5 @@
+from typing import Optional
+
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
@@ -13,23 +15,24 @@ class LibraryPrepNexteraProcessUDFS(BaseModel):
     pcr_instrument_incubation: str = Field(..., alias="PCR instrument incubation")
     pcr_instrument_amplification: str = Field(..., alias="PCR instrument amplification")
     nr_pcr_cycles: int = Field(..., alias="Nr PCR cycles")
-        
-# well position (optional)
-# container name (optional)
-# index name
 
 
 class LibraryPrepUDFS(LibraryPrepNexteraProcessUDFS):
+    b_well_position: Optional[str] = Field(None, alias="well_position")
+    b_container_name: Optional[str] = Field(None, alias="container_name")
+    b_index_name: Optional[str] = Field(None, alias="index_name")
+
     class Config:
         allow_population_by_field_name = True
 
 
 def get_library_prep_nextera_udfs(lims: Lims, sample_id: str) -> LibraryPrepUDFS:
-    microbial_library_prep = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=LibraryPrepNexteraProcessUDFS,
         process_type="CG002 - Microbial Library Prep (Nextera)",
     )
-
-    return LibraryPrepUDFS(**microbial_library_prep.merge_process_and_artifact_udfs())
+    return LibraryPrepUDFS(
+        **analyte.merge_analyte_fields(),
+    )

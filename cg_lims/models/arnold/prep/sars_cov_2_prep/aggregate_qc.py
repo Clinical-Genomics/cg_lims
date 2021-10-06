@@ -19,10 +19,10 @@ class AggregateQCDNACovUDF(AggregateQCDNACovArtifactUDF):
 
 
 def get_aggregate_qc_dna_cov_udfs(lims: Lims, sample_id: str) -> AggregateQCDNACovUDF:
-    aggregate_qc_dna_cov = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         artifact_udf_model=AggregateQCDNACovArtifactUDF,
     )
 
-    return AggregateQCDNACovUDF(**aggregate_qc_dna_cov.merge_process_and_artifact_udfs())
+    return AggregateQCDNACovUDF(**analyte.merge_analyte_fields())

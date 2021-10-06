@@ -17,12 +17,12 @@ class NormalizationOfSamplesForSequencingProcessUDFS(BaseModel):
         None, alias="Final Concentration (nM)"
     )
     library_normalization_method: Optional[str] = Field(None, alias="Method document")
-        
-# well position (optional)
-# container name (optional)
 
 
 class NormalizationOfSamplesForSequencingUDFS(NormalizationOfSamplesForSequencingProcessUDFS):
+    c_well_position: Optional[str] = Field(None, alias="well_position")
+    c_container_name: Optional[str] = Field(None, alias="container_name")
+
     class Config:
         allow_population_by_field_name = True
 
@@ -30,7 +30,7 @@ class NormalizationOfSamplesForSequencingUDFS(NormalizationOfSamplesForSequencin
 def get_normalization_of_samples_for_sequencing_udfs(
     lims: Lims, sample_id: str
 ) -> NormalizationOfSamplesForSequencingUDFS:
-    normalization_of_samples_for_sequencing = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=NormalizationOfSamplesForSequencingProcessUDFS,
@@ -38,5 +38,5 @@ def get_normalization_of_samples_for_sequencing_udfs(
     )
 
     return NormalizationOfSamplesForSequencingUDFS(
-        **normalization_of_samples_for_sequencing.merge_process_and_artifact_udfs()
+        **analyte.merge_analyte_fields(),
     )

@@ -58,6 +58,7 @@ def add_file(entity: Entity, entity_dir: Path) -> None:
 
 
 def add_entities(entities: List[Entity], entity_dir: Path):
+
     for entity in entities:
         entity.get()
         add_file(entity=entity, entity_dir=entity_dir)
@@ -82,6 +83,11 @@ def make_fixure(process: str, test_name: str, config: str):
     for artifact in artifacts:
         samples += artifact.samples
     add_entities(entities=samples, entity_dir=fixture_dir.samples)
+    containers = {artifact.location[0] for artifact in artifacts}
+    containers.remove(None)
+    add_entities(entities=list(containers), entity_dir=fixture_dir.containers)
+    container_types = list({container.type for container in containers})
+    add_entities(entities=container_types, entity_dir=fixture_dir.containertypes)
 
 
 if __name__ == "__main__":

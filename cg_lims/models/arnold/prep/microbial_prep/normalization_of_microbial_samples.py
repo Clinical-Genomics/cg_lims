@@ -15,12 +15,12 @@ class NormalizationOfMicrobialSamplesProcessUDFS(BaseModel):
     lot_nr_dilution_buffer_sample_normalization: Optional[str] = Field(
         None, alias="Dilution buffer lot no"
     )
-        
-# well position (optional)
-# container name (optional)
 
 
 class NormalizationOfMicrobialSamplesUDFS(NormalizationOfMicrobialSamplesProcessUDFS):
+    d_well_position: Optional[str] = Field(None, alias="well_position")
+    d_container_name: Optional[str] = Field(None, alias="container_name")
+
     class Config:
         allow_population_by_field_name = True
 
@@ -28,7 +28,7 @@ class NormalizationOfMicrobialSamplesUDFS(NormalizationOfMicrobialSamplesProcess
 def get_normalization_of_mictobial_samples_udfs(
     lims: Lims, sample_id: str
 ) -> NormalizationOfMicrobialSamplesUDFS:
-    normalization_of_mictobial_samples = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=NormalizationOfMicrobialSamplesProcessUDFS,
@@ -36,5 +36,5 @@ def get_normalization_of_mictobial_samples_udfs(
     )
 
     return NormalizationOfMicrobialSamplesUDFS(
-        **normalization_of_mictobial_samples.merge_process_and_artifact_udfs()
+        **analyte.merge_analyte_fields(),
     )

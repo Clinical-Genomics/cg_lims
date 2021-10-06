@@ -16,18 +16,18 @@ class BufferExchangeProcessUDFS(BaseModel):
     lot_nr_etoh_buffer_exchange: Optional[str] = Field(None, alias="Lot Nr: EtOH")
     lot_nr_h2o_buffer_exchange: Optional[str] = Field(None, alias="Lot Nr: Nuclease-free water")
     buffer_exchange_method: Optional[str] = Field(None, alias="Method document")
-        
-    # well position (optional)
-    # container name (optional)
 
 
 class BufferExchangeUDFS(BufferExchangeProcessUDFS, BufferExchangeArtifactUDF):
+    a_well_position: Optional[str] = Field(None, alias="well_position")
+    a_container_name: Optional[str] = Field(None, alias="container_name")
+
     class Config:
         allow_population_by_field_name = True
 
 
 def get_buffer_exchange_udfs(lims: Lims, sample_id: str) -> BufferExchangeUDFS:
-    buffer_exchange = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=BufferExchangeProcessUDFS,
@@ -36,4 +36,6 @@ def get_buffer_exchange_udfs(lims: Lims, sample_id: str) -> BufferExchangeUDFS:
         optional_step=True,
     )
 
-    return BufferExchangeUDFS(**buffer_exchange.merge_process_and_artifact_udfs())
+    return BufferExchangeUDFS(
+        **analyte.merge_analyte_fields(),
+    )

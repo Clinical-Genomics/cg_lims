@@ -1,7 +1,5 @@
 import logging
-
 from typing import Optional
-
 from pydantic import Field, BaseModel, validator
 
 LOG = logging.getLogger(__name__)

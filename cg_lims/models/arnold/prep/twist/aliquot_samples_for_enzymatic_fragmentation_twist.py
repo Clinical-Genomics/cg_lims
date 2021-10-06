@@ -14,9 +14,6 @@ class AliquotSamplesForEnzymaticFragmentationProcessUdfs(BaseModel):
     aliquot_samples_library_preparation_method_2: str = Field(..., alias="Method document 2")
     aliquot_samples_library_preparation_method_1: str = Field(..., alias="Method document 1")
     lot_nr_h2o_aliquot_samples_fragmentation: str = Field(..., alias="Nuclease-free water")
-        
-# well position (optional)
-# container name (optional)
 
 
 class AliquotSamplesForEnzymaticFragmentationArtifactUdfs(BaseModel):
@@ -27,6 +24,9 @@ class AliquotSamplesForEnzymaticFragmentationUdfs(
     AliquotSamplesForEnzymaticFragmentationArtifactUdfs,
     AliquotSamplesForEnzymaticFragmentationProcessUdfs,
 ):
+    well_position: Optional[str]
+    container_name: Optional[str]
+
     class Config:
         allow_population_by_field_name = True
 
@@ -34,7 +34,7 @@ class AliquotSamplesForEnzymaticFragmentationUdfs(
 def get_aliquot_samples_for_enzymatic_fragmentation_udfs(
     lims: Lims, sample_id: str
 ) -> AliquotSamplesForEnzymaticFragmentationUdfs:
-    aliquot_samples_for_enzymatic_fragmentation = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_udf_model=AliquotSamplesForEnzymaticFragmentationProcessUdfs,
@@ -43,5 +43,5 @@ def get_aliquot_samples_for_enzymatic_fragmentation_udfs(
     )
 
     return AliquotSamplesForEnzymaticFragmentationUdfs(
-        **aliquot_samples_for_enzymatic_fragmentation.merge_process_and_artifact_udfs()
+        **analyte.merge_analyte_fields(),
     )

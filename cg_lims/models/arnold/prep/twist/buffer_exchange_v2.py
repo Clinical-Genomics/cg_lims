@@ -12,19 +12,21 @@ class BufferExchangeArtifactUDFs(BaseStep):
 
 
 class BufferExchangeUDFs(BufferExchangeArtifactUDFs):
+    well_position: Optional[str]
+    container_name: Optional[str]
+
     class Config:
         allow_population_by_field_name = True
 
 
 def get_buffer_exchange_twist(lims: Lims, sample_id: str) -> BufferExchangeUDFs:
-    buffer_exchange_twist = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         artifact_udf_model=BufferExchangeArtifactUDFs,
         process_type="Buffer Exchange v2",
     )
-    
-# well position (optional)
-# container name (optional)
 
-    return BufferExchangeUDFs(**buffer_exchange_twist.merge_process_and_artifact_udfs())
+    return BufferExchangeUDFs(
+        **analyte.merge_analyte_fields(),
+    )

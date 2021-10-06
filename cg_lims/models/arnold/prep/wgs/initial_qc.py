@@ -16,11 +16,11 @@ class InitialQCwgsUDF(InitialQCwgsArtifactUDF):
 
 
 def get_initial_qc_udfs(lims: Lims, sample_id: str) -> InitialQCwgsUDF:
-    initial_qc = BaseAnalyte(
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         artifact_udf_model=InitialQCwgsArtifactUDF,
         process_type="Pooling and Clean-up (Cov) v1",
     )
 
-    return InitialQCwgsUDF(**initial_qc.merge_process_and_artifact_udfs())
+    return InitialQCwgsUDF(**analyte.merge_analyte_fields())
