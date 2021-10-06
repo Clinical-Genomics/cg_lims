@@ -12,7 +12,6 @@ def get_number_of_days(first_date: str, second_date: str) -> Optional[int]:
         second_datetime = datetime.strptime(second_date, '%Y-%m-%d %H:%M:%S')
         time_span = second_datetime - first_datetime
         return time_span.days
-    return None
 
 
 class ArnoldSample(BaseModel):
