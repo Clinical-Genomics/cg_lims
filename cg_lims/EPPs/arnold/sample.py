@@ -29,7 +29,7 @@ def sample(ctx):
         arnold_sample = ArnoldSample(**dict(sample.udf.items()), sample_id=sample.id, id=sample.id)
         sample_documents.append(arnold_sample.dict(exclude_none=True))
 
-    response: Response = requests.post(
+    response: Response = requests.put(
         url=f"{arnold_host}/samples",
         headers={"Content-Type": "application/json"},
         data=json.dumps(sample_documents),
