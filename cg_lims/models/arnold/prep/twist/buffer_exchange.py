@@ -1,19 +1,21 @@
 from typing import Optional
 
 from genologics.lims import Lims
-from pydantic import Field
+from pydantic import Field, BaseModel
 
-from cg_lims.models.api.master_steps.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
 
-class BufferExchangeArtifactUDFs(BaseStep):
-    concentration: Optional[str] = Field(None, alias="Concentration")
+## optional step! så kolla var hämta concentraion annars
+
+
+class BufferExchangeArtifactUDFs(BaseModel):
+    buffer_exchange_concentration: Optional[str] = Field(None, alias="Concentration")
 
 
 class BufferExchangeUDFs(BufferExchangeArtifactUDFs):
-    well_position: Optional[str]
-    container_name: Optional[str]
+    buffer_exchange_well_position: Optional[str] = Field(None, alias="well_position")
+    buffer_exchange_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True
@@ -25,6 +27,7 @@ def get_buffer_exchange_twist(lims: Lims, sample_id: str) -> BufferExchangeUDFs:
         sample_id=sample_id,
         artifact_udf_model=BufferExchangeArtifactUDFs,
         process_type="Buffer Exchange v2",
+        optional_step=True,
     )
 
     return BufferExchangeUDFs(

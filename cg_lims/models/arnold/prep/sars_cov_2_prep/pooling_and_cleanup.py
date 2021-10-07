@@ -23,9 +23,9 @@ class PoolingAndCleanUpCovArtifactUDF(BaseModel):
 
 
 class PoolingAndCleanUpCovUDF(PoolingAndCleanUpCovProcessUDFS, PoolingAndCleanUpCovArtifactUDF):
-    well_position: Optional[str]
-    container_name: Optional[str]
-    nr_samples: Optional[int]
+    pool_well_position: Optional[str] = Field(None, alias="well_position")
+    pool_container_name: Optional[str] = Field(None, alias="container_name")
+    pool_nr_samples: Optional[int] = Field(None, alias="nr_samples")
 
     class Config:
         allow_population_by_field_name = True

@@ -16,6 +16,11 @@ from cg_lims.models.arnold.prep.twist import (
     get_kapa_library_preparation_twist,
     get_aliquot_samples_for_enzymatic_fragmentation_udfs,
     get_capture_and_wash,
+    get_pre_processing_twist,
+    get_enzymatic_fragmentation,
+    get_amplify_captured_library_udfs,
+    EnzymaticFragmentationTWISTUdfs,
+    AmplifycapturedlibrariestwistUDFs,
     PoolsamplesforhybridizationUDFs,
     BeadPurificationUDFs,
     BufferExchangeUDFs,
@@ -23,7 +28,8 @@ from cg_lims.models.arnold.prep.twist import (
     KAPALibraryPreparationUDFs,
     CaptureandWashUDFs,
     AliquotSamplesForEnzymaticFragmentationUdfs,
-    TWISTPrep
+    TWISTPrep,
+    PreProcessingUDFs,
 )
 
 LOG = logging.getLogger(__name__)
@@ -41,9 +47,7 @@ def build_twist_document(sample_id: str, process_id: str, lims: Lims) -> TWISTPr
     pool_samples_twist: PoolsamplesforhybridizationUDFs = get_pool_samples_twist(
         sample_id=sample_id, lims=lims
     )
-    capture_and_wash: CaptureandWashUDFs = get_capture_and_wash(
-        sample_id=sample_id, lims=lims
-    )
+    capture_and_wash: CaptureandWashUDFs = get_capture_and_wash(sample_id=sample_id, lims=lims)
     kapa_library_preparation_twist: KAPALibraryPreparationUDFs = get_kapa_library_preparation_twist(
         sample_id=sample_id, lims=lims
     )
@@ -53,7 +57,15 @@ def build_twist_document(sample_id: str, process_id: str, lims: Lims) -> TWISTPr
     bead_purification_twist: BeadPurificationUDFs = get_bead_purification_twist(
         sample_id=sample_id, lims=lims
     )
-
+    enzymatic_fragmentation: EnzymaticFragmentationTWISTUdfs = get_enzymatic_fragmentation(
+        sample_id=sample_id, lims=lims
+    )
+    amplify_captured_library_udfs: AmplifycapturedlibrariestwistUDFs = (
+        get_amplify_captured_library_udfs(sample_id=sample_id, lims=lims)
+    )
+    pre_processing_twist: PreProcessingUDFs = get_pre_processing_twist(
+        sample_id=sample_id, lims=lims
+    )
     return TWISTPrep(
         prep_id=f"{sample_id}_{process_id}",
         sample_id=sample_id,
@@ -64,6 +76,9 @@ def build_twist_document(sample_id: str, process_id: str, lims: Lims) -> TWISTPr
         **aliquot_samples_for_enzymatic_fragmentation_udfs.dict(),
         **hybridize_library_twist.dict(),
         **pool_samples_twist.dict(),
+        **enzymatic_fragmentation.dict(),
+        **amplify_captured_library_udfs.dict(),
+        **pre_processing_twist.dict(),
     )
 
 
@@ -96,4 +111,4 @@ def twist_prep_document(ctx):
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
-    click.echo("Arnold output: %s", response.text)
+    click.echo("Twist prep documents inserted to arnold database")

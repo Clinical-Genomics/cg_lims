@@ -18,8 +18,8 @@ class NormalizationOfMicrobialSamplesProcessUDFS(BaseModel):
 
 
 class NormalizationOfMicrobialSamplesUDFS(NormalizationOfMicrobialSamplesProcessUDFS):
-    d_well_position: Optional[str] = Field(None, alias="well_position")
-    d_container_name: Optional[str] = Field(None, alias="container_name")
+    normalization_well_position: Optional[str] = Field(None, alias="well_position")
+    normalization_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True

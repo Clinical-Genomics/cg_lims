@@ -4,6 +4,8 @@ from pydantic import Field
 
 from cg_lims.objects import BaseAnalyte
 
+## what is this? Initial sample???
+
 
 class InitialQCwgsArtifactUDF(BaseModel):
     sample_concentration: float = Field(..., alias="Concentration")
@@ -20,7 +22,6 @@ def get_initial_qc_udfs(lims: Lims, sample_id: str) -> InitialQCwgsUDF:
         lims=lims,
         sample_id=sample_id,
         artifact_udf_model=InitialQCwgsArtifactUDF,
-        process_type="Pooling and Clean-up (Cov) v1",
     )
 
     return InitialQCwgsUDF(**analyte.merge_analyte_fields())

@@ -21,14 +21,12 @@ class LibraryPreparationCovProcessUDFS(BaseModel):
     pcr_instrument_amplification: str = Field(..., alias="PCR machine: Amplification")
     library_preparation_method: str = Field(..., alias="Method document")
     liquid_handling_system: str = Field(..., alias="Instrument")
-    # ""Går det att få fram antal prover/pool?""
 
 
 class LibraryPreparationCovUDFS(LibraryPreparationCovProcessUDFS):
-    well_position: Optional[str]
-    container_name: Optional[str]
-    label_group: Optional[str]
-    index_name: Optional[str]
+    library_prep_well_position: Optional[str] = Field(None, alias="well_position")
+    library_prep_container_name: Optional[str] = Field(None, alias="container_name")
+    library_prep_index_name: Optional[str] = Field(None, alias="index_name")
 
     class Config:
         allow_population_by_field_name = True

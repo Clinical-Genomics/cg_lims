@@ -9,10 +9,9 @@ class KAPALibraryPreparationArtifactUDFs(BaseModel):
     library_concentration_pre_hyb: str = Field(..., alias="Concentration")
     adapter_ligation_master_mix: str = Field(..., alias="Ligation Master Mix")
     library_preparation_pcr_plate: str = Field(..., alias="PCR Plate")
-
-    # label: Optional[str] = Field(None, alias="label (= index)")
-    # well: Optional[str] = Field(None, alias="Well")
-    # container_name: Optional[str] = Field(None, alias="Container Name")
+    amount_of_sample_in_pool_ng: float = Field(
+        ..., alias="Amount taken (ng)"
+    )  # this value is set afterwards in the pooling step
 
 
 class KAPALibraryPreparationProcessUDFs(BaseModel):
@@ -48,10 +47,9 @@ class KAPALibraryPreparationProcessUDFs(BaseModel):
 class KAPALibraryPreparationUDFs(
     KAPALibraryPreparationProcessUDFs, KAPALibraryPreparationArtifactUDFs
 ):
-    well_position: Optional[str]
-    container_name: Optional[str]
-    index_name: Optional[str]
-    label_gropus: Optional[str]
+    library_prep_well_position: Optional[str] = Field(None, alias="well_position")
+    library_prep_container_name: Optional[str] = Field(None, alias="container_name")
+    library_prep_index_name: Optional[str] = Field(None, alias="index_name")
 
     class Config:
         allow_population_by_field_name = True

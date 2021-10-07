@@ -85,4 +85,4 @@ def microbial_prep_document(ctx):
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
-    click.echo("Covid prep documents inserted to arnold database")
+    click.echo("Microbial prep documents inserted to arnold database")

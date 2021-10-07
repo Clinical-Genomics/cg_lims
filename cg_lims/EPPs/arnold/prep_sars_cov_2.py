@@ -60,6 +60,8 @@ def sars_cov_2_prep_document(ctx):
         prep_document: SarsCov2Prep = build_sars_cov_2_document(
             sample_id=sample.id, process_id=process.id, lims=lims
         )
+
+        p = prep_document.dict(exclude_none=True)
         prep_documents.append(prep_document.dict(exclude_none=True))
 
     response: Response = requests.post(
@@ -72,4 +74,4 @@ def sars_cov_2_prep_document(ctx):
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
-    click.echo("Arnold output: %s", response.text)
+    click.echo("Covid prep documents inserted to arnold database")

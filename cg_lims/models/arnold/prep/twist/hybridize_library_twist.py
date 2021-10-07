@@ -1,7 +1,7 @@
 from typing import Optional
 
 from genologics.lims import Lims
-from pydantic import Field, validator, BaseModel
+from pydantic import Field, BaseModel
 from cg_lims.objects import BaseAnalyte
 
 
@@ -20,8 +20,8 @@ class HybridizeLibraryTWISTProcessUDFs(BaseModel):
 
 
 class HybridizeLibraryUDFs(HybridizeLibraryTWISTArtifactUDFs, HybridizeLibraryTWISTProcessUDFs):
-    well_position: Optional[str]
-    container_name: Optional[str]
+    hybridization_well_position: Optional[str] = Field(None, alias="well_position")
+    hybridization_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True

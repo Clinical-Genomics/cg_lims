@@ -19,8 +19,8 @@ class BufferExchangeProcessUDFS(BaseModel):
 
 
 class BufferExchangeUDFS(BufferExchangeProcessUDFS, BufferExchangeArtifactUDF):
-    a_well_position: Optional[str] = Field(None, alias="well_position")
-    a_container_name: Optional[str] = Field(None, alias="container_name")
+    buffer_exchange_well_position: Optional[str] = Field(None, alias="well_position")
+    buffer_exchange_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True

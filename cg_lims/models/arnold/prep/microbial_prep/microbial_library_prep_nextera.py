@@ -18,9 +18,9 @@ class LibraryPrepNexteraProcessUDFS(BaseModel):
 
 
 class LibraryPrepUDFS(LibraryPrepNexteraProcessUDFS):
-    b_well_position: Optional[str] = Field(None, alias="well_position")
-    b_container_name: Optional[str] = Field(None, alias="container_name")
-    b_index_name: Optional[str] = Field(None, alias="index_name")
+    library_prep_well_position: Optional[str] = Field(None, alias="well_position")
+    library_prep_container_name: Optional[str] = Field(None, alias="container_name")
+    library_prep_index_name: Optional[str] = Field(None, alias="index_name")
 
     class Config:
         allow_population_by_field_name = True

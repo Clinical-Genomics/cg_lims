@@ -13,19 +13,19 @@ class AliquotSamplesForEnzymaticFragmentationProcessUdfs(BaseModel):
     GMSmyeloid_HD829: Optional[str] = Field(None, alias="Batch no GMSmyeloid-HD829")
     aliquot_samples_library_preparation_method_2: str = Field(..., alias="Method document 2")
     aliquot_samples_library_preparation_method_1: str = Field(..., alias="Method document 1")
-    lot_nr_h2o_aliquot_samples_fragmentation: str = Field(..., alias="Nuclease-free water")
+    lot_nr_h2o_aliquot_samples_fragmentation: str = Field(..., alias="Nuclease free water")
 
 
 class AliquotSamplesForEnzymaticFragmentationArtifactUdfs(BaseModel):
-    amount_needed: Optional[str] = Field(None, alias="Amount needed (ng)")
+    amount_needed: Optional[float] = Field(None, alias="Amount needed (ng)")
 
 
 class AliquotSamplesForEnzymaticFragmentationUdfs(
     AliquotSamplesForEnzymaticFragmentationArtifactUdfs,
     AliquotSamplesForEnzymaticFragmentationProcessUdfs,
 ):
-    well_position: Optional[str]
-    container_name: Optional[str]
+    aliquotation_well_position: Optional[str] = Field(None, alias="well_position")
+    aliquotation_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True

@@ -1,11 +1,13 @@
 from typing import Optional
+
+from genologics.lims import Lims
 from pydantic import Field, BaseModel
 from cg_lims.objects import BaseAnalyte
 
 
 class BeadPurificationArtifactUDFs(BaseModel):
-    size_bp: str = Field(..., alias="Size (bp)")
-    concentration: str = Field(..., alias="Concentration")
+    bead_purification_size_bp: str = Field(..., alias="Size (bp)")
+    bead_purification_concentration: str = Field(..., alias="Concentration")
 
 
 class BeadPurificationposthybTwistProcessUDFs(BaseModel):
@@ -16,8 +18,8 @@ class BeadPurificationposthybTwistProcessUDFs(BaseModel):
 
 
 class BeadPurificationUDFs(BeadPurificationArtifactUDFs):
-    well_position: Optional[str]
-    container_name: Optional[str]
+    bead_purification_post_hyb_well_position: Optional[str] = Field(None, alias="well_position")
+    bead_purification_post_hyb_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True

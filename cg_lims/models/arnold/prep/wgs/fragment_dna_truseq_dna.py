@@ -15,8 +15,8 @@ class FragmentDNATruSeqDNAProcessUDFS(BaseModel):
 
 
 class FragmentDNATruSeqDNAUDFS(FragmentDNATruSeqDNAProcessUDFS):
-    well_position: Optional[str]
-    container_name: Optional[str]
+    fragmentation_well_position: Optional[str] = Field(None, alias="well_position")
+    fragmentation_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True
@@ -27,7 +27,7 @@ def get_fragemnt_dna_truseq_udfs(lims: Lims, sample_id: str) -> FragmentDNATruSe
         lims=lims,
         sample_id=sample_id,
         process_udf_model=FragmentDNATruSeqDNAProcessUDFS,
-        process_type="Pooling and Clean-up (Cov) v1",
+        process_type="Fragment DNA (TruSeq DNA)",
     )
 
     return FragmentDNATruSeqDNAUDFS(

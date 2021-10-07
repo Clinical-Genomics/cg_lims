@@ -9,9 +9,15 @@ import json
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.models.arnold.prep.wgs import (
-    get_end_repair_udfs,get_initial_qc_udfs,get_aliquot_samples_for_covaris_udfs,
+    get_end_repair_udfs,
+    get_initial_qc_udfs,
+    get_aliquot_samples_for_covaris_udfs,
     get_fragemnt_dna_truseq_udfs,
-EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS, InitialQCwgsUDF, AliquotSamplesforCovarisUDF,FragmentDNATruSeqDNAUDFS, WGSPrep
+    EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS,
+    InitialQCwgsUDF,
+    AliquotSamplesforCovarisUDF,
+    FragmentDNATruSeqDNAUDFS,
+    WGSPrep,
 )
 
 LOG = logging.getLogger(__name__)
@@ -23,14 +29,12 @@ def build_wgs_document(sample_id: str, process_id: str, lims: Lims) -> WGSPrep:
     fragemnt_dna_truseq_udfs: FragmentDNATruSeqDNAUDFS = get_fragemnt_dna_truseq_udfs(
         sample_id=sample_id, lims=lims
     )
-    initial_qc_udfs: InitialQCwgsUDF = get_initial_qc_udfs(
-        sample_id=sample_id, lims=lims
+    initial_qc_udfs: InitialQCwgsUDF = get_initial_qc_udfs(sample_id=sample_id, lims=lims)
+    aliquot_samples_for_covaris_udfs: AliquotSamplesforCovarisUDF = (
+        get_aliquot_samples_for_covaris_udfs(sample_id=sample_id, lims=lims)
     )
-    aliquot_samples_for_covaris_udfs: AliquotSamplesforCovarisUDF = get_aliquot_samples_for_covaris_udfs(
-        sample_id=sample_id, lims=lims
-    )
-    end_repair_udfs: EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS = get_end_repair_udfs(
-        sample_id=sample_id, lims=lims
+    end_repair_udfs: EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS = (
+        get_end_repair_udfs(sample_id=sample_id, lims=lims)
     )
     return WGSPrep(
         prep_id=f"{sample_id}_{process_id}",
@@ -44,7 +48,7 @@ def build_wgs_document(sample_id: str, process_id: str, lims: Lims) -> WGSPrep:
 
 @click.command()
 @click.pass_context
-def sars_cov_2_prep_document(ctx):
+def wgs_prep_document(ctx):
     """Creating Prep documents in the arnold Prep collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -71,4 +75,4 @@ def sars_cov_2_prep_document(ctx):
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
-    click.echo("Arnold output: %s", response.text)
+    click.echo("WGS prep documents inserted to arnold database")

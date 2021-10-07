@@ -14,8 +14,8 @@ class CaptureandWashProcessUDFs(BaseModel):
 
 
 class CaptureandWashUDFs(CaptureandWashProcessUDFs):
-    well_position: Optional[str]
-    container_name: Optional[str]
+    capture_and_wash_well_position: Optional[str] = Field(None, alias="well_position")
+    capture_and_wash_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True

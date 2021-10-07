@@ -3,7 +3,7 @@ from typing import Optional
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
-from cg_lims.objects import BaseAnalyte, Container
+from cg_lims.objects import BaseAnalyte
 
 
 class AliquotSamplesforCovarisArtifactUDF(BaseModel):
@@ -11,8 +11,8 @@ class AliquotSamplesforCovarisArtifactUDF(BaseModel):
 
 
 class AliquotSamplesforCovarisUDF(AliquotSamplesforCovarisArtifactUDF):
-    well_position: Optional[str]
-    container_name: Optional[str]
+    aliquotation_well_position: Optional[str] = Field(None, alias="well_position")
+    aliquotation_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True
@@ -23,7 +23,7 @@ def get_aliquot_samples_for_covaris_udfs(lims: Lims, sample_id: str) -> AliquotS
         lims=lims,
         sample_id=sample_id,
         artifact_udf_model=AliquotSamplesforCovarisArtifactUDF,
-        process_type="Pooling and Clean-up (Cov) v1",
+        process_type="Aliquot Samples for Covaris",
     )
 
     return AliquotSamplesforCovarisUDF(

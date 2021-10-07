@@ -25,8 +25,8 @@ class PostPCRBeadPurificationArtifactUDF(BaseModel):
 class PostPCRBeadPurificationUDF(
     PostPCRBeadPurificationProcessUDFS, PostPCRBeadPurificationArtifactUDF
 ):
-    e_well_position: Optional[str] = Field(None, alias="well_position")
-    e_container_name: Optional[str] = Field(None, alias="container_name")
+    post_pcr_bead_purification_well_position: Optional[str] = Field(None, alias="well_position")
+    post_pcr_bead_purification_container_name: Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True
