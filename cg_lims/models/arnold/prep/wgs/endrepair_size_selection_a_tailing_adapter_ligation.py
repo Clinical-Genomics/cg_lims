@@ -5,9 +5,10 @@ from pydantic.main import BaseModel
 from pydantic import Field
 
 from cg_lims.objects import BaseAnalyte
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
-class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessUDFS(BaseModel):
+class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeProcessUDFS(BaseModel):
     lot_nr_truseq_library_preparation_kit: Optional[str] = Field(
         None, alias="Lot no: TruSeq DNA PCR-Free Sample Prep Kit"
     )
@@ -25,35 +26,39 @@ class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessU
     lot_nr_etoh_library_preparation: str = Field(..., alias="Ethanol lot")
 
 
-class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAArtifactUDF(BaseModel):
+class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeArtifactUDF(BaseModel):
     finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
     finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
     finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
 
 
-class EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS(
-    EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessUDFS,
-    EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAArtifactUDF,
-):
-    library_prep_well_position: Optional[str] = Field(None, alias="well_position")
-    library_prep_container_name: Optional[str] = Field(None, alias="container_name")
-    library_prep_index_name: Optional[str] = Field(None, alias="index_name")
+class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields(BaseStep):
+    process_udfs: EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeProcessUDFS
+    artifact_udfs: EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeArtifactUDF
 
     class Config:
         allow_population_by_field_name = True
 
 
 def get_end_repair_udfs(
-    lims: Lims, sample_id: str
-) -> EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS:
+    lims: Lims, sample_id: str, prep_id: str
+) -> EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAProcessUDFS,
-        artifact_udf_model=EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeDNAArtifactUDF,
         process_type="End repair Size selection A-tailing and Adapter ligation (TruSeq PCR-free DNA)",
     )
 
-    return EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS(
-        **analyte.merge_analyte_fields(),
+    return EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields(
+        **analyte.base_fields(),
+        process_udfs=EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeProcessUDFS(
+            **analyte.process_udfs()
+        ),
+        artifact_udfs=EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeArtifactUDF(
+            **analyte.artifact_udfs()
+        ),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="end_repair",
+        workflow="WGS",
     )

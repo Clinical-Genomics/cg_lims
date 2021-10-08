@@ -6,6 +6,8 @@ from pydantic import Field
 
 from cg_lims.objects import BaseAnalyte
 
+from cg_lims.models.arnold.prep.base_step import BaseStep
+
 
 class PoolingAndCleanUpCovProcessUDFS(BaseModel):
     pooling_method: str = Field(..., alias="Method document (pooling)")
@@ -22,24 +24,29 @@ class PoolingAndCleanUpCovArtifactUDF(BaseModel):
     finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
 
 
-class PoolingAndCleanUpCovUDF(PoolingAndCleanUpCovProcessUDFS, PoolingAndCleanUpCovArtifactUDF):
-    pool_well_position: Optional[str] = Field(None, alias="well_position")
-    pool_container_name: Optional[str] = Field(None, alias="container_name")
-    pool_nr_samples: Optional[int] = Field(None, alias="nr_samples")
+class PoolingAndCleanUpCovFields(BaseStep):
+    process_udfs: PoolingAndCleanUpCovProcessUDFS
+    artifact_udfs: PoolingAndCleanUpCovArtifactUDF
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_pooling_and_cleanup_udfs(lims: Lims, sample_id: str) -> PoolingAndCleanUpCovUDF:
+def get_pooling_and_cleanup_udfs(
+    lims: Lims, sample_id: str, prep_id: str
+) -> PoolingAndCleanUpCovFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=PoolingAndCleanUpCovProcessUDFS,
-        artifact_udf_model=PoolingAndCleanUpCovArtifactUDF,
         process_type="Pooling and Clean-up (Cov) v1",
     )
 
-    return PoolingAndCleanUpCovUDF(
-        **analyte.merge_analyte_fields(),
+    return PoolingAndCleanUpCovFields(
+        **analyte.base_fields(),
+        process_udfs=PoolingAndCleanUpCovProcessUDFS(**analyte.process_udfs()),
+        artifact_udfs=PoolingAndCleanUpCovArtifactUDF(**analyte.artifact_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="get_pooling_and_cleanup",
+        workflow="sars_cov_2"
     )

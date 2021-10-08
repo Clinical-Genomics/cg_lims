@@ -4,7 +4,7 @@ from pydantic import Field
 
 from cg_lims.objects import BaseAnalyte
 
-## what is this? Initial sample???
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class InitialQCwgsArtifactUDF(BaseModel):
@@ -12,16 +12,24 @@ class InitialQCwgsArtifactUDF(BaseModel):
     sample_amount: float = Field(..., alias="Amount (ng)")
 
 
-class InitialQCwgsUDF(InitialQCwgsArtifactUDF):
+class InitialQCwgsUDF(BaseStep):
+    artifact_udfs: InitialQCwgsArtifactUDF
+
     class Config:
         allow_population_by_field_name = True
 
 
-def get_initial_qc_udfs(lims: Lims, sample_id: str) -> InitialQCwgsUDF:
+def get_initial_qc_udfs(lims: Lims, sample_id: str, prep_id: str) -> InitialQCwgsUDF:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        artifact_udf_model=InitialQCwgsArtifactUDF,
     )
 
-    return InitialQCwgsUDF(**analyte.merge_analyte_fields())
+    return InitialQCwgsUDF(
+        **analyte.base_fields(),
+        artifact_udfs=InitialQCwgsArtifactUDF(**analyte.artifact_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="initial_qc",
+        workflow="WGS"
+    )

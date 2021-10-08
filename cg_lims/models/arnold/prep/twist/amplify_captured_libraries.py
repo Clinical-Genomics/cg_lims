@@ -2,6 +2,7 @@ from typing import Optional
 from genologics.lims import Lims
 from pydantic import Field, BaseModel
 from cg_lims.objects import BaseAnalyte
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class AmplifycapturedlibrariestwistProcessUDFs(BaseModel):
@@ -13,26 +14,29 @@ class AmplifycapturedlibrariestwistProcessUDFs(BaseModel):
     nr_pcr_cycles_amplify_captured_library: str = Field(..., alias="Nr of PCR cycles")
 
 
-class AmplifycapturedlibrariestwistUDFs(
-    AmplifycapturedlibrariestwistProcessUDFs,
+class AmplifycapturedlibrariestwistFields(
+    BaseStep,
 ):
-    amplify_captured_library__well_position: Optional[str] = Field(None, alias="well_position")
-    amplify_captured_library_container_name: Optional[str] = Field(None, alias="container_name")
+    process_udfs: AmplifycapturedlibrariestwistProcessUDFs
 
     class Config:
         allow_population_by_field_name = True
 
 
 def get_amplify_captured_library_udfs(
-    lims: Lims, sample_id: str
-) -> AmplifycapturedlibrariestwistUDFs:
+    lims: Lims, sample_id: str, prep_id: str
+) -> AmplifycapturedlibrariestwistFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=AmplifycapturedlibrariestwistProcessUDFs,
         process_type="Amplify Captured Libraries TWIST v2",
     )
 
-    return AmplifycapturedlibrariestwistUDFs(
-        **analyte.merge_analyte_fields(),
+    return AmplifycapturedlibrariestwistFields(
+        **analyte.base_fields(),
+        process_udfs=AmplifycapturedlibrariestwistProcessUDFs(**analyte.process_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="amplify_captured_library",
+        workflow="TWIST",
     )

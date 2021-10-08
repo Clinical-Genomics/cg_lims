@@ -8,52 +8,28 @@ from requests import Response
 import json
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
+from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.models.arnold.prep.microbial_prep import (
-    MicrobialPrep,
-    BufferExchangeUDFS,
-    get_buffer_exchange_udfs,
-    get_library_prep_nextera_udfs,
-    LibraryPrepUDFS,
-    NormalizationOfSamplesForSequencingUDFS,
-    get_normalization_of_samples_for_sequencing_udfs,
-    NormalizationOfMicrobialSamplesUDFS,
-    get_normalization_of_mictobial_samples_udfs,
-    PostPCRBeadPurificationUDF,
-    get_post_bead_pcr_purification_udfs,
+    get_buffer_exchange,
+    get_library_prep_nextera,
+    get_normalization_of_samples,
+    get_normalization_of_mictobial_samples,
+    get_post_bead_pcr_purification,
 )
 
 LOG = logging.getLogger(__name__)
 
 
-def build_microbial_document(sample_id: str, process_id: str, lims: Lims) -> MicrobialPrep:
-    """Building a Microbial Prep."""
-
-    library_prep_nextera_udfs: LibraryPrepUDFS = get_library_prep_nextera_udfs(
-        sample_id=sample_id, lims=lims
-    )
-
-    buffer_exchange_udfs: BufferExchangeUDFS = get_buffer_exchange_udfs(
-        sample_id=sample_id, lims=lims
-    )
-    normalization_of_samples_for_sequencing_udfs: NormalizationOfSamplesForSequencingUDFS = (
-        get_normalization_of_samples_for_sequencing_udfs(sample_id=sample_id, lims=lims)
-    )
-    normalization_of_mictobial_samples_udfs: NormalizationOfMicrobialSamplesUDFS = (
-        get_normalization_of_mictobial_samples_udfs(sample_id=sample_id, lims=lims)
-    )
-    post_bead_pcr_purification_udfs: PostPCRBeadPurificationUDF = (
-        get_post_bead_pcr_purification_udfs(sample_id=sample_id, lims=lims)
-    )
-
-    return MicrobialPrep(
-        prep_id=f"{sample_id}_{process_id}",
-        sample_id=sample_id,
-        **library_prep_nextera_udfs.dict(),
-        **buffer_exchange_udfs.dict(),
-        **normalization_of_samples_for_sequencing_udfs.dict(),
-        **normalization_of_mictobial_samples_udfs.dict(),
-        **post_bead_pcr_purification_udfs.dict(),
-    )
+def build_microbial_step_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
+    """Building a Step Documents for a Microbial Prep."""
+    prep_id = f"{sample_id}_{process_id}"
+    return [
+        get_library_prep_nextera(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_buffer_exchange(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_normalization_of_samples(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_normalization_of_mictobial_samples(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_post_bead_pcr_purification(sample_id=sample_id, lims=lims, prep_id=prep_id),
+    ]
 
 
 @click.command()
@@ -68,21 +44,20 @@ def microbial_prep_document(ctx):
     arnold_host: str = ctx.obj["arnold_host"]
     samples: List[Sample] = get_process_samples(process=process)
 
-    prep_documents = []
+    all_step_documents = []
     for sample in samples:
-        prep_document: MicrobialPrep = build_microbial_document(
+        step_documents: List[BaseStep] = build_microbial_step_documents(
             sample_id=sample.id, process_id=process.id, lims=lims
         )
-        prep_documents.append(prep_document.dict(exclude_none=True))
-
+        all_step_documents += step_documents
     response: Response = requests.post(
-        url=f"{arnold_host}/preps",
+        url=f"{arnold_host}/steps",
         headers={"Content-Type": "application/json"},
-        data=json.dumps(prep_documents),
+        data=json.dumps([doc.dict(exclude_none=True) for doc in all_step_documents]),
     )
     if not response.ok:
         LOG.info(response.text)
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
-    click.echo("Microbial prep documents inserted to arnold database")
+    click.echo("Microbial step documents inserted to arnold database")

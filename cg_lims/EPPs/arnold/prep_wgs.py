@@ -8,42 +8,26 @@ from requests import Response
 import json
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
+from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.models.arnold.prep.wgs import (
     get_end_repair_udfs,
     get_initial_qc_udfs,
     get_aliquot_samples_for_covaris_udfs,
     get_fragemnt_dna_truseq_udfs,
-    EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS,
-    InitialQCwgsUDF,
-    AliquotSamplesforCovarisUDF,
-    FragmentDNATruSeqDNAUDFS,
-    WGSPrep,
 )
 
 LOG = logging.getLogger(__name__)
 
 
-def build_wgs_document(sample_id: str, process_id: str, lims: Lims) -> WGSPrep:
+def build_wgs_document(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
     """Building a sars_cov_2 Prep."""
 
-    fragemnt_dna_truseq_udfs: FragmentDNATruSeqDNAUDFS = get_fragemnt_dna_truseq_udfs(
-        sample_id=sample_id, lims=lims
-    )
-    initial_qc_udfs: InitialQCwgsUDF = get_initial_qc_udfs(sample_id=sample_id, lims=lims)
-    aliquot_samples_for_covaris_udfs: AliquotSamplesforCovarisUDF = (
-        get_aliquot_samples_for_covaris_udfs(sample_id=sample_id, lims=lims)
-    )
-    end_repair_udfs: EndrepairSizeselectionA_tailingandAdapterligationTruSeqPCR_freeUDFS = (
-        get_end_repair_udfs(sample_id=sample_id, lims=lims)
-    )
-    return WGSPrep(
-        prep_id=f"{sample_id}_{process_id}",
-        sample_id=sample_id,
-        **fragemnt_dna_truseq_udfs.dict(),
-        **initial_qc_udfs.dict(),
-        **aliquot_samples_for_covaris_udfs.dict(),
-        **end_repair_udfs.dict(),
-    )
+    return [
+        get_fragemnt_dna_truseq_udfs(sample_id=sample_id, lims=lims),
+        get_initial_qc_udfs(sample_id=sample_id, lims=lims),
+        get_aliquot_samples_for_covaris_udfs(sample_id=sample_id, lims=lims),
+        get_end_repair_udfs(sample_id=sample_id, lims=lims),
+    ]
 
 
 @click.command()
@@ -58,21 +42,20 @@ def wgs_prep_document(ctx):
     arnold_host: str = ctx.obj["arnold_host"]
     samples: List[Sample] = get_process_samples(process=process)
 
-    prep_documents = []
+    all_step_documents = []
     for sample in samples:
-        prep_document: WGSPrep = build_wgs_document(
+        step_documents: List[BaseStep] = build_wgs_document(
             sample_id=sample.id, process_id=process.id, lims=lims
         )
-        prep_documents.append(prep_document.dict(exclude_none=True))
-
+        all_step_documents += step_documents
     response: Response = requests.post(
-        url=f"{arnold_host}/preps",
+        url=f"{arnold_host}/steps",
         headers={"Content-Type": "application/json"},
-        data=json.dumps(prep_documents),
+        data=json.dumps([doc.dict(exclude_none=True) for doc in all_step_documents]),
     )
     if not response.ok:
         LOG.info(response.text)
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
-    click.echo("WGS prep documents inserted to arnold database")
+    click.echo("WGS step documents inserted to arnold database")

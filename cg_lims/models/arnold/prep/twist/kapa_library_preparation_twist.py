@@ -1,6 +1,8 @@
 from typing import Optional
 from genologics.lims import Lims
 from pydantic import Field, BaseModel
+
+from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
 
@@ -44,26 +46,29 @@ class KAPALibraryPreparationProcessUDFs(BaseModel):
     )
 
 
-class KAPALibraryPreparationUDFs(
-    KAPALibraryPreparationProcessUDFs, KAPALibraryPreparationArtifactUDFs
-):
-    library_prep_well_position: Optional[str] = Field(None, alias="well_position")
-    library_prep_container_name: Optional[str] = Field(None, alias="container_name")
-    library_prep_index_name: Optional[str] = Field(None, alias="index_name")
+class KAPALibraryPreparationFields(BaseStep):
+    process_udfs: KAPALibraryPreparationProcessUDFs
+    artifact_udfs: KAPALibraryPreparationArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_kapa_library_preparation_twist(lims: Lims, sample_id: str) -> KAPALibraryPreparationUDFs:
+def get_kapa_library_preparation_twist(
+    lims: Lims, sample_id: str, prep_id: str
+) -> KAPALibraryPreparationFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        artifact_udf_model=KAPALibraryPreparationArtifactUDFs,
-        process_udf_model=KAPALibraryPreparationProcessUDFs,
         process_type="KAPA Library Preparation TWIST v1",
     )
 
-    return KAPALibraryPreparationUDFs(
-        **analyte.merge_analyte_fields(),
+    return KAPALibraryPreparationFields(
+        **analyte.base_fields(),
+        process_udfs=KAPALibraryPreparationProcessUDFs(**analyte.process_udfs()),
+        artifact_udfs=KAPALibraryPreparationArtifactUDFs(**analyte.artifact_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="kapa_library_preparation",
+        workflow="TWIST",
     )

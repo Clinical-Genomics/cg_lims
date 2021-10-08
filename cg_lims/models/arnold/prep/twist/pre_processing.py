@@ -5,27 +5,32 @@ from pydantic import Field, BaseModel
 
 from cg_lims.objects import BaseAnalyte
 
+from cg_lims.models.arnold.prep.base_step import BaseStep
+
 
 class PreProcessingArtifactUDFs(BaseModel):
     pre_processing_concentration: Optional[str] = Field(None, alias="Concentration")
 
 
-class PreProcessingUDFs(PreProcessingArtifactUDFs):
-    pre_processing_well_position: Optional[str] = Field(None, alias="well_position")
-    pre_processing_container_name: Optional[str] = Field(None, alias="container_name")
+class PreProcessingFields(BaseStep):
+    artifact_udfs: PreProcessingArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_pre_processing_twist(lims: Lims, sample_id: str) -> PreProcessingUDFs:
+def get_pre_processing_twist(lims: Lims, sample_id: str, prep_id: str) -> PreProcessingFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        artifact_udf_model=PreProcessingArtifactUDFs,
         optional_step=True,
     )
 
-    return PreProcessingUDFs(
-        **analyte.merge_analyte_fields(),
+    return PreProcessingFields(
+        **analyte.base_fields(),
+        artifact_udfs=PreProcessingArtifactUDFs(**analyte.artifact_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="pre_processing",
+        workflow="TWIST",
     )

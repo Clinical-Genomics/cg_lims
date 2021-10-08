@@ -4,6 +4,7 @@ from genologics.lims import Lims
 from pydantic import Field, BaseModel
 
 from cg_lims.objects import BaseAnalyte
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class AliquotSamplesForEnzymaticFragmentationProcessUdfs(BaseModel):
@@ -20,28 +21,31 @@ class AliquotSamplesForEnzymaticFragmentationArtifactUdfs(BaseModel):
     amount_needed: Optional[float] = Field(None, alias="Amount needed (ng)")
 
 
-class AliquotSamplesForEnzymaticFragmentationUdfs(
-    AliquotSamplesForEnzymaticFragmentationArtifactUdfs,
-    AliquotSamplesForEnzymaticFragmentationProcessUdfs,
-):
-    aliquotation_well_position: Optional[str] = Field(None, alias="well_position")
-    aliquotation_container_name: Optional[str] = Field(None, alias="container_name")
+class AliquotSamplesForEnzymaticFragmentationFields(BaseStep):
+    process_udfs: AliquotSamplesForEnzymaticFragmentationProcessUdfs
+    artifact_udfs: AliquotSamplesForEnzymaticFragmentationArtifactUdfs
 
     class Config:
         allow_population_by_field_name = True
 
 
 def get_aliquot_samples_for_enzymatic_fragmentation_udfs(
-    lims: Lims, sample_id: str
-) -> AliquotSamplesForEnzymaticFragmentationUdfs:
+    lims: Lims, sample_id: str, prep_id: str
+) -> AliquotSamplesForEnzymaticFragmentationFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=AliquotSamplesForEnzymaticFragmentationProcessUdfs,
-        artifact_udf_model=AliquotSamplesForEnzymaticFragmentationArtifactUdfs,
         process_type="Aliquot samples for enzymatic fragmentation TWIST v2",
     )
 
-    return AliquotSamplesForEnzymaticFragmentationUdfs(
-        **analyte.merge_analyte_fields(),
+    return AliquotSamplesForEnzymaticFragmentationFields(
+        **analyte.base_fields(),
+        process_udfs=AliquotSamplesForEnzymaticFragmentationProcessUdfs(**analyte.process_udfs()),
+        artifact_udfs=AliquotSamplesForEnzymaticFragmentationArtifactUdfs(
+            **analyte.artifact_udfs()
+        ),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="aliquot_samples_for_enzymatic_fragmentation",
+        workflow="TWIST",
     )

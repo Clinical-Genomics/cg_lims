@@ -1,41 +1,41 @@
+from typing import Optional
+
 from .microbial_library_prep_nextera import (
     LibraryPrepNexteraProcessUDFS,
-    LibraryPrepUDFS,
-    get_library_prep_nextera_udfs,
+    LibraryPrepFields,
+    get_library_prep_nextera,
 )
 from .normalization_of_microbial_samples import (
-    NormalizationOfMicrobialSamplesProcessUDFS,
-    NormalizationOfMicrobialSamplesUDFS,
-    get_normalization_of_mictobial_samples_udfs,
+    NormalizationProcessUDFS,
+    NormalizationFields,
+    get_normalization_of_mictobial_samples,
 )
 from .buffer_exchange import (
     BufferExchangeProcessUDFS,
     BufferExchangeArtifactUDF,
-    BufferExchangeUDFS,
-    get_buffer_exchange_udfs,
+    BufferExchangeFields,
+    get_buffer_exchange,
 )
 from .normailzation_of_microbial_samples_for_sequencing import (
-    NormalizationOfSamplesForSequencingUDFS,
+    NormalizationForSequencingFields,
     NormalizationOfSamplesForSequencingProcessUDFS,
-    get_normalization_of_samples_for_sequencing_udfs,
+    get_normalization_of_samples,
 )
 from .post_pcr_bead_purification import (
-    PostPCRBeadPurificationUDF,
+    PostPCRBeadPurificationFields,
     PostPCRBeadPurificationArtifactUDF,
     PostPCRBeadPurificationProcessUDFS,
-    get_post_bead_pcr_purification_udfs,
+    get_post_bead_pcr_purification,
 )
 from cg_lims.models.arnold.prep.base_prep import Prep
 
 
-class MicrobialPrep(
-    Prep,
-    NormalizationOfSamplesForSequencingUDFS,
-    PostPCRBeadPurificationUDF,
-    LibraryPrepUDFS,
-    NormalizationOfMicrobialSamplesUDFS,
-    BufferExchangeUDFS,
-):
+class MicrobialPrep(Prep):
+    normalization_of_samples_for_sequencing: NormalizationForSequencingFields
+    post_bead_pcr_purification: PostPCRBeadPurificationFields
+    library_prep: LibraryPrepFields
+    normalization_of_mictobial_samples: NormalizationFields
+    buffer_exchange: Optional[BufferExchangeFields]
     workflow = "Microbial"
 
     class Config:

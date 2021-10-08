@@ -4,6 +4,7 @@ from genologics.lims import Lims
 from pydantic import Field, BaseModel
 
 from cg_lims.objects import BaseAnalyte
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class EnzymaticFragmentationTWISTProcessUdfs(BaseModel):
@@ -13,23 +14,28 @@ class EnzymaticFragmentationTWISTProcessUdfs(BaseModel):
     fragmentation_instrument_hybridization: Optional[str] = Field(None, alias="Thermal cycler name")
 
 
-class EnzymaticFragmentationTWISTUdfs(EnzymaticFragmentationTWISTProcessUdfs):
-    fragmentation_well_position: Optional[str] = Field(None, alias="well_position")
-    fragmentation_container_name: Optional[str] = Field(None, alias="container_name")
+class EnzymaticFragmentationTWISTFields(BaseStep):
+    process_udfs: EnzymaticFragmentationTWISTProcessUdfs
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_enzymatic_fragmentation(lims: Lims, sample_id: str) -> EnzymaticFragmentationTWISTUdfs:
+def get_enzymatic_fragmentation(
+    lims: Lims, sample_id: str, prep_id: str
+) -> EnzymaticFragmentationTWISTFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=EnzymaticFragmentationTWISTProcessUdfs,
         process_type="Enzymatic fragmentation TWIST v2",
         optional_step=True,
     )
 
-    return EnzymaticFragmentationTWISTUdfs(
-        **analyte.merge_analyte_fields(),
+    return EnzymaticFragmentationTWISTFields(
+        **analyte.base_fields(),
+        process_udfs=EnzymaticFragmentationTWISTProcessUdfs(**analyte.process_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="enzymatic_fragmentation",
+        workflow="TWIST",
     )

@@ -8,39 +8,24 @@ from requests import Response
 import json
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
+from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.models.arnold.prep.sars_cov_2_prep import (
     get_pooling_and_cleanup_udfs,
     get_library_prep_cov_udfs,
     get_aggregate_qc_dna_cov_udfs,
-    LibraryPreparationCovUDFS,
-    PoolingAndCleanUpCovUDF,
-    AggregateQCDNACovUDF,
-    SarsCov2Prep,
 )
 
 LOG = logging.getLogger(__name__)
 
 
-def build_sars_cov_2_document(sample_id: str, process_id: str, lims: Lims) -> SarsCov2Prep:
+def build_sars_cov_2_document(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
     """Building a sars_cov_2 Prep."""
-
-    pooling_and_cleanup_udfs: PoolingAndCleanUpCovUDF = get_pooling_and_cleanup_udfs(
-        sample_id=sample_id, lims=lims
-    )
-    library_prep_cov_udfs: LibraryPreparationCovUDFS = get_library_prep_cov_udfs(
-        sample_id=sample_id, lims=lims
-    )
-    aggregate_qc_dna_cov_udfs: AggregateQCDNACovUDF = get_aggregate_qc_dna_cov_udfs(
-        sample_id=sample_id, lims=lims
-    )
-
-    return SarsCov2Prep(
-        prep_id=f"{sample_id}_{process_id}",
-        sample_id=sample_id,
-        **pooling_and_cleanup_udfs.dict(),
-        **library_prep_cov_udfs.dict(),
-        **aggregate_qc_dna_cov_udfs.dict(),
-    )
+    prep_id = f"{sample_id}_{process_id}"
+    return [
+        get_pooling_and_cleanup_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_library_prep_cov_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_aggregate_qc_dna_cov_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
+    ]
 
 
 @click.command()
@@ -55,23 +40,20 @@ def sars_cov_2_prep_document(ctx):
     arnold_host: str = ctx.obj["arnold_host"]
     samples: List[Sample] = get_process_samples(process=process)
 
-    prep_documents = []
+    all_step_documents = []
     for sample in samples:
-        prep_document: SarsCov2Prep = build_sars_cov_2_document(
+        step_documents: List[BaseStep] = build_sars_cov_2_document(
             sample_id=sample.id, process_id=process.id, lims=lims
         )
-
-        p = prep_document.dict(exclude_none=True)
-        prep_documents.append(prep_document.dict(exclude_none=True))
-
+        all_step_documents += step_documents
     response: Response = requests.post(
-        url=f"{arnold_host}/preps",
+        url=f"{arnold_host}/steps",
         headers={"Content-Type": "application/json"},
-        data=json.dumps(prep_documents),
+        data=json.dumps([doc.dict(exclude_none=True) for doc in all_step_documents]),
     )
     if not response.ok:
         LOG.info(response.text)
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
-    click.echo("Covid prep documents inserted to arnold database")
+    click.echo("Covid step documents inserted to arnold database")

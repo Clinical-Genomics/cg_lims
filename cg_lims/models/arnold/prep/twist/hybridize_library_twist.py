@@ -3,6 +3,7 @@ from typing import Optional
 from genologics.lims import Lims
 from pydantic import Field, BaseModel
 from cg_lims.objects import BaseAnalyte
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class HybridizeLibraryTWISTArtifactUDFs(BaseModel):
@@ -19,23 +20,27 @@ class HybridizeLibraryTWISTProcessUDFs(BaseModel):
     hybridization_method: str = Field(..., alias="Method document")
 
 
-class HybridizeLibraryUDFs(HybridizeLibraryTWISTArtifactUDFs, HybridizeLibraryTWISTProcessUDFs):
-    hybridization_well_position: Optional[str] = Field(None, alias="well_position")
-    hybridization_container_name: Optional[str] = Field(None, alias="container_name")
+class HybridizeLibraryFields(BaseStep):
+    process_udfs: HybridizeLibraryTWISTProcessUDFs
+    artifact_udfs: HybridizeLibraryTWISTArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_hybridize_library_twist(lims: Lims, sample_id: str) -> HybridizeLibraryUDFs:
+def get_hybridize_library_twist(lims: Lims, sample_id: str, prep_id: str) -> HybridizeLibraryFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        artifact_udf_model=HybridizeLibraryTWISTArtifactUDFs,
-        process_udf_model=HybridizeLibraryTWISTProcessUDFs,
         process_type="Hybridize Library TWIST v2",
     )
 
-    return HybridizeLibraryUDFs(
-        **analyte.merge_analyte_fields(),
+    return HybridizeLibraryFields(
+        **analyte.base_fields(),
+        process_udfs=HybridizeLibraryTWISTProcessUDFs(**analyte.process_udfs()),
+        artifact_udfs=HybridizeLibraryTWISTArtifactUDFs(**analyte.artifact_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="hybridize_library",
+        workflow="TWIST",
     )

@@ -1,31 +1,35 @@
-from typing import Optional
-
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 from cg_lims.objects import BaseAnalyte
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class AliquotSamplesforCovarisArtifactUDF(BaseModel):
     sample_amount_needed: float = Field(..., alias="Amount needed (ng)")
 
 
-class AliquotSamplesforCovarisUDF(AliquotSamplesforCovarisArtifactUDF):
-    aliquotation_well_position: Optional[str] = Field(None, alias="well_position")
-    aliquotation_container_name: Optional[str] = Field(None, alias="container_name")
+class AliquotSamplesforCovarisFields(BaseStep):
+    artifact_udfs: AliquotSamplesforCovarisArtifactUDF
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_aliquot_samples_for_covaris_udfs(lims: Lims, sample_id: str) -> AliquotSamplesforCovarisUDF:
+def get_aliquot_samples_for_covaris_udfs(
+    lims: Lims, sample_id: str, prep_id: str
+) -> AliquotSamplesforCovarisFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        artifact_udf_model=AliquotSamplesforCovarisArtifactUDF,
         process_type="Aliquot Samples for Covaris",
     )
 
-    return AliquotSamplesforCovarisUDF(
-        **analyte.merge_analyte_fields(),
+    return AliquotSamplesforCovarisFields(
+        **analyte.base_fields(),
+        artifact_udfs=AliquotSamplesforCovarisArtifactUDF(**analyte.artifact_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="aliquot_samples_for_covaris",
+        workflow="WGS",
     )

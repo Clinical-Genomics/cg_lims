@@ -5,6 +5,7 @@ from pydantic.main import BaseModel
 from pydantic import Field
 
 from cg_lims.objects import BaseAnalyte
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class FragmentDNATruSeqDNAProcessUDFS(BaseModel):
@@ -14,22 +15,27 @@ class FragmentDNATruSeqDNAProcessUDFS(BaseModel):
     lot_nr_resuspension_buffer_fragmentation: str = Field(..., alias="Lot no: Resuspension Buffer")
 
 
-class FragmentDNATruSeqDNAUDFS(FragmentDNATruSeqDNAProcessUDFS):
-    fragmentation_well_position: Optional[str] = Field(None, alias="well_position")
-    fragmentation_container_name: Optional[str] = Field(None, alias="container_name")
+class FragmentDNATruSeqDNAFields(BaseStep):
+    process_udfs: FragmentDNATruSeqDNAProcessUDFS
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_fragemnt_dna_truseq_udfs(lims: Lims, sample_id: str) -> FragmentDNATruSeqDNAUDFS:
+def get_fragemnt_dna_truseq_udfs(
+    lims: Lims, sample_id: str, prep_id: str
+) -> FragmentDNATruSeqDNAFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=FragmentDNATruSeqDNAProcessUDFS,
         process_type="Fragment DNA (TruSeq DNA)",
     )
 
-    return FragmentDNATruSeqDNAUDFS(
-        **analyte.merge_analyte_fields(),
+    return FragmentDNATruSeqDNAFields(
+        **analyte.base_fields(),
+        process_udfs=FragmentDNATruSeqDNAProcessUDFS(**analyte.process_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="fragemnt_dna_truseq",
+        workflow="WGS",
     )

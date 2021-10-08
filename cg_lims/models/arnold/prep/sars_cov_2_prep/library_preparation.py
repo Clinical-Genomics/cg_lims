@@ -5,6 +5,7 @@ from pydantic.main import BaseModel
 from pydantic import Field
 
 from cg_lims.objects import BaseAnalyte
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class LibraryPreparationCovProcessUDFS(BaseModel):
@@ -23,23 +24,29 @@ class LibraryPreparationCovProcessUDFS(BaseModel):
     liquid_handling_system: str = Field(..., alias="Instrument")
 
 
-class LibraryPreparationCovUDFS(LibraryPreparationCovProcessUDFS):
-    library_prep_well_position: Optional[str] = Field(None, alias="well_position")
-    library_prep_container_name: Optional[str] = Field(None, alias="container_name")
-    library_prep_index_name: Optional[str] = Field(None, alias="index_name")
+class LibraryPreparationCovUDFS(
+    BaseStep,
+):
+    process_udfs: LibraryPreparationCovProcessUDFS
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_library_prep_cov_udfs(lims: Lims, sample_id: str) -> LibraryPreparationCovUDFS:
+def get_library_prep_cov_udfs(
+    lims: Lims, sample_id: str, prep_id: str
+) -> LibraryPreparationCovUDFS:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=LibraryPreparationCovProcessUDFS,
         process_type="Library Preparation (Cov) v1",
     )
 
     return LibraryPreparationCovUDFS(
-        **analyte.merge_analyte_fields(),
+        **analyte.base_fields(),
+        process_udfs=LibraryPreparationCovProcessUDFS(**analyte.process_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="library_prep",
+        workflow="sars_cov_2"
     )

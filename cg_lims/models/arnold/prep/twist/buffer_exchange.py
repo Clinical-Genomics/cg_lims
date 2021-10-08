@@ -5,31 +5,33 @@ from pydantic import Field, BaseModel
 
 from cg_lims.objects import BaseAnalyte
 
-
-## optional step! så kolla var hämta concentraion annars
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class BufferExchangeArtifactUDFs(BaseModel):
     buffer_exchange_concentration: Optional[str] = Field(None, alias="Concentration")
 
 
-class BufferExchangeUDFs(BufferExchangeArtifactUDFs):
-    buffer_exchange_well_position: Optional[str] = Field(None, alias="well_position")
-    buffer_exchange_container_name: Optional[str] = Field(None, alias="container_name")
+class BufferExchangeFields(BaseStep):
+    artifact_udfs: BufferExchangeArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_buffer_exchange_twist(lims: Lims, sample_id: str) -> BufferExchangeUDFs:
+def get_buffer_exchange_twist(lims: Lims, sample_id: str, prep_id: str) -> BufferExchangeFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        artifact_udf_model=BufferExchangeArtifactUDFs,
         process_type="Buffer Exchange v2",
         optional_step=True,
     )
 
-    return BufferExchangeUDFs(
-        **analyte.merge_analyte_fields(),
+    return BufferExchangeFields(
+        **analyte.base_fields(),
+        artifact_udfs=BufferExchangeArtifactUDFs(**analyte.artifact_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="buffer_exchange",
+        workflow="TWIST",
     )
