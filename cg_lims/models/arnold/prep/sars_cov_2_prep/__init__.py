@@ -16,16 +16,3 @@ from .aggregate_qc import (
     AggregateQCDNACovArtifactUDF,
     get_aggregate_qc_dna_cov_udfs,
 )
-from cg_lims.models.arnold.prep.base_prep import Prep
-
-
-class SarsCov2Prep(
-    Prep,
-):
-    initial_qc: Optional[AggregateQCDNACovFields]
-    pooling_and_cleanup: PoolingAndCleanUpCovFields
-    library_prep: LibraryPreparationCovUDFS
-    workflow = "Sars-Cov-2"
-
-    class Config:
-        allow_population_by_field_name = True

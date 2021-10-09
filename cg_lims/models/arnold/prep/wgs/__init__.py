@@ -15,15 +15,3 @@ from .endrepair_size_selection_a_tailing_adapter_ligation import (
     EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeArtifactUDF,
     get_end_repair_udfs,
 )
-from cg_lims.models.arnold.prep.base_prep import Prep
-
-
-class WGSPrep(Prep):
-    fragemnt_dna_truseq: FragmentDNATruSeqDNAFields
-    aliquot_samples_for_covaris: AliquotSamplesforCovarisFields
-    initial_qc: InitialQCwgsUDF
-    end_repair_size_selection_a_tailing: EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields
-    workflow = "WGS"
-
-    class Config:
-        allow_population_by_field_name = True

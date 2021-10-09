@@ -52,24 +52,3 @@ from .enzymatic_fragmentation_twist import (
 )
 
 from .pre_processing import PreProcessingFields, PreProcessingArtifactUDFs, get_pre_processing_twist
-
-from cg_lims.models.arnold.prep.base_prep import Prep
-
-
-class TWISTPrep(
-    Prep,
-):
-    pre_processing: Optional[PreProcessingFields]
-    pooling: PoolSamplesForHybridizationFields
-    library_preparation: KAPALibraryPreparationFields
-    hybridize_library: HybridizeLibraryFields
-    aliquot_samples_for_enzymatic_fragmentation: AliquotSamplesForEnzymaticFragmentationFields
-    amplify_captured_library: AmplifycapturedlibrariestwistFields
-    enzymatic_fragmentation: Optional[EnzymaticFragmentationTWISTFields]
-    buffer_exchange: Optional[BufferExchangeFields]
-    capture_and_wash: CaptureandWashFields
-    bead_purification: BeadPurificationFields
-    workflow = "TWIST"
-
-    class Config:
-        allow_population_by_field_name = True
