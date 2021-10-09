@@ -1,3 +1,7 @@
+from typing import List
+
+from genologics.lims import Lims
+
 from .microbial_library_prep_nextera import (
     LibraryPrepNexteraProcessUDFS,
     LibraryPrepFields,
@@ -25,3 +29,17 @@ from .post_pcr_bead_purification import (
     PostPCRBeadPurificationProcessUDFS,
     get_post_bead_pcr_purification,
 )
+from ..base_step import BaseStep
+
+
+def build_microbial_step_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
+    """Building a Step Documents for a Microbial Prep."""
+
+    prep_id = f"{sample_id}_{process_id}"
+    return [
+        get_library_prep_nextera(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_buffer_exchange(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_normalization_of_samples(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_normalization_of_mictobial_samples(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_post_bead_pcr_purification(sample_id=sample_id, lims=lims, prep_id=prep_id),
+    ]

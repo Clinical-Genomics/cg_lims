@@ -1,3 +1,7 @@
+from typing import List
+
+from genologics.lims import Lims
+
 from .fragment_dna_truseq_dna import (
     FragmentDNATruSeqDNAFields,
     FragmentDNATruSeqDNAProcessUDFS,
@@ -15,3 +19,15 @@ from .endrepair_size_selection_a_tailing_adapter_ligation import (
     EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeArtifactUDF,
     get_end_repair_udfs,
 )
+from ..base_step import BaseStep
+
+
+def build_wgs_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
+    """Building a sars_cov_2 Prep."""
+
+    return [
+        get_fragemnt_dna_truseq_udfs(sample_id=sample_id, lims=lims),
+        get_initial_qc_udfs(sample_id=sample_id, lims=lims),
+        get_aliquot_samples_for_covaris_udfs(sample_id=sample_id, lims=lims),
+        get_end_repair_udfs(sample_id=sample_id, lims=lims),
+    ]

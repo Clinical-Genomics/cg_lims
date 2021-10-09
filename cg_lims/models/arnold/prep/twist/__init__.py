@@ -1,4 +1,6 @@
-from typing import Optional
+from typing import List
+
+from genologics.lims import Lims
 
 from .buffer_exchange import (
     BufferExchangeFields,
@@ -52,3 +54,23 @@ from .enzymatic_fragmentation_twist import (
 )
 
 from .pre_processing import PreProcessingFields, PreProcessingArtifactUDFs, get_pre_processing_twist
+from ..base_step import BaseStep
+
+
+def build_twist_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
+    """Building a sars_cov_2 Prep."""
+    prep_id = f"{sample_id}_{process_id}"
+    return [
+        get_aliquot_samples_for_enzymatic_fragmentation_udfs(
+            sample_id=sample_id, lims=lims, prep_id=prep_id
+        ),
+        get_hybridize_library_twist(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_pool_samples_twist(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_capture_and_wash(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_kapa_library_preparation_twist(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_buffer_exchange_twist(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_bead_purification_twist(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_enzymatic_fragmentation(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_amplify_captured_library_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_pre_processing_twist(sample_id=sample_id, lims=lims, prep_id=prep_id),
+    ]

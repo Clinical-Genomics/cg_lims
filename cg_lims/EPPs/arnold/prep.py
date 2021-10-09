@@ -1,37 +1,38 @@
 import logging
-from typing import List
+from typing import List, Literal
 
 import click
 from genologics.lims import Lims, Process, Sample
 import requests
 from requests import Response
 import json
+
+from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.models.arnold.prep.base_step import BaseStep
-from cg_lims.models.arnold.prep.sars_cov_2_prep import (
-    get_pooling_and_cleanup_udfs,
-    get_library_prep_cov_udfs,
-    get_aggregate_qc_dna_cov_udfs,
-)
+from cg_lims.models.arnold.prep.microbial_prep import build_microbial_step_documents
+from cg_lims.models.arnold.prep.wgs import build_wgs_documents
+from cg_lims.models.arnold.prep.sars_cov_2_prep import build_sars_cov_2_documents
+from cg_lims.models.arnold.prep.twist import build_twist_documents
 
 LOG = logging.getLogger(__name__)
 
-
-def build_sars_cov_2_document(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
-    """Building a sars_cov_2 Prep."""
-    prep_id = f"{sample_id}_{process_id}"
-    return [
-        get_pooling_and_cleanup_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
-        get_library_prep_cov_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
-        get_aggregate_qc_dna_cov_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
-    ]
+prep_document_functions = {
+    "wgs": build_wgs_documents,
+    "twist": build_twist_documents,
+    "micro": build_microbial_step_documents,
+    "cov": build_sars_cov_2_documents,
+}
 
 
 @click.command()
+@options.prep(help="Prep type.")
 @click.pass_context
-def sars_cov_2_prep_document(ctx):
-    """Creating Prep documents in the arnold Prep collection."""
+def prep(ctx, prep_type: Literal["wgs", "twist", "micro", "cov"]):
+    """Creating Step documents from a prep in the arnold step collection."""
+
+    build_step_documents = prep_document_functions[prep_type]
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
@@ -42,7 +43,7 @@ def sars_cov_2_prep_document(ctx):
 
     all_step_documents = []
     for sample in samples:
-        step_documents: List[BaseStep] = build_sars_cov_2_document(
+        step_documents: List[BaseStep] = build_step_documents(
             sample_id=sample.id, process_id=process.id, lims=lims
         )
         all_step_documents += step_documents
@@ -56,4 +57,4 @@ def sars_cov_2_prep_document(ctx):
         raise LimsError(response.text)
 
     LOG.info("Arnold output: %s", response.text)
-    click.echo("Covid step documents inserted to arnold database")
+    click.echo("Step documents inserted to arnold database")
