@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837764?state=1430861" limsid="92-1837764">
+    <name>EPP Log</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240270" limsid="24-240270" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A1" limsid="ACC8656A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A9" limsid="ACC8656A9" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A17" limsid="ACC8656A17" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A25" limsid="ACC8656A25" />
+    <reagent-label name="A04 UDP0217 v2 (CACTATCAAC-TCAGTTAATG)" />
+    <reagent-label name="A03 UDP0209 v2 (GCTAGACTAT-AATACGACAT)" />
+    <reagent-label name="A02 UDP0201 v2 (AACCGAGTTC-GATCTCTGGA)" />
+    <reagent-label name="A01 UDP0193 v2 (TCTCATGATA-AACACGTGGA)" />
+    <workflow-stages />
+</art:artifact>

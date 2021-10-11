@@ -14,24 +14,6 @@ from limsmock.server import run_server
 from pydantic import BaseModel, Field
 
 
-class ProcessUDFModel(BaseModel):
-    lot_nr_beads_library_prep: str = Field(..., alias="Lot nr: Beads")
-    lot_nr_etoh_library_prep: str = Field(..., alias="Lot nr: EtOH")
-    lot_nr_h2o_library_prep: str = Field(..., alias="Lot nr: H2O")
-
-
-class ArtifactUDFModel(BaseModel):
-    finished_library_concentration: float = Field(..., alias="Concentration")
-    finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
-    finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
-    finished_library_average_size: float = Field(..., alias="Average Size (bp)")
-
-
-class MegedUdfModel(ProcessUDFModel, ArtifactUDFModel):
-    class Config:
-        allow_population_by_field_name = True
-
-
 PORT = 8000
 HOST = "127.0.0.1"
 
@@ -65,9 +47,7 @@ def artifact_1(lims) -> Artifact:
     """Basic artifact with id 1. Containing no udfs.
     Related to sample_1."""
 
-    artifact = Artifact(lims, id="1")
-
-    return artifact
+    return Artifact(lims, id="1")
 
 
 @pytest.fixture
@@ -75,9 +55,7 @@ def sample_1(lims) -> Sample:
     """Basic sample with id S1. Containing no udfs.
     Related to artifact_1."""
 
-    sample = Sample(lims, id="S1")
-
-    return sample
+    return Sample(lims, id="S1")
 
 
 @pytest.fixture
@@ -85,9 +63,7 @@ def artifact_2(lims) -> Artifact:
     """Basic artifact with id 2. Containing no udfs.
     Related to sample_2."""
 
-    artifact = Artifact(lims, id="2")
-
-    return artifact
+    return Artifact(lims, id="2")
 
 
 @pytest.fixture
@@ -95,9 +71,7 @@ def sample_2(lims) -> Sample:
     """Basic sample with id S2. Containing no udfs.
     Related to artifact_2."""
 
-    sample = Sample(lims, id="S2")
-
-    return sample
+    return Sample(lims, id="S2")
 
 
 @pytest.fixture
@@ -164,5 +138,4 @@ def hamilton_sars_cov2_indexing_file() -> str:
 @pytest.fixture(name="cli_runner")
 def fixture_cli_runner() -> CliRunner:
     """Create a CliRunner"""
-    runner = CliRunner()
-    return runner
+    return CliRunner()

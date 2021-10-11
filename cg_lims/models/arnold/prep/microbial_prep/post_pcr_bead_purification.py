@@ -4,6 +4,8 @@ from typing import Optional
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
+
+from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
 LOG = logging.getLogger(__name__)
@@ -22,20 +24,29 @@ class PostPCRBeadPurificationArtifactUDF(BaseModel):
     finished_library_average_size: float = Field(..., alias="Average Size (bp)")
 
 
-class PostPCRBeadPurificationUDF(
-    PostPCRBeadPurificationProcessUDFS, PostPCRBeadPurificationArtifactUDF
-):
+class PostPCRBeadPurificationFields(BaseStep):
+    process_udfs: PostPCRBeadPurificationProcessUDFS
+    artifact_udfs: PostPCRBeadPurificationArtifactUDF
+
     class Config:
         allow_population_by_field_name = True
 
 
-def get_post_bead_pcr_purification_udfs(lims: Lims, sample_id: str) -> PostPCRBeadPurificationUDF:
-    microbial_library_prep = BaseAnalyte(
+def get_post_bead_pcr_purification(
+    lims: Lims, sample_id: str, prep_id: str
+) -> PostPCRBeadPurificationFields:
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=PostPCRBeadPurificationProcessUDFS,
-        artifact_udf_model=PostPCRBeadPurificationArtifactUDF,
         process_type="Post-PCR bead purification v1",
     )
 
-    return PostPCRBeadPurificationUDF(**microbial_library_prep.merge_process_and_artifact_udfs())
+    return PostPCRBeadPurificationFields(
+        **analyte.base_fields(),
+        process_udfs=PostPCRBeadPurificationProcessUDFS(**analyte.process_udfs()),
+        artifact_udfs=PostPCRBeadPurificationArtifactUDF(**analyte.artifact_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="post_bead_pcr_purification",
+        workflow="Microbial"
+    )

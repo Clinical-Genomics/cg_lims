@@ -1,42 +1,45 @@
+from typing import List
+
+from genologics.lims import Lims
+
 from .microbial_library_prep_nextera import (
     LibraryPrepNexteraProcessUDFS,
-    LibraryPrepUDFS,
-    get_library_prep_nextera_udfs,
+    LibraryPrepFields,
+    get_library_prep_nextera,
 )
 from .normalization_of_microbial_samples import (
-    NormalizationOfMicrobialSamplesProcessUDFS,
-    NormalizationOfMicrobialSamplesUDFS,
-    get_normalization_of_mictobial_samples_udfs,
+    NormalizationProcessUDFS,
+    NormalizationFields,
+    get_normalization_of_mictobial_samples,
 )
 from .buffer_exchange import (
     BufferExchangeProcessUDFS,
     BufferExchangeArtifactUDF,
-    BufferExchangeUDFS,
-    get_buffer_exchange_udfs,
+    BufferExchangeFields,
+    get_buffer_exchange,
 )
 from .normailzation_of_microbial_samples_for_sequencing import (
-    NormalizationOfSamplesForSequencingUDFS,
+    NormalizationForSequencingFields,
     NormalizationOfSamplesForSequencingProcessUDFS,
-    get_normalization_of_samples_for_sequencing_udfs,
+    get_normalization_of_samples,
 )
 from .post_pcr_bead_purification import (
-    PostPCRBeadPurificationUDF,
+    PostPCRBeadPurificationFields,
     PostPCRBeadPurificationArtifactUDF,
     PostPCRBeadPurificationProcessUDFS,
-    get_post_bead_pcr_purification_udfs,
+    get_post_bead_pcr_purification,
 )
-from cg_lims.models.arnold.prep.base_prep import Prep
+from ..base_step import BaseStep
 
 
-class MicrobialPrep(
-    Prep,
-    NormalizationOfSamplesForSequencingUDFS,
-    PostPCRBeadPurificationUDF,
-    LibraryPrepUDFS,
-    NormalizationOfMicrobialSamplesUDFS,
-    BufferExchangeUDFS,
-):
-    workflow = "Microbial"
+def build_microbial_step_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
+    """Building a Step Documents for a Microbial Prep."""
 
-    class Config:
-        allow_population_by_field_name = True
+    prep_id = f"{sample_id}_{process_id}"
+    return [
+        get_library_prep_nextera(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_buffer_exchange(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_normalization_of_samples(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_normalization_of_mictobial_samples(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_post_bead_pcr_purification(sample_id=sample_id, lims=lims, prep_id=prep_id),
+    ]

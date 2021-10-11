@@ -1,8 +1,11 @@
+from typing import Optional
+
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
 from cg_lims.objects import BaseAnalyte
+from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class LibraryPreparationCovProcessUDFS(BaseModel):
@@ -19,22 +22,31 @@ class LibraryPreparationCovProcessUDFS(BaseModel):
     pcr_instrument_amplification: str = Field(..., alias="PCR machine: Amplification")
     library_preparation_method: str = Field(..., alias="Method document")
     liquid_handling_system: str = Field(..., alias="Instrument")
-    # ""Går det att få fram antal prover/pool?""
-
-    #   ""Obs pool från och med här""
 
 
-class LibraryPreparationCovUDFS(LibraryPreparationCovProcessUDFS):
+class LibraryPreparationCovUDFS(
+    BaseStep,
+):
+    process_udfs: LibraryPreparationCovProcessUDFS
+
     class Config:
         allow_population_by_field_name = True
 
 
-def get_library_prep_cov_udfs(lims: Lims, sample_id: str) -> LibraryPreparationCovUDFS:
-    library_prep_cov = BaseAnalyte(
+def get_library_prep_cov_udfs(
+    lims: Lims, sample_id: str, prep_id: str
+) -> LibraryPreparationCovUDFS:
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=LibraryPreparationCovProcessUDFS,
         process_type="Library Preparation (Cov) v1",
     )
 
-    return LibraryPreparationCovUDFS(**library_prep_cov.merge_process_and_artifact_udfs())
+    return LibraryPreparationCovUDFS(
+        **analyte.base_fields(),
+        process_udfs=LibraryPreparationCovProcessUDFS(**analyte.process_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="library_prep",
+        workflow="sars_cov_2"
+    )

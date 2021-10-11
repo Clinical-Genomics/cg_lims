@@ -1,7 +1,10 @@
+from typing import Optional
+
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
+from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
 
@@ -15,17 +18,25 @@ class LibraryPrepNexteraProcessUDFS(BaseModel):
     nr_pcr_cycles: int = Field(..., alias="Nr PCR cycles")
 
 
-class LibraryPrepUDFS(LibraryPrepNexteraProcessUDFS):
+class LibraryPrepFields(BaseStep):
+    process_udfs: LibraryPrepNexteraProcessUDFS
+
     class Config:
         allow_population_by_field_name = True
 
 
-def get_library_prep_nextera_udfs(lims: Lims, sample_id: str) -> LibraryPrepUDFS:
-    microbial_library_prep = BaseAnalyte(
+def get_library_prep_nextera(lims: Lims, sample_id: str, prep_id: str) -> LibraryPrepFields:
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=LibraryPrepNexteraProcessUDFS,
         process_type="CG002 - Microbial Library Prep (Nextera)",
     )
 
-    return LibraryPrepUDFS(**microbial_library_prep.merge_process_and_artifact_udfs())
+    return LibraryPrepFields(
+        **analyte.base_fields(),
+        process_udfs=LibraryPrepNexteraProcessUDFS(**analyte.process_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="library_prep_nextera",
+        workflow="Microbial"
+    )

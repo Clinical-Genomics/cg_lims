@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A1PA1?state=1417450" limsid="ACC8454A1PA1">
+    <name>CA001P</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-178255" limsid="27-178255" />
+        <value>1:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A1" limsid="ACC8454A1" />
+    <udf:field type="Numeric" name="Amount (ng)">4357.95</udf:field>
+    <udf:field type="Numeric" name="Volume (ul)">50</udf:field>
+    <udf:field type="Numeric" name="Concentration">87.159</udf:field>
+    <artifact-group name="CG001 Genotyping" uri="http://127.0.0.1:8000/api/v2/artifactgroups/701" />
+    <artifact-group name="WGS PCR free v5" uri="http://127.0.0.1:8000/api/v2/artifactgroups/1511" />
+    <workflow-stages>
+        <workflow-stage status="QUEUED" name="CG002 - Plate Setup MAF" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/701/stages/1401" />
+        <workflow-stage status="QUEUED" name="Aliquot Samples for Covaris" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1760/stages/6064" />
+        <workflow-stage status="COMPLETE" name="Aliquot Samples for Covaris" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1760/stages/6064" />
+    </workflow-stages>
+</art:artifact>

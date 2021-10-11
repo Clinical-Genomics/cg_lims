@@ -4,6 +4,7 @@ from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
+from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
 
@@ -18,19 +19,28 @@ class BufferExchangeProcessUDFS(BaseModel):
     buffer_exchange_method: Optional[str] = Field(None, alias="Method document")
 
 
-class BufferExchangeUDFS(BufferExchangeProcessUDFS, BufferExchangeArtifactUDF):
+class BufferExchangeFields(BaseStep):
+    process_udfs: BufferExchangeProcessUDFS
+    artifact_udfs: BufferExchangeArtifactUDF
+
     class Config:
         allow_population_by_field_name = True
 
 
-def get_buffer_exchange_udfs(lims: Lims, sample_id: str) -> BufferExchangeUDFS:
-    buffer_exchange = BaseAnalyte(
+def get_buffer_exchange(lims: Lims, sample_id: str, prep_id: str) -> BufferExchangeFields:
+    analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_udf_model=BufferExchangeProcessUDFS,
-        artifact_udf_model=BufferExchangeArtifactUDF,
         process_type="Buffer Exchange v1",
         optional_step=True,
     )
 
-    return BufferExchangeUDFS(**buffer_exchange.merge_process_and_artifact_udfs())
+    return BufferExchangeFields(
+        **analyte.base_fields(),
+        process_udfs=BufferExchangeProcessUDFS(**analyte.process_udfs()),
+        artifact_udfs=BufferExchangeArtifactUDF(**analyte.artifact_udfs()),
+        sample_id=sample_id,
+        prep_id=prep_id,
+        step_type="buffer_exchange",
+        workflow="Microbial"
+    )

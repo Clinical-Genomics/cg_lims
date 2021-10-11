@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837782?state=1430885" limsid="2-1837782">
+    <name>CA004P</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240274" limsid="24-240274" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-181725" limsid="27-181725" />
+        <value>B:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A2" limsid="ACC8454A2" />
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="End repair Size selection A-tailing and Adapter ligation (TruSeq PCR-free DNA)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1760/stages/6066" />
+    </workflow-stages>
+</art:artifact>

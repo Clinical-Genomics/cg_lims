@@ -42,8 +42,6 @@ class BaseAnalyte:
     sample_id: The submitted sample from which the analyte is derived.
     process_type: The process in which the analyte was generated (the artifact.parent_process).
                   If process_type is None, then the analyte is the original submitted sample.
-    artifact_udf_model: Defines the analyte udfs.
-    process_udf_model: Defines the parent process udfs.
     """
 
     def __init__(
@@ -51,17 +49,45 @@ class BaseAnalyte:
         lims: Lims,
         sample_id: str,
         process_type: str = None,
-        artifact_udf_model=None,
-        process_udf_model=None,
         optional_step: bool = False,
     ):
         self.lims: Lims = lims
         self.sample_id: str = sample_id
         self.process_type: str = process_type
-        self.artifact_udf_model = artifact_udf_model
-        self.process_udf_model = process_udf_model
         self.optional_step: bool = optional_step
         self.artifact: Optional[Artifact] = self.get_artifact()
+        self.container_name = self.get_container()
+        self.well = self.get_well()
+        self.index_name = self.get_index()
+        self.nr_samples = self.get_nr_samples()
+
+    def get_well(self) -> Optional[str]:
+        """Returning artifact well if existing."""
+        if not (self.artifact and self.artifact.location):
+            return None
+        return self.artifact.location[1]
+
+    def get_container(self) -> Optional[str]:
+        """Returning artifact container name if existing."""
+        if not (self.artifact and self.artifact.container and self.artifact.container.name):
+            return None
+        return self.artifact.container.name
+
+    def get_index(self) -> Optional[str]:
+        """Returning artifact index if existing."""
+        if not (
+            self.artifact
+            and self.artifact.reagent_labels
+            and len(self.artifact.reagent_labels) == 1
+        ):
+            return None
+        return self.artifact.reagent_labels[0]
+
+    def get_nr_samples(self) -> Optional[int]:
+        """Returning nr samples if existing."""
+        if not (self.artifact and self.artifact.samples):
+            return None
+        return len(self.artifact.samples)
 
     def get_artifact(self) -> Optional[Artifact]:
         """Getting the analyte artifact based on sample_id and process_type.
@@ -79,46 +105,34 @@ class BaseAnalyte:
                 return None
             raise e
 
-    def filter_process_udfs_by_model(self) -> dict:
+    def process_udfs(self) -> dict:
         """Filtering process udfs by process_udf_model."""
-        try:
-            process_udfs = dict(self.artifact.parent_process.udf.items())
-        except:
-            if self.optional_step:
-                return {}
-            raise MissingProcessError(
-                message=f"sample didnt pass through requiered process {self.process_type}"
-            )
-        udf_model = self.process_udf_model(**process_udfs)
-        return udf_model.dict(exclude_none=True)
+        if self.artifact and self.artifact.parent_process:
+            return dict(self.artifact.parent_process.udf.items())
 
-    def filter_artifact_udfs_by_model(self) -> dict:
-        """Filtering artifact udfs by artifact_udf_model."""
-        try:
-            artifact_udfs = dict(self.artifact.udf.items())
-        except:
-            if self.optional_step:
-                return {}
-            raise MissingProcessError(
-                message=f"sample didnt pass through requiered process {self.process_type}"
-            )
-        udf_model = self.artifact_udf_model(**artifact_udfs)
-        return udf_model.dict(exclude_none=True)
-
-    def merge_process_and_artifact_udfs(self) -> dict:
-        """Merging process and artifact udfs into one dict."""
-
-        if not self.artifact:
+        if self.optional_step:
             return {}
-        if self.process_udf_model:
-            process_udfs: dict = self.filter_process_udfs_by_model()
-        else:
-            process_udfs = {}
-        if self.artifact_udf_model:
-            artifact_udfs: dict = self.filter_artifact_udfs_by_model()
-        else:
-            artifact_udfs = {}
-        merged_udfs = {}
-        merged_udfs.update(process_udfs)
-        merged_udfs.update(artifact_udfs)
-        return merged_udfs
+
+        raise MissingProcessError(
+            message=f"sample didnt pass through requiered process {self.process_type}"
+        )
+
+    def artifact_udfs(self) -> dict:
+        """Filtering artifact udfs by artifact_udf_model."""
+        if self.artifact:
+            return dict(self.artifact.udf.items())
+        if self.optional_step:
+            return {}
+        raise MissingProcessError(
+            message=f"sample didnt pass through requiered process {self.process_type}"
+        )
+
+    def base_fields(self) -> dict:
+
+        return dict(
+            well_position=self.well,
+            container_name=self.container_name,
+            index_name=self.index_name,
+            nr_samples=self.nr_samples,
+            lims_step_name=self.process_type,
+        )

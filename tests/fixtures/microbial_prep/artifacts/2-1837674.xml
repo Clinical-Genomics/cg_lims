@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837674?state=1430783" limsid="2-1837674">
+    <name>21ET100738</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240261" limsid="24-240261" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-181714" limsid="27-181714" />
+        <value>C:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8653A9" limsid="ACC8653A9" />
+    <udf:field type="Numeric" name="Sample Volume (ul)">4</udf:field>
+    <udf:field type="Numeric" name="Total Volume (uL)">66</udf:field>
+    <udf:field type="Numeric" name="Volume Buffer (ul)">62</udf:field>
+    <udf:field type="Numeric" name="Concentration">33</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Microbial Library Prep (Nextera) v2" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1757/stages/5906" />
+    </workflow-stages>
+</art:artifact>

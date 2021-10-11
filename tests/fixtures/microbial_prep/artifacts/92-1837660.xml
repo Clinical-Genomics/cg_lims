@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:file="http://genologics.com/ri/file" uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837660?state=1430747" limsid="92-1837660">
+    <name>Placement Map</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8653A1" limsid="ACC8653A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8653A9" limsid="ACC8653A9" />
+    <file:file limsid="40-64826" uri="http://127.0.0.1:8000/api/v2/files/40-64826" />
+    <workflow-stages />
+</art:artifact>
