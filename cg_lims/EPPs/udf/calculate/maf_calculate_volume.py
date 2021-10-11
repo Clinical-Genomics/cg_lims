@@ -18,7 +18,7 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 FINAL_CONCENTRATION = 4
-CONCENTRATION_UPPER_LIMIT = 1443
+CONCENTRATION_UPPER_LIMIT = 1444
 MINIMUM_TOTAL_VOLUME = 15
 MAXIMUM_WATER_VOLUME = 180
 QC_FAILED = "FAILED"
@@ -64,16 +64,17 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
     failed_artifacts = []
 
     for artifact in artifacts:
-        qc_flag = QC_FAILED
         sample_concentration = get_sample_concentration(artifact)
         if sample_concentration is None or sample_concentration < FINAL_CONCENTRATION:
             LOG.warning(
-                f"Sample concentration too low or missing for sample {artifact}."
+                f"Sample concentration too low or missing for sample {artifact.samples[0].name}."
             )
             failed_artifacts.append(artifact)
             continue
-        if sample_concentration > CONCENTRATION_UPPER_LIMIT:
-            LOG.warning(f"Sample concentration too high for sample {artifact}.")
+        if sample_concentration >= CONCENTRATION_UPPER_LIMIT:
+            LOG.warning(
+                f"Sample concentration too high for sample {artifact.samples[0].name}."
+            )
             failed_artifacts.append(artifact)
             continue
 
@@ -89,7 +90,9 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
                 sample_concentration
             )
         else:
-            LOG.warning(f"Could not calculate sample volume for {artifact}.")
+            LOG.warning(
+                f"Could not calculate sample volume for sample {artifact.samples[0].name}."
+            )
             failed_artifacts.append(artifact)
             continue
 
@@ -101,7 +104,8 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
 
     if failed_artifacts:
         raise LimsError(
-            f"MAF volume calculations failed for {failed_artifacts}, out of {len(artifacts)} artifact(s)."
+            f"MAF volume calculations failed for {len(failed_artifacts)} samples, "
+            f"{len(artifacts) - len(failed_artifacts)} updates successful. "
         )
 
 
