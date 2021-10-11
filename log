@@ -1,7 +1,0 @@
-INFO:cg_lims.EPPs.arnold.sample:Running lims epps arnold-upload sample with params: {}
-INFO:cg_lims.EPPs.arnold.sample:Running lims epps arnold-upload sample with params: {}
-INFO:cg_lims.EPPs.arnold.sample:Arnold output: "Samples inserted to db"
-INFO:cg_lims.EPPs.arnold.sample:Running lims epps arnold-upload sample with params: {}
-INFO:cg_lims.EPPs.arnold.sample:Arnold output: "Samples inserted to db"
-INFO:cg_lims.EPPs.arnold.sample:Running lims epps arnold-upload sample with params: {}
-INFO:cg_lims.EPPs.arnold.sample:"exception batch op errors occurred, full error: {'writeErrors': [{'index': 0, 'code': 11000, 'keyPattern': {'_id': 1}, 'keyValue': {'_id': 'ACC8031A4'}, 'errmsg': 'E11000 duplicate key error collection: arnold.Sample index: _id_ dup key: { _id: \"ACC8031A4\" }', 'op': {'_id': 'ACC8031A4', 'sample_id': 'ACC8031A4', 'application_tag': 'RNAPOAR075', 'category': None, 'received_date': None, 'delivery_date': None, 'sequenced_date': None, 'prepared_date': None, 'sequenced_to_delivered': None, 'prepped_to_sequenced': None, 'received_to_prepped': None, 'received_to_delivered': None, 'family': None, 'strain': None, 'source': 'blood', 'customer': 'cust133', 'priority': 'standard', 'initial_qc': None, 'library_qc': None, 'prep_method': None, 'sequencing_qc': None}}], 'writeConcernErrors': [], 'nInserted': 0, 'nUpserted': 0, 'nMatched': 0, 'nModified': 0, 'nRemoved': 0, 'upserted': []} "
