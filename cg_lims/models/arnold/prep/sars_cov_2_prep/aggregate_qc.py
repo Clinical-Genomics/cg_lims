@@ -11,7 +11,7 @@ class AggregateQCDNACovArtifactUDF(BaseModel):
     """Aggregate QC (DNA) (Cov) v1"""
 
     sample_concentration: Optional[float] = Field(None, alias="Concentration")
-    sample_size: Optional[float] = Field(None, alias="Size (bp)")
+    sample_size: Optional[int] = Field(None, alias="Size (bp)")
 
 
 class AggregateQCDNACovFields(BaseStep):

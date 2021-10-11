@@ -9,7 +9,7 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class BufferExchangeArtifactUDFs(BaseModel):
-    buffer_exchange_concentration: Optional[str] = Field(None, alias="Concentration")
+    buffer_exchange_concentration: Optional[float] = Field(None, alias="Concentration")
 
 
 class BufferExchangeFields(BaseStep):
