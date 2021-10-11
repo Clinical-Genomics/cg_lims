@@ -10,7 +10,7 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 class CaptureandWashProcessUDFs(BaseModel):
     enrichment_kit_capture_and_wash: Optional[str] = Field(None, alias="Twist enrichment kit")
-    hybridization_time: str = Field(..., alias="Total hybridization time (h)")
+    hybridization_time: int = Field(..., alias="Total hybridization time (h)")
     lot_nr_h20_capture_and_wash: str = Field(..., alias="Nuclease free water")
     capture_and_wash_method: str = Field(..., alias="Method document")
 

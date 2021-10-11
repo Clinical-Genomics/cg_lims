@@ -11,7 +11,7 @@ class AmplifycapturedlibrariestwistProcessUDFs(BaseModel):
     lot_nr_amplification_kit_amplify_captured_library: str = Field(
         ..., alias="Kapa HiFi HotStart ReadyMix"
     )
-    nr_pcr_cycles_amplify_captured_library: str = Field(..., alias="Nr of PCR cycles")
+    nr_pcr_cycles_amplify_captured_library: int = Field(..., alias="Nr of PCR cycles")
 
 
 class AmplifycapturedlibrariestwistFields(

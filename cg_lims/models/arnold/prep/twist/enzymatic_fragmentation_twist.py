@@ -9,7 +9,7 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 class EnzymaticFragmentationTWISTProcessUdfs(BaseModel):
     fragmentation_method: Optional[str] = Field(None, alias="Method document")
-    fragmentation_time: Optional[float] = Field(None, alias="Fragmentation time (min)")
+    fragmentation_time: Optional[int] = Field(None, alias="Fragmentation time (min)")
     fragmentation_kit: Optional[str] = Field(None, alias="KAPA HyperPlus Kit")
     fragmentation_instrument_hybridization: Optional[str] = Field(None, alias="Thermal cycler name")
 

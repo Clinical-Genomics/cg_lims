@@ -5,8 +5,8 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class BeadPurificationArtifactUDFs(BaseModel):
-    bead_purification_size_bp: str = Field(..., alias="Size (bp)")
-    bead_purification_concentration: str = Field(..., alias="Concentration")
+    bead_purification_size_bp: int = Field(..., alias="Size (bp)")
+    bead_purification_concentration: float = Field(..., alias="Concentration")
 
 
 class BeadPurificationProcessUDFs(BaseModel):
