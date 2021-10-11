@@ -7,13 +7,13 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class PoolsamplesforhybridizationArtifactUDFs(BaseModel):
-    amount_of_sample: Optional[str] = Field(None, alias="Total Amount (ng)")
+    amount_of_sample: Optional[float] = Field(None, alias="Total Amount (ng)")
 
 
 class PoolsamplesforhybridizationProcessUDFs(BaseModel):
 
-    speedvac_temp: str = Field(..., alias="SpeedVac temp")
-    speedvac_time: str = Field(..., alias="SpeedVac time (min)")
+    speedvac_temp: float = Field(..., alias="SpeedVac temp")
+    speedvac_time: float = Field(..., alias="SpeedVac time (min)")
 
 
 class PoolSamplesForHybridizationFields(BaseStep):

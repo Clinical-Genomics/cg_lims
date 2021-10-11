@@ -9,7 +9,7 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class PreProcessingArtifactUDFs(BaseModel):
-    pre_processing_concentration: Optional[str] = Field(None, alias="Concentration")
+    pre_processing_concentration: Optional[float] = Field(None, alias="Concentration")
 
 
 class PreProcessingFields(BaseStep):

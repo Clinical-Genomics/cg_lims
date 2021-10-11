@@ -7,8 +7,8 @@ from cg_lims.objects import BaseAnalyte
 
 
 class KAPALibraryPreparationArtifactUDFs(BaseModel):
-    library_size_pre_hyb: str = Field(..., alias="Size (bp)")
-    library_concentration_pre_hyb: str = Field(..., alias="Concentration")
+    library_size_pre_hyb: int = Field(..., alias="Size (bp)")
+    library_concentration_pre_hyb: float = Field(..., alias="Concentration")
     adapter_ligation_master_mix: str = Field(..., alias="Ligation Master Mix")
     library_preparation_pcr_plate: str = Field(..., alias="PCR Plate")
     amount_of_sample_in_pool_ng: float = Field(
