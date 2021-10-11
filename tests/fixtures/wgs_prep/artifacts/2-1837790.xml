@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837790?state=1430900" limsid="2-1837790">
+    <name>CA007P (qPCR)</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-240275" limsid="151-240275" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-181726" limsid="27-181726" />
+        <value>C:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A3" limsid="ACC8454A3" />
+    <reagent-label name="A03 - UDI0017" />
+    <udf:field type="Numeric" name="Concentration (nM)">12</udf:field>
+    <udf:field type="Numeric" name="Size (bp)">123</udf:field>
+    <udf:field type="Numeric" name="Concentration">22</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Library validation QC wgs v3" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1760/stages/6067" />
+        <workflow-stage status="QUEUED" name="Define Run Format and Calculate Volumes (Nova Seq)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1760/stages/6068" />
+    </workflow-stages>
+</art:artifact>

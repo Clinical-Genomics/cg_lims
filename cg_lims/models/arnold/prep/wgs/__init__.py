@@ -25,9 +25,10 @@ from ..base_step import BaseStep
 def build_wgs_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
     """Building a sars_cov_2 Prep."""
 
+    prep_id = f"{sample_id}_{process_id}"
     return [
-        get_fragemnt_dna_truseq_udfs(sample_id=sample_id, lims=lims),
-        get_initial_qc_udfs(sample_id=sample_id, lims=lims),
-        get_aliquot_samples_for_covaris_udfs(sample_id=sample_id, lims=lims),
-        get_end_repair_udfs(sample_id=sample_id, lims=lims),
+        get_fragemnt_dna_truseq_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_initial_qc_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_aliquot_samples_for_covaris_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_end_repair_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
     ]

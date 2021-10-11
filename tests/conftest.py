@@ -14,39 +14,6 @@ from limsmock.server import run_server
 from pydantic import BaseModel, Field
 
 
-class IndexProcessUDFModel(BaseModel):
-    lot_nr_tagmentation_buffer: str = Field(..., alias="Lot nr: Tagmentation buffer (TD-buffer)")
-    lot_nr_tagmentation_enzyme: str = Field(..., alias="Lot nr: Tagmentation enzyme (TDE1)")
-    lot_nr_index: str = Field(..., alias="Lot nr: Index")
-    lot_nr_pcr_mix: str = Field(..., alias="Lot nr: KAPA HiFi HotStart ReadyMix (2X)")
-    pcr_instrument_incubation: str = Field(..., alias="PCR instrument incubation")
-    pcr_instrument_amplification: str = Field(..., alias="PCR instrument amplification")
-    nr_pcr_cycles: int = Field(..., alias="Nr PCR cycles")
-
-
-class ProcessUDFModel(BaseModel):
-    lot_nr_beads_library_prep: str = Field(..., alias="Lot nr: Beads")
-    lot_nr_etoh_library_prep: str = Field(..., alias="Lot nr: EtOH")
-    lot_nr_h2o_library_prep: str = Field(..., alias="Lot nr: H2O")
-
-
-class ArtifactUDFModel(BaseModel):
-    finished_library_concentration: float = Field(..., alias="Concentration")
-    finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
-    finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
-    finished_library_average_size: float = Field(..., alias="Average Size (bp)")
-
-
-class MegedFieldsIndexModel(IndexProcessUDFModel):
-    container_name: Optional[str]
-    well_position: Optional[str]
-    index_name: Optional[str]
-    nr_samples: Optional[int]
-
-    class Config:
-        allow_population_by_field_name = True
-
-
 PORT = 8000
 HOST = "127.0.0.1"
 

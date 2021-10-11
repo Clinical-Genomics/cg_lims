@@ -23,15 +23,20 @@ def replace_str(file: Path, replace: str, replace_with: str) -> None:
 
 def build_file_structure(base_dir: str) -> ProcessFixure:
     processes = Path(f"{base_dir}/processes/")
-    processes.mkdir(parents=True)
+    if not processes.exists():
+        processes.mkdir(parents=True)
     artifacts = Path(f"{base_dir}/artifacts/")
-    artifacts.mkdir(parents=True)
+    if not artifacts.exists():
+        artifacts.mkdir(parents=True)
     containers = Path(f"{base_dir}/containers/")
-    containers.mkdir(parents=True)
+    if not containers.exists():
+        containers.mkdir(parents=True)
     containertypes = Path(f"{base_dir}/containertypes/")
-    containertypes.mkdir(parents=True)
+    if not containertypes.exists():
+        containertypes.mkdir(parents=True)
     samples = Path(f"{base_dir}/samples/")
-    samples.mkdir(parents=True)
+    if not samples.exists():
+        samples.mkdir(parents=True)
     return ProcessFixure(
         samples=samples,
         processes=processes,
@@ -84,7 +89,8 @@ def make_fixure(process: str, test_name: str, config: str):
         samples += artifact.samples
     add_entities(entities=samples, entity_dir=fixture_dir.samples)
     containers = {artifact.location[0] for artifact in artifacts}
-    containers.remove(None)
+    if None in containers:
+        containers.remove(None)
     add_entities(entities=list(containers), entity_dir=fixture_dir.containers)
     container_types = list({container.type for container in containers})
     add_entities(entities=container_types, entity_dir=fixture_dir.containertypes)

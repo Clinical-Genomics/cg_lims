@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837690?state=1430835" limsid="92-1837690">
+    <name>Bravo Normalization File</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240265" limsid="24-240265" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8653A1" limsid="ACC8653A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8653A9" limsid="ACC8653A9" />
+    <reagent-label name="pl1 A04 IDT_10nt_NXT_5 (CAGCAGGTCA-TACCTAAGTG)" />
+    <reagent-label name="pl1 A03 IDT_10nt_NXT_4 (ATGTTGCCAC-ATGGCTTCTA)" />
+    <workflow-stages />
+</art:artifact>

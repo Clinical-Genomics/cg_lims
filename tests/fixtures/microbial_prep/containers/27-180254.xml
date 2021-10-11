@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='utf-8'?>
+<con:container xmlns:con="http://genologics.com/ri/container" uri="http://127.0.0.1:8000/api/v2/containers/27-180254" limsid="27-180254">
+    <name>Mikro_V.38_2021</name>
+    <type uri="http://127.0.0.1:8000/api/v2/containertypes/1" name="96 well plate" />
+    <occupied-wells>27</occupied-wells>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A1PA1" limsid="ACC8653A1PA1">
+        <value>A:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A2PA1" limsid="ACC8653A2PA1">
+        <value>B:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A3PA1" limsid="ACC8653A3PA1">
+        <value>C:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A4PA1" limsid="ACC8653A4PA1">
+        <value>D:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A5PA1" limsid="ACC8653A5PA1">
+        <value>E:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A6PA1" limsid="ACC8653A6PA1">
+        <value>F:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A7PA1" limsid="ACC8653A7PA1">
+        <value>G:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A8PA1" limsid="ACC8653A8PA1">
+        <value>H:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A9PA1" limsid="ACC8653A9PA1">
+        <value>A:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A10PA1" limsid="ACC8653A10PA1">
+        <value>B:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A11PA1" limsid="ACC8653A11PA1">
+        <value>C:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A12PA1" limsid="ACC8653A12PA1">
+        <value>D:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A13PA1" limsid="ACC8653A13PA1">
+        <value>E:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A14PA1" limsid="ACC8653A14PA1">
+        <value>F:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A15PA1" limsid="ACC8653A15PA1">
+        <value>G:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A16PA1" limsid="ACC8653A16PA1">
+        <value>H:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A17PA1" limsid="ACC8653A17PA1">
+        <value>A:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A18PA1" limsid="ACC8653A18PA1">
+        <value>B:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A19PA1" limsid="ACC8653A19PA1">
+        <value>C:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A20PA1" limsid="ACC8653A20PA1">
+        <value>D:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A21PA1" limsid="ACC8653A21PA1">
+        <value>E:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A22PA1" limsid="ACC8653A22PA1">
+        <value>F:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A23PA1" limsid="ACC8653A23PA1">
+        <value>G:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A24PA1" limsid="ACC8653A24PA1">
+        <value>H:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A25PA1" limsid="ACC8653A25PA1">
+        <value>A:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A26PA1" limsid="ACC8653A26PA1">
+        <value>B:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A27PA1" limsid="ACC8653A27PA1">
+        <value>C:4</value>
+    </placement>
+    <state>Populated</state>
+</con:container>

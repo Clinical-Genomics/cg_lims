@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837855?state=1430920" limsid="2-1837855">
+    <name>2021-19764-03</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240280" limsid="24-240280" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-181729" limsid="27-181729" />
+        <value>D:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8436A2" limsid="ACC8436A2" />
+    <udf:field type="Numeric" name="Amount (ng)">33</udf:field>
+    <udf:field type="Numeric" name="Amount needed (ng)">33</udf:field>
+    <udf:field type="Numeric" name="Concentration">22</udf:field>
+    <udf:field type="Numeric" name="Sample Volume (ul)">1.5</udf:field>
+    <udf:field type="String" name="Output Container Barcode">123</udf:field>
+    <udf:field type="Numeric" name="Volume H2O (ul)">48.5</udf:field>
+    <udf:field type="Numeric" name="DIN Value">10</udf:field>
+    <workflow-stages>
+        <workflow-stage status="IN_PROGRESS" name="Enzymatic fragmentation TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1755/stages/5730" />
+    </workflow-stages>
+</art:artifact>

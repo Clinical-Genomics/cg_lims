@@ -26,27 +26,36 @@ prep_document_functions = {
 }
 
 
+def build_step_documents(
+    prep_type: Literal["wgs", "twist", "micro", "cov"], process: Process, lims: Lims
+) -> List[BaseStep]:
+    prep_document_function = prep_document_functions[prep_type]
+    samples: List[Sample] = get_process_samples(process=process)
+    all_step_documents = []
+    for sample in samples:
+        step_documents: List[BaseStep] = prep_document_function(
+            sample_id=sample.id, process_id=process.id, lims=lims
+        )
+        all_step_documents += step_documents
+    return all_step_documents
+
+
 @click.command()
 @options.prep(help="Prep type.")
 @click.pass_context
 def prep(ctx, prep_type: Literal["wgs", "twist", "micro", "cov"]):
     """Creating Step documents from a prep in the arnold step collection."""
 
-    build_step_documents = prep_document_functions[prep_type]
-
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
     process: Process = ctx.obj["process"]
     lims: Lims = ctx.obj["lims"]
     arnold_host: str = ctx.obj["arnold_host"]
-    samples: List[Sample] = get_process_samples(process=process)
 
-    all_step_documents = []
-    for sample in samples:
-        step_documents: List[BaseStep] = build_step_documents(
-            sample_id=sample.id, process_id=process.id, lims=lims
-        )
-        all_step_documents += step_documents
+    all_step_documents: List[BaseStep] = build_step_documents(
+        prep_type=prep_type, process=process, lims=lims
+    )
+
     response: Response = requests.post(
         url=f"{arnold_host}/steps",
         headers={"Content-Type": "application/json"},
