@@ -8,10 +8,15 @@ from tests.conftest import (
 )
 
 
-WGS_STEP_TYPES = {"initial_qc", "end_repair", "fragemnt_dna_truseq", "aliquot_samples_for_covaris"}
+WGS_STEP_TYPES = {
+    "reception_control",
+    "end_repair",
+    "fragemnt_dna_truseq",
+    "aliquot_samples_for_covaris",
+}
 
 
-def test_microbial_prep(lims):
+def test_wgs_prep(lims):
     # GIVEN: A lims with a process: "24-240276" (Aggregate QC (Library Validation)).
     # Where the samples in the process has gone through the whole wgs prep workflow:
 

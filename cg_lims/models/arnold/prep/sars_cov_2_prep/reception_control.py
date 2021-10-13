@@ -33,6 +33,6 @@ def get_sample_artifact_fields(lims: Lims, sample_id: str, prep_id: str) -> Samp
         artifact_udfs=SampleArtifactUDF(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="aggregate_qc_dna",
+        step_type="reception_control",
         workflow="sars_cov_2"
     )

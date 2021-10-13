@@ -166,5 +166,7 @@
     <udf:field type="String" name="PCR Machine: Adapter ligation">Aygo</udf:field>
     <udf:field type="String" name="PCR Machine: End Repair and A-tail">Aygo</udf:field>
     <udf:field type="String" name="Method document">1993</udf:field>
+    <udf:field type="String" name="Hamilton (post-lab)">hej</udf:field>
+    <udf:field type="String" name="Hamilton (pre-lab)">ha</udf:field>
     <process-parameter name="Sorted File for Hamilton" />
 </prc:process>

@@ -18,11 +18,11 @@ TWIST_STEP_TYPES = {
     "hybridize_library",
     "capture_and_wash",
     "amplify_captured_library",
-    "pre_processing",
+    "reception_control",
 }
 
 
-def test_microbial_prep(lims):
+def test_twist_prep(lims):
     # GIVEN: A lims with a process: "24-240289" (Aggregate QC (Library Validation) TWIST).
     # Where the samples in the process has gone through the whole twist prep workflow:
 
@@ -32,6 +32,7 @@ def test_microbial_prep(lims):
     # WHEN running build_step_documents
     step_documents = build_step_documents(lims=lims, process=process, prep_type="twist")
     # THEN assert BaseStep documents are created and all step types in the twist workflow are represented
+    print({document.step_type for document in step_documents})
     for document in step_documents:
         assert isinstance(document, BaseStep)
     assert {document.step_type for document in step_documents} == TWIST_STEP_TYPES

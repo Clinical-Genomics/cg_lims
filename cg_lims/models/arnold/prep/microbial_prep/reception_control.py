@@ -28,6 +28,6 @@ def get_sample_artifact_fields(lims: Lims, sample_id: str, prep_id: str) -> Samp
         artifact_udfs=SampleArtifactUDF(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="initial_qc",
+        step_type="reception_control",
         workflow="Microbial"
     )
