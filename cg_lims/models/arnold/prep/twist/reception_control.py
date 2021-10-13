@@ -8,27 +8,27 @@ from cg_lims.objects import BaseAnalyte
 from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
-class PreProcessingArtifactUDFs(BaseModel):
+class SampleArtifactUDF(BaseModel):
     pre_processing_concentration: Optional[float] = Field(None, alias="Concentration")
 
 
-class PreProcessingFields(BaseStep):
-    artifact_udfs: PreProcessingArtifactUDFs
+class SampleArtifactFields(BaseStep):
+    artifact_udfs: SampleArtifactUDF
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_pre_processing_twist(lims: Lims, sample_id: str, prep_id: str) -> PreProcessingFields:
+def get_sample_artifact_fields(lims: Lims, sample_id: str, prep_id: str) -> SampleArtifactFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         optional_step=True,
     )
 
-    return PreProcessingFields(
+    return SampleArtifactFields(
         **analyte.base_fields(),
-        artifact_udfs=PreProcessingArtifactUDFs(**analyte.artifact_udfs()),
+        artifact_udfs=SampleArtifactUDF(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="pre_processing",

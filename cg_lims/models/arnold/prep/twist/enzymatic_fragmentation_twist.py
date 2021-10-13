@@ -12,6 +12,7 @@ class EnzymaticFragmentationTWISTProcessUdfs(BaseModel):
     fragmentation_time: Optional[float] = Field(None, alias="Fragmentation time (min)")
     fragmentation_kit: Optional[str] = Field(None, alias="KAPA HyperPlus Kit")
     fragmentation_instrument_hybridization: Optional[str] = Field(None, alias="Thermal cycler name")
+    fragmentation_hamilton: Optional[str] = Field(None, alias="Hamilton")
 
 
 class EnzymaticFragmentationTWISTFields(BaseStep):

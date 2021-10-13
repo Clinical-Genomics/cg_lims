@@ -1,10 +1,8 @@
 import logging
 from typing import Optional
-
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
-
 from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
@@ -35,6 +33,7 @@ def get_normalization_of_samples(
         lims=lims,
         sample_id=sample_id,
         process_type="CG002 - Normalization of microbial samples for sequencing",
+        optional_step=True,
     )
 
     return NormalizationForSequencingFields(

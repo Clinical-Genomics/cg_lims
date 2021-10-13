@@ -7,32 +7,30 @@ from cg_lims.objects import BaseAnalyte
 from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
-class AggregateQCDNACovArtifactUDF(BaseModel):
+class SampleArtifactUDF(BaseModel):
     """Aggregate QC (DNA) (Cov) v1"""
 
     sample_concentration: Optional[float] = Field(None, alias="Concentration")
     sample_size: Optional[int] = Field(None, alias="Size (bp)")
 
 
-class AggregateQCDNACovFields(BaseStep):
-    artifact_udfs: AggregateQCDNACovArtifactUDF
+class SampleArtifactFields(BaseStep):
+    artifact_udfs: SampleArtifactUDF
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_aggregate_qc_dna_cov_udfs(
-    lims: Lims, sample_id: str, prep_id: str
-) -> AggregateQCDNACovFields:
+def get_sample_artifact_fields(lims: Lims, sample_id: str, prep_id: str) -> SampleArtifactFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         optional_step=True,
     )
 
-    return AggregateQCDNACovFields(
+    return SampleArtifactFields(
         **analyte.base_fields(),
-        artifact_udfs=AggregateQCDNACovArtifactUDF(**analyte.artifact_udfs()),
+        artifact_udfs=SampleArtifactUDF(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="aggregate_qc_dna",

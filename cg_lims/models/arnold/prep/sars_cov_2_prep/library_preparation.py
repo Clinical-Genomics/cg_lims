@@ -24,7 +24,7 @@ class LibraryPreparationCovProcessUDFS(BaseModel):
     liquid_handling_system: str = Field(..., alias="Instrument")
 
 
-class LibraryPreparationCovUDFS(
+class LibraryPreparationCovFields(
     BaseStep,
 ):
     process_udfs: LibraryPreparationCovProcessUDFS
@@ -33,16 +33,14 @@ class LibraryPreparationCovUDFS(
         allow_population_by_field_name = True
 
 
-def get_library_prep_cov_udfs(
-    lims: Lims, sample_id: str, prep_id: str
-) -> LibraryPreparationCovUDFS:
+def get_library_prep_cov(lims: Lims, sample_id: str, prep_id: str) -> LibraryPreparationCovFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="Library Preparation (Cov) v1",
     )
 
-    return LibraryPreparationCovUDFS(
+    return LibraryPreparationCovFields(
         **analyte.base_fields(),
         process_udfs=LibraryPreparationCovProcessUDFS(**analyte.process_udfs()),
         sample_id=sample_id,

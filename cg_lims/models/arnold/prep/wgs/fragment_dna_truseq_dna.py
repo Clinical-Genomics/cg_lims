@@ -22,9 +22,7 @@ class FragmentDNATruSeqDNAFields(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_fragemnt_dna_truseq_udfs(
-    lims: Lims, sample_id: str, prep_id: str
-) -> FragmentDNATruSeqDNAFields:
+def get_fragemnt_dna_truseq(lims: Lims, sample_id: str, prep_id: str) -> FragmentDNATruSeqDNAFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
