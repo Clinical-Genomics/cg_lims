@@ -34,6 +34,6 @@ def get_fragemnt_dna_truseq(lims: Lims, sample_id: str, prep_id: str) -> Fragmen
         process_udfs=FragmentDNATruSeqDNAProcessUDFS(**analyte.process_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="fragemnt_dna_truseq",
+        step_type="fragment_dna",
         workflow="WGS",
     )

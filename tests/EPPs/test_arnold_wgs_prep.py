@@ -11,7 +11,7 @@ from tests.conftest import (
 WGS_STEP_TYPES = {
     "reception_control",
     "end_repair",
-    "fragemnt_dna_truseq",
+    "fragment_dna",
     "aliquot_samples_for_covaris",
 }
 

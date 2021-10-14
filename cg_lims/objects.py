@@ -25,7 +25,7 @@ class Pool:
         self.artifact = pool_artifact
 
     def get_total_reads_missing(self) -> None:
-        """Get the total numer of missing reads in the pool"""
+        """Get the total number of missing reads in the pool"""
 
         for art in self.artifact.input_artifact_list():
             reads = art.samples[0].udf.get("Reads missing (M)")
@@ -56,22 +56,30 @@ class BaseAnalyte:
         self.process_type: str = process_type
         self.optional_step: bool = optional_step
         self.artifact: Optional[Artifact] = self.get_artifact()
-        self.container_name = self.get_container()
-        self.well = self.get_well()
-        self.index_name = self.get_index()
-        self.nr_samples = self.get_nr_samples()
 
     def get_well(self) -> Optional[str]:
         """Returning artifact well if existing."""
-        if not (self.artifact and self.artifact.location):
+        if not (self.artifact and self.artifact.location and self.artifact.location[1] != "1:1"):
             return None
         return self.artifact.location[1]
 
-    def get_container(self) -> Optional[str]:
+    def get_container_name(self) -> Optional[str]:
         """Returning artifact container name if existing."""
         if not (self.artifact and self.artifact.container and self.artifact.container.name):
             return None
         return self.artifact.container.name
+
+    def get_container_id(self) -> Optional[str]:
+        """Returning artifact container id if existing."""
+        if not (self.artifact and self.artifact.container and self.artifact.container.id):
+            return None
+        return self.artifact.container.id
+
+    def get_container_type(self) -> Optional[str]:
+        """Returning artifact container type if existing."""
+        if not (self.artifact and self.artifact.container and self.artifact.container.type):
+            return None
+        return self.artifact.container.type.name
 
     def get_index(self) -> Optional[str]:
         """Returning artifact index if existing."""
@@ -84,10 +92,16 @@ class BaseAnalyte:
         return self.artifact.reagent_labels[0]
 
     def get_nr_samples(self) -> Optional[int]:
-        """Returning nr samples if existing."""
-        if not (self.artifact and self.artifact.samples):
+        """Returning nr samples in pool if existing."""
+        if not (self.artifact and self.artifact.samples and len(self.artifact.samples) > 1):
             return None
         return len(self.artifact.samples)
+
+    def get_artifact_name(self) -> Optional[int]:
+        """Returning artifact name if existing."""
+        if not self.artifact:
+            return None
+        return self.artifact.name
 
     def get_artifact(self) -> Optional[Artifact]:
         """Getting the analyte artifact based on sample_id and process_type.
@@ -104,6 +118,15 @@ class BaseAnalyte:
             if self.optional_step:
                 return None
             raise e
+
+    def get_date(self):
+        """Date when artifact was produced."""
+        if not (
+            self.artifact and self.artifact.parent_process and self.artifact.parent_process.date_run
+        ):
+            return None
+
+        return self.artifact.parent_process.date_run
 
     def process_udfs(self) -> dict:
         """Filtering process udfs by process_udf_model."""
@@ -130,9 +153,13 @@ class BaseAnalyte:
     def base_fields(self) -> dict:
 
         return dict(
-            well_position=self.well,
-            container_name=self.container_name,
-            index_name=self.index_name,
-            nr_samples=self.nr_samples,
+            well_position=self.get_well(),
+            container_name=self.get_container_name(),
+            container_id=self.get_container_id(),
+            container_type=self.get_container_type(),
+            index_name=self.get_index(),
+            nr_samples_in_pool=self.get_nr_samples(),
+            artifact_name=self.get_artifact_name(),
             lims_step_name=self.process_type,
+            date_run=self.get_date(),
         )

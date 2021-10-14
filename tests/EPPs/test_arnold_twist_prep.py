@@ -32,7 +32,6 @@ def test_twist_prep(lims):
     # WHEN running build_step_documents
     step_documents = build_step_documents(lims=lims, process=process, prep_type="twist")
     # THEN assert BaseStep documents are created and all step types in the twist workflow are represented
-    print({document.step_type for document in step_documents})
     for document in step_documents:
         assert isinstance(document, BaseStep)
     assert {document.step_type for document in step_documents} == TWIST_STEP_TYPES

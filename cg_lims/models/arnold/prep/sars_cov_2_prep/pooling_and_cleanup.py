@@ -45,6 +45,6 @@ def get_pooling_and_cleanup(lims: Lims, sample_id: str, prep_id: str) -> Pooling
         artifact_udfs=PoolingAndCleanUpCovArtifactUDF(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="get_pooling_and_cleanup",
+        step_type="pooling_and_cleanup",
         workflow="sars_cov_2"
     )

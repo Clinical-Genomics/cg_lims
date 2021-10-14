@@ -34,6 +34,6 @@ def get_library_prep_nextera(lims: Lims, sample_id: str, prep_id: str) -> Librar
         process_udfs=LibraryPrepNexteraProcessUDFS(**analyte.process_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="library_prep_nextera",
+        step_type="library_prep",
         workflow="Microbial"
     )

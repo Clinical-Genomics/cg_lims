@@ -24,13 +24,15 @@ class EnzymaticFragmentationTWISTFields(BaseStep):
 
 def get_enzymatic_fragmentation(
     lims: Lims, sample_id: str, prep_id: str
-) -> EnzymaticFragmentationTWISTFields:
+) -> Optional[EnzymaticFragmentationTWISTFields]:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="Enzymatic fragmentation TWIST v2",
         optional_step=True,
     )
+    if not analyte.artifact:
+        return None
 
     return EnzymaticFragmentationTWISTFields(
         **analyte.base_fields(),

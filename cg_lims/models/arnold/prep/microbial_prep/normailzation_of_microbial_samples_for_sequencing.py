@@ -28,13 +28,15 @@ class NormalizationForSequencingFields(BaseStep):
 
 def get_normalization_of_samples(
     lims: Lims, sample_id: str, prep_id: str
-) -> NormalizationForSequencingFields:
+) -> Optional[NormalizationForSequencingFields]:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="CG002 - Normalization of microbial samples for sequencing",
         optional_step=True,
     )
+    if not analyte.artifact:
+        return None
 
     return NormalizationForSequencingFields(
         **analyte.base_fields(),

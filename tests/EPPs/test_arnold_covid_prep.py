@@ -8,7 +8,7 @@ from tests.conftest import (
 )
 
 
-COVID_STEP_TYPES = {"library_prep", "reception_control", "get_pooling_and_cleanup"}
+COVID_STEP_TYPES = {"library_prep", "reception_control", "pooling_and_cleanup"}
 
 
 def test_covid_prep(lims):

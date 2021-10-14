@@ -47,6 +47,6 @@ def get_post_bead_pcr_purification(
         artifact_udfs=PostPCRBeadPurificationArtifactUDF(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="post_bead_pcr_purification",
+        step_type="post_pcr_bead_purification",
         workflow="Microbial"
     )

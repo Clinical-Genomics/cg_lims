@@ -27,13 +27,15 @@ class BufferExchangeFields(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_buffer_exchange(lims: Lims, sample_id: str, prep_id: str) -> BufferExchangeFields:
+def get_buffer_exchange(lims: Lims, sample_id: str, prep_id: str) -> Optional[BufferExchangeFields]:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="Buffer Exchange v1",
         optional_step=True,
     )
+    if not analyte.artifact:
+        return None
 
     return BufferExchangeFields(
         **analyte.base_fields(),

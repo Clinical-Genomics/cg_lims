@@ -9,7 +9,7 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class BufferExchangeArtifactUDFs(BaseModel):
-    buffer_exchange_concentration: Optional[float] = Field(None, alias="Concentration")
+    concentration: Optional[float] = Field(None, alias="Concentration")
 
 
 class BufferExchangeFields(BaseStep):
@@ -19,13 +19,18 @@ class BufferExchangeFields(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_buffer_exchange_twist(lims: Lims, sample_id: str, prep_id: str) -> BufferExchangeFields:
+def get_buffer_exchange_twist(
+    lims: Lims, sample_id: str, prep_id: str
+) -> Optional[BufferExchangeFields]:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="Buffer Exchange v2",
         optional_step=True,
     )
+
+    if not analyte.artifact:
+        return None
 
     return BufferExchangeFields(
         **analyte.base_fields(),

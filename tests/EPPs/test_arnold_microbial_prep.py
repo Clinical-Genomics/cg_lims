@@ -12,8 +12,8 @@ MICROBIAL_STEP_TYPES = {
     "buffer_exchange",
     "reception_control",
     "normalization_for_sequencing",
-    "post_bead_pcr_purification",
-    "library_prep_nextera",
+    "post_pcr_bead_purification",
+    "library_prep",
     "normalization",
 }
 
