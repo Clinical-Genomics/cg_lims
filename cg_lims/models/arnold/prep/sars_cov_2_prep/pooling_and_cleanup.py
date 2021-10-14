@@ -32,9 +32,7 @@ class PoolingAndCleanUpCovFields(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_pooling_and_cleanup_udfs(
-    lims: Lims, sample_id: str, prep_id: str
-) -> PoolingAndCleanUpCovFields:
+def get_pooling_and_cleanup(lims: Lims, sample_id: str, prep_id: str) -> PoolingAndCleanUpCovFields:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
@@ -47,6 +45,6 @@ def get_pooling_and_cleanup_udfs(
         artifact_udfs=PoolingAndCleanUpCovArtifactUDF(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="get_pooling_and_cleanup",
+        step_type="pooling_and_cleanup",
         workflow="sars_cov_2"
     )

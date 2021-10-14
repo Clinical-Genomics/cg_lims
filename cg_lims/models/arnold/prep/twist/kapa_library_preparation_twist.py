@@ -17,6 +17,8 @@ class KAPALibraryPreparationArtifactUDFs(BaseModel):
 
 
 class KAPALibraryPreparationProcessUDFs(BaseModel):
+    hamilton_post_lab_library_preparation: Optional[str] = Field(alias="Hamilton (post-lab)")
+    hamilton_pre_lab_library_preparation: Optional[str] = Field(alias="Hamilton (pre-lab)")
     method_document_library_preparation: str = Field(..., alias="Method document")
     library_preparation_kit: str = Field(..., alias="KAPA HyperPlus/Prep Kit")
     lot_nr_h2o_library_preparation_pre_lab: str = Field(..., alias="Nuclease-free water (pre-lab)")

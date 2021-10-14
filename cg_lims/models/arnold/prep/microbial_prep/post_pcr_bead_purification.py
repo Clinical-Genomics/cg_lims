@@ -20,7 +20,7 @@ class PostPCRBeadPurificationProcessUDFS(BaseModel):
 class PostPCRBeadPurificationArtifactUDF(BaseModel):
     finished_library_concentration: float = Field(..., alias="Concentration")
     finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
-    finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
+    finished_library_size: Optional[int] = Field(None, alias="Size (bp)")
     finished_library_average_size: float = Field(..., alias="Average Size (bp)")
 
 
@@ -47,6 +47,6 @@ def get_post_bead_pcr_purification(
         artifact_udfs=PostPCRBeadPurificationArtifactUDF(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="post_bead_pcr_purification",
+        step_type="post_pcr_bead_purification",
         workflow="Microbial"
     )

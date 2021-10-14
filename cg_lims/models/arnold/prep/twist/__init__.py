@@ -9,7 +9,7 @@ from .buffer_exchange import (
 )
 from .capture_and_wash_twist import (
     CaptureandWashFields,
-    CaptureandWashProcessUDFs,
+    CaptureAndWashProcessUDFs,
     get_capture_and_wash,
 )
 from .pool_samples_twist import (
@@ -38,12 +38,12 @@ from .aliquot_samples_for_enzymatic_fragmentation_twist import (
     AliquotSamplesForEnzymaticFragmentationFields,
     AliquotSamplesForEnzymaticFragmentationArtifactUdfs,
     AliquotSamplesForEnzymaticFragmentationProcessUdfs,
-    get_aliquot_samples_for_enzymatic_fragmentation_udfs,
+    get_aliquot_samples_for_enzymatic_fragmentation,
 )
 
 from .amplify_captured_libraries import (
-    AmplifycapturedlibrariestwistFields,
-    AmplifycapturedlibrariestwistProcessUDFs,
+    AmplifycapturedLibrariestwistFields,
+    AmplifycapturedLibrariestwistProcessUDFs,
     get_amplify_captured_library_udfs,
 )
 
@@ -53,15 +53,19 @@ from .enzymatic_fragmentation_twist import (
     get_enzymatic_fragmentation,
 )
 
-from .pre_processing import PreProcessingFields, PreProcessingArtifactUDFs, get_pre_processing_twist
+from .reception_control import (
+    SampleArtifactUDF,
+    SampleArtifactFields,
+    get_sample_artifact_fields,
+)
 from ..base_step import BaseStep
 
 
 def build_twist_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
     """Building a sars_cov_2 Prep."""
     prep_id = f"{sample_id}_{process_id}"
-    return [
-        get_aliquot_samples_for_enzymatic_fragmentation_udfs(
+    step_documents = [
+        get_aliquot_samples_for_enzymatic_fragmentation(
             sample_id=sample_id, lims=lims, prep_id=prep_id
         ),
         get_hybridize_library_twist(sample_id=sample_id, lims=lims, prep_id=prep_id),
@@ -72,5 +76,6 @@ def build_twist_documents(sample_id: str, process_id: str, lims: Lims) -> List[B
         get_bead_purification_twist(sample_id=sample_id, lims=lims, prep_id=prep_id),
         get_enzymatic_fragmentation(sample_id=sample_id, lims=lims, prep_id=prep_id),
         get_amplify_captured_library_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
-        get_pre_processing_twist(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        get_sample_artifact_fields(sample_id=sample_id, lims=lims, prep_id=prep_id),
     ]
+    return [document for document in step_documents if document is not None]

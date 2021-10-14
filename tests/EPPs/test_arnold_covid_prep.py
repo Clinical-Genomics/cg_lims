@@ -8,15 +8,7 @@ from tests.conftest import (
 )
 
 
-MICROBIAL_STEP_TYPES = {
-    "buffer_exchange",
-    "post_bead_pcr_purification",
-    "normalization",
-    "library_prep_nextera",
-    "normalization_for_sequencing",
-}
-
-COVID_STEP_TYPES = {"library_prep", "aggregate_qc_dna", "get_pooling_and_cleanup"}
+COVID_STEP_TYPES = {"library_prep", "reception_control", "pooling_and_cleanup"}
 
 
 def test_covid_prep(lims):

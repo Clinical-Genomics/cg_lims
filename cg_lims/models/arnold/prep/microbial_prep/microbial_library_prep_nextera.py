@@ -1,9 +1,6 @@
-from typing import Optional
-
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
-
 from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
@@ -37,6 +34,6 @@ def get_library_prep_nextera(lims: Lims, sample_id: str, prep_id: str) -> Librar
         process_udfs=LibraryPrepNexteraProcessUDFS(**analyte.process_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="library_prep_nextera",
+        step_type="library_prep",
         workflow="Microbial"
     )

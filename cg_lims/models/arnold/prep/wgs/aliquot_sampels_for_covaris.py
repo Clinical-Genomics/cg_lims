@@ -16,7 +16,7 @@ class AliquotSamplesforCovarisFields(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_aliquot_samples_for_covaris_udfs(
+def get_aliquot_samples_for_covaris(
     lims: Lims, sample_id: str, prep_id: str
 ) -> AliquotSamplesforCovarisFields:
     analyte = BaseAnalyte(

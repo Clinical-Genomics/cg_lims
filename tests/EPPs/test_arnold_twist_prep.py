@@ -18,11 +18,11 @@ TWIST_STEP_TYPES = {
     "hybridize_library",
     "capture_and_wash",
     "amplify_captured_library",
-    "pre_processing",
+    "reception_control",
 }
 
 
-def test_microbial_prep(lims):
+def test_twist_prep(lims):
     # GIVEN: A lims with a process: "24-240289" (Aggregate QC (Library Validation) TWIST).
     # Where the samples in the process has gone through the whole twist prep workflow:
 

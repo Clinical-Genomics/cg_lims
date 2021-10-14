@@ -29,7 +29,7 @@ class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeProcessUDFS(B
 class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeArtifactUDF(BaseModel):
     finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
     finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
-    finished_library_size: Optional[float] = Field(None, alias="Size (bp)")
+    finished_library_size: Optional[int] = Field(None, alias="Size (bp)")
 
 
 class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields(BaseStep):
@@ -40,7 +40,7 @@ class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields(BaseSt
         allow_population_by_field_name = True
 
 
-def get_end_repair_udfs(
+def get_end_repair(
     lims: Lims, sample_id: str, prep_id: str
 ) -> EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields:
     analyte = BaseAnalyte(
