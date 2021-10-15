@@ -1,10 +1,9 @@
 import datetime as dt
-
-from genologics.descriptors import LocationDescriptor
-from requests.exceptions import HTTPError
-from genologics.entities import Sample, Artifact
-from typing import Optional, Tuple
 import logging
+from typing import Optional, Tuple
+
+from genologics.entities import Artifact, Sample
+from requests.exceptions import HTTPError
 
 LOG = logging.getLogger(__name__)
 
@@ -53,7 +52,7 @@ def get_processing_time(sample: Sample) -> Optional[dt.datetime]:
     if received_at and delivery_date:
         return delivery_date - received_at
     LOG.info(
-        "Could not get recieved date or delivery date to generate the processing time for sample %s."
+        "Could not get received date or delivery date to generate the processing time for sample %s."
         % sample.id
     )
     return None
@@ -67,7 +66,7 @@ def get_artifact_well(artifact: Artifact) -> str:
 
 
 def get_index_well(artifact: Artifact):
-    """Parsing out the index well position from the reagent label string wich
+    """Parsing out the index well position from the reagent label string which
     typically looks like this: 'A05 IDT_10nt_446 (AGCGTGACCT-CCATCCGAGT)'
     """
 
@@ -84,3 +83,13 @@ def get_index_well(artifact: Artifact):
         return f"{index_well_row}{index_well_col}"
     else:
         return "-"
+
+
+def get_concentration(artifact: Artifact) -> Optional[float]:
+    """Get the concentration of a artifact"""
+    return artifact.udf.get("Concentration")
+
+
+def get_amount_needed(artifact: Artifact) -> Optional[float]:
+    """Get the concentration of a artifact"""
+    return artifact.udf.get("Amount needed (ng)")

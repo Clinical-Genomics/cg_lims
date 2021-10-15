@@ -14,6 +14,7 @@ from genologics.entities import Artifact
 
 from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.fields import get_amount_needed, get_concentration
 
 LOG = logging.getLogger(__name__)
 
@@ -22,16 +23,6 @@ AMOUNT_NEEDED_TRUSEQ = 1100
 TOTAL_VOLUME_TRUSEQ = 55
 TOTAL_VOLUME_LUCIGEN = 25
 VALID_AMOUNTS_NEEDED = [AMOUNT_NEEDED_LUCIGEN, AMOUNT_NEEDED_TRUSEQ]
-
-
-def get_concentration(artifact: Artifact) -> float:
-    """Get the concentration from the udf 'Concentration'"""
-    return artifact.udf.get("Concentration")
-
-
-def get_amount_needed(artifact: Artifact) -> int:
-    """Get the amount needed from the udf 'Amount needed (ng)'"""
-    return artifact.udf.get("Amount needed (ng)")
 
 
 def pre_check_amount_needed_filled_correctly(artifacts):
