@@ -45,6 +45,16 @@ def pre_check_amount_needed_filled_correctly(artifacts):
         )
 
 
+def calculate_lucigen_rb_volume(sample_volume: float) -> float:
+    """calculates the RB volume for Lucigen samples"""
+    return TOTAL_VOLUME_LUCIGEN - sample_volume
+
+
+def calculate_truseq_rb_volume(sample_volume: float) -> float:
+    """calculates the RB volume for TruSeq samples"""
+    return TOTAL_VOLUME_TRUSEQ - sample_volume
+
+
 def calculate_rb_volume(artifacts: List[Artifact]):
     """Calculate the RB volumes for all samples"""
     missing_udfs = 0
@@ -58,10 +68,13 @@ def calculate_rb_volume(artifacts: List[Artifact]):
             missing_udfs += 1
             continue
         sample_volume = amount_needed / concentration
-        if amount_needed == AMOUNT_NEEDED_TRUSEQ:
-            artifact.udf["RB Volume (ul)"] = TOTAL_VOLUME_TRUSEQ - sample_volume
-        if amount_needed == AMOUNT_NEEDED_LUCIGEN:
-            artifact.udf["RB Volume (ul)"] = TOTAL_VOLUME_LUCIGEN - sample_volume
+        volume_calculation_functions = {
+            AMOUNT_NEEDED_LUCIGEN: calculate_lucigen_rb_volume,
+            AMOUNT_NEEDED_TRUSEQ: calculate_truseq_rb_volume,
+        }
+        artifact.udf["RB Volume (ul)"] = volume_calculation_functions[amount_needed](
+            sample_volume
+        )
         artifact.udf["Sample Volume (ul)"] = sample_volume
         artifact.put()
 
