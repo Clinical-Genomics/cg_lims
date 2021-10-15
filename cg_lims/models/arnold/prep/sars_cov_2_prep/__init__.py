@@ -34,7 +34,8 @@ def build_sars_cov_2_documents(sample_id: str, process_id: str, lims: Lims) -> L
     for document in step_documents:
         if document is None:
             continue
-        if not document.artifact_udfs.dict(exclude_none=True):
+        doc_dict = document.dict(exclude_none=True)
+        if not (doc_dict.get("artifact_udfs") or doc_dict.get("process_udfs")):
             continue
         documents.append(document)
     return documents

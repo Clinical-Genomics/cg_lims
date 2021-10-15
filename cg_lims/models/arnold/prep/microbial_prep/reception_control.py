@@ -7,7 +7,7 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class SampleArtifactUDF(BaseModel):
-    sample_concentration: Optional[float] = Field(..., alias="Concentration")
+    sample_concentration: Optional[float] = Field(alias="Concentration")
 
 
 class SampleArtifactFields(BaseStep):

@@ -10,8 +10,8 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class SampleArtifactUDF(BaseModel):
-    sample_concentration: Optional[float] = Field(..., alias="Concentration")
-    sample_amount: Optional[float] = Field(..., alias="Amount (ng)")
+    sample_concentration: Optional[float] = Field(alias="Concentration")
+    sample_amount: Optional[float] = Field(alias="Amount (ng)")
 
 
 class SampleArtifactFields(BaseStep):

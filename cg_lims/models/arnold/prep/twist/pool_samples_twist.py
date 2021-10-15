@@ -12,8 +12,8 @@ class PoolsamplesforhybridizationArtifactUDFs(BaseModel):
 
 class PoolsamplesforhybridizationProcessUDFs(BaseModel):
 
-    speedvac_temp: Optional[float] = Field(..., alias="SpeedVac temp")
-    speedvac_time: Optional[float] = Field(..., alias="SpeedVac time (min)")
+    speedvac_temp: Optional[float] = Field(alias="SpeedVac temp")
+    speedvac_time: Optional[float] = Field(alias="SpeedVac time (min)")
 
 
 class PoolSamplesForHybridizationFields(BaseStep):

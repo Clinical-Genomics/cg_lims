@@ -9,11 +9,11 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class FragmentDNATruSeqDNAProcessUDFS(BaseModel):
-    lot_nr_covaris_tube: Optional[str] = Field(..., alias="Lot no: Covaris tube")
-    fragmentation_method: Optional[str] = Field(..., alias="Method Document 1")
-    covaris_protocol: Optional[str] = Field(..., alias="Protocol")
+    lot_nr_covaris_tube: Optional[str] = Field(alias="Lot no: Covaris tube")
+    fragmentation_method: Optional[str] = Field(alias="Method Document 1")
+    covaris_protocol: Optional[str] = Field(alias="Protocol")
     lot_nr_resuspension_buffer_fragmentation: Optional[str] = Field(
-        ..., alias="Lot no: Resuspension Buffer"
+        alias="Lot no: Resuspension Buffer"
     )
 
 

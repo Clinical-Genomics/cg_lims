@@ -9,16 +9,14 @@ from cg_lims.objects import BaseAnalyte
 
 class LibraryPrepNexteraProcessUDFS(BaseModel):
     lot_nr_tagmentation_buffer: Optional[str] = Field(
-        ..., alias="Lot nr: Tagmentation buffer (TD-buffer)"
+        alias="Lot nr: Tagmentation buffer (TD-buffer)"
     )
-    lot_nr_tagmentation_enzyme: Optional[str] = Field(
-        ..., alias="Lot nr: Tagmentation enzyme (TDE1)"
-    )
-    lot_nr_index: Optional[str] = Field(..., alias="Lot nr: Index")
-    lot_nr_pcr_mix: Optional[str] = Field(..., alias="Lot nr: KAPA HiFi HotStart ReadyMix (2X)")
-    pcr_instrument_incubation: Optional[str] = Field(..., alias="PCR instrument incubation")
-    pcr_instrument_amplification: Optional[str] = Field(..., alias="PCR instrument amplification")
-    nr_pcr_cycles: Optional[int] = Field(..., alias="Nr PCR cycles")
+    lot_nr_tagmentation_enzyme: Optional[str] = Field(alias="Lot nr: Tagmentation enzyme (TDE1)")
+    lot_nr_index: Optional[str] = Field(alias="Lot nr: Index")
+    lot_nr_pcr_mix: Optional[str] = Field(alias="Lot nr: KAPA HiFi HotStart ReadyMix (2X)")
+    pcr_instrument_incubation: Optional[str] = Field(alias="PCR instrument incubation")
+    pcr_instrument_amplification: Optional[str] = Field(alias="PCR instrument amplification")
+    nr_pcr_cycles: Optional[int] = Field(alias="Nr PCR cycles")
 
 
 class LibraryPrepFields(BaseStep):

@@ -8,7 +8,7 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class AliquotSamplesforCovarisArtifactUDF(BaseModel):
-    sample_amount_needed: Optional[float] = Field(..., alias="Amount needed (ng)")
+    sample_amount_needed: Optional[float] = Field(alias="Amount needed (ng)")
 
 
 class AliquotSamplesforCovarisFields(BaseStep):
