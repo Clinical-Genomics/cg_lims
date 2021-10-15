@@ -17,10 +17,11 @@ from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
 
+AMOUNT_NEEDED_LUCIGEN = 200
+AMOUNT_NEEDED_TRUSEQ = 1100
 TOTAL_VOLUME_TRUSEQ = 55
 TOTAL_VOLUME_LUCIGEN = 25
-AMOUNT_NEEDED_TRUSEQ = 1100
-AMOUNT_NEEDED_LUCIGEN = 200
+VALID_AMOUNTS_NEEDED = [AMOUNT_NEEDED_LUCIGEN, AMOUNT_NEEDED_TRUSEQ]
 
 
 def get_concentration(artifact: Artifact) -> float:
@@ -33,43 +34,41 @@ def get_amount_needed(artifact: Artifact) -> int:
     return artifact.udf.get("Amount needed (ng)")
 
 
+def pre_check_amount_needed_filled_correctly(artifacts):
+    """Checks if amount needed is set correctly. Raises an exception if not"""
+    # amount_needed_all_samples = [artifact.udf.get("Amount needed (ng)") for artifact in artifacts]
+    amount_needed_all_samples = [get_amount_needed(artifact) for artifact in artifacts]
+    if not all(amount in VALID_AMOUNTS_NEEDED for amount in amount_needed_all_samples):
+        raise InvalidValueError(
+            f"'Amount needed (ng)' missing or incorrect value for one or more samples. Value can "
+            f"only be {', '.join(map(str, VALID_AMOUNTS_NEEDED))}. Please correct and try again."
+        )
+
+
 def calculate_rb_volume(artifacts: List[Artifact]):
     """Calculate the RB volumes for all samples"""
-    invalid_values = 0
     missing_udfs = 0
     for artifact in artifacts:
         concentration = get_concentration(artifact)
         amount_needed = get_amount_needed(artifact)
-        if concentration is None or amount_needed is None:
+        if concentration is None:
             LOG.error(
-                f"Sample {artifact.samples[0].name} is missing udf 'Concentration' or 'Amount "
-                f"needed (ng)'."
+                f"Sample {artifact.samples[0].name} is missing udf 'Concentration'."
             )
             missing_udfs += 1
             continue
         sample_volume = amount_needed / concentration
         if amount_needed == AMOUNT_NEEDED_TRUSEQ:
             artifact.udf["RB Volume (ul)"] = TOTAL_VOLUME_TRUSEQ - sample_volume
-        elif amount_needed == AMOUNT_NEEDED_LUCIGEN:
+        if amount_needed == AMOUNT_NEEDED_LUCIGEN:
             artifact.udf["RB Volume (ul)"] = TOTAL_VOLUME_LUCIGEN - sample_volume
-        else:
-            LOG.error(
-                f"Sample {artifact.samples[0].name}: 'Amount Needed' can only be 200 or 1100."
-            )
-            invalid_values += 1
-            continue
         artifact.udf["Sample Volume (ul)"] = sample_volume
         artifact.put()
 
     if missing_udfs:
         raise MissingUDFsError(
             f"Could not apply calculation for {missing_udfs} out of {len(artifacts)} sample(s): "
-            f"Concentration' and 'Amount Needed (ng)' must both be set!"
-        )
-    if invalid_values:
-        raise InvalidValueError(
-            f"Could not apply calculation for {invalid_values} out of {len(artifacts)} sample(s): "
-            f"'Amount Needed (ng)' value was invalid! Please select the correct amount."
+            f"'Concentration' is missing!"
         )
 
 
@@ -81,6 +80,7 @@ def calculate_resuspension_buffer_volume(context: click.Context):
     process = context.obj["process"]
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
+        pre_check_amount_needed_filled_correctly(artifacts)
         calculate_rb_volume(artifacts=artifacts)
         message = "RB volumes have been calculated!"
         LOG.info(message)
