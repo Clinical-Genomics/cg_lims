@@ -7,11 +7,11 @@ from cg_lims.objects import BaseAnalyte
 
 
 class KAPALibraryPreparationArtifactUDFs(BaseModel):
-    library_size_pre_hyb: int = Field(..., alias="Size (bp)")
-    library_concentration_pre_hyb: float = Field(..., alias="Concentration")
-    adapter_ligation_master_mix: str = Field(..., alias="Ligation Master Mix")
-    library_preparation_pcr_plate: str = Field(..., alias="PCR Plate")
-    amount_of_sample_in_pool_ng: float = Field(
+    library_size_pre_hyb: Optional[int] = Field(..., alias="Size (bp)")
+    library_concentration_pre_hyb: Optional[float] = Field(..., alias="Concentration")
+    adapter_ligation_master_mix: Optional[str] = Field(..., alias="Ligation Master Mix")
+    library_preparation_pcr_plate: Optional[str] = Field(..., alias="PCR Plate")
+    amount_of_sample_in_pool_ng: Optional[float] = Field(
         ..., alias="Amount taken (ng)"
     )  # this value is set afterwards in the pooling step
 
@@ -19,17 +19,23 @@ class KAPALibraryPreparationArtifactUDFs(BaseModel):
 class KAPALibraryPreparationProcessUDFs(BaseModel):
     hamilton_post_lab_library_preparation: Optional[str] = Field(alias="Hamilton (post-lab)")
     hamilton_pre_lab_library_preparation: Optional[str] = Field(alias="Hamilton (pre-lab)")
-    method_document_library_preparation: str = Field(..., alias="Method document")
-    library_preparation_kit: str = Field(..., alias="KAPA HyperPlus/Prep Kit")
-    lot_nr_h2o_library_preparation_pre_lab: str = Field(..., alias="Nuclease-free water (pre-lab)")
-    lot_nr_xgen_adapter: str = Field(..., alias="xGen Adapter")
-    lot_nr_index: str = Field(..., alias="Indexing Primer")
-    lot_nr_beads_library_preparation_pre_lab: str = Field(
+    method_document_library_preparation: Optional[str] = Field(..., alias="Method document")
+    library_preparation_kit: Optional[str] = Field(..., alias="KAPA HyperPlus/Prep Kit")
+    lot_nr_h2o_library_preparation_pre_lab: Optional[str] = Field(
+        ..., alias="Nuclease-free water (pre-lab)"
+    )
+    lot_nr_xgen_adapter: Optional[str] = Field(..., alias="xGen Adapter")
+    lot_nr_index: Optional[str] = Field(..., alias="Indexing Primer")
+    lot_nr_beads_library_preparation_pre_lab: Optional[str] = Field(
         ..., alias="DNA purification beads (pre-lab)"
     )
-    lot_nr_etoh_library_preparation_pre_lab: str = Field(..., alias="Ethanol (pre-lab)")
-    pcr_instrument_end_repair_a_tail: str = Field(..., alias="PCR Machine: End Repair and A-tail")
-    pcr_instrument_adapter_ligation: str = Field(..., alias="PCR Machine: Adapter ligation")
+    lot_nr_etoh_library_preparation_pre_lab: Optional[str] = Field(..., alias="Ethanol (pre-lab)")
+    pcr_instrument_end_repair_a_tail: Optional[str] = Field(
+        ..., alias="PCR Machine: End Repair and A-tail"
+    )
+    pcr_instrument_adapter_ligation: Optional[str] = Field(
+        ..., alias="PCR Machine: Adapter ligation"
+    )
     pcr_instrument_amplification_plate1: Optional[str] = Field(
         None, alias="PCR Machine: Amplification Plate 1"
     )
@@ -39,11 +45,11 @@ class KAPALibraryPreparationProcessUDFs(BaseModel):
     pcr_instrument_amplification_plate3: Optional[str] = Field(
         None, alias="PCR Machine: Amplification Plate 3"
     )
-    lot_nr_beads_library_preparation_post_lab: str = Field(
+    lot_nr_beads_library_preparation_post_lab: Optional[str] = Field(
         ..., alias="DNA purification beads (post-lab)"
     )
-    lot_nr_etoh_library_preparation_post_lab: str = Field(..., alias="Ethanol (post-lab)")
-    lot_nr_h2o_library_preparation_post_lab: str = Field(
+    lot_nr_etoh_library_preparation_post_lab: Optional[str] = Field(..., alias="Ethanol (post-lab)")
+    lot_nr_h2o_library_preparation_post_lab: Optional[str] = Field(
         ..., alias="Nuclease-free water (post-lab)"
     )
 

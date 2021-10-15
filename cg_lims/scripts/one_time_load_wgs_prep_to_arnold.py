@@ -32,6 +32,7 @@ def load_preps(config: str):
     for process in processes:
         try:
             all_step_documents = build_step_documents(prep_type="wgs", process=process, lims=lims)
+
             response: Response = requests.post(
                 url=f"{arnold_host}/steps",
                 headers={"Content-Type": "application/json"},

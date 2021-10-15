@@ -12,16 +12,16 @@ LOG = logging.getLogger(__name__)
 
 
 class PostPCRBeadPurificationProcessUDFS(BaseModel):
-    lot_nr_beads_library_prep: str = Field(..., alias="Lot nr: Beads")
-    lot_nr_etoh_library_prep: str = Field(..., alias="Lot nr: EtOH")
-    lot_nr_h2o_library_prep: str = Field(..., alias="Lot nr: H2O")
+    lot_nr_beads_library_prep: Optional[str] = Field(..., alias="Lot nr: Beads")
+    lot_nr_etoh_library_prep: Optional[str] = Field(..., alias="Lot nr: EtOH")
+    lot_nr_h2o_library_prep: Optional[str] = Field(..., alias="Lot nr: H2O")
 
 
 class PostPCRBeadPurificationArtifactUDF(BaseModel):
-    finished_library_concentration: float = Field(..., alias="Concentration")
-    finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
+    finished_library_concentration: Optional[float] = Field(..., alias="Concentration")
+    finished_library_concentration_nm: Optional[float] = Field(..., alias="Concentration (nM)")
     finished_library_size: Optional[int] = Field(None, alias="Size (bp)")
-    finished_library_average_size: float = Field(..., alias="Average Size (bp)")
+    finished_library_average_size: Optional[float] = Field(..., alias="Average Size (bp)")
 
 
 class PostPCRBeadPurificationFields(BaseStep):

@@ -78,4 +78,12 @@ def build_twist_documents(sample_id: str, process_id: str, lims: Lims) -> List[B
         get_amplify_captured_library_udfs(sample_id=sample_id, lims=lims, prep_id=prep_id),
         get_sample_artifact_fields(sample_id=sample_id, lims=lims, prep_id=prep_id),
     ]
-    return [document for document in step_documents if document is not None]
+    documents = []
+
+    for document in step_documents:
+        if document is None:
+            continue
+        if not document.artifact_udfs.dict(exclude_none=True):
+            continue
+        documents.append(document)
+    return documents

@@ -11,17 +11,17 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 class LibraryPreparationCovProcessUDFS(BaseModel):
     """Library Preparation (Cov) v1"""
 
-    lot_nr_tagmentation_beads: str = Field(..., alias="Tagmentation beads")
-    lot_nr__stop_tagment_buffer: str = Field(..., alias="Stop Tagment Buffer")
-    lot_nr_index: str = Field(..., alias="Index")
-    lot_nr_pcr_mix: str = Field(..., alias="PCR-mix")
-    lot_nr_tagmentation_wash_buffer: str = Field(..., alias="Tagmentation Wash Buffer")
-    lot_nr_h2o_library_preparation: str = Field(..., alias="Nuclease-free water")
-    lot_nr_TB1: str = Field(..., alias="TB1 HT")
-    pcr_instrument_tagmentation: str = Field(..., alias="PCR machine: Tagmentation")
-    pcr_instrument_amplification: str = Field(..., alias="PCR machine: Amplification")
-    library_preparation_method: str = Field(..., alias="Method document")
-    liquid_handling_system: str = Field(..., alias="Instrument")
+    lot_nr_tagmentation_beads: Optional[str] = Field(..., alias="Tagmentation beads")
+    lot_nr__stop_tagment_buffer: Optional[str] = Field(..., alias="Stop Tagment Buffer")
+    lot_nr_index: Optional[str] = Field(..., alias="Index")
+    lot_nr_pcr_mix: Optional[str] = Field(..., alias="PCR-mix")
+    lot_nr_tagmentation_wash_buffer: Optional[str] = Field(..., alias="Tagmentation Wash Buffer")
+    lot_nr_h2o_library_preparation: Optional[str] = Field(..., alias="Nuclease-free water")
+    lot_nr_TB1: Optional[str] = Field(..., alias="TB1 HT")
+    pcr_instrument_tagmentation: Optional[str] = Field(..., alias="PCR machine: Tagmentation")
+    pcr_instrument_amplification: Optional[str] = Field(..., alias="PCR machine: Amplification")
+    library_preparation_method: Optional[str] = Field(..., alias="Method document")
+    liquid_handling_system: Optional[str] = Field(..., alias="Instrument")
 
 
 class LibraryPreparationCovFields(

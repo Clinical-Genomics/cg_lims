@@ -45,4 +45,12 @@ def build_microbial_step_documents(sample_id: str, process_id: str, lims: Lims) 
         get_normalization_of_mictobial_samples(sample_id=sample_id, lims=lims, prep_id=prep_id),
         get_post_bead_pcr_purification(sample_id=sample_id, lims=lims, prep_id=prep_id),
     ]
-    return [document for document in step_documents if document is not None]
+    documents = []
+
+    for document in step_documents:
+        if document is None:
+            continue
+        if not document.artifact_udfs.dict(exclude_none=True):
+            continue
+        documents.append(document)
+    return documents
