@@ -25,18 +25,17 @@ VALID_AMOUNTS_NEEDED = [AMOUNT_NEEDED_LUCIGEN, AMOUNT_NEEDED_TRUSEQ]
 
 
 def get_concentration(artifact: Artifact) -> float:
-    """Get the concentration from the udf"""
+    """Get the concentration from the udf 'Concentration'"""
     return artifact.udf.get("Concentration")
 
 
 def get_amount_needed(artifact: Artifact) -> int:
-    """Get the amount needed from the udf"""
+    """Get the amount needed from the udf 'Amount needed (ng)'"""
     return artifact.udf.get("Amount needed (ng)")
 
 
 def pre_check_amount_needed_filled_correctly(artifacts):
     """Checks if amount needed is set correctly. Raises an exception if not"""
-    # amount_needed_all_samples = [artifact.udf.get("Amount needed (ng)") for artifact in artifacts]
     amount_needed_all_samples = [get_amount_needed(artifact) for artifact in artifacts]
     if not all(amount in VALID_AMOUNTS_NEEDED for amount in amount_needed_all_samples):
         raise InvalidValueError(
