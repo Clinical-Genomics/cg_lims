@@ -3,6 +3,8 @@ import pytest
 from genologics.entities import Artifact
 
 from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import (
+    AMOUNT_NEEDED_LUCIGEN,
+    AMOUNT_NEEDED_TRUSEQ,
     VALID_AMOUNTS_NEEDED,
     pre_check_amount_needed_filled_correctly,
 )
@@ -13,8 +15,8 @@ def test_pre_check_amount_needed_filled_correctly(
     artifact_1: Artifact, artifact_2: Artifact
 ):
     # GIVEN a list of artifacts with udf 'Amount needed (ng)` set correctly
-    artifact_1.udf["Amount needed (ng)"] = 1100
-    artifact_2.udf["Amount needed (ng)"] = 1100
+    artifact_1.udf["Amount needed (ng)"] = AMOUNT_NEEDED_TRUSEQ
+    artifact_2.udf["Amount needed (ng)"] = AMOUNT_NEEDED_LUCIGEN
     artifacts = [artifact_1, artifact_2]
 
     # WHEN checking the udfs
@@ -36,6 +38,7 @@ def test_pre_check_amount_needed_filled_incorrectly(
         pre_check_amount_needed_filled_correctly(artifacts)
 
     assert (
-        f"'Amount needed (ng)' missing or incorrect value for one or more samples. Value can only be 200, 1100. Please correct and try again."
+        f"'Amount needed (ng)' missing or incorrect value for one or more samples. Value can only "
+        f"be {', '.join(map(str, VALID_AMOUNTS_NEEDED))}. Please correct and try again."
         in error_message.value.message
     )
