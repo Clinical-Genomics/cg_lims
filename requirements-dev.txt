@@ -1,6 +1,6 @@
 pytest>=5.2
 pytest-cov
 pytest-mock
-coveralls
+coveralls<5
 pylint
 mock
