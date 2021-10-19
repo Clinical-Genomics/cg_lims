@@ -83,13 +83,3 @@ def get_index_well(artifact: Artifact):
         return f"{index_well_row}{index_well_col}"
     else:
         return "-"
-
-
-def get_concentration(artifact: Artifact) -> Optional[float]:
-    """Get the concentration of a artifact"""
-    return artifact.udf.get("Concentration")
-
-
-def get_amount_needed(artifact: Artifact) -> Optional[float]:
-    """Get the concentration of a artifact"""
-    return artifact.udf.get("Amount needed (ng)")
