@@ -8,8 +8,8 @@ from datetime import date, datetime
 def get_number_of_days(first_date: str, second_date: str) -> Optional[int]:
     """Get number of days between different iso formatted time stamps."""
     if first_date and second_date:
-        first_datetime = datetime.strptime(first_date, '%Y-%m-%d %H:%M:%S')
-        second_datetime = datetime.strptime(second_date, '%Y-%m-%d %H:%M:%S')
+        first_datetime = datetime.strptime(first_date, "%Y-%m-%d %H:%M:%S")
+        second_datetime = datetime.strptime(second_date, "%Y-%m-%d %H:%M:%S")
         time_span = second_datetime - first_datetime
         return time_span.days
 
@@ -61,7 +61,9 @@ class ArnoldSample(BaseModel):
     require_qcok: Optional[str] = Field(alias="Process only if QC OK")
     rml_plate_name: Optional[str] = Field(alias="RML plate name")
     selection_criteria: Optional[str] = Field(alias="Selection Criteria")
-    sequencing_qc_pass: Optional[str] = Field(alias="Passed Sequencing QC")  # sequencing_qc in vogue
+    sequencing_qc_pass: Optional[str] = Field(
+        alias="Passed Sequencing QC"
+    )  # sequencing_qc in vogue
     sex: Optional[str] = Field(alias="Gender")
     source: Optional[str] = Field(alias="Source")
     target_reads: Optional[float] = Field(alias="Reads missing (M)")
@@ -86,6 +88,12 @@ class ArnoldSample(BaseModel):
 
     @validator("sequenced_date", always=True)
     def get_sequenced_date(cls, v, values) -> Optional[str]:
+        if isinstance(v, date):
+            return datetime(v.year, v.month, v.day).__str__()
+        return None
+
+    @validator("collection_date", always=True)
+    def get_collection_date(cls, v, values) -> Optional[str]:
         if isinstance(v, date):
             return datetime(v.year, v.month, v.day).__str__()
         return None
