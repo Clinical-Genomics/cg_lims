@@ -35,12 +35,14 @@ def calculate_final_volume(sample_volume: float, sample_concentration: float) ->
 def calculate_volumes_for_low_concentration_samples(
     sample_concentration: float,
 ) -> Tuple[float, float, float, str]:
-    """Calculates the sample volume. The sample volume is increased to reach a minimum final
-    volume of 15 ul. This occurs at lower concentration levels where standard pipetting volumes
-    are not enough to reach the desired final concentration and final volume."""
-    sample_volume = MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
-    final_volume = calculate_final_volume(sample_volume, sample_concentration)
-    water_volume = final_volume - sample_volume
+    """Calculates the sample volume. The sample volume is increased to reach the minimum total volume. This
+    occurs at lower concentration levels where standard pipetting volumes are not enough to reach the desired final
+    concentration and final volume."""
+    sample_volume: float = (
+        MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
+    )
+    final_volume: float = calculate_final_volume(sample_volume, sample_concentration)
+    water_volume: float = final_volume - sample_volume
     qc_flag = QC_FAILED
     return final_volume, water_volume, sample_volume, qc_flag
 
@@ -61,7 +63,7 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
     failed_artifacts = []
 
     for artifact in artifacts:
-        sample_concentration = artifact.udf.get("Concentration")
+        sample_concentration: float = artifact.udf.get("Concentration")
         if sample_concentration is None or sample_concentration < FINAL_CONCENTRATION:
             LOG.warning(
                 f"Sample concentration too low or missing for sample {artifact.samples[0].name}."
