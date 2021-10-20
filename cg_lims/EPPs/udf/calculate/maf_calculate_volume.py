@@ -64,7 +64,7 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
     failed_artifacts = []
 
     for artifact in artifacts:
-        sample_concentration = get_sample_concentration(artifact)
+        sample_concentration: float = get_sample_concentration(artifact)
         if sample_concentration is None or sample_concentration < FINAL_CONCENTRATION:
             LOG.warning(
                 f"Sample concentration too low or missing for sample {artifact.samples[0].name}."
