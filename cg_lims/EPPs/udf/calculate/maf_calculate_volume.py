@@ -44,7 +44,7 @@ def calculate_volumes_for_low_concentration_samples(
     concentration and final volume."""
     sample_volume: float = MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
     final_volume = calculate_final_volume(sample_volume, sample_concentration)
-    water_volume = final_volume - sample_volume
+    water_volume: float = final_volume - sample_volume
     qc_flag = QC_FAILED
     return final_volume, water_volume, sample_volume, qc_flag
 
