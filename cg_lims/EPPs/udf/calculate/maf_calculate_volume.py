@@ -22,9 +22,10 @@ CONCENTRATION_UPPER_LIMIT = 1444
 LOW_CONCENTRATION_THRESHOLD = 20
 MINIMUM_TOTAL_VOLUME = 15
 MAXIMUM_WATER_VOLUME = 180
-PIPETTING_VOLUMES = [3, 2, 1, 0.5]
 QC_FAILED = "FAILED"
 QC_PASSED = "PASSED"
+STANDARD_SAMPLE_VOLUME = 3
+PIPETTING_VOLUMES = [STANDARD_SAMPLE_VOLUME, 2, 1, 0.5]
 
 
 def calculate_final_volume(sample_volume: float, sample_concentration: float) -> float:
@@ -54,7 +55,9 @@ def calculate_volumes(sample_concentration: float) -> Tuple[float, float, float,
         final_volume = sample_concentration * sample_volume / FINAL_CONCENTRATION
         water_volume = final_volume - sample_volume
         if water_volume < MAXIMUM_WATER_VOLUME:
-            qc_flag = QC_PASSED if sample_volume == 3 else QC_FAILED
+            qc_flag = (
+                QC_PASSED if sample_volume == STANDARD_SAMPLE_VOLUME else QC_FAILED
+            )
             return final_volume, water_volume, sample_volume, qc_flag
 
 
