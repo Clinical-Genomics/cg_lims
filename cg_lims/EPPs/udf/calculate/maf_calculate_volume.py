@@ -19,16 +19,12 @@ LOG = logging.getLogger(__name__)
 
 FINAL_CONCENTRATION = 4
 CONCENTRATION_UPPER_LIMIT = 1444
+LOW_CONCENTRATION_THRESHOLD = 20
 MINIMUM_TOTAL_VOLUME = 15
 MAXIMUM_WATER_VOLUME = 180
+PIPETTING_VOLUMES = [3, 2, 1, 0.5]
 QC_FAILED = "FAILED"
 QC_PASSED = "PASSED"
-PIPETTING_VOLUMES = [3, 2, 1, 0.5]
-
-
-def get_sample_concentration(artifact: Artifact) -> float:
-    """Returns the value of the concentration udf"""
-    return artifact.udf.get("Concentration")
 
 
 def calculate_final_volume(sample_volume: float, sample_concentration: float) -> float:
@@ -39,9 +35,9 @@ def calculate_final_volume(sample_volume: float, sample_concentration: float) ->
 def calculate_volumes_for_low_concentration_samples(
     sample_concentration: float,
 ) -> Tuple[float, float, float, str]:
-    """Calculates the sample volume. The sample volume is increased to reach a minimum final volume of 15 ul. This
-    occurs at lower concentration levels where standard pipetting volumes are not enough to reach the desired final
-    concentration and final volume."""
+    """Calculates the sample volume. The sample volume is increased to reach a minimum final
+    volume of 15 ul. This occurs at lower concentration levels where standard pipetting volumes
+    are not enough to reach the desired final concentration and final volume."""
     sample_volume = MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
     final_volume = calculate_final_volume(sample_volume, sample_concentration)
     water_volume = final_volume - sample_volume
@@ -50,7 +46,8 @@ def calculate_volumes_for_low_concentration_samples(
 
 
 def calculate_volumes(sample_concentration: float) -> Tuple[float, float, float, str]:
-    """Calculates all volumes (final volume, water volume and sample volume) and sets the QC flag."""
+    """Calculates all volumes (final volume, water volume and sample volume) and sets the QC
+    flag."""
     for sample_volume in PIPETTING_VOLUMES:
         final_volume = sample_concentration * sample_volume / FINAL_CONCENTRATION
         water_volume = final_volume - sample_volume
@@ -64,7 +61,7 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
     failed_artifacts = []
 
     for artifact in artifacts:
-        sample_concentration = get_sample_concentration(artifact)
+        sample_concentration = artifact.udf.get("Concentration")
         if sample_concentration is None or sample_concentration < FINAL_CONCENTRATION:
             LOG.warning(
                 f"Sample concentration too low or missing for sample {artifact.samples[0].name}."
@@ -78,14 +75,14 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
             failed_artifacts.append(artifact)
             continue
 
-        if sample_concentration < 20:
+        if sample_concentration < LOW_CONCENTRATION_THRESHOLD:
             (
                 final_volume,
                 water_volume,
                 sample_volume,
                 qc_flag,
             ) = calculate_volumes_for_low_concentration_samples(sample_concentration)
-        elif sample_concentration >= 20:
+        elif sample_concentration >= LOW_CONCENTRATION_THRESHOLD:
             final_volume, water_volume, sample_volume, qc_flag = calculate_volumes(
                 sample_concentration
             )
@@ -113,11 +110,8 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
 @click.pass_context
 def maf_calculate_volume(context: click.Context):
     """Calculate dilution volumes based on the Concentration udf"""
-
     LOG.info(f"Running {context.command_path} with params: {context.params}")
-
     process = context.obj["process"]
-
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
         calculate_volume(artifacts=artifacts)

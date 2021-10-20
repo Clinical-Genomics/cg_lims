@@ -11,7 +11,6 @@ from cg_lims.EPPs.udf.calculate.maf_calculate_volume import (
     calculate_final_volume,
     calculate_volume,
     calculate_volumes,
-    get_sample_concentration,
 )
 from cg_lims.exceptions import LimsError
 
@@ -42,29 +41,6 @@ def test_new_volume_calculation_algorithm(
     assert result == (final_volume, water_volume, sample_volume, qc_flag)
 
 
-def test_get_sample_concentration(artifact_1):
-    # GIVEN a sample with a udf "Concentration"
-    server("flat_tests")
-    artifact_1.udf["Concentration"] = 19
-
-    # WHEN getting the value for that udf
-    result = get_sample_concentration(artifact_1)
-
-    # the correct value is returned
-    assert result == 19
-
-
-def test_get_sample_concentration_no_udf(artifact_1):
-    # GIVEN a sample without a udf "Concentration"
-    server("flat_tests")
-
-    # WHEN getting the value for that udf
-    result = get_sample_concentration(artifact_1)
-
-    # THEN None is returned
-    assert result is None
-
-
 def test_calculate_final_volume():
     # GIVEN a sample volume and sample concentration
     sample_volume = 19
@@ -77,7 +53,6 @@ def test_calculate_final_volume():
     assert result == 15
 
 
-@mock.patch("cg_lims.EPPs.udf.calculate.maf_calculate_volume.get_sample_concentration")
 @pytest.mark.parametrize(
     "sample_concentration",
     [
@@ -86,15 +61,14 @@ def test_calculate_final_volume():
     ],
 )
 def test_maf_calculate_volume_too_low_concentration(
-    mock_sample_concentration,
     sample_concentration,
     artifact_1,
     caplog,
 ):
     # GIVEN a sample with a concentration lower than 4 or no concentration at all
     server("flat_tests")
-    mock_sample_concentration.return_value = sample_concentration
-
+    if sample_concentration:
+        artifact_1.udf["Concentration"] = sample_concentration
     # WHEN calculating the volumes
     artifacts = [artifact_1]
     with pytest.raises(LimsError) as error_message:
@@ -105,7 +79,6 @@ def test_maf_calculate_volume_too_low_concentration(
     assert "MAF volume calculations failed" in error_message.value.message
 
 
-@mock.patch("cg_lims.EPPs.udf.calculate.maf_calculate_volume.get_sample_concentration")
 @pytest.mark.parametrize(
     "sample_concentration",
     [
@@ -113,14 +86,13 @@ def test_maf_calculate_volume_too_low_concentration(
     ],
 )
 def test_maf_calculate_volume_too_high_concentration(
-    mock_sample_concentration,
     sample_concentration,
     artifact_1,
     caplog,
 ):
     # GIVEN a sample with a concentration lower than 4 or no concentration at all
     server("flat_tests")
-    mock_sample_concentration.return_value = sample_concentration
+    artifact_1.udf["Concentration"] = sample_concentration
 
     # WHEN calculating the volumes
     artifacts = [artifact_1]
@@ -132,7 +104,6 @@ def test_maf_calculate_volume_too_high_concentration(
     assert "MAF volume calculations failed for" in error_message.value.message
 
 
-@mock.patch("cg_lims.EPPs.udf.calculate.maf_calculate_volume.get_sample_concentration")
 @mock.patch("cg_lims.EPPs.udf.calculate.maf_calculate_volume.calculate_final_volume")
 @pytest.mark.parametrize(
     "sample_concentration, sample_volume, final_volume",
@@ -142,7 +113,6 @@ def test_maf_calculate_volume_too_high_concentration(
 )
 def test_maf_calculate_volume_low_concentration(
     mock_calculate_final_volume,
-    mock_sample_concentration,
     sample_concentration,
     sample_volume,
     final_volume,
@@ -150,14 +120,15 @@ def test_maf_calculate_volume_low_concentration(
 ):
     # GIVEN a sample with a concentration between 4 and 20
     server("flat_tests")
-    mock_sample_concentration.return_value = sample_concentration
+    artifact_1.udf["Concentration"] = sample_concentration
 
     # WHEN calculating the volumes
     mock_calculate_final_volume.return_value = final_volume
     artifacts = [artifact_1]
     calculate_volume(artifacts)
 
-    # THEN the volumes are calculated using calculate_sample_volume and the QC flag should be set to the correct value
+    # THEN the volumes are calculated using calculate_sample_volume and the QC flag should be set
+    # to the correct value
     assert artifact_1.qc_flag == QC_FAILED
     mock_calculate_final_volume.assert_called_with(sample_volume, sample_concentration)
     assert artifact_1.udf["Final Volume (uL)"] == final_volume
