@@ -39,7 +39,7 @@ def calculate_final_volume(sample_volume: float, sample_concentration: float) ->
 def calculate_volumes_for_low_concentration_samples(
     sample_concentration: float,
 ) -> Tuple[float, float, float, str]:
-    """Calculates the sample volume. The sample volume is increased to reach a minimum final volume of 15 ul. This
+    """Calculates the sample volume. The sample volume is increased to reach the minimum total volume. This
     occurs at lower concentration levels where standard pipetting volumes are not enough to reach the desired final
     concentration and final volume."""
     sample_volume = MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
