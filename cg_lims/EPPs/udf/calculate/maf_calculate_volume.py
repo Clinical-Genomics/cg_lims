@@ -42,7 +42,7 @@ def calculate_volumes_for_low_concentration_samples(
     """Calculates the sample volume. The sample volume is increased to reach the minimum total volume. This
     occurs at lower concentration levels where standard pipetting volumes are not enough to reach the desired final
     concentration and final volume."""
-    sample_volume = MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
+    sample_volume: float = MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
     final_volume = calculate_final_volume(sample_volume, sample_concentration)
     water_volume = final_volume - sample_volume
     qc_flag = QC_FAILED
