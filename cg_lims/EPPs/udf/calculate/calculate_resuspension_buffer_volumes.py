@@ -24,18 +24,6 @@ TOTAL_VOLUME_TRUSEQ = 55
 VALID_AMOUNTS_NEEDED = [AMOUNT_NEEDED_LUCIGEN, AMOUNT_NEEDED_TRUSEQ]
 
 
-def pre_check_amount_needed_filled_correctly(artifacts):
-    """Checks if amount needed is set correctly. Raises an exception if not"""
-    amount_needed_all_samples = [
-        artifact.udf.get("Amount needed (ng)") for artifact in artifacts
-    ]
-    if not all(amount in VALID_AMOUNTS_NEEDED for amount in amount_needed_all_samples):
-        raise InvalidValueError(
-            f"'Amount needed (ng)' missing or incorrect value for one or more samples. Value can "
-            f"only be {', '.join(map(str, VALID_AMOUNTS_NEEDED))}. Please correct and try again."
-        )
-
-
 def calculate_rb_volume(artifacts: List[Artifact]):
     """Calculate the RB volumes for all samples"""
     missing_udfs = 0
@@ -48,11 +36,17 @@ def calculate_rb_volume(artifacts: List[Artifact]):
             )
             missing_udfs += 1
             continue
-        sample_volume = amount_needed / concentration
+        if amount_needed:
+            sample_volume = amount_needed / concentration
         if amount_needed == AMOUNT_NEEDED_LUCIGEN:
             artifact.udf["RB Volume (ul)"] = TOTAL_VOLUME_LUCIGEN - sample_volume
-        if amount_needed == AMOUNT_NEEDED_TRUSEQ:
+        elif amount_needed == AMOUNT_NEEDED_TRUSEQ:
             artifact.udf["RB Volume (ul)"] = TOTAL_VOLUME_TRUSEQ - sample_volume
+        else:
+            raise InvalidValueError(
+                f"'Amount needed (ng)' missing or incorrect for one or more samples. Value can "
+                f"only be {', '.join(map(str, VALID_AMOUNTS_NEEDED))}."
+            )
         artifact.udf["Sample Volume (ul)"] = sample_volume
         artifact.put()
 
@@ -71,7 +65,6 @@ def calculate_resuspension_buffer_volume(context: click.Context):
     process = context.obj["process"]
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
-        pre_check_amount_needed_filled_correctly(artifacts)
         calculate_rb_volume(artifacts=artifacts)
         message = "RB volumes have been calculated!"
         LOG.info(message)
