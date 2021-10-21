@@ -7,10 +7,11 @@ AM-document 1243 Method - Preparing Plate for Genotyping, section 3.3.2 Preparin
 
 import logging
 import sys
-from typing import List, Tuple
+from typing import List, Optional
 
 import click
 from genologics.entities import Artifact
+from pydantic import BaseModel, validator
 
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
@@ -18,47 +19,72 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 FINAL_CONCENTRATION = 4
-CONCENTRATION_UPPER_LIMIT = 1444
-LOW_CONCENTRATION_THRESHOLD = 20
 MINIMUM_TOTAL_VOLUME = 15
-MAXIMUM_WATER_VOLUME = 180
 QC_FAILED = "FAILED"
 QC_PASSED = "PASSED"
 STANDARD_SAMPLE_VOLUME = 3
-PIPETTING_VOLUMES = [STANDARD_SAMPLE_VOLUME, 2, 1, 0.5]
 
 
-def calculate_final_volume(sample_volume: float, sample_concentration: float) -> float:
-    """Calculates the final volume for a sample"""
-    return sample_volume * sample_concentration / FINAL_CONCENTRATION
+class MafVolumes(BaseModel):
+    """Pydantic model for calculating MAF volumes based on the sample concentration"""
 
+    sample_concentration: float
+    sample_volume: Optional[float]
+    final_volume: Optional[float]
+    water_volume: Optional[float]
+    qc_flag: Optional[str]
 
-def calculate_volumes_for_low_concentration_samples(
-    sample_concentration: float,
-) -> Tuple[float, float, float, str]:
-    """Calculates the sample volume. The sample volume is increased to reach the minimum total volume. This
-    occurs at lower concentration levels where standard pipetting volumes are not enough to reach the desired final
-    concentration and final volume."""
-    sample_volume: float = (
-        MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
-    )
-    final_volume: float = calculate_final_volume(sample_volume, sample_concentration)
-    water_volume: float = final_volume - sample_volume
-    qc_flag = QC_FAILED
-    return final_volume, water_volume, sample_volume, qc_flag
+    @validator("sample_concentration", always=True)
+    def set_sample_concentration(cls, v, values):
+        """Set sample concentration and handle low or missing concentration"""
+        if v < FINAL_CONCENTRATION:
+            message = "Too low or missing concentration"
+            LOG.error(message)
+            raise ValueError(message)
+        return v
 
+    @validator("sample_volume", always=True)
+    def set_sample_volume(cls, v, values):
+        """Calculate the sample volume. For an explanation about how sample volumes are
+        determined for various sample concentration ranges, refer to AM document 1243 Method -
+        Preparing Plate for Genotyping, section 3.3.2"""
+        sample_concentration = values.get("sample_concentration")
+        if sample_concentration < 20:
+            return MINIMUM_TOTAL_VOLUME * FINAL_CONCENTRATION / sample_concentration
+        elif 20 <= sample_concentration < 244:
+            return 3
+        elif 244 <= sample_concentration < 364:
+            return 2
+        elif 364 <= sample_concentration < 724:
+            return 1
+        elif 724 <= sample_concentration < 1444:
+            return 0.5
+        else:
+            message = "Sample concentration not in valid range"
+            LOG.error(message)
+            raise ValueError(message)
 
-def calculate_volumes(sample_concentration: float) -> Tuple[float, float, float, str]:
-    """Calculates all volumes (final volume, water volume and sample volume) and sets the QC
-    flag."""
-    for sample_volume in PIPETTING_VOLUMES:
-        final_volume = sample_concentration * sample_volume / FINAL_CONCENTRATION
-        water_volume = final_volume - sample_volume
-        if water_volume < MAXIMUM_WATER_VOLUME:
-            qc_flag = (
-                QC_PASSED if sample_volume == STANDARD_SAMPLE_VOLUME else QC_FAILED
-            )
-            return final_volume, water_volume, sample_volume, qc_flag
+    @validator("water_volume", always=True)
+    def set_water_volume(cls, v, values):
+        """Calculate the water volume for a sample"""
+        return values.get("final_volume") - values.get("sample_volume")
+
+    @validator("final_volume", always=True)
+    def set_final_volume(cls, v, values):
+        """Calculates the final volume for a sample"""
+        return (
+            values.get("sample_volume")
+            * values.get("sample_concentration")
+            / FINAL_CONCENTRATION
+        )
+
+    @validator("qc_flag", always=True)
+    def set_qc_flag(cls, v, values):
+        """Set the QC flag on a sample"""
+        if values.get("sample_volume") == STANDARD_SAMPLE_VOLUME:
+            return QC_PASSED
+        else:
+            return QC_FAILED
 
 
 def calculate_volume(artifacts: List[Artifact]) -> None:
@@ -66,43 +92,19 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
     failed_artifacts = []
 
     for artifact in artifacts:
-        sample_concentration: float = artifact.udf.get("Concentration")
-        if sample_concentration is None or sample_concentration < FINAL_CONCENTRATION:
-            LOG.warning(
-                f"Sample concentration too low or missing for sample {artifact.samples[0].name}."
-            )
-            failed_artifacts.append(artifact)
-            continue
-        if sample_concentration >= CONCENTRATION_UPPER_LIMIT:
-            LOG.warning(
-                f"Sample concentration too high for sample {artifact.samples[0].name}."
-            )
-            failed_artifacts.append(artifact)
-            continue
-
-        if sample_concentration < LOW_CONCENTRATION_THRESHOLD:
-            (
-                final_volume,
-                water_volume,
-                sample_volume,
-                qc_flag,
-            ) = calculate_volumes_for_low_concentration_samples(sample_concentration)
-        elif sample_concentration >= LOW_CONCENTRATION_THRESHOLD:
-            final_volume, water_volume, sample_volume, qc_flag = calculate_volumes(
-                sample_concentration
-            )
-        else:
+        try:
+            volumes = MafVolumes(sample_concentration=artifact.udf.get("Concentration"))
+            artifact.qc_flag = volumes.qc_flag
+            artifact.udf["Final Volume (uL)"] = volumes.final_volume
+            artifact.udf["Volume H2O (ul)"] = volumes.water_volume
+            artifact.udf["Volume of sample (ul)"] = volumes.sample_volume
+            artifact.put()
+        except Exception:
             LOG.warning(
                 f"Could not calculate sample volume for sample {artifact.samples[0].name}."
             )
             failed_artifacts.append(artifact)
             continue
-
-        artifact.qc_flag = qc_flag
-        artifact.udf["Final Volume (uL)"] = final_volume
-        artifact.udf["Volume H2O (ul)"] = water_volume
-        artifact.udf["Volume of sample (ul)"] = sample_volume
-        artifact.put()
 
     if failed_artifacts:
         raise LimsError(
