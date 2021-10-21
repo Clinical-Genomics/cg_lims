@@ -55,7 +55,6 @@ def calculate_water_volume_rna(context: click.Context):
     process = context.obj["process"]
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
-        breakpoint()
         calculate_sample_and_water_volumes(artifacts=artifacts)
         message = "Sample and H20 volumes have been calculated!"
         LOG.info(message)
