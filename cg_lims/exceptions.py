@@ -96,7 +96,15 @@ class CSVColumnError(LimsError):
 
 
 class InsertError(LimsError):
-    def __init__(self, message: str, code: Optional[int] = status.HTTP_405_METHOD_NOT_ALLOWED):
+    def __init__(
+        self, message: str, code: Optional[int] = status.HTTP_405_METHOD_NOT_ALLOWED
+    ):
         self.message = message
         self.code = code
         super().__init__(message)
+
+
+class InvalidValueError(LimsError):
+    """Raise when a value is invalid"""
+
+    pass
