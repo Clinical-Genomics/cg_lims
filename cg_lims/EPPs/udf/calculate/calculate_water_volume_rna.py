@@ -56,7 +56,7 @@ def calculate_water_volume_rna(context: click.Context):
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
         calculate_sample_and_water_volumes(artifacts=artifacts)
-        message = "Sample and H20 volumes have been calculated!"
+        message = "Sample and H2O volumes have been calculated!"
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
