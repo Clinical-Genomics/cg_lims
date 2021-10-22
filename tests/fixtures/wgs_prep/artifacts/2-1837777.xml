@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837777?state=1430880" limsid="2-1837777">
+    <name>CA001P</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240273" limsid="24-240273" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-181721" limsid="27-181721" />
+        <value>1:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A1" limsid="ACC8454A1" />
+    <udf:field type="Numeric" name="Sample Volume (ul)">2.29465689143</udf:field>
+    <udf:field type="Numeric" name="Volume (ul)">12</udf:field>
+    <udf:field type="String" name="Sample Comment">hej</udf:field>
+    <udf:field type="Numeric" name="Amount needed (ng)">200</udf:field>
+    <udf:field type="Numeric" name="RB Volume (ul)">22.7053431086</udf:field>
+    <udf:field type="Numeric" name="Concentration">87.159</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Fragment DNA (TruSeq DNA)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1760/stages/6065" />
+    </workflow-stages>
+</art:artifact>

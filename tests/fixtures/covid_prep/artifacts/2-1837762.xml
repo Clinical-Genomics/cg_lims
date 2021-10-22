@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837762?state=1430862" limsid="2-1837762">
+    <name>Pool #1</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-240269" limsid="122-240269" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-181720" limsid="27-181720" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A1" limsid="ACC8656A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A9" limsid="ACC8656A9" />
+    <reagent-label name="A02 UDP0201 v2 (AACCGAGTTC-GATCTCTGGA)" />
+    <reagent-label name="A01 UDP0193 v2 (TCTCATGATA-AACACGTGGA)" />
+    <udf:field type="Numeric" name="Concentration (nM)">33</udf:field>
+    <udf:field type="Numeric" name="Size (bp)">222</udf:field>
+    <udf:field type="Numeric" name="Concentration">333</udf:field>
+    <udf:field type="Numeric" name="Missing reads Pool (M)">4</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Library validation QC (Cov) v1" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1802/stages/6198" />
+        <workflow-stage status="QUEUED" name="Define Run Format and Calculate Volumes (Nova Seq)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1802/stages/6199" />
+    </workflow-stages>
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837762/demux" />
+</art:artifact>

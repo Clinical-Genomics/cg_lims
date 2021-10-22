@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837752?state=1430849" limsid="92-1837752">
+    <name>Calculation Sheet</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-240268" limsid="151-240268" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A1" limsid="ACC8656A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A9" limsid="ACC8656A9" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A17" limsid="ACC8656A17" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8656A25" limsid="ACC8656A25" />
+    <workflow-stages />
+</art:artifact>

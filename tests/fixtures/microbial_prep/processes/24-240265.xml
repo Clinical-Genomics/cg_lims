@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-240265" limsid="24-240265">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/808">CG002 - Normalization of microbial samples for sequencing</type>
+    <date-run>2021-10-11</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/157">
+        <first-name>Maya</first-name>
+        <last-name>Brandi</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430833" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430833" limsid="2-1837685">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837690?state=1430835" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837690" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430833" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430833" limsid="2-1837685">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837691?state=1430836" output-generation-type="PerInput" output-type="Analyte" limsid="2-1837691" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430834" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430834" limsid="2-1837686">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837690?state=1430835" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837690" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430834" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430834" limsid="2-1837686">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837692?state=1430837" output-generation-type="PerInput" output-type="Analyte" limsid="2-1837692" />
+    </input-output-map>
+    <udf:field type="Numeric" name="Final Concentration (nM)">1</udf:field>
+    <udf:field type="String" name="Method document">1471</udf:field>
+</prc:process>

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837691?state=1430838" limsid="2-1837691">
+    <name>PTC-HS271-38 (qPCR)</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240265" limsid="24-240265" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-181717" limsid="27-181717" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8653A1" limsid="ACC8653A1" />
+    <reagent-label name="pl1 A03 IDT_10nt_NXT_4 (ATGTTGCCAC-ATGGCTTCTA)" />
+    <udf:field type="Numeric" name="Sample Volume (ul)">1</udf:field>
+    <udf:field type="Numeric" name="Total Volume (uL)">1</udf:field>
+    <udf:field type="Numeric" name="Concentration (nM)">1</udf:field>
+    <udf:field type="Numeric" name="Volume Buffer (ul)">1</udf:field>
+    <workflow-stages>
+        <workflow-stage status="QUEUED" name="Define Run Format and Calculate Volumes (Nova Seq)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1757/stages/5910" />
+    </workflow-stages>
+</art:artifact>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837774?state=1430877" limsid="92-1837774">
+    <name>CSV</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240273" limsid="24-240273" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A1" limsid="ACC8454A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A2" limsid="ACC8454A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A3" limsid="ACC8454A3" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A4" limsid="ACC8454A4" />
+    <workflow-stages />
+</art:artifact>

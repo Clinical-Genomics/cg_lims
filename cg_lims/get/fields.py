@@ -1,10 +1,9 @@
 import datetime as dt
-
-from genologics.descriptors import LocationDescriptor
-from requests.exceptions import HTTPError
-from genologics.entities import Sample, Artifact
-from typing import Optional, Tuple
 import logging
+from typing import Optional, Tuple
+
+from genologics.entities import Artifact, Sample
+from requests.exceptions import HTTPError
 
 LOG = logging.getLogger(__name__)
 

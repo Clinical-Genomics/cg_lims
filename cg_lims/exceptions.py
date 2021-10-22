@@ -1,3 +1,8 @@
+from typing import Optional
+
+from starlette import status
+
+
 class LimsError(Exception):
     """Base Error"""
 
@@ -25,6 +30,12 @@ class DuplicateSampleError(LimsError):
 class MissingArtifactError(LimsError):
     """Raise when searching for artifacts that don't exist.
     Eg: Found no artifact for sample X in process Y."""
+
+    pass
+
+
+class MissingProcessError(LimsError):
+    """Raise when searching for process that don't exist.."""
 
     pass
 
@@ -80,5 +91,20 @@ class MissingValueError(LimsError):
 
 class CSVColumnError(LimsError):
     """Raise when handling errors with csv columns"""
+
+    pass
+
+
+class InsertError(LimsError):
+    def __init__(
+        self, message: str, code: Optional[int] = status.HTTP_405_METHOD_NOT_ALLOWED
+    ):
+        self.message = message
+        self.code = code
+        super().__init__(message)
+
+
+class InvalidValueError(LimsError):
+    """Raise when a value is invalid"""
 
     pass

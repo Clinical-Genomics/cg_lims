@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837680?state=1430821" limsid="2-1837680">
+    <name>21ET100755 (qPCR)</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-240262" limsid="151-240262" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-181715" limsid="27-181715" />
+        <value>B:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8653A25" limsid="ACC8653A25" />
+    <reagent-label name="pl1 A02 IDT_10nt_NXT_3 (CGACCTTAAT-ACCTAAGAGC)" />
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Post-PCR bead purification v1" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1757/stages/5907" />
+    </workflow-stages>
+</art:artifact>
