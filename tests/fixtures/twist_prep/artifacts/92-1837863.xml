@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:file="http://genologics.com/ri/file" uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837863?state=1430928" limsid="92-1837863">
+    <name>Hamilton file</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240281" limsid="24-240281" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8435A1" limsid="ACC8435A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8436A1" limsid="ACC8436A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8436A2" limsid="ACC8436A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8436A3" limsid="ACC8436A3" />
+    <file:file limsid="40-64849" uri="http://127.0.0.1:8000/api/v2/files/40-64849" />
+    <workflow-stages />
+</art:artifact>

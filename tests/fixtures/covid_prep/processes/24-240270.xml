@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-240270" limsid="24-240270">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1419">Aggregate QC (Library Validation) (Cov) v1</type>
+    <date-run>2021-10-11</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/157">
+        <first-name>Maya</first-name>
+        <last-name>Brandi</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837762?state=1430862" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837762?state=1430859" limsid="2-1837762">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-240269" limsid="122-240269" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837764?state=1430861" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837764" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837763?state=1430863" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837763?state=1430860" limsid="2-1837763">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-240269" limsid="122-240269" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837764?state=1430861" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837764" />
+    </input-output-map>
+    <udf:field type="String" name="Automated Quant-iT QC (Library Validation) 4.0">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="Bioanalyzer QC (Library Validation) 4.0">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CaliperGX QC (DNA)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG001 - Fragment analyzer QC">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG001- Tapestation QC (Dev)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - Fragment analyzer QC">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - qPCR QC (Library Validation) (Dev)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - Quantit QC (Library Validation)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - Qubit QC (Library Validation)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - Qubit QC (Library Validation) (Dev)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="Copy task 1 - Source Field">Concentration</udf:field>
+    <udf:field type="String" name="Copy task 2 - Source Field">Size (bp)</udf:field>
+    <udf:field type="String" name="Copy task 2 - Source Step">Tapestation QC (Cov) v1</udf:field>
+    <udf:field type="String" name="Criteria 1 - Operator">&gt;=</udf:field>
+    <udf:field type="Numeric" name="Criteria 1 - Threshold Value">2</udf:field>
+    <udf:field type="String" name="Customer Gel QC">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="PicoGreen QC (Library Validation) 4.0">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="Quant-iT QC (Library Validation) 4.0">Use if available (Priority 5)</udf:field>
+    <process-parameter name="Set Library Preped Date" />
+</prc:process>
