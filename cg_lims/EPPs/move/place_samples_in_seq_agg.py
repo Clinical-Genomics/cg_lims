@@ -72,6 +72,7 @@ def place_samples_in_seq_agg(ctx, workflow_id, stage_id, process_type):
     try:
         artifacts = get_pools_and_samples_to_queue(lims, process_type, samples)
         queue_artifacts(lims, artifacts, workflow_id, stage_id)
+        LOG.info("Artifacts have been queued.")
         click.echo("Artifacts have been queued.")
     except LimsError as e:
         sys.exit(e.message)

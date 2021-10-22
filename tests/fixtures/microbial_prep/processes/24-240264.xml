@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-240264" limsid="24-240264">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/655">CG002 - Aggregate QC (Library Validation)</type>
+    <date-run>2021-10-11</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/157">
+        <first-name>Maya</first-name>
+        <last-name>Brandi</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837683?state=1430831" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837683?state=1430824" limsid="2-1837683">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837687?state=1430828" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837687" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837683?state=1430831" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837683?state=1430824" limsid="2-1837683">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837688?state=1430829" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837688" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837683?state=1430831" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837683?state=1430824" limsid="2-1837683">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837689?state=1430830" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837689" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837684?state=1430832" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837684?state=1430825" limsid="2-1837684">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837687?state=1430828" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837687" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837684?state=1430832" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837684?state=1430825" limsid="2-1837684">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837688?state=1430829" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837688" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837684?state=1430832" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837684?state=1430825" limsid="2-1837684">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837689?state=1430830" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837689" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430833" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430826" limsid="2-1837685">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837687?state=1430828" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837687" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430833" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430826" limsid="2-1837685">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837688?state=1430829" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837688" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430833" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837685?state=1430826" limsid="2-1837685">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837689?state=1430830" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837689" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430834" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430827" limsid="2-1837686">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837687?state=1430828" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837687" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430834" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430827" limsid="2-1837686">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837688?state=1430829" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837688" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430834" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837686?state=1430827" limsid="2-1837686">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240263" limsid="24-240263" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837689?state=1430830" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837689" />
+    </input-output-map>
+    <udf:field type="String" name="Automated Quant-iT QC (Library Validation) 4.0">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - Tapestation Microbial QC">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - Quantit QC (Library Validation)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG001 - Fragment analyzer QC">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="Criteria 1 - Source Data Field">Concentration (nM)</udf:field>
+    <udf:field type="String" name="Criteria 1 - Operator">&gt;=</udf:field>
+    <udf:field type="Numeric" name="Criteria 1 - Threshold Value">2</udf:field>
+    <udf:field type="String" name="Copy task 1 - Source Step">CG002 - Quantit QC (Library Validation)</udf:field>
+    <udf:field type="String" name="Bioanalyzer QC (Library Validation) 4.0">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CaliperGX QC (DNA)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - CG002 - Volume Measurement QC">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - qPCR QC (Library Validation)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - Qubit QC (Library Validation)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="Copy task 2 - Source Step">CG002 - Tapestation Microbial QC</udf:field>
+    <udf:field type="String" name="Copy task 1 - Source Field">Concentration</udf:field>
+    <udf:field type="String" name="Copy task 2 - Source Field">Size (bp)</udf:field>
+    <udf:field type="String" name="Customer Gel QC">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="PicoGreen QC (Library Validation) 4.0">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="Quant-iT QC (Library Validation) 4.0">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - Fragment analyzer QC">Use if available (Priority 5)</udf:field>
+    <protocol-name>Microbial</protocol-name>
+    <process-parameter name="Set Library Preped Date" />
+</prc:process>

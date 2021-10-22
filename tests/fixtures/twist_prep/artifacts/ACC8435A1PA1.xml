@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8435A1PA1?state=1386931" limsid="ACC8435A1PA1">
+    <name>2021-24458-02</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-176324" limsid="27-176324" />
+        <value>1:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8435A1" limsid="ACC8435A1" />
+    <udf:field type="Boolean" name="Skip Buffer Exchange">false</udf:field>
+    <udf:field type="Numeric" name="Level of Multiplexing">4</udf:field>
+    <udf:field type="String" name="Output Container Barcode">hej</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Buffer Exchange TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1755/stages/5727" />
+        <workflow-stage status="COMPLETE" name="Buffer Exchange TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1755/stages/5727" />
+    </workflow-stages>
+</art:artifact>

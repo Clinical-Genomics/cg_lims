@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-240261" limsid="24-240261">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/807">CG002 - Normalization of microbial samples</type>
+    <date-run>2021-10-11</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/157">
+        <first-name>Maya</first-name>
+        <last-name>Brandi</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A17PA1?state=1427870" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A17PA1?state=1427870" limsid="ACC8653A17PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837671?state=1430812" output-generation-type="PerInput" output-type="Analyte" limsid="2-1837671" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A17PA1?state=1427870" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A17PA1?state=1427870" limsid="ACC8653A17PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837675?state=1430816" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837675" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A17PA1?state=1427870" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A17PA1?state=1427870" limsid="ACC8653A17PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837676?state=1430817" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837676" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A17PA1?state=1427870" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A17PA1?state=1427870" limsid="ACC8653A17PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837677?state=1430818" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837677" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A25PA1?state=1427865" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A25PA1?state=1427865" limsid="ACC8653A25PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837672?state=1430813" output-generation-type="PerInput" output-type="Analyte" limsid="2-1837672" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A25PA1?state=1427865" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A25PA1?state=1427865" limsid="ACC8653A25PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837675?state=1430816" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837675" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A25PA1?state=1427865" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A25PA1?state=1427865" limsid="ACC8653A25PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837676?state=1430817" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837676" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A25PA1?state=1427865" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A25PA1?state=1427865" limsid="ACC8653A25PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837677?state=1430818" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837677" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837656?state=1430778" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837656?state=1430778" limsid="2-1837656">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837673?state=1430814" output-generation-type="PerInput" output-type="Analyte" limsid="2-1837673" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837656?state=1430778" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837656?state=1430778" limsid="2-1837656">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837675?state=1430816" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837675" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837656?state=1430778" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837656?state=1430778" limsid="2-1837656">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837676?state=1430817" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837676" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837656?state=1430778" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837656?state=1430778" limsid="2-1837656">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837677?state=1430818" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837677" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837657?state=1430779" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837657?state=1430779" limsid="2-1837657">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837674?state=1430815" output-generation-type="PerInput" output-type="Analyte" limsid="2-1837674" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837657?state=1430779" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837657?state=1430779" limsid="2-1837657">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837675?state=1430816" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837675" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837657?state=1430779" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837657?state=1430779" limsid="2-1837657">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837676?state=1430817" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837676" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837657?state=1430779" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837657?state=1430779" limsid="2-1837657">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837677?state=1430818" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837677" />
+    </input-output-map>
+    <udf:field type="String" name="Method document">1471</udf:field>
+    <udf:field type="Numeric" name="Final Concentration (ng/ul)">1</udf:field>
+    <udf:field type="String" name="Method Document Version">1</udf:field>
+    <udf:field type="String" name="Dilution buffer lot no">1</udf:field>
+    <process-parameter name="2. Calculate Aliquot Volume" />
+</prc:process>

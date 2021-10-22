@@ -218,3 +218,7 @@ def concentration_udf_option(
     help: str = "String of UDF used to get concentration value",
 ) -> click.option:
     return click.option("--concentration-udf", required=True, help=help)
+
+
+def prep(help: str = "Prep type") -> click.option:
+    return click.option("--prep-type", required=True, help=help)

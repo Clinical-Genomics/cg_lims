@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837792?state=1430895" limsid="92-1837792">
+    <name>Aggregation Script Log</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-240276" limsid="24-240276" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A1" limsid="ACC8454A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A2" limsid="ACC8454A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A3" limsid="ACC8454A3" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8454A4" limsid="ACC8454A4" />
+    <reagent-label name="A01 - UDI0001" />
+    <reagent-label name="A02 - UDI0009" />
+    <reagent-label name="A03 - UDI0017" />
+    <reagent-label name="A04 - UDI0025" />
+    <workflow-stages />
+</art:artifact>
