@@ -100,9 +100,7 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
             artifact.udf["Volume of sample (ul)"] = volumes.sample_volume
             artifact.put()
         except Exception:
-            LOG.warning(
-                f"Could not calculate sample volume for sample {artifact.samples[0].name}."
-            )
+            LOG.warning(f"Could not calculate sample volume for sample {artifact.id}.")
             failed_artifacts.append(artifact)
             continue
 
