@@ -12,6 +12,7 @@ from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import (
     calculate_water_volume_rna,
 )
 from cg_lims.EPPs.udf.calculate.get_missing_reads import get_missing_reads
+from cg_lims.EPPs.udf.calculate.maf_calculate_volume import maf_calculate_volume
 from cg_lims.EPPs.udf.calculate.molar_concentration import molar_concentration
 from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import missing_reads_in_pool
 from cg_lims.EPPs.udf.calculate.twist_aliquot_amount import twist_aliquot_amount
@@ -43,5 +44,6 @@ calculate.add_command(volume_water)
 calculate.add_command(molar_concentration)
 calculate.add_command(calculate_beads)
 calculate.add_command(missing_reads_in_pool)
+calculate.add_command(maf_calculate_volume)
 calculate.add_command(calculate_resuspension_buffer_volume)
 calculate.add_command(calculate_water_volume_rna)
