@@ -9,6 +9,7 @@ from cg_lims.exceptions import InvalidValueError, MissingUDFsError
 
 def test_calculate_water_volume_rna_missing_concentration(artifact_1: Artifact):
     # GIVEN a list of artifacts with one artifact missing the udf 'Concentration'
+    del artifact_1.udf["Concentration"]
     artifacts = [artifact_1]
 
     # WHEN calculating the sample and water volumes for all samples
@@ -33,6 +34,7 @@ def test_calculate_water_volume_rna_amount_needed_missing(
 ):
     # GIVEN a list of artifacts with one artifact having no 'Amount Needed (ng)' udf
     artifact_1.udf["Concentration"] = concentration
+    del artifact_1.udf["Amount needed (ng)"]
     artifacts = [artifact_1]
 
     # WHEN calculating sample and water volumes for all samples
@@ -52,7 +54,7 @@ def test_calculate_water_volume_rna_amount_needed_missing(
         (100, 9001),
     ],
 )
-def test_calculate_water_volume_rna_invalid_amount_needed(
+def test_calculate_water_volume_rna_(
     concentration, amount_needed, artifact_1: Artifact
 ):
     # GIVEN a list of artifacts with one artifact having an invalid 'Amount Needed (ng)' udf
