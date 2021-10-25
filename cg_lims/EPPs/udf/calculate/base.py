@@ -4,6 +4,9 @@ import click
 
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng import calculate_amount_ng
 from cg_lims.EPPs.udf.calculate.calculate_beads import calculate_beads
+from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import (
+    calculate_resuspension_buffer_volume,
+)
 from cg_lims.EPPs.udf.calculate.calculate_water import volume_water
 from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import (
     calculate_water_volume_rna,
@@ -40,4 +43,5 @@ calculate.add_command(volume_water)
 calculate.add_command(molar_concentration)
 calculate.add_command(calculate_beads)
 calculate.add_command(missing_reads_in_pool)
+calculate.add_command(calculate_resuspension_buffer_volume)
 calculate.add_command(calculate_water_volume_rna)

@@ -1,20 +1,19 @@
 import pytest
 from genologics.entities import Artifact
 
-from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import (
-    calculate_sample_and_water_volumes,
+from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import (
+    calculate_rb_volume,
 )
 from cg_lims.exceptions import InvalidValueError, MissingUDFsError
 
 
-def test_calculate_water_volume_rna_missing_concentration(artifact_1: Artifact):
+def test_calculate_rb_volume_missing_concentration(artifact_1: Artifact):
     # GIVEN a list of artifacts with one artifact missing the udf 'Concentration'
-    del artifact_1.udf["Concentration"]
     artifacts = [artifact_1]
 
-    # WHEN calculating the sample and water volumes for all samples
+    # WHEN calculating the rb volumes for all samples
     with pytest.raises(MissingUDFsError) as error_message:
-        calculate_sample_and_water_volumes(artifacts)
+        calculate_rb_volume(artifacts)
 
     # THEN the MissingUDFsError exception should be raised
     assert (
@@ -29,17 +28,14 @@ def test_calculate_water_volume_rna_missing_concentration(artifact_1: Artifact):
         100,
     ],
 )
-def test_calculate_water_volume_rna_amount_needed_missing(
-    concentration, artifact_1: Artifact
-):
+def test_calculate_rb_volume_amount_needed_missing(concentration, artifact_1: Artifact):
     # GIVEN a list of artifacts with one artifact having no 'Amount Needed (ng)' udf
     artifact_1.udf["Concentration"] = concentration
-    del artifact_1.udf["Amount needed (ng)"]
     artifacts = [artifact_1]
 
-    # WHEN calculating sample and water volumes for all samples
+    # WHEN calculating the rb volumes for all samples
     with pytest.raises(InvalidValueError) as error_message:
-        calculate_sample_and_water_volumes(artifacts)
+        calculate_rb_volume(artifacts)
 
     # THEN the InvalidValueError exception should be raised
     assert (
@@ -54,7 +50,7 @@ def test_calculate_water_volume_rna_amount_needed_missing(
         (100, 9001),
     ],
 )
-def test_calculate_water_volume_rna_(
+def test_calculate_rb_volume_invalid_amount_needed(
     concentration, amount_needed, artifact_1: Artifact
 ):
     # GIVEN a list of artifacts with one artifact having an invalid 'Amount Needed (ng)' udf
@@ -62,9 +58,9 @@ def test_calculate_water_volume_rna_(
     artifact_1.udf["Amount needed (ng)"] = amount_needed
     artifacts = [artifact_1]
 
-    # WHEN calculating the sample and water volumes for all samples
+    # WHEN calculating the rb volumes for all samples
     with pytest.raises(InvalidValueError) as error_message:
-        calculate_sample_and_water_volumes(artifacts)
+        calculate_rb_volume(artifacts)
 
     # THEN the InvalidValueError exception should be raised
     assert (
@@ -74,19 +70,17 @@ def test_calculate_water_volume_rna_(
 
 
 @pytest.mark.parametrize(
-    "concentration, amount_needed, expected_water_volume, expected_sample_volume",
+    "concentration, amount_needed, expected_rb_volume, expected_sample_volume",
     [
         (100, 200, 23.0, 2.0),
-        (100, 300, 22.0, 3.0),
-        (100, 400, 21.0, 4.0),
-        (100, 500, 20.0, 5.0),
+        (100, 1100, 44.0, 11.0),
     ],
 )
-def test_calculate_water_volume_rna(
+def test_calculate_rb_volume_(
     artifact_1: Artifact,
     concentration,
     amount_needed,
-    expected_water_volume,
+    expected_rb_volume,
     expected_sample_volume,
 ):
     # GIVEN a list of artifacts with one artifact
@@ -94,9 +88,9 @@ def test_calculate_water_volume_rna(
     artifact_1.udf["Amount needed (ng)"] = amount_needed
     artifacts = [artifact_1]
 
-    # WHEN calculating the sample and water volumes for all samples
-    calculate_sample_and_water_volumes(artifacts)
+    # WHEN calculating the rb volumes for all samples
+    calculate_rb_volume(artifacts)
 
     # THEN the correct volumes should be set on the artifact
-    assert artifact_1.udf["Volume H2O (ul)"] == expected_water_volume
+    assert artifact_1.udf["RB Volume (ul)"] == expected_rb_volume
     assert artifact_1.udf["Sample Volume (ul)"] == expected_sample_volume

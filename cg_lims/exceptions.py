@@ -89,6 +89,12 @@ class MissingValueError(LimsError):
     pass
 
 
+class InvalidValueError(LimsError):
+    """Raise when a value is invalid"""
+
+    pass
+
+
 class CSVColumnError(LimsError):
     """Raise when handling errors with csv columns"""
 

@@ -52,7 +52,7 @@ def get_processing_time(sample: Sample) -> Optional[dt.datetime]:
     if received_at and delivery_date:
         return delivery_date - received_at
     LOG.info(
-        "Could not get recieved date or delivery date to generate the processing time for sample %s."
+        "Could not get received date or delivery date to generate the processing time for sample %s."
         % sample.id
     )
     return None
@@ -66,7 +66,7 @@ def get_artifact_well(artifact: Artifact) -> str:
 
 
 def get_index_well(artifact: Artifact):
-    """Parsing out the index well position from the reagent label string wich
+    """Parsing out the index well position from the reagent label string which
     typically looks like this: 'A05 IDT_10nt_446 (AGCGTGACCT-CCATCCGAGT)'
     """
 
