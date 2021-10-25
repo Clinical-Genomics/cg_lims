@@ -31,7 +31,7 @@ def calculate_rb_volume(artifacts: List[Artifact]):
         amount_needed = artifact.udf.get("Amount needed (ng)")
         if concentration is None:
             LOG.error(
-                f"Sample {artifact.samples[0].name} is missing udf 'Concentration'."
+                f"Sample {artifact.id} is missing udf 'Concentration'."
             )
             missing_udfs += 1
             continue
