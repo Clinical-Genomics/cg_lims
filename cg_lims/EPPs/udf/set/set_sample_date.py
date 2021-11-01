@@ -1,9 +1,10 @@
 """Scripts to set the four sample date udfs: Received at, Library Prep Finished, Sequencing Finished and Delivered at
 """
 import logging
-from typing import Literal
+from typing import Literal, List
 
 import click
+from genologics.entities import Sample, Process
 
 from cg_lims import options
 from cg_lims.get.samples import get_process_samples
@@ -12,18 +13,18 @@ from datetime import datetime
 LOG = logging.getLogger(__name__)
 
 
-def set_received(sample):
+def set_received(sample: Sample):
     """Script to set todays date on sample udf Received at.
     If the received date is already set, it will not be updated."""
 
     if sample.udf.get("Received at"):
         LOG.warning(f"The sample {sample.id} already had a received date. Not updating.")
         return
-    sample.udf["Received at"] = datetime.today()
+    sample.udf["Received at"] = datetime.today().date()
     sample.put()
 
 
-def set_prepared(sample):
+def set_prepared(sample: Sample):
     """Script to set todays date on sample udf Library Prep Finished.
     If the sample has a delivery finished date and a sequencing finished date when this script is run, they are deleted.
     This is because the sample is assumed to be re sequenced and delivered again."""
@@ -40,11 +41,11 @@ def set_prepared(sample):
             f"being re prepped. "
         )
         sample.udf["Sequencing Finished"] = None
-    sample.udf["Library Prep Finished"] = datetime.today()
+    sample.udf["Library Prep Finished"] = datetime.today().date()
     sample.put()
 
 
-def set_sequenced(sample):
+def set_sequenced(sample: Sample):
     """Script to set todays date on sample udf Sequencing Finished.
     If the sample has a delivery finished date when this script is run, it will be deleted.
     This is because the sample is assumed to be delivered again."""
@@ -55,15 +56,15 @@ def set_sequenced(sample):
             f"re sequenced. "
         )
         sample.udf["Delivered at"] = None
-    sample.udf["Sequencing Finished"] = datetime.today()
+    sample.udf["Sequencing Finished"] = datetime.today().date()
     sample.put()
 
 
-def set_delivered(sample):
+def set_delivered(sample: Sample):
     """Script to set todays date on sample udf Delivered at.
     Overwriting any old delivery date."""
 
-    sample.udf["Delivered at"] = datetime.today()
+    sample.udf["Delivered at"] = datetime.today().date()
     sample.put()
 
 
@@ -87,8 +88,8 @@ def set_sample_date(
     """Script to set todays date on sample udf."""
 
     LOG.info(f"Running {context.command_path} with params: {context.params}")
-    process = context.obj["process"]
-    samples = get_process_samples(process=process)
+    process: Process = context.obj["process"]
+    samples: List[Sample] = get_process_samples(process=process)
     set_date_function = date_functions.get(sample_udf)
     for sample in samples:
-        set_date_function(sample)
+        set_date_function(sample=sample)
