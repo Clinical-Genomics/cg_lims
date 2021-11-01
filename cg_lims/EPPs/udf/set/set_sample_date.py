@@ -1,5 +1,4 @@
-"""Scripts to set the four sample date udfs: Received at, Library Prep Finished,
-Sequencing Finished and Delivered at
+"""Scripts to set the sample date udfs.
 """
 import logging
 from typing import Literal, List
