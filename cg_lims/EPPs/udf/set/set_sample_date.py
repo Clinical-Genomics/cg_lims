@@ -1,4 +1,5 @@
-"""Scripts to set the four sample date udfs: Received at, Library Prep Finished, Sequencing Finished and Delivered at
+"""Scripts to set the four sample date udfs: Received at, Library Prep Finished,
+Sequencing Finished and Delivered at
 """
 import logging
 from typing import Literal, List
@@ -13,20 +14,10 @@ from datetime import datetime
 LOG = logging.getLogger(__name__)
 
 
-def set_received(sample: Sample):
-    """Script to set todays date on sample udf Received at.
-    If the received date is already set, it will not be updated."""
-
-    if sample.udf.get("Received at"):
-        LOG.warning(f"The sample {sample.id} already had a received date. Not updating.")
-        return
-    sample.udf["Received at"] = datetime.today().date()
-    sample.put()
-
-
 def set_prepared(sample: Sample):
     """Script to set todays date on sample udf Library Prep Finished.
-    If the sample has a delivery finished date and a sequencing finished date when this script is run, they are deleted.
+    If the sample has a delivery finished date and a sequencing finished date when
+    this script is run, they are deleted.
     This is because the sample is assumed to be re sequenced and delivered again."""
 
     if sample.udf.get("Delivered at"):
@@ -69,7 +60,6 @@ def set_delivered(sample: Sample):
 
 
 date_functions = {
-    "Received at": set_received,
     "Library Prep Finished": set_prepared,
     "Sequencing Finished": set_sequenced,
     "Delivered at": set_delivered,
