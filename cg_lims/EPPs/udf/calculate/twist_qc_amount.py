@@ -41,7 +41,7 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
             missing_udfs_count += 1
             continue
 
-        amount = conc * vol
+        amount = conc * (vol - 3)
         artifact.udf["Amount (ng)"] = amount
         qc = get_qc(source, conc, amount)
         if qc == "FAILED":
