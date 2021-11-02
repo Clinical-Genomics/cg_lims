@@ -19,7 +19,8 @@ LOG = logging.getLogger(__name__)
 def calculate_amount_ng(
     ctx: click.Context, amount_udf: str, volume_udf: str, concentration_udf: str
 ):
-    """Calculates and auto-fills the quantities of DNA in sample from concentration and volume measurements"""
+    """Calculates and auto-fills the quantities of DNA in sample from concentration and volume measurements. 
+    The volume is subtracted by 3 in the calculations. This is beacause the lab uses 3 ul in the initial qc measurements."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
@@ -38,7 +39,7 @@ def calculate_amount_ng(
                 artifacts_with_missing_udf.append(artifact.id)
                 continue
 
-            artifact.udf[amount_udf] = conc * vol
+            artifact.udf[amount_udf] = conc * (vol - 3)
             artifact.put()
         if missing_udfs_count:
             raise MissingUDFsError(
