@@ -1,7 +1,6 @@
 from genologics.entities import Sample
 
 from cg_lims.EPPs.udf.set.set_sample_date import (
-    set_received,
     set_prepared,
     set_sequenced,
     set_delivered,
@@ -10,36 +9,6 @@ from datetime import datetime as dt
 from tests.conftest import (
     server,
 )
-
-
-def test_set_received(lims):
-    # GIVEN: A lims with a sample: "ACC8454A1" with a no recieved date
-
-    server("wgs_prep")
-    sample = Sample(lims=lims, id="ACC8454A1")
-    sample.udf["Received at"] = None
-    sample.put()
-
-    # WHEN running set_received
-    set_received(sample)
-
-    # THEN assert the recieved date was set to todays date
-    assert sample.udf.get("Received at") == dt.today().date()
-
-
-def test_set_received_date_already_set(lims):
-    # GIVEN: A lims with a sample: "ACC8454A1" with a recieved date
-
-    server("wgs_prep")
-    sample = Sample(lims=lims, id="ACC8454A1")
-    received_date = sample.udf.get("Received at")
-
-    # WHEN running set_received
-    set_received(sample)
-
-    # THEN assert the original date was not changed to todays date
-    assert sample.udf.get("Received at") == received_date
-    assert sample.udf.get("Received at") != dt.today().date()
 
 
 def test_set_prepared(lims):
