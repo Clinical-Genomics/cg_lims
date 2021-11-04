@@ -11,8 +11,8 @@ class KAPALibraryPreparationArtifactUDFs(BaseModel):
     library_concentration_pre_hyb: float = Field(..., alias="Concentration")
     adapter_ligation_master_mix: str = Field(..., alias="Ligation Master Mix")
     library_preparation_pcr_plate: str = Field(..., alias="PCR Plate")
-    amount_of_sample_in_pool_ng: float = Field(
-        ..., alias="Amount taken (ng)"
+    amount_of_sample_in_pool_ng: Optional[float] = Field(
+        None, alias="Amount taken (ng)"
     )  # this value is set afterwards in the pooling step
 
 
@@ -64,7 +64,6 @@ def get_kapa_library_preparation_twist(
         sample_id=sample_id,
         process_type="KAPA Library Preparation TWIST v1",
     )
-
     return KAPALibraryPreparationFields(
         **analyte.base_fields(),
         process_udfs=KAPALibraryPreparationProcessUDFs(**analyte.process_udfs()),
