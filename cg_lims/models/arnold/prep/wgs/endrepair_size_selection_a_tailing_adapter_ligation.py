@@ -20,7 +20,7 @@ class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeProcessUDFS(B
     pcr_instrument_incubation: str = Field(..., alias="PCR machine")
     lot_nr_h2o_library_preparation: str = Field(..., alias="Lot no: Nuclease free water")
     lot_nr_resuspension_buffer_library_preparation: Optional[str] = Field(
-        ..., alias="Lot no: Resuspension buffer"
+        None, alias="Lot no: Resuspension buffer"
     )
     library_preparation_method: str = Field(..., alias="Method document")
     lot_nr_etoh_library_preparation: str = Field(..., alias="Ethanol lot")
