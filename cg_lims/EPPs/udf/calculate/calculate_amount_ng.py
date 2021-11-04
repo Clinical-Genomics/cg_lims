@@ -14,7 +14,7 @@ LOG = logging.getLogger(__name__)
 @options.concentration_udf_option()
 @options.amount_udf_option()
 @options.volume_udf_option()
-@click.option("--subtract-volume", type=click.Choice(["0", "3"]), default="3")
+@options.subtract_volume_option()
 @click.pass_context
 def calculate_amount_ng(
     ctx: click.Context,
