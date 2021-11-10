@@ -15,8 +15,9 @@ LOG = logging.getLogger(__name__)
 @click.pass_context
 def get_volumes_from_buffer(ctx, process_type: List[str]) -> None:
     """Getting Volume Elution from previous step of type defined by process_types.
-    If volume found, setting the value Volume udf on artifact of current step. As part of the sample is used in the QC,
-    the value is subtracted by 10 to get the actual volume that is left."""
+    If volume found, setting the value Volume udf on artifact of current step. 
+    As part of the sample is left in the buffer excgange step, 
+    the value is subtracted by 5 to get the actual volume that is left."""
 
     LOG.info(f"Running {ctx.command_path} with params {ctx.params}")
 
@@ -34,7 +35,7 @@ def get_volumes_from_buffer(ctx, process_type: List[str]) -> None:
         except:
             continue
         if buffer_artifact.udf.get("Volume Elution (ul)"):
-            volume_buffer = float(buffer_artifact.udf.get("Volume Elution (ul)")) - 10.0
+            volume_buffer = float(buffer_artifact.udf.get("Volume Elution (ul)")) - 5.0
             if volume_buffer < 0:
                 failed_count += 1
                 continue
