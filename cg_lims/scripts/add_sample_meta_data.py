@@ -14,6 +14,7 @@ from cg_lims.exceptions import LimsError, MissingSampleError
 LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR"]
 LOG = logging.getLogger(__name__)
 LOG_FORMAT = "%(levelname)s:%(message)s"
+ONLY_ADD_IF_DATA_IS_MISSING = ["Lab Code", "Original Lab", "Original Lab Address"]
 
 
 def get_covid_samples(row: pd.Series, lims: Lims) -> List[Sample]:
@@ -47,7 +48,7 @@ def update_sample_udfs(sample: Sample, udfs: pd.Index, row: pd.Series) -> None:
         if not sample.udf.get(udf):
             LOG.info("Creating udf %s on sample %s: %s", udf, sample.id, row[udf])
         if sample.udf.get(udf) and sample.udf[udf] != row[udf]:
-            if "Lab" in udf:
+            if udf in ONLY_ADD_IF_DATA_IS_MISSING:
                 LOG.warning(
                     "Lab udf %s on sample (%s) differs from meta data (%s), sample will NOT be "
                     "updated!",
