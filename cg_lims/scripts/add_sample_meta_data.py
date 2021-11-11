@@ -90,7 +90,7 @@ def set_meta_data_on_samples(meta_data: pd.DataFrame, lims: Lims) -> None:
                     row["Data Analysis"],
                 )
                 update_sample_udfs(sample, udfs, row)
-                # sample.put()
+                sample.put()
                 successful_updates += 1
         except MissingSampleError:
             failed_updates += 1
