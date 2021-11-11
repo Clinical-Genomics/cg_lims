@@ -50,7 +50,7 @@ def update_sample_udfs(sample: Sample, udfs: pd.Index, row: pd.Series) -> None:
         if sample.udf.get(udf) and sample.udf[udf] != row[udf]:
             if udf in ONLY_ADD_IF_DATA_IS_MISSING:
                 LOG.warning(
-                    "Lab udf %s on sample (%s) differs from meta data (%s), sample will NOT be "
+                    "udf %s on sample (%s) differs from meta data (%s), sample will NOT be "
                     "updated!",
                     udf,
                     sample.udf[udf],
