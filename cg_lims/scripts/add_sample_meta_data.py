@@ -56,6 +56,7 @@ def update_sample_udfs(sample: Sample, udfs: pd.Index, row: pd.Series) -> None:
                     sample.udf[udf],
                     row[udf],
                 )
+                continue
             else:
                 LOG.info(
                     "Updating udf %s on sample %s: %s -> %s",
