@@ -108,6 +108,7 @@ def set_meta_data_on_samples(meta_data: pd.DataFrame, lims: Lims) -> None:
     "--data-file",
     "-f",
     type=click.Path(exists=True, dir_okay=False),
+    required=True,
     help="path to file with meta data",
 )
 @click.option(
