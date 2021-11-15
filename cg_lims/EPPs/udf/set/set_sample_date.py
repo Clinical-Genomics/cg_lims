@@ -13,7 +13,7 @@ from datetime import datetime
 LOG = logging.getLogger(__name__)
 
 
-def set_prepared(sample: Sample):
+def set_prepared(sample: Sample) -> None:
     """Script to set todays date on sample udf Library Prep Finished.
     If the sample has a delivery finished date and a sequencing finished date when
     this script is run, they are deleted.
@@ -35,22 +35,19 @@ def set_prepared(sample: Sample):
     sample.put()
 
 
-def set_sequenced(sample: Sample):
+def set_sequenced(sample: Sample) -> None:
     """Script to set todays date on sample udf Sequencing Finished.
     If the sample has a delivery finished date when this script is run, it will be deleted.
     This is because the sample is assumed to be delivered again."""
 
-    if sample.udf.get("Delivered at"):
-        LOG.warning(
-            f"The sample {sample.id} had a delivery finished date which is now deleted since the sample is being "
-            f"re sequenced. "
-        )
-        sample.udf["Delivered at"] = None
+    if sample.udf.get("Sequencing Finished"):
+        LOG.warning(f"The sample {sample.id} already had a sequencing date. Not updating.")
+        return
     sample.udf["Sequencing Finished"] = datetime.today().date()
     sample.put()
 
 
-def set_delivered(sample: Sample):
+def set_delivered(sample: Sample) -> None:
     """Script to set todays date on sample udf Delivered at.
     Overwriting any old delivery date."""
 

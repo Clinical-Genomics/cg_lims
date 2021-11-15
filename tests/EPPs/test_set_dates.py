@@ -55,20 +55,21 @@ def test_set_sequenced(lims):
     assert sample.udf.get("Sequencing Finished") == dt.today().date()
 
 
-def test_set_sequenced_delivered_was_set(lims):
+def test_set_sequenced_date_was_set(lims):
     # GIVEN: A lims with a sample: "ACC8454A1" with a delivery date.
 
     server("wgs_prep")
+    old_date = dt(2020, 6, 17).date()
     sample = Sample(lims=lims, id="ACC8454A1")
-    sample.udf["Delivered at"] = dt(2020, 6, 17).date()
+    sample.udf["Sequencing Finished"] = old_date
     sample.put()
 
     # WHEN running set_sequenced
     set_sequenced(sample)
 
-    # THEN assert the sequencing date was set to todays date but the sequencingdate was set to None!
-    assert sample.udf.get("Sequencing Finished") == dt.today().date()
-    assert sample.udf.get("Delivered at") is None
+    # THEN assert the sequencing date was not updated!
+    assert sample.udf.get("Sequencing Finished") != dt.today().date()
+    assert sample.udf.get("Sequencing Finished") == old_date
 
 
 def test_set_delivered(lims):
