@@ -7,7 +7,6 @@ from cg_lims import options
 
 # commands
 from cg_lims.EPPs import epps
-from cg_lims.scripts import scripts
 from cg_lims.status_db_api import StatusDBAPI
 
 
@@ -31,4 +30,3 @@ def cli(ctx, config):
 
 
 cli.add_command(epps)
-cli.add_command(scripts)
