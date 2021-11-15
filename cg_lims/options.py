@@ -206,11 +206,15 @@ def file_suffix(help: str = "Define file name suffix") -> click.option:
     return click.option("--suffix", required=False, default="", help=help)
 
 
-def amount_udf_option(help: str = "String of UDF used to get amount value") -> click.option:
+def amount_udf_option(
+    help: str = "String of UDF used to get amount value",
+) -> click.option:
     return click.option("--amount-udf", required=True, help=help)
 
 
-def volume_udf_option(help: str = "String of UDF used to get volume value") -> click.option:
+def volume_udf_option(
+    help: str = "String of UDF used to get volume value",
+) -> click.option:
     return click.option("--volume-udf", required=True, help=help)
 
 
@@ -222,3 +226,11 @@ def concentration_udf_option(
 
 def prep(help: str = "Prep type") -> click.option:
     return click.option("--prep-type", required=True, help=help)
+
+
+def subtract_volume_option(
+    help: str = "Subtracts volume taken from samples in QC checks",
+) -> click.option:
+    return click.option(
+        "--subtract-volume", type=click.Choice(["0", "3"]), default="3", help=help
+    )
