@@ -1,20 +1,30 @@
 """One time script to add Covid meta data to sample"""
 import logging
+import pathlib
 from datetime import date, datetime
 from typing import List
 
 import click
 import coloredlogs
 import pandas as pd
+import yaml
 from genologics.entities import Sample
 from genologics.lims import Lims
 
+from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingSampleError
 
 LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR"]
 LOG = logging.getLogger(__name__)
 LOG_FORMAT = "%(levelname)s:%(message)s"
-ONLY_ADD_IF_DATA_IS_MISSING = ["Lab Code", "Original Lab", "Original Lab Address"]
+ONLY_ADD_IF_DATA_IS_MISSING = [
+    "Collection Date",
+    "Region",
+    "Lab Code",
+    "Original Lab",
+    "Original Lab Address",
+    "Region Code",
+]
 
 
 def get_covid_samples(row: pd.Series, lims: Lims) -> List[Sample]:
@@ -104,6 +114,8 @@ def set_meta_data_on_samples(meta_data: pd.DataFrame, lims: Lims) -> None:
 
 
 @click.command()
+@options.config()
+@options.log()
 @click.option(
     "--data-file",
     "-f",
@@ -118,11 +130,22 @@ def set_meta_data_on_samples(meta_data: pd.DataFrame, lims: Lims) -> None:
     help="lowest level to log at",
 )
 @click.pass_context
-def set_sample_meta_data(context: click.Context, data_file: click.Path, log_level: str):
+def set_sample_meta_data(
+    context: click.Context, config: str, log: str, data_file: click.Path, log_level: str
+):
     """Script to set Covid meta data on sample udf."""
+    with open(config) as file:
+        config_data = yaml.load(file, Loader=yaml.FullLoader)
+    lims = Lims(
+        config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"]
+    )
+    log_path = pathlib.Path(log)
+    log_level = getattr(logging, log_level.upper())
+    logging.basicConfig(
+        filename=str(log_path.absolute()), filemode="w", level=log_level
+    )
     LOG.info(f"Running {context.command_path} with params: {context.params}")
     coloredlogs.install(level=log_level, fmt=LOG_FORMAT)
-    lims: Lims = context.obj["lims"]
     meta_data: pd.DataFrame = pd.read_csv(data_file, sep=";")
     try:
         set_meta_data_on_samples(meta_data, lims)
@@ -132,3 +155,7 @@ def set_sample_meta_data(context: click.Context, data_file: click.Path, log_leve
     except LimsError as e:
         LOG.error(e.message)
         click.echo(e.message)
+
+
+if __name__ == "__main__":
+    set_sample_meta_data()
