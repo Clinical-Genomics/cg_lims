@@ -7,6 +7,7 @@ from cg_lims import options
 
 # commands
 from cg_lims.EPPs import epps
+from cg_lims.scripts.base import scripts
 from cg_lims.status_db_api import StatusDBAPI
 
 
@@ -16,9 +17,7 @@ from cg_lims.status_db_api import StatusDBAPI
 def cli(ctx, config):
     with open(config) as file:
         config_data = yaml.load(file, Loader=yaml.FullLoader)
-    lims = Lims(
-        config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"]
-    )
+    lims = Lims(config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"])
     status_db = StatusDBAPI(config_data["CG_URL"])
 
     ctx.ensure_object(dict)
@@ -30,3 +29,4 @@ def cli(ctx, config):
 
 
 cli.add_command(epps)
+cli.add_command(scripts)

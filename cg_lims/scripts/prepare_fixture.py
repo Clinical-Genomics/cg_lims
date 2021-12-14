@@ -1,12 +1,10 @@
-import csv
 from pathlib import Path
 from typing import List
 
 import click
-import yaml
-from genologics.entities import Artifact, Sample, Entity
-from genologics.lims import Lims, Process
-from pydantic import BaseModel, Field
+from genologics.entities import Entity
+from genologics.lims import Process
+from pydantic import BaseModel
 
 
 class ProcessFixure(BaseModel):
@@ -71,13 +69,10 @@ def add_entities(entities: List[Entity], entity_dir: Path):
 
 @click.command()
 @click.option("--process")
-@click.option("--config")
 @click.option("--test_name")
-def make_fixure(process: str, test_name: str, config: str):
-    with open(config) as file:
-        config_data = yaml.load(file, Loader=yaml.FullLoader)
-    lims = Lims(config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"])
-
+@click.pass_context
+def make_fixure(ctx, process: str, test_name: str):
+    lims = ctx.obj["lims"]
     process = Process(lims=lims, id=process)
     process.get()
     fixture_dir: ProcessFixure = build_file_structure(base_dir=test_name)
@@ -94,7 +89,3 @@ def make_fixure(process: str, test_name: str, config: str):
     add_entities(entities=list(containers), entity_dir=fixture_dir.containers)
     container_types = list({container.type for container in containers})
     add_entities(entities=container_types, entity_dir=fixture_dir.containertypes)
-
-
-if __name__ == "__main__":
-    make_fixure()
