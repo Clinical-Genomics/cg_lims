@@ -14,7 +14,7 @@ from .prepare_fixture import make_fixure
 @options.log()
 @click.pass_context
 def scripts(ctx, log: str):
-    """Main entry point of epp commands"""
+    """Main entry point to run scripts"""
 
     log_path = pathlib.Path(log)
     logging.basicConfig(filename=str(log_path.absolute()), filemode="a", level=logging.INFO)

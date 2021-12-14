@@ -24,9 +24,7 @@ def queue_artifacts(lims: Lims, artifacts: List[Artifact], workflow_id: str, sta
     artifact_ids = unique_list_of_ids(artifacts)
     lims.route_artifacts(artifacts, stage_uri=stage_uri)
     try:
-        print("0")
         lims.route_artifacts(artifacts, stage_uri=stage_uri)
-        print("1")
         LOG.info(f"Queueing artifacts to {stage_uri}.")
         LOG.info(f"The following artifacts have been queued: {' ,'.join(artifact_ids)}")
     except:

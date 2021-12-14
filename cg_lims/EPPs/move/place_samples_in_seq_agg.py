@@ -36,7 +36,6 @@ def get_pools_and_samples_to_queue(
     send_to_next_step = []
     for sample in samples:
         pool_name = sample.udf.get("pool name")
-        print(pool_name)
         if pool_name:
             ## this is a RML - get pools from sort step
             try:
@@ -72,7 +71,6 @@ def place_samples_in_seq_agg(ctx, workflow_id, stage_id, process_type):
 
     try:
         artifacts = get_pools_and_samples_to_queue(lims, process_type, samples)
-        print(artifacts)
         queue_artifacts(lims, artifacts, workflow_id, stage_id)
         LOG.info("Artifacts have been queued.")
         click.echo("Artifacts have been queued.")
