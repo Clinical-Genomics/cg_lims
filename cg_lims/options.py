@@ -231,6 +231,10 @@ def prep(help: str = "Prep type") -> click.option:
 def subtract_volume_option(
     help: str = "Subtracts volume taken from samples in QC checks",
 ) -> click.option:
-    return click.option(
-        "--subtract-volume", type=click.Choice(["0", "3"]), default="3", help=help
-    )
+    return click.option("--subtract-volume", type=click.Choice(["0", "3"]), default="3", help=help)
+
+
+def automation_string(
+    help: str = "Search string for automation",
+) -> click.option:
+    return click.option("--automation-string", required=True, help=help)
