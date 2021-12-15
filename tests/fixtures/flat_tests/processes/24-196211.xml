@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-196211" limsid="24-196211">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1006">Some Step Name</type>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/157">
+        <first-name>Maya</first-name>
+        <last-name>Brandi</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-1447716?state=1108545" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1447716?state=1108545" limsid="2-1447716">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-192879" limsid="24-192879" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1454721?state=1113679" output-generation-type="PerInput" output-type="Analyte" limsid="2-1454721" />
+    </input-output-map>
+</prc:process>

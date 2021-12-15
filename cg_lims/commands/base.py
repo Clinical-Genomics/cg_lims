@@ -24,6 +24,7 @@ def cli(ctx, config):
     ctx.obj["lims"] = lims
     ctx.obj["status_db"] = status_db
     ctx.obj["arnold_host"] = config_data.get("ARNOLD_HOST")
+    ctx.obj["atlas_host"] = config_data.get("ATLAS_HOST")
     ctx.obj["db_uri"] = config_data.get("DB_URI")
     ctx.obj["db_name"] = config_data.get("DB_NAME")
 

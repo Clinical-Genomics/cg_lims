@@ -162,6 +162,16 @@ def pool_udfs(help: str = "Pool udfs.") -> click.option:
     )
 
 
+def process_udfs(help: str = "Process udfs.") -> click.option:
+    return click.option(
+        "-pru",
+        "--process-udfs",
+        required=False,
+        multiple=True,
+        help=help,
+    )
+
+
 def pooling_step(
     help: str = "True if run from a pooling step",
 ) -> click.option:
