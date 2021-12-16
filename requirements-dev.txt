@@ -5,3 +5,4 @@ coveralls<5
 pylint
 mock
 coloredlogs
+responses
