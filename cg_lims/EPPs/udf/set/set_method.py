@@ -10,7 +10,7 @@ import requests
 from genologics.entities import Process
 
 from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.exceptions import LimsError, MissingUDFsError, AtlasResponseFailedError
 
 LOG = logging.getLogger(__name__)
 
@@ -24,7 +24,7 @@ def get_path(document_udf: str, process: Process, atlas_host: str) -> Optional[s
         return
     response = requests.get(f"{atlas_host}/title/{document_title}/path")
     if response.status_code != 200:
-        raise response  ##something
+        raise AtlasResponseFailedError(message=response.json()["detail"])
     return response.json()
 
 
@@ -43,7 +43,7 @@ def set_methods_and_version(document_udfs: List[str], process: Process, host: st
         raise MissingUDFsError(message="Found no valid Method document UDFs in the step.")
     version_response = requests.get(f"{host}/version")
     if version_response.status_code != 200:
-        raise version_response  ##something
+        raise AtlasResponseFailedError(message=version_response.json()["detail"])
     process.udf["Methods"] = " ,".join(method_documents)
     process.udf["Atlas Version"] = version_response.json()
     process.put()

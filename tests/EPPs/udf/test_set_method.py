@@ -1,9 +1,8 @@
 import pytest
 from genologics.entities import Process
 
-from cg_lims.EPPs.udf.set.set_method import get_path, set_methods_and_version
-from cg_lims.exceptions import MissingUDFsError
-from fastapi import HTTPException
+from cg_lims.EPPs.udf.set.set_method import get_path
+from cg_lims.exceptions import AtlasResponseFailedError
 from tests.conftest import (
     server,
 )
@@ -68,13 +67,13 @@ def test_get_path_missing_udf(lims, mocker, caplog):
 @responses.activate
 def atlas_response_mock_fail():
     url = "https://atlas/api/SomeTitle/path"
-    responses.add(responses.GET, url, status=404)
+    responses.add(responses.GET, url, status=404, json={"detail": "document not found"})
     return requests.get(url)
 
 
 def test_get_path_wrong_document_title(lims, mocker, atlas_response_mock_fail):
     # GIVEN: a lims with a process: id="24-196211"
-    # with a udf named "Method Document" with a value of some method document title in atlas: "SomeTitle"  and
+    # with a udf named "Method Document" with a value of some method document title that dont exist in atlas: "SomeWrongTitle"  and
     # GIVEN: a atlas api with a endpoint "https://atlas/api/SomeTitle/path" returning "atlas/document/path.md"
 
     server("flat_tests")
@@ -85,11 +84,12 @@ def test_get_path_wrong_document_title(lims, mocker, atlas_response_mock_fail):
     mocker.patch.object(requests, "get")
     requests.get.return_value = atlas_response_mock_fail
 
-    # WHEN running get_path with the process, the atlas api host and the document udf
-    with pytest.raises(HTTPException) as error:
+    # WHEN running get_path with the process, the atlas api host and the document udf.
+    # THEN: assert AtlasResponseFailedError is being raised
+    with pytest.raises(AtlasResponseFailedError) as error:
         document_path = get_path(
             process=process, document_udf=document_udf, atlas_host="https://atlas/api"
         )
 
-    # THEN: assert
-    assert error.value
+    # THEN: assert the error message is fetched from the api response
+    assert error.value.message == "document not found"
