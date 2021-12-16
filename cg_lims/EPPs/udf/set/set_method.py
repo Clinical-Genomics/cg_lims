@@ -23,12 +23,8 @@ def get_path(document_udf: str, process: Process, atlas_host: str) -> Optional[s
         LOG.warning(f"Process Udf: {document_udf} does not exist or was left empty.")
         return
     response = requests.get(f"{atlas_host}/title/{document_title}/path")
-    if response.status_code == 404:
-        raise AtlasResponseFailedError(message=response.json()["detail"])
-    if response.status_code == 403:
-        raise AtlasResponseFailedError(message="Failed to connect to atlas api")
-    elif response.status_code != 200:
-        AtlasResponseFailedError(message=response.text)
+    if response.status_code != 200:
+        raise AtlasResponseFailedError(message=response.json(), code=response.status_code)
     return response.json()
 
 
@@ -47,7 +43,9 @@ def set_methods_and_version(document_udfs: List[str], process: Process, host: st
         raise MissingUDFsError(message="Found no valid Method document UDFs in the step.")
     version_response = requests.get(f"{host}/version")
     if version_response.status_code != 200:
-        raise AtlasResponseFailedError(message=version_response.json()["detail"])
+        raise AtlasResponseFailedError(
+            message=version_response.json()["detail"], code=version_response.status_code
+        )
     process.udf["Methods"] = " ,".join(method_documents)
     process.udf["Atlas Version"] = version_response.json()
     process.put()

@@ -11,9 +11,12 @@ class LimsError(Exception):
 
 
 class AtlasResponseFailedError(LimsError):
-    """Raise when failing to route artifacts."""
+    """Raise when failing retrieve atlas response."""
 
-    pass
+    def __init__(self, message: str, code: Optional[int]):
+        self.message = f"{code} : {message}"
+        self.code = code
+        super().__init__(message)
 
 
 class QueueArtifactsError(LimsError):
