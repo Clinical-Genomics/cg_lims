@@ -23,8 +23,12 @@ def get_path(document_udf: str, process: Process, atlas_host: str) -> Optional[s
         LOG.warning(f"Process Udf: {document_udf} does not exist or was left empty.")
         return
     response = requests.get(f"{atlas_host}/title/{document_title}/path")
-    if response.status_code != 200:
+    if response.status_code == 404:
         raise AtlasResponseFailedError(message=response.json()["detail"])
+    if response.status_code == 403:
+        raise AtlasResponseFailedError(message="Failed to connect to atlas api")
+    elif response.status_code != 200:
+        AtlasResponseFailedError(message=response.text)
     return response.json()
 
 
