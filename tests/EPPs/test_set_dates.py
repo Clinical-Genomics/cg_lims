@@ -1,4 +1,4 @@
-from genologics.entities import Sample
+from genologics.entities import Sample, Process
 
 from cg_lims.EPPs.udf.set.set_sample_date import (
     set_prepared,
@@ -73,13 +73,16 @@ def test_set_sequenced_date_was_set(lims):
 
 
 def test_set_delivered(lims):
-    # GIVEN: A lims with a sample: "ACC8454A1".
+    # GIVEN: A lims with a sample: "ACC8454A1" and a process with a Date delivered udf set.
 
     server("wgs_prep")
     sample = Sample(lims=lims, id="ACC8454A1")
+    process = Process(lims=lims, id="24-240272")
+    process.udf["Date delivered"] = dt.today().date()
+    process.put()
 
     # WHEN running set_delivered
-    set_delivered(sample)
+    set_delivered(sample=sample, process=process)
 
-    # THEN assert the delivery date was set to todays date
-    assert sample.udf.get("Delivered at") == dt.today().date()
+    # THEN assert the delivery date was set on the sample
+    assert sample.udf.get("Delivered at") == process.udf["Date delivered"]
