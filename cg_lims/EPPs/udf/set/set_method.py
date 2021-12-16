@@ -24,7 +24,7 @@ def get_path(document_udf: str, process: Process, atlas_host: str) -> Optional[s
         return
     response = requests.get(f"{atlas_host}/title/{document_title}/path")
     if response.status_code != 200:
-        raise AtlasResponseFailedError(message=response.json(), code=response.status_code)
+        raise AtlasResponseFailedError(message=f"{response.status_code} : {response.text}")
     return response.json()
 
 
@@ -41,13 +41,11 @@ def set_methods_and_version(document_udfs: List[str], process: Process, host: st
     method_documents = get_document_paths(document_udfs=document_udfs, host=host, process=process)
     if not method_documents:
         raise MissingUDFsError(message="Found no valid Method document UDFs in the step.")
-    version_response = requests.get(f"{host}/version")
-    if version_response.status_code != 200:
-        raise AtlasResponseFailedError(
-            message=version_response.json()["detail"], code=version_response.status_code
-        )
+    response = requests.get(f"{host}/version")
+    if response.status_code != 200:
+        raise AtlasResponseFailedError(message=f"{response.status_code} : {response.text}")
     process.udf["Methods"] = " ,".join(method_documents)
-    process.udf["Atlas Version"] = version_response.json()
+    process.udf["Atlas Version"] = response.json()
     process.put()
     LOG.info("Method Documents and Atlas Version have been set.")
     click.echo("Method Documents and Atlas Version have been set.")

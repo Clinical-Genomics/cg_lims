@@ -92,4 +92,4 @@ def test_get_path_wrong_document_title(lims, mocker, atlas_response_mock_fail):
         )
 
     # THEN: assert the error message is fetched from the api response
-    assert error.value.message == {"detail": "document not found"}
+    assert error.value.message == '404 : {"detail": "document not found"}'

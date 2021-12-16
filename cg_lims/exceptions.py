@@ -13,10 +13,7 @@ class LimsError(Exception):
 class AtlasResponseFailedError(LimsError):
     """Raise when failing retrieve atlas response."""
 
-    def __init__(self, message: str, code: Optional[int]):
-        self.message = f"{code} : {message}"
-        self.code = code
-        super().__init__(message)
+    pass
 
 
 class QueueArtifactsError(LimsError):
