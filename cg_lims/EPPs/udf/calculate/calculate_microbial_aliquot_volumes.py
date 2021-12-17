@@ -76,7 +76,7 @@ def calculate_microbial_aliquot_volumes(context: click.Context):
         information: Optional[str] = calculate_volumes(artifacts=artifacts)
         message = "Microbial aliquot volumes have been calculated."
         if information:
-            message += information
+            message = f"{message} {information}"
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
