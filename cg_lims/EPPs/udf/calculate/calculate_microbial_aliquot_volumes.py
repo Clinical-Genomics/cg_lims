@@ -4,134 +4,64 @@ needed, as specified in the step `CG002 - Normalization of microbial samples for
 """
 import logging
 import sys
-from typing import List, Optional
+from typing import List
 
 import click
 from genologics.entities import Artifact
-from pydantic import BaseModel, ValidationError, validator
 
-from cg_lims.exceptions import LimsError
+from cg_lims.exceptions import HighConcentrationError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 
 FINAL_CONCENTRATION = 2
 LOG = logging.getLogger(__name__)
 MAXIMUM_CONCENTRATION = 60
-QC_FAILED = "FAILED"
-QC_PASSED = "PASSED"
 
 
-class MicrobialAliquotVolumes(BaseModel):
-    """Pydantic model for calculating microbial aliquot volumes based on the sample concentration"""
-
-    sample_concentration: Optional[float]
-    artifact_name: str
-    is_ntc_sample: Optional[bool]
-    sample_volume: Optional[float]
-    total_volume: Optional[float]
-    buffer_volume: Optional[float]
-    qc_flag: Optional[str]
-
-    @validator("sample_concentration", always=True)
-    def set_sample_concentration(cls, v, values):
-        """Set sample concentration and handle missing concentration udf"""
-        if v is None:
-            message = "Concentration udf missing on sample"
-            LOG.error(message)
-            raise ValueError(message)
-        return v
-
-    @validator("is_ntc_sample", always=True)
-    def set_is_ntc_sample(cls, v, values):
-        """Sets if the sample is and NFT sample or not"""
-        ntc_sample_name = values.get("artifact_name")
-        return ntc_sample_name.startswith("NTC-CG")
-
-    @validator("sample_volume", always=True)
-    def set_sample_volume(cls, v, values):
-        """Calculate and set sample volume"""
-        sample_concentration = values.get("sample_concentration")
-        is_ntc_sample = values.get("is_ntc_sample")
-        if is_ntc_sample:
-            return 0
-        if sample_concentration < FINAL_CONCENTRATION:
-            return 15
-        elif FINAL_CONCENTRATION <= sample_concentration <= 7.5:
-            total_volume = 15
-            sample_volume = (
-                float(FINAL_CONCENTRATION * total_volume) / sample_concentration
+def calculate_volumes(artifacts: List[Artifact]) -> None:
+    """Determines the total volume, water volume, and sample volume"""
+    missing_udfs = 0
+    high_concentration = False
+    for artifact in artifacts:
+        concentration = artifact.udf.get("Concentration")
+        if concentration is None:
+            LOG.error(
+                f"Sample {artifact.samples[0].name} is missing udf 'Concentration'."
             )
+            missing_udfs += 1
+            continue
+        if artifact.samples[0].name.startswith("NTC-CG"):
+            sample_volume = 0
+            buffer_volume = 15
+        elif concentration < FINAL_CONCENTRATION:
+            sample_volume = 15
+            buffer_volume = 0
+        elif 2 <= concentration <= 7.5:
+            total_volume = 15
+            sample_volume = float(FINAL_CONCENTRATION * total_volume) / concentration
             buffer_volume = total_volume - sample_volume
             if buffer_volume < 2:
-                return 15
-            else:
-                return sample_volume
-        elif 7.5 <= sample_concentration <= MAXIMUM_CONCENTRATION:
-            return 4
-
-    @validator("total_volume", always=True)
-    def set_total_volume(cls, v, values):
-        """Calculate and set total volume"""
-        sample_concentration = values.get("sample_concentration")
-        is_ntc_sample = values.get("is_ntc_sample")
-        if is_ntc_sample:
-            return 15
-        if sample_concentration <= 7.5:
-            return 15
-        elif 7.5 < sample_concentration <= MAXIMUM_CONCENTRATION:
-            return (
-                sample_concentration * values.get("sample_volume")
-            ) / FINAL_CONCENTRATION
-
-    @validator("buffer_volume", always=True)
-    def set_buffer_volume(cls, v, values):
-        """Calculate and set buffer volume"""
-        sample_concentration = values.get("sample_concentration")
-        is_ntc_sample = values.get("is_ntc_sample")
-        if is_ntc_sample:
-            return 15
-        if sample_concentration < FINAL_CONCENTRATION:
-            return 0
-        elif FINAL_CONCENTRATION <= sample_concentration <= 60:
-            return values.get("total_volume") - values.get("sample_volume")
-
-    @validator("qc_flag", always=True)
-    def set_qc_flag(cls, v, values):
-        """Set the QC flag on a sample"""
-        is_ntc_sample = values.get("is_ntc_sample")
-        if values.get("sample_concentration") <= MAXIMUM_CONCENTRATION or is_ntc_sample:
-            return QC_PASSED
+                sample_volume = 15
+                buffer_volume = 0
+        elif 7.5 < concentration <= MAXIMUM_CONCENTRATION:
+            sample_volume = 4
+            total_volume = float(concentration * sample_volume) / FINAL_CONCENTRATION
+            buffer_volume = total_volume - sample_volume
         else:
-            return QC_FAILED
-
-
-def calculate_volume(artifacts: List[Artifact]) -> None:
-    """Determines the total volume, water volume, and sample volume"""
-    failed_artifacts = []
-
-    for artifact in artifacts:
-        try:
-            volumes = MicrobialAliquotVolumes(
-                sample_concentration=artifact.udf.get("Concentration"),
-                artifact_name=artifact.samples[0].name,
-            )
-            artifact.qc_flag = volumes.qc_flag
-            if volumes.qc_flag == QC_PASSED:
-                artifact.udf["Total Volume (uL)"] = volumes.total_volume
-                artifact.udf["Volume Buffer (ul)"] = volumes.buffer_volume
-                artifact.udf["Sample Volume (ul)"] = volumes.sample_volume
-                click.echo(volumes)
-            artifact.put()
-        except (Exception, ValidationError):
-            LOG.warning(
-                f"Could not calculate aliquot volumes for sample {artifact.id}."
-            )
-            failed_artifacts.append(artifact)
+            high_concentration = True
             continue
+        artifact.udf["Sample Volume (ul)"] = sample_volume
+        artifact.udf["Volume Buffer (ul)"] = buffer_volume
+        artifact.udf["Total Volume (uL)"] = buffer_volume + sample_volume
+        artifact.put()
 
-    if failed_artifacts:
-        raise LimsError(
-            f"Microbial aliquot volume calculations failed for {len(failed_artifacts)} samples, "
-            f"{len(artifacts) - len(failed_artifacts)} updates successful. "
+    if missing_udfs:
+        raise MissingUDFsError(
+            f"Could not apply calculations for {missing_udfs} out of {len(artifacts)} sample(s): "
+            f"'Concentration' is missing!"
+        )
+    if high_concentration:
+        raise HighConcentrationError(
+            f"Could not apply calculations for one or more sample(s): concentration too high!"
         )
 
 
@@ -143,7 +73,7 @@ def calculate_microbial_aliquot_volumes(context: click.Context):
     process = context.obj["process"]
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
-        calculate_volume(artifacts=artifacts)
+        calculate_volumes(artifacts=artifacts)
         message = "Microbial aliquot volumes have been calculated."
         LOG.info(message)
         click.echo(message)

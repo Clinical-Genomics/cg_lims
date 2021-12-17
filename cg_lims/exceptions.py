@@ -110,7 +110,7 @@ class InsertError(LimsError):
         super().__init__(message)
 
 
-class InvalidValueError(LimsError):
+class HighConcentrationError(LimsError):
     """Raise when a value is invalid"""
 
     pass
