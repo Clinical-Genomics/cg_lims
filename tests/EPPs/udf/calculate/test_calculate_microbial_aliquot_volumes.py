@@ -79,7 +79,7 @@ def test_calculate_microbial_aliquot_volumes_concentration_missing(
 def test_calculate_microbial_aliquot_volumes_concentration_too_high(
     sample_concentration: float, artifact_1: Artifact, caplog
 ):
-    # GIVEN a sample with no concentration udf
+    # GIVEN a sample with a concentration value greater than the maximum allowed
     artifact_1.udf["Concentration"] = sample_concentration
     artifacts = [artifact_1]
 
