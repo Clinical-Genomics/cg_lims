@@ -82,12 +82,13 @@ def test_calculate_microbial_aliquot_volumes_concentration_too_high(
     # GIVEN a sample with a concentration value greater than the maximum allowed
     artifact_1.udf["Concentration"] = sample_concentration
     artifacts = [artifact_1]
+    mu = "\u03BC"
 
     # WHEN calculating the microbial aliquot volumes
     result = calculate_volumes(artifacts=artifacts)
 
     # THEN a warning string should be returned
-    assert result == "Concentration is high for some samples!"
+    assert result == f"Concentration is high (> 60 ng/{mu}l) for some samples!"
 
 
 @pytest.mark.parametrize(
