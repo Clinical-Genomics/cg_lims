@@ -4,7 +4,7 @@ needed, as specified in the step `CG002 - Normalization of microbial samples for
 """
 import logging
 import sys
-from typing import List
+from typing import List, Optional
 
 import click
 from genologics.entities import Artifact
@@ -17,7 +17,7 @@ LOG = logging.getLogger(__name__)
 MAXIMUM_CONCENTRATION = 60
 
 
-def calculate_volumes(artifacts: List[Artifact]) -> None:
+def calculate_volumes(artifacts: List[Artifact]) -> Optional[str]:
     """Determines the total volume, water volume, and sample volume"""
     missing_udfs = 0
     high_concentration = False
@@ -59,10 +59,10 @@ def calculate_volumes(artifacts: List[Artifact]) -> None:
             f"Could not apply calculations for {missing_udfs} out of {len(artifacts)} sample(s): "
             f"'Concentration' is missing!"
         )
+
     if high_concentration:
-        raise HighConcentrationError(
-            f"Could not apply calculations for one or more sample(s): concentration too high!"
-        )
+        information = "Concentration is high for some samples!"
+        return information
 
 
 @click.command()
@@ -73,8 +73,10 @@ def calculate_microbial_aliquot_volumes(context: click.Context):
     process = context.obj["process"]
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
-        calculate_volumes(artifacts=artifacts)
+        information: Optional[str] = calculate_volumes(artifacts=artifacts)
         message = "Microbial aliquot volumes have been calculated."
+        if information:
+            message += information
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
