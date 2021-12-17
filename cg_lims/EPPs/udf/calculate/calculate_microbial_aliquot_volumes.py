@@ -61,7 +61,8 @@ def calculate_volumes(artifacts: List[Artifact]) -> Optional[str]:
         )
 
     if high_concentration:
-        information = "Concentration is high for some samples!"
+        mu = "\u03BC"
+        information = f"Concentration is high (> 60 ng/{mu}l) for some samples!"
         return information
 
 
