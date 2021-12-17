@@ -24,6 +24,8 @@ class MicrobialAliquotVolumes(BaseModel):
     """Pydantic model for calculating microbial aliquot volumes based on the sample concentration"""
 
     sample_concentration: Optional[float]
+    artifact_name: str
+    is_ntc_sample: Optional[bool]
     sample_volume: Optional[float]
     total_volume: Optional[float]
     buffer_volume: Optional[float]
@@ -38,10 +40,19 @@ class MicrobialAliquotVolumes(BaseModel):
             raise ValueError(message)
         return v
 
+    @validator("is_ntc_sample", always=True)
+    def set_is_ntc_sample(cls, v, values):
+        """Sets if the sample is and NFT sample or not"""
+        ntc_sample_name = values.get("artifact_name")
+        return ntc_sample_name.startswith("NTC-CG")
+
     @validator("sample_volume", always=True)
     def set_sample_volume(cls, v, values):
         """Calculate and set sample volume"""
         sample_concentration = values.get("sample_concentration")
+        is_ntc_sample = values.get("is_ntc_sample")
+        if is_ntc_sample:
+            return 0
         if sample_concentration < FINAL_CONCENTRATION:
             return 15
         elif FINAL_CONCENTRATION <= sample_concentration <= 7.5:
@@ -61,6 +72,9 @@ class MicrobialAliquotVolumes(BaseModel):
     def set_total_volume(cls, v, values):
         """Calculate and set total volume"""
         sample_concentration = values.get("sample_concentration")
+        is_ntc_sample = values.get("is_ntc_sample")
+        if is_ntc_sample:
+            return 15
         if sample_concentration <= 7.5:
             return 15
         elif 7.5 < sample_concentration <= MAXIMUM_CONCENTRATION:
@@ -72,6 +86,9 @@ class MicrobialAliquotVolumes(BaseModel):
     def set_buffer_volume(cls, v, values):
         """Calculate and set buffer volume"""
         sample_concentration = values.get("sample_concentration")
+        is_ntc_sample = values.get("is_ntc_sample")
+        if is_ntc_sample:
+            return 15
         if sample_concentration < FINAL_CONCENTRATION:
             return 0
         elif FINAL_CONCENTRATION <= sample_concentration <= 60:
@@ -80,7 +97,8 @@ class MicrobialAliquotVolumes(BaseModel):
     @validator("qc_flag", always=True)
     def set_qc_flag(cls, v, values):
         """Set the QC flag on a sample"""
-        if values.get("sample_concentration") <= MAXIMUM_CONCENTRATION:
+        is_ntc_sample = values.get("is_ntc_sample")
+        if values.get("sample_concentration") <= MAXIMUM_CONCENTRATION or is_ntc_sample:
             return QC_PASSED
         else:
             return QC_FAILED
@@ -91,29 +109,24 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
     failed_artifacts = []
 
     for artifact in artifacts:
-        if artifact.samples[0].name[0:6] == "NTC-CG":
-            artifact.qc_flag = QC_PASSED
-            artifact.udf["Total Volume (uL)"] = 15
-            artifact.udf["Volume Buffer (ul)"] = 15
-            artifact.udf["Sample Volume (ul)"] = 0
+        try:
+            volumes = MicrobialAliquotVolumes(
+                sample_concentration=artifact.udf.get("Concentration"),
+                artifact_name=artifact.samples[0].name,
+            )
+            artifact.qc_flag = volumes.qc_flag
+            if volumes.qc_flag == QC_PASSED:
+                artifact.udf["Total Volume (uL)"] = volumes.total_volume
+                artifact.udf["Volume Buffer (ul)"] = volumes.buffer_volume
+                artifact.udf["Sample Volume (ul)"] = volumes.sample_volume
+                click.echo(volumes)
             artifact.put()
-        else:
-            try:
-                volumes = MicrobialAliquotVolumes(
-                    sample_concentration=artifact.udf.get("Concentration"),
-                )
-                artifact.qc_flag = volumes.qc_flag
-                if volumes.qc_flag == QC_PASSED:
-                    artifact.udf["Total Volume (uL)"] = volumes.total_volume
-                    artifact.udf["Volume Buffer (ul)"] = volumes.buffer_volume
-                    artifact.udf["Sample Volume (ul)"] = volumes.sample_volume
-                artifact.put()
-            except (Exception, ValidationError):
-                LOG.warning(
-                    f"Could not calculate aliquot volumes for sample {artifact.id}."
-                )
-                failed_artifacts.append(artifact)
-                continue
+        except (Exception, ValidationError):
+            LOG.warning(
+                f"Could not calculate aliquot volumes for sample {artifact.id}."
+            )
+            failed_artifacts.append(artifact)
+            continue
 
     if failed_artifacts:
         raise LimsError(

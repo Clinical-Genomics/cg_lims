@@ -31,12 +31,20 @@ from cg_lims.EPPs.udf.calculate.calculate_microbial_aliquot_volumes import (
     ],
 )
 def test_microbial_aliquot_volumes_model(
-    sample_concentration, sample_volume, total_volume, buffer_volume, qc_flag
+    sample_concentration,
+    sample_volume,
+    total_volume,
+    buffer_volume,
+    qc_flag,
+    artifact_1,
 ):
     # GIVEN a pydantic model for microbial aliquot volumes
+    artifact_name = "TEST1"
 
     # WHEN calculating the volumes in the validators with valid values for 'sample_concentration'
-    result = MicrobialAliquotVolumes(sample_concentration=sample_concentration)
+    result = MicrobialAliquotVolumes(
+        sample_concentration=sample_concentration, artifact_name=artifact_name
+    )
 
     # THEN the correct results should be set
     assert result.sample_concentration == sample_concentration
@@ -54,10 +62,13 @@ def test_microbial_aliquot_volumes_model(
 )
 def test_maf_volume_model_sample_concentration_validation_error(sample_concentration):
     # GIVEN a pydantic model for Microbial Aliquot volumes
+    artifact_name = "TEST1"
 
     # WHEN calculating the volumes in the validator when there is no 'sample_concentration'
     with pytest.raises(ValidationError) as error_message:
-        MicrobialAliquotVolumes(sample_concentration=sample_concentration)
+        MicrobialAliquotVolumes(
+            sample_concentration=sample_concentration, artifact_name=artifact_name
+        )
 
     # THEN pydantic should raise an exception
     assert error_message.value.errors()[0]["loc"][0] == "sample_concentration"
