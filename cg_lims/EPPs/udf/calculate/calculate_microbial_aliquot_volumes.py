@@ -8,7 +8,7 @@ from typing import List, Optional
 
 import click
 from genologics.entities import Artifact
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, ValidationError, validator
 
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
@@ -23,49 +23,64 @@ QC_PASSED = "PASSED"
 class MicrobialAliquotVolumes(BaseModel):
     """Pydantic model for calculating microbial aliquot volumes based on the sample concentration"""
 
-    sample_concentration: float
-    total_volume: Optional[float]
-    volume_buffer: Optional[float]
+    sample_concentration: Optional[float]
     sample_volume: Optional[float]
+    total_volume: Optional[float]
+    buffer_volume: Optional[float]
     qc_flag: Optional[str]
 
     @validator("sample_concentration", always=True)
     def set_sample_concentration(cls, v, values):
-        """Set sample concentration and handle high or missing concentration"""
-        if v > MAXIMUM_CONCENTRATION:
-            message = "Concentration is too high"
-            LOG.error(message)
-            raise ValueError(message)
-        if not v:
-            message = "Concentration is missing"
+        """Set sample concentration and handle missing concentration udf"""
+        if v is None:
+            message = "Concentration udf missing on sample"
             LOG.error(message)
             raise ValueError(message)
         return v
 
+    @validator("sample_volume", always=True)
+    def set_sample_volume(cls, v, values):
+        """Calculate and set sample volume"""
+        sample_concentration = values.get("sample_concentration")
+        if sample_concentration < FINAL_CONCENTRATION:
+            return 15
+        elif FINAL_CONCENTRATION <= sample_concentration <= 7.5:
+            total_volume = 15
+            sample_volume = (
+                float(FINAL_CONCENTRATION * total_volume) / sample_concentration
+            )
+            buffer_volume = total_volume - sample_volume
+            if buffer_volume < 2:
+                return 15
+            else:
+                return sample_volume
+        elif 7.5 <= sample_concentration <= MAXIMUM_CONCENTRATION:
+            return 4
+
     @validator("total_volume", always=True)
     def set_total_volume(cls, v, values):
-        """#TODO: Docstring"""
+        """Calculate and set total volume"""
         sample_concentration = values.get("sample_concentration")
-        pass
+        if sample_concentration <= 7.5:
+            return 15
+        elif 7.5 < sample_concentration <= MAXIMUM_CONCENTRATION:
+            return (
+                sample_concentration * values.get("sample_volume")
+            ) / FINAL_CONCENTRATION
 
-    @validator("water_volume", always=True)
-    def set_water_volume(cls, v, values):
-        """Calculate the water volume for a sample"""
-        return values.get("final_volume") - values.get("sample_volume")
-
-    @validator("final_volume", always=True)
-    def set_final_volume(cls, v, values):
-        """Calculates the final volume for a sample"""
-        return (
-            values.get("sample_volume")
-            * values.get("sample_concentration")
-            / FINAL_CONCENTRATION
-        )
+    @validator("buffer_volume", always=True)
+    def set_buffer_volume(cls, v, values):
+        """Calculate and set buffer volume"""
+        sample_concentration = values.get("sample_concentration")
+        if sample_concentration < FINAL_CONCENTRATION:
+            return 0
+        elif FINAL_CONCENTRATION <= sample_concentration <= 60:
+            return values.get("total_volume") - values.get("sample_volume")
 
     @validator("qc_flag", always=True)
     def set_qc_flag(cls, v, values):
         """Set the QC flag on a sample"""
-        if values.get("sample_concentration") < MAXIMUM_CONCENTRATION:
+        if values.get("sample_concentration") <= MAXIMUM_CONCENTRATION:
             return QC_PASSED
         else:
             return QC_FAILED
@@ -76,21 +91,35 @@ def calculate_volume(artifacts: List[Artifact]) -> None:
     failed_artifacts = []
 
     for artifact in artifacts:
-        try:
-            volumes = MicrobialAliquotVolumes(
-                sample_concentration=artifact.udf.get("Concentration")
-            )
-            artifact.qc_flag = volumes.qc_flag
-            artifact.udf["Total Volume (uL)"] = volumes.total_volume
-            # artifact.udf["Total Volume (uL)"] = buffer_volume + sample_volume
-            artifact.udf["Volume Buffer (ul)"] = volumes.buffer_volume
-            artifact.udf["Sample Volume (ul)"] = volumes.sample_volume
+        if artifact.samples[0].name[0:6] == "NTC-CG":
+            artifact.qc_flag = QC_PASSED
+            artifact.udf["Total Volume (uL)"] = 15
+            artifact.udf["Volume Buffer (ul)"] = 15
+            artifact.udf["Sample Volume (ul)"] = 0
             artifact.put()
-        except Exception:
-            LOG.warning(f"Could not calculate sample volume for sample {artifact.id}.")
-            failed_artifacts.append(artifact)
-            continue
-            pass
+        else:
+            try:
+                volumes = MicrobialAliquotVolumes(
+                    sample_concentration=artifact.udf.get("Concentration"),
+                )
+                artifact.qc_flag = volumes.qc_flag
+                if volumes.qc_flag == QC_PASSED:
+                    artifact.udf["Total Volume (uL)"] = volumes.total_volume
+                    artifact.udf["Volume Buffer (ul)"] = volumes.buffer_volume
+                    artifact.udf["Sample Volume (ul)"] = volumes.sample_volume
+                artifact.put()
+            except (Exception, ValidationError):
+                LOG.warning(
+                    f"Could not calculate aliquot volumes for sample {artifact.id}."
+                )
+                failed_artifacts.append(artifact)
+                continue
+
+    if failed_artifacts:
+        raise LimsError(
+            f"Microbial aliquot volume calculations failed for {len(failed_artifacts)} samples, "
+            f"{len(artifacts) - len(failed_artifacts)} updates successful. "
+        )
 
 
 @click.command()
