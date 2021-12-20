@@ -90,8 +90,8 @@ def test_calculate_microbial_aliquot_volumes_concentration_too_high(
 
     # THEN a HighConcentrationError should be raised
     assert (
-        "Could not apply calculations for one or more sample(s): concentration too high (> 60 "
-        "ng/{mu}l)!" in error_message.value.message
+        f"Could not apply calculations for one or more sample(s): concentration too high (> "
+        f"60 ng/{mu}l)! " in error_message.value.message
     )
 
 

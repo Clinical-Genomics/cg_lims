@@ -6,7 +6,7 @@ For an explanation of the volume calculations, see AM-document 1764 Method - Man
 cost-efficient library preparation for microbial WGS """
 import logging
 import sys
-from typing import List, Optional
+from typing import List
 
 import click
 from genologics.entities import Artifact
@@ -19,7 +19,7 @@ LOG = logging.getLogger(__name__)
 MAXIMUM_CONCENTRATION = 60
 
 
-def calculate_volumes(artifacts: List[Artifact]) -> Optional[str]:
+def calculate_volumes(artifacts: List[Artifact]) -> None:
     """Determines the total volume, water volume, and sample volume"""
     missing_udfs = 0
     high_concentration = False
@@ -65,8 +65,8 @@ def calculate_volumes(artifacts: List[Artifact]) -> Optional[str]:
     if high_concentration:
         mu = "\u03BC"
         raise HighConcentrationError(
-            "Could not apply calculations for one or more sample(s): concentration too high (> 60 "
-            "ng/{mu}l)!"
+            f"Could not apply calculations for one or more sample(s): concentration too high (> "
+            f"60 ng/{mu}l)! "
         )
 
 
