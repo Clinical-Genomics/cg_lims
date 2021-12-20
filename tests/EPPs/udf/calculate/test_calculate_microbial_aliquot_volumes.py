@@ -84,11 +84,15 @@ def test_calculate_microbial_aliquot_volumes_concentration_too_high(
     artifacts = [artifact_1]
     mu = "\u03BC"
 
-    # WHEN calculating the microbial aliquot volumes
-    result = calculate_volumes(artifacts=artifacts)
+    # # WHEN calculating the microbial aliquot volumes
+    with pytest.raises(HighConcentrationError) as error_message:
+        calculate_volumes(artifacts=artifacts)
 
-    # THEN a warning string should be returned
-    assert result == f"Concentration is high (> 60 ng/{mu}l) for some samples!"
+    # THEN a HighConcentrationError should be raised
+    assert (
+        "Could not apply calculations for one or more sample(s): concentration too high (> 60 "
+        "ng/{mu}l)!" in error_message.value.message
+    )
 
 
 @pytest.mark.parametrize(

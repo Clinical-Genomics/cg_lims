@@ -1,7 +1,9 @@
 """
 CLI module to calculate the resuspension buffer volume (RB Volume) based on the amount of DNA
 needed, as specified in the step `CG002 - Normalization of microbial samples for sequencing`
-"""
+
+For an explanation of the volume calculations, see AM-document 1764 Method - Manual
+cost-efficient library preparation for microbial WGS """
 import logging
 import sys
 from typing import List, Optional
@@ -62,8 +64,10 @@ def calculate_volumes(artifacts: List[Artifact]) -> Optional[str]:
 
     if high_concentration:
         mu = "\u03BC"
-        information = f"Concentration is high (> 60 ng/{mu}l) for some samples!"
-        return information
+        raise HighConcentrationError(
+            "Could not apply calculations for one or more sample(s): concentration too high (> 60 "
+            "ng/{mu}l)!"
+        )
 
 
 @click.command()
@@ -74,10 +78,8 @@ def calculate_microbial_aliquot_volumes(context: click.Context):
     process = context.obj["process"]
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
-        information: Optional[str] = calculate_volumes(artifacts=artifacts)
+        calculate_volumes(artifacts=artifacts)
         message = "Microbial aliquot volumes have been calculated."
-        if information:
-            message = f"{message} {information}"
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
