@@ -17,12 +17,15 @@ from cg_lims.get.artifacts import get_artifacts
 FINAL_CONCENTRATION = 2
 LOG = logging.getLogger(__name__)
 MAXIMUM_CONCENTRATION = 60
+QC_FAILED = "FAILED"
+QC_PASSED = "PASSED"
 
 
 def calculate_volumes(artifacts: List[Artifact]) -> None:
     """Determines the total volume, water volume, and sample volume"""
     missing_udfs = 0
     high_concentration = False
+    qc_flag = QC_PASSED
     for artifact in artifacts:
         concentration = artifact.udf.get("Concentration")
         if concentration is None:
@@ -50,7 +53,10 @@ def calculate_volumes(artifacts: List[Artifact]) -> None:
             buffer_volume = total_volume - sample_volume
         else:
             high_concentration = True
+            artifact.qc_flag = QC_FAILED
+            artifact.put()
             continue
+        artifact.qc_flag = qc_flag
         artifact.udf["Sample Volume (ul)"] = sample_volume
         artifact.udf["Volume Buffer (ul)"] = buffer_volume
         artifact.udf["Total Volume (uL)"] = buffer_volume + sample_volume
