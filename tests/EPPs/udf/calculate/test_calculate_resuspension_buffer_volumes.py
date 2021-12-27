@@ -9,6 +9,7 @@ from cg_lims.exceptions import InvalidValueError, MissingUDFsError
 
 def test_calculate_rb_volume_missing_concentration(artifact_1: Artifact):
     # GIVEN a list of artifacts with one artifact missing the udf 'Concentration'
+    del artifact_1.udf["Concentration"]
     artifacts = [artifact_1]
 
     # WHEN calculating the rb volumes for all samples
