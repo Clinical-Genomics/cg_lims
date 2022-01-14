@@ -20,7 +20,7 @@ def check_udfs(artifacts: List[Artifact], artifact_udfs: List[str]) -> None:
 
     warning = []
     for udf in artifact_udfs:
-        missing_udfs = [artifact.id for artifact in artifacts if not artifact.udf.get(udf)]
+        missing_udfs = [artifact.id for artifact in artifacts if artifact.udf.get(udf) is None]
         if missing_udfs:
             warning.append(f"Udf: {udf} missing for artifacts: {missing_udfs}.")
     if warning:
