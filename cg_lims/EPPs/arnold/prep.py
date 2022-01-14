@@ -33,6 +33,7 @@ def build_step_documents(
     samples: List[Sample] = get_process_samples(process=process)
     all_step_documents = []
     for sample in samples:
+        print(sample)
         step_documents: List[BaseStep] = prep_document_function(
             sample_id=sample.id, process_id=process.id, lims=lims
         )
