@@ -3,11 +3,8 @@
 import logging
 import sys
 from typing import List
-
 import click
-
 from genologics.entities import Process, Artifact
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
@@ -32,7 +29,9 @@ def check_udfs(artifacts: List[Artifact], artifact_udfs: List[str]) -> None:
 @options.measurement(help="Set to True if you want to check measurement udfs.")
 @options.input(help="Set to True if you want to check the input artifact udfs.")
 @click.pass_context
-def method_document(ctx: click.Context, artifact_udfs: List[str], input: bool, measurement: bool):
+def check_artifact_udfs(
+    ctx: click.Context, artifact_udfs: List[str], input: bool, measurement: bool
+):
     """Script to check that artifact udfs are set."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
