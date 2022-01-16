@@ -3,6 +3,7 @@ import logging
 
 import pytest
 from genologics.entities import Artifact
+from genologics.lims import Lims
 from pydantic import ValidationError
 
 from cg_lims.EPPs.udf.calculate.maf_calculate_volume import (
@@ -11,6 +12,7 @@ from cg_lims.EPPs.udf.calculate.maf_calculate_volume import (
     MafVolumes,
     calculate_volume,
 )
+from tests.conftest import server
 
 LOG = logging.getLogger(__name__)
 
@@ -31,9 +33,7 @@ LOG = logging.getLogger(__name__)
         (1443, 180.375, 179.875, 0.5, QC_FAILED),
     ],
 )
-def test_maf_volume_model(
-    sample_concentration, sample_volume, final_volume, water_volume, qc_flag
-):
+def test_maf_volume_model(sample_concentration, sample_volume, final_volume, water_volume, qc_flag):
     # GIVEN a pydantic model for MAF volumes
 
     # WHEN calculating the volumes in the validators with valid values for 'sample_concentration'
@@ -102,10 +102,7 @@ def test_maf_volume_model_sample_volume_value_error(sample_concentration):
     # THEN the validator for sample_volume should raise a ValueError exception
     assert error_message.value.errors()[0]["loc"][0] == "sample_volume"
     assert error_message.value.errors()[0]["type"] == "value_error"
-    assert (
-        error_message.value.errors()[0]["msg"]
-        == "Sample concentration not in valid range"
-    )
+    assert error_message.value.errors()[0]["msg"] == "Sample concentration not in valid range"
 
 
 @pytest.mark.parametrize(
@@ -123,6 +120,7 @@ def test_calculate_volume(
     artifact_1: Artifact,
 ):
     # GIVEN a sample with a valid sample concentration:
+    server("flat_tests")
     artifact_1.udf["Concentration"] = sample_concentration
     artifacts = [artifact_1]
 
@@ -148,6 +146,7 @@ def test_calculate_volume_exception(
     caplog,
 ):
     # GIVEN a sample with a sample concentration that is below the required final concentration
+    server("flat_tests")
     artifact_1.udf["Concentration"] = sample_concentration
     artifacts = [artifact_1]
 
