@@ -21,7 +21,9 @@ def check_udfs(artifacts: List[Artifact], artifact_udfs: List[str]) -> None:
         if missing_udfs:
             warning.append(f"Udf: {udf} missing for artifacts: {missing_udfs}.")
     if warning:
+        LOG.warning(" ".join(warning))
         raise MissingUDFsError(message=" ".join(warning))
+    LOG.info("Artifact udfs were all set.")
 
 
 @click.command()
@@ -39,7 +41,6 @@ def check_artifact_udfs(
     try:
         artifacts = get_artifacts(process=process, input=input, measurement=measurement)
         check_udfs(artifacts=artifacts, artifact_udfs=artifact_udfs)
-        LOG.info("Artifact udfs were checked.")
         click.echo("Artifact udfs were checked.")
     except LimsError as e:
         sys.exit(e.message)
