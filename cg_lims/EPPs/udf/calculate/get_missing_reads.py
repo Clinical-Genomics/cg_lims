@@ -37,13 +37,15 @@ def set_artifact_rerun(
 
 def check_control(artifact: Artifact) -> bool:
     """Return True if all atrtifact samples are control samples."""
-    return all(sample.udf.get("control") == "positive" for sample in artifact.samples)
+    return all(sample.udf.get("Control") == "negative" for sample in artifact.samples)
 
 
 def find_reruns(artifacts: list, status_db) -> None:
     failed_arts = 0
     for artifact in artifacts:
         if check_control(artifact):
+            artifact.qc_flag = "PASSED"
+            artifact.put()
             continue
         sample = artifact.samples[0]
         reads_total = sample.udf.get("Total Reads (M)")
