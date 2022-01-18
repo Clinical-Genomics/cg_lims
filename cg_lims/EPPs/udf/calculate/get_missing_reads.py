@@ -37,7 +37,7 @@ def set_artifact_rerun(
 
 def check_control(artifact: Artifact) -> bool:
     """Return True if all atrtifact samples are control samples."""
-    return all(sample.udf.get("control") for sample in artifact.samples)
+    return all(sample.udf.get("control") == "positive" for sample in artifact.samples)
 
 
 def find_reruns(artifacts: list, status_db) -> None:
