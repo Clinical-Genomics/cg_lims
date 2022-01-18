@@ -36,11 +36,15 @@ def set_artifact_rerun(
 
 
 def check_control(artifact: Artifact) -> bool:
-    """Return True if all atrtifact samples are control samples."""
+    """Return True if all atrtifact samples are negative control samples."""
     return all(sample.udf.get("Control") == "negative" for sample in artifact.samples)
 
 
 def find_reruns(artifacts: list, status_db) -> None:
+    """
+    Looking for artifacts to rerun.
+    Negative control samples are never sent for rerun.
+    A pool with any sample that is not a negative control will be sent for rerun if reads are missing."""
     failed_arts = 0
     for artifact in artifacts:
         if check_control(artifact):
@@ -76,7 +80,9 @@ def find_reruns(artifacts: list, status_db) -> None:
 @click.command()
 @click.pass_context
 def get_missing_reads(ctx):
-    """Script to calculate missing reads and decide on reruns"""
+    """Script to calculate missing reads and decide on reruns.
+    Negative control samples are never sent for rerun.
+    A pool with any sample that is not a negative control will be sent for rerun if reads are missing."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
