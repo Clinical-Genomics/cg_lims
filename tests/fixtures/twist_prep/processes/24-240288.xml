@@ -22,6 +22,6 @@
     <udf:field type="String" name="Ethanol">12</udf:field>
     <udf:field type="String" name="Method document">1993</udf:field>
     <udf:field type="String" name="Nuclease free water">22</udf:field>
-    <udf:field type="String" name="Twist Enrichment Kit">22</udf:field>
+    <udf:field type="String" name="Twist Binding and Purification beads">Some Bead</udf:field>
     <process-parameter name="Calculate Missing Reads For Pools" />
 </prc:process>
