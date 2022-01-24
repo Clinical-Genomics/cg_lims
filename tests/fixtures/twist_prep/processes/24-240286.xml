@@ -22,5 +22,6 @@
     <udf:field type="String" name="Method document">1993</udf:field>
     <udf:field type="String" name="Nuclease free water">3</udf:field>
     <udf:field type="Numeric" name="Total hybridization time (h)">22</udf:field>
-    <udf:field type="String" name="Twist enrichment kit">12</udf:field>
+    <udf:field type="String" name="Twist Binding and Purification beads">Some bead</udf:field>
+    <udf:field type="String" name="Twist Wash Buffers">Some buffer</udf:field>
 </prc:process>

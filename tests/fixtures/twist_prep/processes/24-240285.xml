@@ -23,7 +23,5 @@
     <udf:field type="String" name="Hyb time start">1</udf:field>
     <udf:field type="String" name="Method document">1993</udf:field>
     <udf:field type="String" name="Thermal cycler">challenger</udf:field>
-    <udf:field type="String" name="Twist enrichment kit">1</udf:field>
     <udf:field type="String" name="TWIST Hybridization kit">1</udf:field>
-    <udf:field type="String" name="Vapor lock">1</udf:field>
 </prc:process>
