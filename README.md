@@ -1,6 +1,6 @@
 # cg_lims [![Coverage Status](https://coveralls.io/repos/github/Clinical-Genomics/cg_lims/badge.svg)](https://coveralls.io/github/Clinical-Genomics/cg_lims)  ![Latest Release](https://img.shields.io/github/v/release/clinical-genomics/cg_lims)
 
-A new package for lims interactions. The aim is to replace all other lims interactions at CG with this new package.
+A package for lims interactions. The aim is to replace all other lims interactions at CG with this new package.
 
 ## Database access
 The lims ststem is built upon a postgress database. Illumina provides a [REST API](https://clinical-lims-stage.scilifelab.se/api/v2/) for accessing the database. On top of that there is a python API, the [genologics](https://github.com/SciLifeLab/genologics) packge wich simply translates the rest into python. cg_lims is hevily depending upon the genologics python API. 
