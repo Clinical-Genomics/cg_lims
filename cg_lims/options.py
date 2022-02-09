@@ -258,3 +258,21 @@ def automation_string(
     help: str = "Search string for automation",
 ) -> click.option:
     return click.option("--automation-string", required=True, help=help)
+
+
+def lower_threshold(help: str = "Set lower threshold value") -> click.option:
+    return click.option(
+        "-lt",
+        "--lower-threshold",
+        required=True,
+        help=help,
+    )
+
+
+def upper_threshold(help: str = "Set upper threshold value") -> click.option:
+    return click.option(
+        "-ut",
+        "--upper-threshold",
+        required=True,
+        help=help,
+    )
