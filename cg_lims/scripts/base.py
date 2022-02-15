@@ -7,6 +7,7 @@ from cg_lims import options
 
 # commands
 from .check_config import check_config
+from .load_all_arnold_samples import load_all_samples
 from .prepare_fixture import make_fixure
 
 
@@ -22,3 +23,4 @@ def scripts(ctx, log: str):
 
 scripts.add_command(check_config)
 scripts.add_command(make_fixure)
+scripts.add_command(load_all_samples)

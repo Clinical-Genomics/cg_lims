@@ -17,6 +17,7 @@ def get_number_of_days(first_date: str, second_date: str) -> Optional[int]:
 class ArnoldSample(BaseModel):
     id: Optional[str] = Field(alias="_id")
     sample_id: str
+    ticket: str
     category: Optional[str]
     received_date: Optional[date] = Field(alias="Received at")
     delivery_date: Optional[date] = Field(alias="Delivered at")
