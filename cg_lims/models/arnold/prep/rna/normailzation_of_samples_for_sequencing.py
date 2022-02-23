@@ -12,7 +12,7 @@ LOG = logging.getLogger(__name__)
 class ProcessUDFS(BaseModel):
     """Normalization of RNA samples for sequencing v1"""
 
-    dilution_lot_nr: Optional[str] = Field(None, alias="Dilution buffer lot no")
+    dilution_lot_nr: str = Field(None, alias="Dilution buffer lot no")
 
 
 class ArtifactUDF(BaseModel):
