@@ -8,7 +8,7 @@ PLACEMENT_MAP_HEADER = """
     </head>
     <body>
     <div id="header">
-    <h1 class="title">{process_type}</h1>
+    <h1 class="title">{process_types}</h1>
     </div>
     Created: {date}
     """

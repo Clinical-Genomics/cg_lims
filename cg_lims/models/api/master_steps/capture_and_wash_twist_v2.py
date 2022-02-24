@@ -20,7 +20,7 @@ class CaptureandWashTWIST(BaseStep):
             return get_latest_artifact(
                 lims=values.get("lims"),
                 sample_id=values.get("sample_id"),
-                process_type=["Capture and Wash TWIST v2"],
+                process_types=["Capture and Wash TWIST v2"],
             )
         except:
             return None
