@@ -23,12 +23,12 @@ def test_copy_udfs(lims):
         artifact_udfs=[concentration_udf, volume_udf],
     )
 
-    # THEN the apptag should be returned
+    # THEN the udfs have been set:
     assert destination_artifact.udf[volume_udf] == source_artifact.udf[volume_udf]
     assert destination_artifact.udf[concentration_udf] == source_artifact.udf[concentration_udf]
 
 
-def test_copy_udfs_missing_udfs(lims):
+def test_copy_udfs_missing_udfs(lims, caplog):
     # GIVEN a sample with a udf "Sequencing Analysis"
     server("flat_tests")
     concentration_udf = "Concentration (nM)"
@@ -45,6 +45,7 @@ def test_copy_udfs_missing_udfs(lims):
         artifact_udfs=[concentration_udf, volume_udf],
     )
 
-    # THEN the apptag should be returned
+    # THEN the udfs have not been set
     assert destination_artifact.udf.get(volume_udf) is None
     assert destination_artifact.udf.get(concentration_udf) is None
+    assert "missing on artifact" in caplog.text
