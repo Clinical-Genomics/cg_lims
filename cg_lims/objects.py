@@ -40,8 +40,8 @@ class BaseAnalyte:
     """This class defines a Analyte by:
 
     sample_id: The submitted sample from which the analyte is derived.
-    process_type: The process in which the analyte was generated (the artifact.parent_process).
-                  If process_type is None, then the analyte is the original submitted sample.
+    process_types: The process in which the analyte was generated (the artifact.parent_process).
+                  If process_types is None, then the analyte is the original submitted sample.
     """
 
     def __init__(
@@ -104,14 +104,14 @@ class BaseAnalyte:
         return self.artifact.name
 
     def get_artifact(self) -> Optional[Artifact]:
-        """Getting the analyte artifact based on sample_id and process_type.
-        If process_type is None, then the analyte is the original submitted sample."""
+        """Getting the analyte artifact based on sample_id and process_types.
+        If process_types is None, then the analyte is the original submitted sample."""
         if not self.process_type:
             sample = Sample(self.lims, id=self.sample_id)
             return get_sample_artifact(sample=sample, lims=self.lims)
         try:
             return get_latest_artifact(
-                lims=self.lims, sample_id=self.sample_id, process_type=[self.process_type]
+                lims=self.lims, sample_id=self.sample_id, process_types=[self.process_type]
             )
         except MissingArtifactError as e:
             LOG.info(e.message)

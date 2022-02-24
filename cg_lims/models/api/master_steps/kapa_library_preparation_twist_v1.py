@@ -31,7 +31,7 @@ class KAPALibraryPreparation(BaseStep):
             return get_latest_artifact(
                 lims=values.get("lims"),
                 sample_id=values.get("sample_id"),
-                process_type=["KAPA Library Preparation TWIST v1"],
+                process_types=["KAPA Library Preparation TWIST v1"],
             )
         except:
             return None
