@@ -5,7 +5,7 @@ from genologics.lims import Lims
 from .a_tailing_and_adapter_ligation import get_a_tailning_and_adapter_ligation
 from .aliquot_samples_for_fragmentation import get_aliquot_samples_for_enzymatic_fragmentation
 from .reception_control import get_sample_artifact_fields
-from .normailzation_of_samples_for_sequencing import get_normalization_of_samples
+from .normalization_of_samples_for_sequencing import get_normalization_of_samples
 from ..base_step import BaseStep
 
 

@@ -8,7 +8,7 @@ from cg_lims.objects import BaseAnalyte
 from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
-class ProcessUDFS(BaseModel):
+class ProcessUDFs(BaseModel):
     """Aliquot Samples for Fragmentation (RNA) v1"""
 
     poly_a_capture: str = Field(..., alias="RGT no: Illumina PolyA capture")
@@ -19,7 +19,7 @@ class ProcessUDFS(BaseModel):
     et_oh: str = Field(..., alias="Lot no: EtOH")
 
 
-class ArtifactUDF(BaseModel):
+class ArtifactUDFs(BaseModel):
     volume_h2o: float = Field(..., alias="Volume H2O (ul)")
     volume_sample: float = Field(..., alias="Sample Volume (ul)")
 
@@ -27,8 +27,8 @@ class ArtifactUDF(BaseModel):
 class AliquotSamplesForEnzymaticFragmentationFields(
     BaseStep,
 ):
-    process_udfs: ProcessUDFS
-    artifact_udfs: ArtifactUDF
+    process_udfs: ProcessUDFs
+    artifact_udfs: ArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
@@ -45,8 +45,8 @@ def get_aliquot_samples_for_enzymatic_fragmentation(
 
     return AliquotSamplesForEnzymaticFragmentationFields(
         **analyte.base_fields(),
-        process_udfs=ProcessUDFS(**analyte.process_udfs()),
-        artifact_udfs=ArtifactUDF(**analyte.artifact_udfs()),
+        process_udfs=ProcessUDFs(**analyte.process_udfs()),
+        artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="aliquot_samples_for_fragmentation",

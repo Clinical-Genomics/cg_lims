@@ -9,20 +9,20 @@ from cg_lims.objects import BaseAnalyte
 LOG = logging.getLogger(__name__)
 
 
-class ProcessUDFS(BaseModel):
+class ProcessUDFs(BaseModel):
     """Normalization of RNA samples for sequencing v1"""
 
     dilution_lot_nr: str = Field(None, alias="Dilution buffer lot no")
 
 
-class ArtifactUDF(BaseModel):
+class ArtifactUDFs(BaseModel):
     concentration: float = Field(..., alias="Concentration")
     size: int = Field(..., alias="Size (bp)")
 
 
 class NormalizationForSequencingFields(BaseStep):
-    process_udfs: ProcessUDFS
-    artifact_udfs: ArtifactUDF
+    process_udfs: ProcessUDFs
+    artifact_udfs: ArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
@@ -42,8 +42,8 @@ def get_normalization_of_samples(
 
     return NormalizationForSequencingFields(
         **analyte.base_fields(),
-        process_udfs=ProcessUDFS(**analyte.process_udfs()),
-        artifact_udfs=ArtifactUDF(**analyte.artifact_udfs()),
+        process_udfs=ProcessUDFs(**analyte.process_udfs()),
+        artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="normalization_for_sequencing",

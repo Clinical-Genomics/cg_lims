@@ -8,7 +8,7 @@ from cg_lims.objects import BaseAnalyte
 from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
-class ProcessUDFS(BaseModel):
+class ProcessUDFs(BaseModel):
     """A-tailing and Adapter ligation (RNA) v1"""
 
     rna_prepp: str = Field(..., alias="RGT no: Illumina RNAprep")
@@ -26,7 +26,7 @@ class ProcessUDFS(BaseModel):
     resuspension_buffer_post_lab: str = Field(..., alias="Lot no: Resuspension buffer (post-lab)")
 
 
-class ArtifactUDF(BaseModel):
+class ArtifactUDFs(BaseModel):
     concentration: float = Field(..., alias="Concentration")
     size: Optional[int] = Field(None, alias="Size (bp)")
 
@@ -34,8 +34,8 @@ class ArtifactUDF(BaseModel):
 class ATailingAndAdapterLigationFields(
     BaseStep,
 ):
-    artifact_udfs: ArtifactUDF
-    process_udfs: ProcessUDFS
+    artifact_udfs: ArtifactUDFs
+    process_udfs: ProcessUDFs
 
     class Config:
         allow_population_by_field_name = True
@@ -52,8 +52,8 @@ def get_a_tailning_and_adapter_ligation(
 
     return ATailingAndAdapterLigationFields(
         **analyte.base_fields(),
-        process_udfs=ProcessUDFS(**analyte.process_udfs()),
-        artifact_udfs=ArtifactUDF(**analyte.artifact_udfs()),
+        process_udfs=ProcessUDFs(**analyte.process_udfs()),
+        artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="a_tailing_and_adapter_ligation",

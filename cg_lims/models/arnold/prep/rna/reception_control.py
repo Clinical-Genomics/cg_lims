@@ -7,7 +7,7 @@ from cg_lims.objects import BaseAnalyte
 from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
-class SampleArtifactUDF(BaseModel):
+class SampleArtifactUDFs(BaseModel):
     """Aggregate QC (RNA) v1"""
 
     sample_rin: float = Field(None, alias="RIN")
@@ -16,7 +16,7 @@ class SampleArtifactUDF(BaseModel):
 
 
 class SampleArtifactFields(BaseStep):
-    artifact_udfs: SampleArtifactUDF
+    artifact_udfs: SampleArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
@@ -30,7 +30,7 @@ def get_sample_artifact_fields(
         sample_id=sample_id,
         optional_step=True,
     )
-    sample_artifact_udfs = SampleArtifactUDF(**analyte.artifact_udfs())
+    sample_artifact_udfs = SampleArtifactUDFs(**analyte.artifact_udfs())
     if not sample_artifact_udfs.dict(exclude_none=True):
         return None
 
