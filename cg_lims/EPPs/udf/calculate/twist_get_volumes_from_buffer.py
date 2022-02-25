@@ -11,12 +11,12 @@ LOG = logging.getLogger(__name__)
 
 
 @click.command()
-@options.process_type(help="Get buffer from this process type(s)")
+@options.process_types(help="Get buffer from this process type(s)")
 @click.pass_context
-def get_volumes_from_buffer(ctx, process_type: List[str]) -> None:
+def get_volumes_from_buffer(ctx, process_types: List[str]) -> None:
     """Getting Volume Elution from previous step of type defined by process_types.
-    If volume found, setting the value Volume udf on artifact of current step. 
-    As part of the sample is left in the buffer excgange step, 
+    If volume found, setting the value Volume udf on artifact of current step.
+    As part of the sample is left in the buffer excgange step,
     the value is subtracted by 5 to get the actual volume that is left."""
 
     LOG.info(f"Running {ctx.command_path} with params {ctx.params}")
@@ -30,7 +30,7 @@ def get_volumes_from_buffer(ctx, process_type: List[str]) -> None:
     for artifact in artifacts:
         try:
             buffer_artifact = get_latest_artifact(
-                lims=lims, sample_id=artifact.samples[0].id, process_type=list(process_type)
+                lims=lims, sample_id=artifact.samples[0].id, process_types=list(process_types)
             )
         except:
             continue

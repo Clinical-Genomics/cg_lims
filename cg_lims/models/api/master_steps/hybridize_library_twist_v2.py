@@ -31,7 +31,7 @@ class HybridizeLibraryTWIST(BaseStep):
             return get_latest_artifact(
                 lims=values.get("lims"),
                 sample_id=values.get("sample_id"),
-                process_type=["Hybridize Library TWIST v2"],
+                process_types=["Hybridize Library TWIST v2"],
             )
         except:
             return None
