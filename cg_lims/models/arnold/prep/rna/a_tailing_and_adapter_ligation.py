@@ -28,7 +28,7 @@ class ProcessUDFS(BaseModel):
 
 class ArtifactUDF(BaseModel):
     concentration: float = Field(..., alias="Concentration")
-    size: Optional[int] = Field(..., alias="Size (bp)")
+    size: Optional[int] = Field(None, alias="Size (bp)")
 
 
 class ATailingAndAdapterLigationFields(
