@@ -107,6 +107,18 @@ def input(
     )
 
 
+def qc_flag(
+    help: str = "Use this if you want to copy cq_flag.",
+) -> click.option:
+    return click.option(
+        "-qc",
+        "--qc-flag",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
 def sample_artifact(
     help: str = "Use this flag if you want to get the sample artifact (the very first artifact that is created when a "
     "sample is put into the first step in workflow.).",

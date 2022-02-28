@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple, Iterator
 
 from genologics.entities import Artifact, Process
 
@@ -9,20 +9,26 @@ from cg_lims.exceptions import MissingUDFsError
 LOG = logging.getLogger(__name__)
 
 
-def copy_udf(
-    destination_artifact: Artifact, source_artifact: Artifact, artifact_udfs: List[str]
+def copy_artifact_to_artifact(
+    destination_artifact: Artifact,
+    source_artifact: Artifact,
+    artifact_udfs: Iterator[Tuple[str, str]],
+    qc_flag: bool = False,
 ) -> None:
     """Copying artifact udfs from source artifact to destination artifact.
+    Will also copy qc_flag if set to True
     Logging missing uds without raising error"""
 
     artifacts_to_put = False
 
-    for udf in artifact_udfs:
-        if not source_artifact.udf.get(udf):
-            message = f"artifact udf {udf} missing on artifact {source_artifact.id}"
+    for source_udf, destination_udf in artifact_udfs:
+        if not source_artifact.udf.get(source_udf):
+            message = f"artifact udf {source_udf} missing on artifact {source_artifact.id}"
             LOG.error(message)
             continue
-        destination_artifact.udf[udf] = source_artifact.udf[udf]
+        destination_artifact.udf[destination_udf] = source_artifact.udf[source_udf]
+        if qc_flag:
+            destination_artifact.qc_flag = source_artifact.qc_flag
         artifacts_to_put = True
 
     if artifacts_to_put:
