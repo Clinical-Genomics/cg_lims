@@ -46,7 +46,7 @@ def set_average_and_qc(
 
     for artifact in all_artifacts:
         artifact.udf["Average Size (bp)"] = str(average)
-        if artifact.qc_flag == "PASSED":
+        if artifact.qc_flag != "FAILED":
             artifact.qc_flag = qc_flag
         artifact.put()
 

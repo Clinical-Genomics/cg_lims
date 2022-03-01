@@ -6,3 +6,4 @@ pylint
 mock
 coloredlogs
 responses
+limsmock
