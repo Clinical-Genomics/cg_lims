@@ -107,6 +107,31 @@ def input(
     )
 
 
+def qc_flag(
+    help: str = "Use this if you want to copy cq_flag.",
+) -> click.option:
+    return click.option(
+        "-qc",
+        "--qc-flag",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
+def sample_artifact(
+    help: str = "Use this flag if you want to get the sample artifact (the very first artifact that is created when a "
+    "sample is put into the first step in workflow.).",
+) -> click.option:
+    return click.option(
+        "-sa",
+        "--sample-artifact",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
 def original_well(
     help: str = "Use this flag if you want original well instead of source well.",
 ) -> click.option:
@@ -132,11 +157,11 @@ def measurement(
     )
 
 
-def process_type(help: str = "Process type name.") -> click.option:
+def process_types(help: str = "Process type name.") -> click.option:
     return click.option(
         "-n",
-        "--process-type",
-        required=True,
+        "--process-types",
+        required=False,
         multiple=True,
         help=help,
     )
@@ -146,6 +171,16 @@ def artifact_udfs(help: str = "Artifact udfs.") -> click.option:
     return click.option(
         "-au",
         "--artifact-udfs",
+        required=False,
+        multiple=True,
+        help=help,
+    )
+
+
+def source_artifact_udfs(help: str = "Artifact udfs.") -> click.option:
+    return click.option(
+        "-sau",
+        "--source-artifact-udfs",
         required=False,
         multiple=True,
         help=help,

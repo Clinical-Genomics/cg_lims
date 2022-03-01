@@ -27,7 +27,7 @@ class AliquotsamplesforenzymaticfragmentationTWIST(BaseStep):
             return get_latest_artifact(
                 lims=values.get("lims"),
                 sample_id=values.get("sample_id"),
-                process_type=["Aliquot samples for enzymatic fragmentation TWIST v2"],
+                process_types=["Aliquot samples for enzymatic fragmentation TWIST v2"],
             )
         except:
             return None

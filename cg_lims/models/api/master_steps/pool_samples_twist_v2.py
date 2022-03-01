@@ -19,7 +19,7 @@ class PoolsamplesforhybridizationTWIST(BaseStep):
             return get_latest_artifact(
                 lims=values.get("lims"),
                 sample_id=values.get("sample_id"),
-                process_type=["pool samples TWIST v2"],
+                process_types=["pool samples TWIST v2"],
             )
         except:
             return None

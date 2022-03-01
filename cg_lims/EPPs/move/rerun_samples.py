@@ -61,12 +61,12 @@ def check_same_sample_in_many_rerun_pools(rerun_arts: List[Artifact]) -> None:
 @click.command()
 @options.workflow_id(help="Destination workflow id.")
 @options.stage_id(help="Destination stage id.")
-@options.process_type(
+@options.process_types(
     help="The name(s) of the process type(s) before the requeue step. Fetching artifact to requeue from here."
 )
 @options.udf(help="UDF that will tell wich artifacts to move.")
 @click.pass_context
-def rerun_samples(ctx, workflow_id, stage_id, udf, process_type):
+def rerun_samples(ctx, workflow_id, stage_id, udf, process_types):
     """Script to requeue samples for sequencing."""
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
@@ -74,7 +74,7 @@ def rerun_samples(ctx, workflow_id, stage_id, udf, process_type):
     rerun_arts = filter_artifacts(artifacts, udf, True)
     if rerun_arts:
         try:
-            artifacts_to_requeue = get_artifacts_to_requeue(lims, rerun_arts, process_type)
+            artifacts_to_requeue = get_artifacts_to_requeue(lims, rerun_arts, process_types)
             check_same_sample_in_many_rerun_pools(artifacts_to_requeue)
             queue_artifacts(lims, artifacts_to_requeue, workflow_id, stage_id)
             click.echo("Artifacts have been queued.")

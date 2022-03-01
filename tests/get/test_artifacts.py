@@ -18,7 +18,7 @@ def test_get_latest_artifact(lims: Lims):
 
     # WHEN running get_latest_artifact with the sample id and the process type name
     latest_artifact = get_latest_artifact(
-        lims=lims, sample_id=sample_id, process_type=[process_type]
+        lims=lims, sample_id=sample_id, process_types=[process_type]
     )
 
     # THEN the artifact from the latest process will be returned
@@ -35,7 +35,7 @@ def test_get_latest_artifact_no_artifacts(lims: Lims):
     # THEN MissingArtifactError is raised
     with pytest.raises(MissingArtifactError):
         latest_artifact = get_latest_artifact(
-            lims=lims, sample_id=sample_id, process_type=process_type
+            lims=lims, sample_id=sample_id, process_types=process_type
         )
 
 

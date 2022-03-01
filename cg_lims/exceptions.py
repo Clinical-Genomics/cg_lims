@@ -16,6 +16,12 @@ class AtlasResponseFailedError(LimsError):
     pass
 
 
+class ArgumentError(LimsError):
+    """Raise when failing retrieve atlas response."""
+
+    pass
+
+
 class QueueArtifactsError(LimsError):
     """Raise when failing to route artifacts."""
 

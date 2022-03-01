@@ -19,7 +19,7 @@ class BeadPurificationTWIST(BaseStep):
             return get_latest_artifact(
                 lims=values.get("lims"),
                 sample_id=values.get("sample_id"),
-                process_type=["Bead Purification TWIST v2"],
+                process_types=["Bead Purification TWIST v2"],
             )
         except:
             return None

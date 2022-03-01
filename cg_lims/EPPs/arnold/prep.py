@@ -15,6 +15,8 @@ from cg_lims.models.arnold.prep.microbial_prep import build_microbial_step_docum
 from cg_lims.models.arnold.prep.wgs import build_wgs_documents
 from cg_lims.models.arnold.prep.sars_cov_2_prep import build_sars_cov_2_documents
 from cg_lims.models.arnold.prep.twist import build_twist_documents
+from cg_lims.models.arnold.prep.rna import build_rna_documents
+
 
 LOG = logging.getLogger(__name__)
 
@@ -23,11 +25,12 @@ prep_document_functions = {
     "twist": build_twist_documents,
     "micro": build_microbial_step_documents,
     "cov": build_sars_cov_2_documents,
+    "rna": build_rna_documents,
 }
 
 
 def build_step_documents(
-    prep_type: Literal["wgs", "twist", "micro", "cov"], process: Process, lims: Lims
+    prep_type: Literal["wgs", "twist", "micro", "cov", "rna"], process: Process, lims: Lims
 ) -> List[BaseStep]:
     prep_document_function = prep_document_functions[prep_type]
     samples: List[Sample] = get_process_samples(process=process)
@@ -43,7 +46,7 @@ def build_step_documents(
 @click.command()
 @options.prep(help="Prep type.")
 @click.pass_context
-def prep(ctx, prep_type: Literal["wgs", "twist", "micro", "cov"]):
+def prep(ctx, prep_type: Literal["wgs", "twist", "micro", "cov", "rna"]):
     """Creating Step documents from a prep in the arnold step collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
