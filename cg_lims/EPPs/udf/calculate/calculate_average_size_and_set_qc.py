@@ -21,7 +21,7 @@ def calculate_average_size(all_artifacts: List[Artifact]) -> float:
     artifacts = [artifact for artifact in all_artifacts if artifact.name[0:3] != "NTC"]
 
     size_list = [
-        artifact.udf["Size (bp)"] for artifact in artifacts if artifact.udf.get("Size (bp)")
+        artifact.udf["Size (bp)"] for artifact in artifacts if artifact.udf.get("Size (bp)") is not None
     ]
 
     if not size_list:
