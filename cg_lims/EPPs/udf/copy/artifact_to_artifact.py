@@ -4,9 +4,9 @@ from genologics.lims import Lims
 
 from cg_lims.get.artifacts import get_latest_artifact
 from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.exceptions import LimsError, MissingUDFsError, ArgumentError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.set.udfs import copy_udf, copy_artifact_to_artifact
+from cg_lims.set.udfs import copy_artifact_to_artifact
 
 import logging
 import sys
@@ -19,7 +19,7 @@ def copy_udfs_to_all_artifacts(
     artifacts: List[Artifact],
     process_types: List[str],
     lims: Lims,
-    udfs: Iterator[Tuple[str, str]],
+    udfs: List[Tuple[str, str]],
     sample_artifact: bool = False,
     qc_flag: bool = False,
 ):
@@ -81,16 +81,18 @@ def artifact_to_artifact(
     lims = ctx.obj["lims"]
 
     if not source_artifact_udfs:
-        source_artifact_udfs = artifact_udfs.copy()
+        source_artifact_udfs = artifact_udfs
     if len(source_artifact_udfs) != len(artifact_udfs):
-        raise
+        raise ArgumentError(
+            "The number of artifact-udfs and source-artifact-udfs must be the same."
+        )
 
-    udfs = zip(source_artifact_udfs, artifact_udfs)
+    udf_pairs = zip(source_artifact_udfs, artifact_udfs)
     try:
         artifacts = get_artifacts(process=process, input=input, measurement=measurement)
         copy_udfs_to_all_artifacts(
             artifacts=artifacts,
-            udfs=udfs,
+            udfs=list(udf_pairs),
             process_types=process_types,
             lims=lims,
             sample_artifact=sample_artifact,

@@ -177,6 +177,16 @@ def artifact_udfs(help: str = "Artifact udfs.") -> click.option:
     )
 
 
+def source_artifact_udfs(help: str = "Artifact udfs.") -> click.option:
+    return click.option(
+        "-sau",
+        "--source-artifact-udfs",
+        required=False,
+        multiple=True,
+        help=help,
+    )
+
+
 def sample_udfs(help: str = "Sample udfs.") -> click.option:
     return click.option(
         "-su",
