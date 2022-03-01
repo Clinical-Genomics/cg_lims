@@ -273,6 +273,6 @@ def upper_threshold(help: str = "Set upper threshold value") -> click.option:
     return click.option(
         "-ut",
         "--upper-threshold",
-        required=True,
+        required=False,
         help=help,
     )
