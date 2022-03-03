@@ -107,6 +107,31 @@ def input(
     )
 
 
+def qc_flag(
+    help: str = "Use this if you want to copy cq_flag.",
+) -> click.option:
+    return click.option(
+        "-qc",
+        "--qc-flag",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
+def sample_artifact(
+    help: str = "Use this flag if you want to get the sample artifact (the very first artifact that is created when a "
+    "sample is put into the first step in workflow.).",
+) -> click.option:
+    return click.option(
+        "-sa",
+        "--sample-artifact",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+
+
 def original_well(
     help: str = "Use this flag if you want original well instead of source well.",
 ) -> click.option:
@@ -132,11 +157,31 @@ def measurement(
     )
 
 
-def process_type(help: str = "Process type name.") -> click.option:
+def process_types(help: str = "Process type name.") -> click.option:
     return click.option(
         "-n",
-        "--process-type",
-        required=True,
+        "--process-types",
+        required=False,
+        multiple=True,
+        help=help,
+    )
+
+
+def artifact_udfs(help: str = "Artifact udfs.") -> click.option:
+    return click.option(
+        "-au",
+        "--artifact-udfs",
+        required=False,
+        multiple=True,
+        help=help,
+    )
+
+
+def source_artifact_udfs(help: str = "Artifact udfs.") -> click.option:
+    return click.option(
+        "-sau",
+        "--source-artifact-udfs",
+        required=False,
         multiple=True,
         help=help,
     )
@@ -156,6 +201,16 @@ def pool_udfs(help: str = "Pool udfs.") -> click.option:
     return click.option(
         "-pu",
         "--pool-udfs",
+        required=False,
+        multiple=True,
+        help=help,
+    )
+
+
+def process_udfs(help: str = "Process udfs.") -> click.option:
+    return click.option(
+        "-pru",
+        "--process-udfs",
         required=False,
         multiple=True,
         help=help,
@@ -206,11 +261,15 @@ def file_suffix(help: str = "Define file name suffix") -> click.option:
     return click.option("--suffix", required=False, default="", help=help)
 
 
-def amount_udf_option(help: str = "String of UDF used to get amount value") -> click.option:
+def amount_udf_option(
+    help: str = "String of UDF used to get amount value",
+) -> click.option:
     return click.option("--amount-udf", required=True, help=help)
 
 
-def volume_udf_option(help: str = "String of UDF used to get volume value") -> click.option:
+def volume_udf_option(
+    help: str = "String of UDF used to get volume value",
+) -> click.option:
     return click.option("--volume-udf", required=True, help=help)
 
 
@@ -218,3 +277,37 @@ def concentration_udf_option(
     help: str = "String of UDF used to get concentration value",
 ) -> click.option:
     return click.option("--concentration-udf", required=True, help=help)
+
+
+def prep(help: str = "Prep type") -> click.option:
+    return click.option("--prep-type", required=True, help=help)
+
+
+def subtract_volume_option(
+    help: str = "Subtracts volume taken from samples in QC checks",
+) -> click.option:
+    return click.option("--subtract-volume", type=click.Choice(["0", "3"]), default="3", help=help)
+
+
+def automation_string(
+    help: str = "Search string for automation",
+) -> click.option:
+    return click.option("--automation-string", required=True, help=help)
+
+
+def lower_threshold(help: str = "Set lower threshold value") -> click.option:
+    return click.option(
+        "-lt",
+        "--lower-threshold",
+        required=True,
+        help=help,
+    )
+
+
+def upper_threshold(help: str = "Set upper threshold value") -> click.option:
+    return click.option(
+        "-ut",
+        "--upper-threshold",
+        required=False,
+        help=help,
+    )

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8436A2PA1?state=1430908" limsid="ACC8436A2PA1">
+    <name>2021-19764-03</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-176331" limsid="27-176331" />
+        <value>1:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8436A2" limsid="ACC8436A2" />
+    <udf:field type="Numeric" name="Amount (ng)">22</udf:field>
+    <udf:field type="Boolean" name="Skip Buffer Exchange">true</udf:field>
+    <udf:field type="Numeric" name="Size (bp)">333</udf:field>
+    <udf:field type="Numeric" name="Concentration">12</udf:field>
+    <udf:field type="Numeric" name="DIN Value">10</udf:field>
+    <udf:field type="Numeric" name="Level of Multiplexing">8</udf:field>
+    <udf:field type="String" name="Output Container Barcode">hej</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Buffer Exchange TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1755/stages/5727" />
+        <workflow-stage status="COMPLETE" name="Sequence Aggregation" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1753/stages/5501" />
+        <workflow-stage status="COMPLETE" name="Initial QC TWIST v3" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1755/stages/5728" />
+        <workflow-stage status="REMOVED" name="Reception Control TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1755/stages/5726" />
+        <workflow-stage status="IN_PROGRESS" name="Aliquot samples for enzymatic fragmentation TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1755/stages/5729" />
+    </workflow-stages>
+</art:artifact>

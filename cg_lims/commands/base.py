@@ -4,11 +4,11 @@ import yaml
 from genologics.lims import Lims
 
 from cg_lims import options
-from cg_lims.status_db_api import StatusDBAPI
 
 # commands
 from cg_lims.EPPs import epps
-from cg_lims.commands.serve import serve_command
+from cg_lims.scripts.base import scripts
+from cg_lims.status_db_api import StatusDBAPI
 
 
 @click.group(invoke_without_command=True)
@@ -23,9 +23,11 @@ def cli(ctx, config):
     ctx.ensure_object(dict)
     ctx.obj["lims"] = lims
     ctx.obj["status_db"] = status_db
-    ctx.obj["host"] = config_data.get("CG_LIMS_HOST")
-    ctx.obj["port"] = config_data.get("CG_LIMS_PORT")
+    ctx.obj["arnold_host"] = config_data.get("ARNOLD_HOST")
+    ctx.obj["atlas_host"] = config_data.get("ATLAS_HOST")
+    ctx.obj["db_uri"] = config_data.get("DB_URI")
+    ctx.obj["db_name"] = config_data.get("DB_NAME")
 
 
 cli.add_command(epps)
-cli.add_command(serve_command)
+cli.add_command(scripts)

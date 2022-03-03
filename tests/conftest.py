@@ -1,3 +1,5 @@
+from typing import Optional
+
 from genologics.lims import Lims
 from genologics.entities import Artifact, Sample
 from pathlib import Path
@@ -9,6 +11,8 @@ import threading
 import time
 
 from limsmock.server import run_server
+from pydantic import BaseModel, Field
+
 
 PORT = 8000
 HOST = "127.0.0.1"
@@ -43,9 +47,7 @@ def artifact_1(lims) -> Artifact:
     """Basic artifact with id 1. Containing no udfs.
     Related to sample_1."""
 
-    artifact = Artifact(lims, id="1")
-
-    return artifact
+    return Artifact(lims, id="1")
 
 
 @pytest.fixture
@@ -53,9 +55,7 @@ def sample_1(lims) -> Sample:
     """Basic sample with id S1. Containing no udfs.
     Related to artifact_1."""
 
-    sample = Sample(lims, id="S1")
-
-    return sample
+    return Sample(lims, id="S1")
 
 
 @pytest.fixture
@@ -63,9 +63,7 @@ def artifact_2(lims) -> Artifact:
     """Basic artifact with id 2. Containing no udfs.
     Related to sample_2."""
 
-    artifact = Artifact(lims, id="2")
-
-    return artifact
+    return Artifact(lims, id="2")
 
 
 @pytest.fixture
@@ -73,9 +71,7 @@ def sample_2(lims) -> Sample:
     """Basic sample with id S2. Containing no udfs.
     Related to artifact_2."""
 
-    sample = Sample(lims, id="S2")
-
-    return sample
+    return Sample(lims, id="S2")
 
 
 @pytest.fixture
@@ -142,5 +138,4 @@ def hamilton_sars_cov2_indexing_file() -> str:
 @pytest.fixture(name="cli_runner")
 def fixture_cli_runner() -> CliRunner:
     """Create a CliRunner"""
-    runner = CliRunner()
-    return runner
+    return CliRunner()

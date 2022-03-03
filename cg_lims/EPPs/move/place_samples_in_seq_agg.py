@@ -56,11 +56,11 @@ def get_pools_and_samples_to_queue(
 @click.command()
 @options.workflow_id(help="Destination workflow id.")
 @options.stage_id(help="Destination stage id.")
-@options.process_type(
+@options.process_types(
     help="The name(s) of the process type(s) from where we want to fetch the pools"
 )
 @click.pass_context
-def place_samples_in_seq_agg(ctx, workflow_id, stage_id, process_type):
+def place_samples_in_seq_agg(ctx, workflow_id, stage_id, process_types):
     """Queueing artifacts with given udf==True, to stage in workflow.
     Raising error if quiueing fails."""
 
@@ -70,8 +70,9 @@ def place_samples_in_seq_agg(ctx, workflow_id, stage_id, process_type):
     samples = get_process_samples(process)
 
     try:
-        artifacts = get_pools_and_samples_to_queue(lims, process_type, samples)
+        artifacts = get_pools_and_samples_to_queue(lims, process_types, samples)
         queue_artifacts(lims, artifacts, workflow_id, stage_id)
+        LOG.info("Artifacts have been queued.")
         click.echo("Artifacts have been queued.")
     except LimsError as e:
         sys.exit(e.message)

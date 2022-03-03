@@ -1,12 +1,10 @@
-import csv
 from pathlib import Path
 from typing import List
 
 import click
-import yaml
-from genologics.entities import Artifact, Sample, Entity
-from genologics.lims import Lims, Process
-from pydantic import BaseModel, Field
+from genologics.entities import Entity
+from genologics.lims import Process
+from pydantic import BaseModel
 
 
 class ProcessFixure(BaseModel):
@@ -23,15 +21,20 @@ def replace_str(file: Path, replace: str, replace_with: str) -> None:
 
 def build_file_structure(base_dir: str) -> ProcessFixure:
     processes = Path(f"{base_dir}/processes/")
-    processes.mkdir(parents=True)
+    if not processes.exists():
+        processes.mkdir(parents=True)
     artifacts = Path(f"{base_dir}/artifacts/")
-    artifacts.mkdir(parents=True)
+    if not artifacts.exists():
+        artifacts.mkdir(parents=True)
     containers = Path(f"{base_dir}/containers/")
-    containers.mkdir(parents=True)
+    if not containers.exists():
+        containers.mkdir(parents=True)
     containertypes = Path(f"{base_dir}/containertypes/")
-    containertypes.mkdir(parents=True)
+    if not containertypes.exists():
+        containertypes.mkdir(parents=True)
     samples = Path(f"{base_dir}/samples/")
-    samples.mkdir(parents=True)
+    if not samples.exists():
+        samples.mkdir(parents=True)
     return ProcessFixure(
         samples=samples,
         processes=processes,
@@ -58,6 +61,7 @@ def add_file(entity: Entity, entity_dir: Path) -> None:
 
 
 def add_entities(entities: List[Entity], entity_dir: Path):
+
     for entity in entities:
         entity.get()
         add_file(entity=entity, entity_dir=entity_dir)
@@ -65,13 +69,10 @@ def add_entities(entities: List[Entity], entity_dir: Path):
 
 @click.command()
 @click.option("--process")
-@click.option("--config")
 @click.option("--test_name")
-def make_fixure(process: str, test_name: str, config: str):
-    with open(config) as file:
-        config_data = yaml.load(file, Loader=yaml.FullLoader)
-    lims = Lims(config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"])
-
+@click.pass_context
+def make_fixure(ctx, process: str, test_name: str):
+    lims = ctx.obj["lims"]
     process = Process(lims=lims, id=process)
     process.get()
     fixture_dir: ProcessFixure = build_file_structure(base_dir=test_name)
@@ -82,7 +83,9 @@ def make_fixure(process: str, test_name: str, config: str):
     for artifact in artifacts:
         samples += artifact.samples
     add_entities(entities=samples, entity_dir=fixture_dir.samples)
-
-
-if __name__ == "__main__":
-    make_fixure()
+    containers = {artifact.location[0] for artifact in artifacts}
+    if None in containers:
+        containers.remove(None)
+    add_entities(entities=list(containers), entity_dir=fixture_dir.containers)
+    container_types = list({container.type for container in containers})
+    add_entities(entities=container_types, entity_dir=fixture_dir.containertypes)

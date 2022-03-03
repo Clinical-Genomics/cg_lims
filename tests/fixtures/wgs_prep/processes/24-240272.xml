@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-240272" limsid="24-240272">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1306">Aggregate QC (DNA)</type>
+    <date-run>2021-10-11</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/157">
+        <first-name>Maya</first-name>
+        <last-name>Brandi</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A1PA1?state=1417450" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A1PA1?state=1417450" limsid="ACC8454A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837769?state=1430872" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837769" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A1PA1?state=1417450" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A1PA1?state=1417450" limsid="ACC8454A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837770?state=1430873" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837770" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A1PA1?state=1417450" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A1PA1?state=1417450" limsid="ACC8454A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837771?state=1430874" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837771" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A2PA1?state=1417415" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A2PA1?state=1417415" limsid="ACC8454A2PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837769?state=1430872" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837769" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A2PA1?state=1417415" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A2PA1?state=1417415" limsid="ACC8454A2PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837770?state=1430873" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837770" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A2PA1?state=1417415" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A2PA1?state=1417415" limsid="ACC8454A2PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837771?state=1430874" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837771" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A3PA1?state=1417514" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A3PA1?state=1417514" limsid="ACC8454A3PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837769?state=1430872" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837769" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A3PA1?state=1417514" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A3PA1?state=1417514" limsid="ACC8454A3PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837770?state=1430873" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837770" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A3PA1?state=1417514" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A3PA1?state=1417514" limsid="ACC8454A3PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837771?state=1430874" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837771" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A4PA1?state=1417447" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A4PA1?state=1417447" limsid="ACC8454A4PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837769?state=1430872" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837769" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A4PA1?state=1417447" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A4PA1?state=1417447" limsid="ACC8454A4PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837770?state=1430873" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837770" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A4PA1?state=1417447" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8454A4PA1?state=1417447" limsid="ACC8454A4PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837771?state=1430874" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837771" />
+    </input-output-map>
+    <udf:field type="String" name="Automated Quant-iT QC (DNA) 4.0">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="Bioanalyzer QC (DNA) 4.0">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - CG002 - Volume Measurement QC">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - qPCR QC (Library Validation)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="CG002 - Qubit QC (DNA)">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="Copy task 1 - Source Field">Concentration</udf:field>
+    <udf:field type="String" name="Copy task 1 - Source Step">CG002 - Qubit QC RML</udf:field>
+    <udf:field type="String" name="Copy task 2 - Source Field">Volume (ul)</udf:field>
+    <udf:field type="String" name="Copy task 2 - Source Step">CG002 - Qubit QC (DNA)</udf:field>
+    <udf:field type="String" name="Copy task 3 - Source Field">Amount (ng)</udf:field>
+    <udf:field type="String" name="Copy task 3 - Source Step">CG002 - Qubit QC (DNA)</udf:field>
+    <udf:field type="String" name="Customer Gel QC">Use if available (Priority 5)</udf:field>
+    <udf:field type="String" name="Quant-iT QC (DNA) 4.0">Use if available (Priority 5)</udf:field>
+    <process-parameter name="Record Initial QC to sample" />
+</prc:process>

@@ -13,7 +13,9 @@ LOG = logging.getLogger(__name__)
 
 
 def get_qc(source: str, conc: float, amount: float) -> str:
-    """QC-criteria depends on sample source, total amount and sample concentration. See AMS doc 1117, 1993 and 2125."""
+    """QC-criteria depends on sample source, total amount and sample concentration. See AMS doc 1117, 1993 and 2125.
+    The volume is subtracted by 3 in the calculations. This is beacause the lab uses 3 ul in the initial qc measurements.
+    """
 
     qc = "FAILED"
 
@@ -21,7 +23,7 @@ def get_qc(source: str, conc: float, amount: float) -> str:
         if amount >= 10 and conc <= 250 and conc >= 0.2:
             qc = "PASSED"
     else:
-        if amount >= 300 and conc <= 250 and conc >= 8.33:
+        if amount >= 500 and conc <= 250 and conc >= 8.33:
             qc = "PASSED"
 
     return qc
@@ -41,7 +43,7 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
             missing_udfs_count += 1
             continue
 
-        amount = conc * vol
+        amount = conc * (vol - 3)
         artifact.udf["Amount (ng)"] = amount
         qc = get_qc(source, conc, amount)
         if qc == "FAILED":

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-240258" limsid="24-240258">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1205">Buffer Exchange v1</type>
+    <date-run>2021-10-11</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/157">
+        <first-name>Maya</first-name>
+        <last-name>Brandi</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A1PA1?state=1427831" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A1PA1?state=1427831" limsid="ACC8653A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837656?state=1430743" output-generation-type="PerInput" output-type="Analyte" limsid="2-1837656" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A1PA1?state=1427831" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A1PA1?state=1427831" limsid="ACC8653A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837658?state=1430745" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837658" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A1PA1?state=1427831" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A1PA1?state=1427831" limsid="ACC8653A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837659?state=1430746" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837659" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A1PA1?state=1427831" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A1PA1?state=1427831" limsid="ACC8653A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837660?state=1430747" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837660" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A9PA1?state=1427863" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A9PA1?state=1427863" limsid="ACC8653A9PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837657?state=1430744" output-generation-type="PerInput" output-type="Analyte" limsid="2-1837657" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A9PA1?state=1427863" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A9PA1?state=1427863" limsid="ACC8653A9PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837658?state=1430745" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837658" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A9PA1?state=1427863" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A9PA1?state=1427863" limsid="ACC8653A9PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837659?state=1430746" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837659" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A9PA1?state=1427863" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC8653A9PA1?state=1427863" limsid="ACC8653A9PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-1837660?state=1430747" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-1837660" />
+    </input-output-map>
+    <udf:field type="Numeric" name="Document version">1</udf:field>
+    <udf:field type="String" name="Lot Nr: EtOH">12</udf:field>
+    <udf:field type="String" name="Lot Nr: Nuclease-free water">33</udf:field>
+    <udf:field type="String" name="Lot Nr: Purification Beads">12</udf:field>
+    <udf:field type="String" name="Method document">1117</udf:field>
+    <process-parameter name="Make Placement  Map" />
+</prc:process>

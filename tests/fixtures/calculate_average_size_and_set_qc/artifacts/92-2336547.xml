@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2336547?state=1842354" limsid="92-2336547">
+    <name>QC Flag Aggregation Log</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-297378" limsid="24-297378" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7357A67" limsid="ACC7357A67" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9224A1" limsid="ACC9224A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9224A3" limsid="ACC9224A3" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9224A9" limsid="ACC9224A9" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9224A11" limsid="ACC9224A11" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9224A17" limsid="ACC9224A17" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9224A19" limsid="ACC9224A19" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9224A24" limsid="ACC9224A24" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9224A25" limsid="ACC9224A25" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9404A4" limsid="ACC9404A4" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9404A11" limsid="ACC9404A11" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9407A1" limsid="ACC9407A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9407A2" limsid="ACC9407A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9407A17" limsid="ACC9407A17" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9407A25" limsid="ACC9407A25" />
+    <reagent-label name="pl3 C02 IDT_10nt_NXT_249 (AGCCTCTGCT-CTAAGGCGAA)" />
+    <reagent-label name="pl3 A02 IDT_10nt_NXT_223 (TCTCCGTACT-GATCACAACT)" />
+    <reagent-label name="pl3 C01 IDT_10nt_NXT_248 (ATACACACCT-CTATCACACT)" />
+    <reagent-label name="pl3 A01 IDT_10nt_NXT_222 (AATGGACGCG-CGGTGCACTT)" />
+    <reagent-label name="pl3 A05 IDT_10nt_NXT_227 (CTCTATACTG-CGGTTGAACG)" />
+    <reagent-label name="pl3 A04 IDT_10nt_NXT_226 (AGCGTCTCAT-ATCGCCTAGG)" />
+    <reagent-label name="pl3 H03 IDT_10nt_NXT_318 (TTGCAATGCG-TGAAGTCTCG)" />
+    <reagent-label name="pl3 C03 IDT_10nt_NXT_250 (CGGATCATTA-AAGGTTACGG)" />
+    <reagent-label name="pl3 A03 IDT_10nt_NXT_224 (TGGAAGCACA-CGGTGTTGGA)" />
+    <reagent-label name="pl3 B09 IDT_10nt_NXT_244 (ACTCGTCCAG-ACGAGGACCA)" />
+    <reagent-label name="pl3 B08 IDT_10nt_NXT_243 (CAACTACCGC-CCTGCAGCAT)" />
+    <reagent-label name="pl3 C06 IDT_10nt_NXT_255 (TATACGATGC-AGATTAGGAG)" />
+    <reagent-label name="pl3 B06 IDT_10nt_NXT_241 (CTTGTTACTG-CCACCGAATT)" />
+    <reagent-label name="pl3 A06 IDT_10nt_NXT_228 (ATAGCCGGTT-CCGGATAAGA)" />
+    <reagent-label name="pl3 H05 IDT_10nt_NXT_320 (CATTATCGCT-AAGCAACTCG)" />
+    <workflow-stages />
+</art:artifact>

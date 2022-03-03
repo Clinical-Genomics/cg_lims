@@ -3,10 +3,9 @@ import sys
 
 import click
 
+from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_qc_output_artifacts
-from cg_lims.get.samples import get_one_sample_from_artifact
-from cg_lims import options
 
 LOG = logging.getLogger(__name__)
 
@@ -15,11 +14,18 @@ LOG = logging.getLogger(__name__)
 @options.concentration_udf_option()
 @options.amount_udf_option()
 @options.volume_udf_option()
+@options.subtract_volume_option()
 @click.pass_context
 def calculate_amount_ng(
-    ctx: click.Context, amount_udf: str, volume_udf: str, concentration_udf: str
+    ctx: click.Context,
+    amount_udf: str,
+    volume_udf: str,
+    concentration_udf: str,
+    subtract_volume: str,
 ):
-    """Calculates and auto-fills the quantities of DNA in sample from concentration and volume measurements"""
+    """Calculates and auto-fills the quantities of DNA in sample from concentration and volume
+    measurements. The volume is subtracted by either 0 or 3 in the calculations. This is
+    because the lab uses 0 or 3 ul in the initial qc measurements."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
@@ -38,11 +44,12 @@ def calculate_amount_ng(
                 artifacts_with_missing_udf.append(artifact.id)
                 continue
 
-            artifact.udf[amount_udf] = conc * vol
+            artifact.udf[amount_udf] = conc * (vol - int(subtract_volume))
             artifact.put()
         if missing_udfs_count:
             raise MissingUDFsError(
-                f"Udf missing for {missing_udfs_count} artifact(s): {','.join(artifacts_with_missing_udf)}."
+                f"Udf missing for {missing_udfs_count} artifact(s): "
+                f"{','.join(artifacts_with_missing_udf)}. "
             )
         message = "Amounts have been calculated for all artifacts."
         LOG.info(message)
