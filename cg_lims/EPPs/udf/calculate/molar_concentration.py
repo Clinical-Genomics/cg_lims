@@ -1,6 +1,6 @@
 import logging
 import sys
-from typing import List
+from typing import List, Optional
 
 import click
 from genologics.entities import Artifact
@@ -8,12 +8,18 @@ from genologics.entities import Artifact
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims import options
+from cg_lims.set.qc import set_qc_fail
 
 LOG = logging.getLogger(__name__)
 
 
 def calculate_concentrations(
-    artifacts: List[Artifact], size_udf: str, molar_concentration_udf: str, concentration_udf: str
+    artifacts: List[Artifact],
+    size_udf: str,
+    molar_concentration_udf: str,
+    concentration_udf: str,
+    upper_threshold: Optional[float] = None,
+    lower_threshold: Optional[float] = None,
 ) -> None:
     """
     Formula to calculate molar concentration (nM) from weight concentration (ng/ul) and fragment size (bp) is:
@@ -38,8 +44,16 @@ def calculate_concentrations(
             missing_udfs_count += 1
             continue
         factor = 1e6 / (average_molecular_weight * strands * float(size))
-        artifact.udf[molar_concentration_udf] = concentration * factor
+        concentration_nm = concentration * factor
+        artifact.udf[molar_concentration_udf] = concentration_nm
         artifact.put()
+        if upper_threshold or lower_threshold:
+            set_qc_fail(
+                artifact=artifact,
+                value=concentration_nm,
+                upper_threshold=upper_threshold,
+                lower_threshold=lower_threshold,
+            )
     if missing_udfs_count:
         passed_artifacts = len(artifacts) - missing_udfs_count
         raise MissingUDFsError(
@@ -52,8 +66,18 @@ def calculate_concentrations(
 @options.size_udf()
 @options.concantration_nm_udf()
 @options.concantration_udf()
+@options.lower_threshold()
+@options.upper_threshold()
 @click.pass_context
-def molar_concentration(ctx, input: bool, size_udf: str, conc_nm_udf: str, conc_udf: str) -> None:
+def molar_concentration(
+    ctx,
+    input: bool,
+    size_udf: str,
+    conc_nm_udf: str,
+    conc_udf: str,
+    lower_threshold: Optional[float],
+    upper_threshold: Optional[float],
+) -> None:
     """Script to calculate molar concentration given the weight concentration and fragment size. """
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -67,6 +91,8 @@ def molar_concentration(ctx, input: bool, size_udf: str, conc_nm_udf: str, conc_
             size_udf=size_udf,
             molar_concentration_udf=conc_nm_udf,
             concentration_udf=conc_udf,
+            lower_threshold=lower_threshold,
+            upper_threshold=upper_threshold,
         )
         message = "Concentration (nM) have been calculated for all samples."
         LOG.info(message)

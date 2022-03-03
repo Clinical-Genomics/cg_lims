@@ -299,7 +299,7 @@ def lower_threshold(help: str = "Set lower threshold value") -> click.option:
     return click.option(
         "-lt",
         "--lower-threshold",
-        required=True,
+        required=False,
         help=help,
     )
 
