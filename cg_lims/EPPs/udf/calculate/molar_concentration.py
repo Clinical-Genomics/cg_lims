@@ -55,7 +55,7 @@ def calculate_concentrations(
             set_qc_fail(
                 artifact=artifact, value=concentration_nm, threshold=upper_threshold, criteria=">="
             )
-        if lower_threshold:
+        elif lower_threshold:
             set_qc_fail(
                 artifact=artifact, value=concentration_nm, threshold=lower_threshold, criteria="<="
             )
@@ -69,6 +69,7 @@ def calculate_concentrations(
 
 @click.command()
 @options.input()
+@options.measurement()
 @options.size_udf()
 @options.concantration_nm_udf()
 @options.concantration_udf()
@@ -78,6 +79,7 @@ def calculate_concentrations(
 def molar_concentration(
     ctx,
     input: bool,
+    measurement: Optional[bool],
     size_udf: str,
     conc_nm_udf: str,
     conc_udf: str,
@@ -91,7 +93,7 @@ def molar_concentration(
     process = ctx.obj["process"]
 
     try:
-        artifacts = get_artifacts(process=process, input=input)
+        artifacts = get_artifacts(process=process, input=input, measurement=measurement)
         calculate_concentrations(
             artifacts=artifacts,
             size_udf=size_udf,
