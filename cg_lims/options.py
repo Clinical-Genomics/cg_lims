@@ -296,18 +296,8 @@ def automation_string(
 
 
 def lower_threshold(help: str = "Set lower threshold value") -> click.option:
-    return click.option(
-        "-lt",
-        "--lower-threshold",
-        required=False,
-        help=help,
-    )
+    return click.option("-lt", "--lower-threshold", required=False, help=help, type=float)
 
 
 def upper_threshold(help: str = "Set upper threshold value") -> click.option:
-    return click.option(
-        "-ut",
-        "--upper-threshold",
-        required=False,
-        help=help,
-    )
+    return click.option("-ut", "--upper-threshold", required=False, help=help, type=float)

@@ -46,14 +46,20 @@ def calculate_concentrations(
         factor = 1e6 / (average_molecular_weight * strands * float(size))
         concentration_nm = concentration * factor
         artifact.udf[molar_concentration_udf] = concentration_nm
-        artifact.put()
-        if upper_threshold or lower_threshold:
+        sample = artifact.samples[0]
+        if (
+            upper_threshold
+            and sample.name[0:3] == "NTC"
+            and sample.udf["Sequencing Analysis"][0:2] == "MW"
+        ):
             set_qc_fail(
-                artifact=artifact,
-                value=concentration_nm,
-                upper_threshold=upper_threshold,
-                lower_threshold=lower_threshold,
+                artifact=artifact, value=concentration_nm, threshold=upper_threshold, criteria=">="
             )
+        if lower_threshold:
+            set_qc_fail(
+                artifact=artifact, value=concentration_nm, threshold=lower_threshold, criteria="<="
+            )
+        artifact.put()
     if missing_udfs_count:
         passed_artifacts = len(artifacts) - missing_udfs_count
         raise MissingUDFsError(
