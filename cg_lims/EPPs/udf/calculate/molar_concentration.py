@@ -55,7 +55,7 @@ def calculate_concentrations(
             set_qc_fail(
                 artifact=artifact, value=concentration_nm, threshold=upper_threshold, criteria=">="
             )
-        if lower_threshold:
+        elif lower_threshold:
             set_qc_fail(
                 artifact=artifact, value=concentration_nm, threshold=lower_threshold, criteria="<="
             )
