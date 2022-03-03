@@ -1,4 +1,4 @@
-from typing import Optional, Literal
+from typing import Literal
 from genologics.entities import Artifact
 
 
@@ -6,7 +6,7 @@ def set_qc_fail(
     artifact: Artifact,
     value: float,
     threshold: float,
-    criteria: Literal[">=", "<=", ">", "<", "=="],
+    criteria: Literal[">=", "<=", ">", "<", "==", "!="],
 ) -> None:
     if criteria == ">=" and value >= threshold:
         artifact.qc_flag = "FAILED"
