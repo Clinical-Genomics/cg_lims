@@ -22,7 +22,7 @@ def copy_artifact_to_artifact(
     missing_udfs = 0
     artifacts_to_put = False
     for source_udf, destination_udf in artifact_udfs:
-        if not source_artifact.udf.get(source_udf):
+        if source_artifact.udf.get(source_udf) is None:
             message = f"Artifact udf {source_udf} missing on artifact {source_artifact.id}"
             LOG.error(message)
             missing_udfs += 1
