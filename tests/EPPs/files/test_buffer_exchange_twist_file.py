@@ -29,8 +29,8 @@ def test_get_file_data_and_write(lims, hamilton_buffer_exchange):
     # remove file afterwards?
 
 
-def test_get_file_data_and_write_missing_udfs(lims):
-    # GIVEN a file name and a list of artifacts where all but one has the required udf:s
+def test_get_file_data_and_write_missing_udfs(lims, hamilton_buffer_exchange_no_udf):
+    # GIVEN a file name and a list of artifacts where all but one has registered udf:s
     server("buffer_exchange_twist_file")
     file_name = "file_name_2"
     file = Path(file_name)
@@ -42,10 +42,11 @@ def test_get_file_data_and_write_missing_udfs(lims):
                  Artifact(lims, id="2-2336708")]
 
     # WHEN running get_file_data_and_write
-    # THEN MissingUDFsError is being raised and no file is created
-    with pytest.raises(MissingUDFsError):
-        get_file_data_and_write(artifacts, file)
-    assert file.exists() is False
+    get_file_data_and_write(artifacts, file)
+
+    # THEN the file has been created and missing udfs are replaced with the symbol "-".
+    assert file.read_text() == hamilton_buffer_exchange_no_udf
+    # remove file afterwards?
 
 
 def test_get_file_data_and_write_no_well(lims):

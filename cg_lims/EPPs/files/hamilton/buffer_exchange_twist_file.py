@@ -15,23 +15,27 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 
+def get_udf_value(artifact: Artifact, udf_name: str) -> str:
+    udf_value = "-"
+    if artifact.udf.get(udf_name) is not None:
+        udf_value = artifact.udf.get(udf_name)
+    return udf_value
+
+
 def get_file_data_and_write(artifacts: List[Artifact], file: str) -> None:
     """Getting row data for hamilton file from artifacts"""
 
     file_rows = {}
     for art in artifacts:
         if art.location[1].replace(":", "") == "11":
-            raise MissingUDFsError("No well found for sample(s). Script does not work for singular sample tubes.")
+            raise MissingUDFsError("No well found for sample(s). Script does not work without a sample plate.")
         lims_id = art.samples[0].id
         well = art.location[1].replace(":", "")
 
-        try:
-            barcode = art.udf["Output Container Barcode"]
-            sample_volume = art.udf["Sample Volume (ul)"]
-            beads_volume = art.udf["Volume Beads (ul)"]
-            elution_volume = art.udf["Volume H2O (ul)"]
-        except:
-            raise MissingUDFsError("All UDF:s not set. Please double check and try again.")
+        barcode = get_udf_value(art, "Output Container Barcode")
+        sample_volume = get_udf_value(art, "Sample Volume (ul)")
+        beads_volume = get_udf_value(art, "Volume Beads (ul)")
+        elution_volume = get_udf_value(art, "Volume H2O (ul)")
 
         file_rows[well] = [
             barcode,
