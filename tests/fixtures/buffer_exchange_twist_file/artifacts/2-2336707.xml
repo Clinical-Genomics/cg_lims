@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2336707?state=1842572" limsid="2-2336707">
+    <name>2022-04311-03</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-297386" limsid="24-297386" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-233734" limsid="27-233734" />
+        <value>C:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9460A1" limsid="ACC9460A1" />
+    <udf:field type="Numeric" name="Volume Beads (ul)">100</udf:field>
+    <udf:field type="Numeric" name="Volume Elution (ul)">40</udf:field>
+    <udf:field type="Numeric" name="Sample Volume (ul)">34</udf:field>
+    <udf:field type="Numeric" name="Volume H2O (ul)">16</udf:field>
+    <udf:field type="String" name="Output Container Barcode">LLESD3</udf:field>
+    <workflow-stages />
+</art:artifact>
