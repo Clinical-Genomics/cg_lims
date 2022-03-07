@@ -11,39 +11,32 @@ from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import make_plate_file
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.fields import get_artifact_well
+from cg_lims.get.samples import get_one_sample_from_artifact
+from cg_lims.get.udfs import get_udf
 
 LOG = logging.getLogger(__name__)
-
-
-def get_udf_value(artifact: Artifact, udf_name: str) -> str:
-    udf_value = "-"
-    if artifact.udf.get(udf_name) is not None:
-        udf_value = artifact.udf.get(udf_name)
-    return udf_value
 
 
 def get_file_data_and_write(artifacts: List[Artifact], file: str) -> None:
     """Getting row data for hamilton file from artifacts"""
 
     file_rows = {}
-    for art in artifacts:
-        if art.location[1].replace(":", "") == "11":
-            raise MissingUDFsError("No well found for sample(s). Script does not work without a sample plate.")
-        lims_id = art.samples[0].id
-        well = art.location[1].replace(":", "")
+    for artifact in artifacts:
+        well = get_artifact_well(artifact=artifact)
+        if well == "11":
+            message = "No well found for sample(s). Script does not work without a sample plate."
+            LOG.error(message)
+            raise MissingUDFsError(message=message)
 
-        barcode = get_udf_value(art, "Output Container Barcode")
-        sample_volume = get_udf_value(art, "Sample Volume (ul)")
-        beads_volume = get_udf_value(art, "Volume Beads (ul)")
-        elution_volume = get_udf_value(art, "Volume H2O (ul)")
-
+        sample = get_one_sample_from_artifact(artifact=artifact)
         file_rows[well] = [
-            barcode,
-            lims_id,
+            get_udf(entity=artifact, udf="Output Container Barcode"),
+            sample.id,
             well,
-            sample_volume,
-            beads_volume,
-            elution_volume,
+            get_udf(entity=artifact, udf="Sample Volume (ul)"),
+            get_udf(entity=artifact, udf="Volume Beads (ul)"),
+            get_udf(entity=artifact, udf="Volume H2O (ul)"),
         ]
 
     headers = [

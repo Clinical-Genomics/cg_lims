@@ -1,9 +1,12 @@
 from datetime import date
-from typing import Optional
-from genologics.entities import Sample
+from typing import Optional, Literal
+from genologics.entities import Sample, Entity, Artifact, Process
 from genologics.lims import Lims
 
 from cg_lims.exceptions import MissingUDFsError
+import logging
+
+LOG = logging.getLogger(__name__)
 
 
 def get_udf_type(lims: Lims, udf_name: str, attach_to_name: str) -> Optional:
@@ -24,9 +27,12 @@ def get_udf_type(lims: Lims, udf_name: str, attach_to_name: str) -> Optional:
     return udf_types[udf_type]
 
 
-def get_udf(sample: Sample, udf: str) -> str:
-    """Returns the value of a udf on a sample"""
+def get_udf(entity: Entity, udf: str) -> str:
+    """Returns the value of a udf on a entity.
+    entity can be a Artifact, Sample, Process, etc"""
     try:
-        return sample.udf[udf]
+        return entity.udf[udf]
     except Exception:
-        raise MissingUDFsError(f"UDF {udf} not found on sample {sample.id}!")
+        message = f"UDF {udf} not found on {entity._TAG} {entity.id}!"
+        LOG.error(message)
+        raise MissingUDFsError(message)
