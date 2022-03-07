@@ -1,6 +1,6 @@
 from datetime import date
-from typing import Optional, Literal
-from genologics.entities import Sample, Entity, Artifact, Process
+from typing import Optional
+from genologics.entities import Entity
 from genologics.lims import Lims
 
 from cg_lims.exceptions import MissingUDFsError
