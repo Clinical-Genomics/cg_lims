@@ -13,7 +13,6 @@ from cg_lims.files.manage_csv_files import make_plate_file
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.fields import get_artifact_well
 from cg_lims.get.samples import get_one_sample_from_artifact
-from cg_lims.get.udfs import get_udf
 
 LOG = logging.getLogger(__name__)
 
@@ -30,13 +29,14 @@ def get_file_data_and_write(artifacts: List[Artifact], file: str) -> None:
             raise MissingUDFsError(message=message)
 
         sample = get_one_sample_from_artifact(artifact=artifact)
+
         file_rows[well] = [
-            get_udf(entity=artifact, udf="Output Container Barcode"),
+            artifact.udf.get("Output Container Barcode", "-"),
             sample.id,
             well,
-            get_udf(entity=artifact, udf="Sample Volume (ul)"),
-            get_udf(entity=artifact, udf="Volume Beads (ul)"),
-            get_udf(entity=artifact, udf="Volume H2O (ul)"),
+            artifact.udf.get("Sample Volume (ul)", "-"),
+            artifact.udf.get("Volume Beads (ul)", "-"),
+            artifact.udf.get("Volume H2O (ul)", "-"),
         ]
 
     headers = [
