@@ -31,7 +31,7 @@ class ArtifactUDFs(BaseModel):
     size: Optional[int] = Field(None, alias="Size (bp)")
 
 
-class ATailingAndAdapterLigationFields(
+class ArnoldStep(
     BaseStep,
 ):
     artifact_udfs: ArtifactUDFs
@@ -41,16 +41,14 @@ class ATailingAndAdapterLigationFields(
         allow_population_by_field_name = True
 
 
-def get_a_tailning_and_adapter_ligation(
-    lims: Lims, sample_id: str, prep_id: str
-) -> ATailingAndAdapterLigationFields:
+def get_a_tailning_and_adapter_ligation(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="A-tailing and Adapter ligation (RNA) v1",
     )
 
-    return ATailingAndAdapterLigationFields(
+    return ArnoldStep(
         **analyte.base_fields(),
         process_udfs=ProcessUDFs(**analyte.process_udfs()),
         artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),

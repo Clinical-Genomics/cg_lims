@@ -6,7 +6,7 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
 
-class KAPALibraryPreparationArtifactUDFs(BaseModel):
+class ArtifactUDFs(BaseModel):
     library_size_pre_hyb: int = Field(..., alias="Size (bp)")
     library_concentration_pre_hyb: float = Field(..., alias="Concentration")
     adapter_ligation_master_mix: str = Field(..., alias="Ligation Master Mix")
@@ -16,7 +16,7 @@ class KAPALibraryPreparationArtifactUDFs(BaseModel):
     )  # this value is set afterwards in the pooling step
 
 
-class KAPALibraryPreparationProcessUDFs(BaseModel):
+class ProcessUDFs(BaseModel):
     hamilton_post_lab_library_preparation: Optional[str] = Field(alias="Hamilton (post-lab)")
     hamilton_pre_lab_library_preparation: Optional[str] = Field(alias="Hamilton (pre-lab)")
     method_document_library_preparation: str = Field(..., alias="Method document")
@@ -48,26 +48,24 @@ class KAPALibraryPreparationProcessUDFs(BaseModel):
     )
 
 
-class KAPALibraryPreparationFields(BaseStep):
-    process_udfs: KAPALibraryPreparationProcessUDFs
-    artifact_udfs: KAPALibraryPreparationArtifactUDFs
+class ArnoldStep(BaseStep):
+    process_udfs: ProcessUDFs
+    artifact_udfs: ArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_kapa_library_preparation_twist(
-    lims: Lims, sample_id: str, prep_id: str
-) -> KAPALibraryPreparationFields:
+def get_kapa_library_preparation_twist(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="KAPA Library Preparation TWIST v1",
     )
-    return KAPALibraryPreparationFields(
+    return ArnoldStep(
         **analyte.base_fields(),
-        process_udfs=KAPALibraryPreparationProcessUDFs(**analyte.process_udfs()),
-        artifact_udfs=KAPALibraryPreparationArtifactUDFs(**analyte.artifact_udfs()),
+        process_udfs=ProcessUDFs(**analyte.process_udfs()),
+        artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="kapa_library_preparation",

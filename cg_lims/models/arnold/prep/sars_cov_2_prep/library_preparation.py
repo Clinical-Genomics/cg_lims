@@ -1,5 +1,3 @@
-from typing import Optional
-
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
@@ -8,7 +6,7 @@ from cg_lims.objects import BaseAnalyte
 from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
-class LibraryPreparationCovProcessUDFS(BaseModel):
+class ProcessUDFs(BaseModel):
     """Library Preparation (Cov) v1"""
 
     lot_nr_tagmentation_beads: str = Field(..., alias="Tagmentation beads")
@@ -24,25 +22,25 @@ class LibraryPreparationCovProcessUDFS(BaseModel):
     liquid_handling_system: str = Field(..., alias="Instrument")
 
 
-class LibraryPreparationCovFields(
+class ArnoldStep(
     BaseStep,
 ):
-    process_udfs: LibraryPreparationCovProcessUDFS
+    process_udfs: ProcessUDFs
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_library_prep_cov(lims: Lims, sample_id: str, prep_id: str) -> LibraryPreparationCovFields:
+def get_library_prep_cov(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="Library Preparation (Cov) v1",
     )
 
-    return LibraryPreparationCovFields(
+    return ArnoldStep(
         **analyte.base_fields(),
-        process_udfs=LibraryPreparationCovProcessUDFS(**analyte.process_udfs()),
+        process_udfs=ProcessUDFs(**analyte.process_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="library_prep",
