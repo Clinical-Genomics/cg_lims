@@ -24,7 +24,7 @@ class ArtifactUDFs(BaseModel):
     volume_sample: float = Field(..., alias="Sample Volume (ul)")
 
 
-class AliquotSamplesForEnzymaticFragmentationFields(
+class ArnoldStep(
     BaseStep,
 ):
     process_udfs: ProcessUDFs
@@ -36,14 +36,14 @@ class AliquotSamplesForEnzymaticFragmentationFields(
 
 def get_aliquot_samples_for_enzymatic_fragmentation(
     lims: Lims, sample_id: str, prep_id: str
-) -> AliquotSamplesForEnzymaticFragmentationFields:
+) -> ArnoldStep:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="Aliquot Samples for Fragmentation (RNA) v1",
     )
 
-    return AliquotSamplesForEnzymaticFragmentationFields(
+    return ArnoldStep(
         **analyte.base_fields(),
         process_udfs=ProcessUDFs(**analyte.process_udfs()),
         artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),

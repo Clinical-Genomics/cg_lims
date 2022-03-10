@@ -9,7 +9,7 @@ from cg_lims.objects import BaseAnalyte
 LOG = logging.getLogger(__name__)
 
 
-class NormalizationOfSamplesForSequencingProcessUDFS(BaseModel):
+class ProcessUDFS(BaseModel):
     lot_nr_dilution_buffer_library_normalization: Optional[str] = Field(
         None, alias="Dilution buffer lot no"
     )
@@ -19,16 +19,14 @@ class NormalizationOfSamplesForSequencingProcessUDFS(BaseModel):
     library_normalization_method: Optional[str] = Field(None, alias="Method document")
 
 
-class NormalizationForSequencingFields(BaseStep):
-    process_udfs: NormalizationOfSamplesForSequencingProcessUDFS
+class ArnoldStep(BaseStep):
+    process_udfs: ProcessUDFS
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_normalization_of_samples(
-    lims: Lims, sample_id: str, prep_id: str
-) -> Optional[NormalizationForSequencingFields]:
+def get_normalization_of_samples(lims: Lims, sample_id: str, prep_id: str) -> Optional[ArnoldStep]:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
@@ -38,9 +36,9 @@ def get_normalization_of_samples(
     if not analyte.artifact:
         return None
 
-    return NormalizationForSequencingFields(
+    return ArnoldStep(
         **analyte.base_fields(),
-        process_udfs=NormalizationOfSamplesForSequencingProcessUDFS(**analyte.process_udfs()),
+        process_udfs=ProcessUDFS(**analyte.process_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="normalization_for_sequencing",

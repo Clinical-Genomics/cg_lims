@@ -20,7 +20,7 @@ class ArtifactUDFs(BaseModel):
     size: int = Field(..., alias="Size (bp)")
 
 
-class NormalizationForSequencingFields(BaseStep):
+class ArnoldStep(BaseStep):
     process_udfs: ProcessUDFs
     artifact_udfs: ArtifactUDFs
 
@@ -28,9 +28,7 @@ class NormalizationForSequencingFields(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_normalization_of_samples(
-    lims: Lims, sample_id: str, prep_id: str
-) -> Optional[NormalizationForSequencingFields]:
+def get_normalization_of_samples(lims: Lims, sample_id: str, prep_id: str) -> Optional[ArnoldStep]:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
@@ -40,7 +38,7 @@ def get_normalization_of_samples(
     if not analyte.artifact:
         return None
 
-    return NormalizationForSequencingFields(
+    return ArnoldStep(
         **analyte.base_fields(),
         process_udfs=ProcessUDFs(**analyte.process_udfs()),
         artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),

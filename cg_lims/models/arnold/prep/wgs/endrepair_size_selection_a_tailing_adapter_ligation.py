@@ -8,7 +8,7 @@ from cg_lims.objects import BaseAnalyte
 from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
-class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeProcessUDFS(BaseModel):
+class ProcessUDFs(BaseModel):
     lot_nr_truseq_library_preparation_kit: Optional[str] = Field(
         None, alias="Lot no: TruSeq DNA PCR-Free Sample Prep Kit"
     )
@@ -26,37 +26,31 @@ class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeProcessUDFS(B
     lot_nr_etoh_library_preparation: str = Field(..., alias="Ethanol lot")
 
 
-class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeArtifactUDF(BaseModel):
+class ArtifactUDFs(BaseModel):
     finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
     finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
     finished_library_size: Optional[int] = Field(None, alias="Size (bp)")
 
 
-class EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields(BaseStep):
-    process_udfs: EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeProcessUDFS
-    artifact_udfs: EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeArtifactUDF
+class ArnoldStep(BaseStep):
+    process_udfs: ProcessUDFs
+    artifact_udfs: ArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_end_repair(
-    lims: Lims, sample_id: str, prep_id: str
-) -> EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields:
+def get_end_repair(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="End repair Size selection A-tailing and Adapter ligation (TruSeq PCR-free DNA)",
     )
 
-    return EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeFields(
+    return ArnoldStep(
         **analyte.base_fields(),
-        process_udfs=EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeProcessUDFS(
-            **analyte.process_udfs()
-        ),
-        artifact_udfs=EndRepairSizeSelectionATailingAndAdapterligationTruSeqPCRFreeArtifactUDF(
-            **analyte.artifact_udfs()
-        ),
+        process_udfs=ProcessUDFs(**analyte.process_udfs()),
+        artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="end_repair",
