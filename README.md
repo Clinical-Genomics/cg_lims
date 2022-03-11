@@ -45,7 +45,7 @@ Testing of new code or new workflows takes place on the stage server.
 ### What is Arnold and why?
 [Arnold](https://github.com/Clinical-Genomics/arnold) is a database and REST-API currently soring lims-data only. So why do we want to store lims data in another database? Two reasons: The design of the lims potgress database doesnt fit the kind of queries that we often need to do at cg and we are not allowd to redesign the original postgress database on wich our lims is built. So what are the kind of queries that we need to ask that are cumbersom using the lims-API?
 
-#### 1. General concept of Step Type and Workflow. 
+#### 1. Step Type and Workflow - general concepts that make querying easy
 The problem with the design of the lims postgress database is that there is nothing linking two versions of a master step, protocol or workflow. But when we update a version ow a workflow in lims, we are obviously still working within the same lab process in real life. 
 
 This lack of linking creates problems when you want to track lims data over time. Say you need to look at some volume measuerd in the Buffer Exchange step in the TWIST workflow over time. In order to get those concentrations, you need to know the name of all versions of the Buffer Exchange master steps that has been. 
@@ -58,21 +58,74 @@ The lims workflows: Twist v1, TWist v2, TWIST_v3, ect, are all just twist workfl
 
 The steps cg001 Buffer Exchange,  Buffer Exchange v1 and  Buffer Exchange v2 are all just buffer_exchange steps in arnold.
 
-#### 2. What general steps did my Samle pass through?
-A step dockument in arnold is sample-artifact-step specific and it contains:
+#### 2. A anrnold step is in fact a sample-step
+A step dockument in arnold is sample_id-step_id specific. We have collected all the information that we from experience know are relevant for us into one sample-step centric document.
 
-....
+This is the general model for a arnold step document. 
+
+```
+class Step(BaseModel):
+    id: str = Field(..., alias="_id")
+    prep_id: str
+    step_type: str
+    sample_id: str
+    workflow: str
+    lims_step_name: Optional[str]
+    step_id: str
+    well_position: Optional[str]
+    artifact_name: Optional[str]
+    container_name: Optional[str]
+    container_id: Optional[str]
+    container_type: Optional[str]
+    index_name: Optional[str]
+    nr_samples_in_pool: Optional[int]
+    date_run: Optional[datetime]
+    artifact_udfs: Optional[dict]
+    process_udfs: Optional[dict]
+```
 
 
-This means you have access to sample-artifact-step "all information you need" in a single document and it is super easy to filter out data related to bla bla
+### Arnold Step Models in cg_lims
 
-### Arnold Collections
+So the step model above is general for all steps but each step-type specific model has extra copnstraints to it. This is to enforce eg a buffer-exchange step to always hold some specific buffer-exchenge data. Each step type has its own definition Model. The models are all stored under [cg_lims/cg_lims/models/arnold/prep/](https://github.com/Clinical-Genomics/cg_lims/tree/master/cg_lims/models/arnold/prep). 
 
-#### Step Collection
+```
+│   │   ├── prep
+│   │   │   ├── base_step.py
+│   │   │   ├── microbial_prep
+│   │   │   │   ├── buffer_exchange.py
+│   │   │   │   ├── microbial_library_prep_nextera.py
+│   │   │   │   ├── normailzation_of_microbial_samples_for_sequencing.py
+│   │   │   │   ├── normalization_of_microbial_samples.py
+│   │   │   │   ├── post_pcr_bead_purification.py
+│   │   │   │   └── reception_control.py
+│   │   │   ├── rna
+│   │   │   │   ├── a_tailing_and_adapter_ligation.py
+│   │   │   │   ├── aliquot_samples_for_fragmentation.py
+│   │   │   │   ├── normalization_of_samples_for_sequencing.py
+│   │   │   │   └── reception_control.py
+│   │   │   ├── sars_cov_2_prep
+│   │   │   │   ├── library_preparation.py
+│   │   │   │   ├── pooling_and_cleanup.py
+│   │   │   │   └── reception_control.py
+│   │   │   ├── twist
+│   │   │   │   ├── aliquot_samples_for_enzymatic_fragmentation_twist.py
+│   │   │   │   ├── amplify_captured_libraries.py
+│   │   │   │   ├── bead_purification_twist.py
+│   │   │   │   ├── buffer_exchange.py
+│   │   │   │   ├── capture_and_wash_twist.py
+│   │   │   │   ├── enzymatic_fragmentation_twist.py
+│   │   │   │   ├── hybridize_library_twist.py
+│   │   │   │   ├── kapa_library_preparation_twist.py
+│   │   │   │   ├── pool_samples_twist.py
+│   │   │   │   └── reception_control.py
+│   │   │   └── wgs
+│   │   │       ├── aliquot_sampels_for_covaris.py
+│   │   │       ├── endrepair_size_selection_a_tailing_adapter_ligation.py
+│   │   │       ├── fragment_dna_truseq_dna.py
+│   │   │       └── reception_control.py
 
-#### Sample Collection
-
-### Arnold Models in cg_lims
+```
 
 
 
