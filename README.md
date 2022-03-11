@@ -40,6 +40,37 @@ You will need a password wich is kept in the safety locker at clinical genomics.
 Testing of new code or new workflows takes place on the stage server.
 
 
+## About Arnold
+
+### What is Arnold and why?
+[Arnold](https://github.com/Clinical-Genomics/arnold) is a database and REST-API currently soring lims-data only. So why do we want to store lims data in another database? Two reasons: The design of the lims potgress database doesnt fit the kind of queries that we often need to do at cg and we are not allowd to redesign the original postgress database on wich our lims is built. So what are the kind of queries that we need to ask that are cumbersom using the lims-API?
+
+#### 1. General concept of Step Type and Workflow. 
+The problem with the design of the lims postgress database is that there is nothing linking two versions of a master step, protocol or workflow. But when we update a version ow a workflow in lims, we are obviously still working within the same lab process in real life. This lack of linking creates problems when you want to track lims data over time. Say you need to look at some volume measuerd in the Buffer Exchange step in the TWIST workflow over time. In order to get those concentrations, you need to know the name of all versions of the Buffer Exchange master steps that has been. In the writing moment we have 33 distinct lims-protocols where each protocol has aproximately four distinct steps and where each step exist in several versions and continously get new versions, there are a lot of master step names to keep track of if we want to trend stuff.
+
+In Arnold steps contains tow general fields wich solves the probelm above, a general concepts workflow and step_type.
+
+The lims workflows: Twist v1, TWist v2, TWIST_v3, ect, are all just twist workflows in arnold
+The steps cg001 Buffer Exchange,  Buffer Exchange v1 and  Buffer Exchange v2 are all just buffer_exchange steps in arnold.
+
+#### 2. What general steps did my Samle pass through?
+A step dockument in arnold is sample-artifact-step specific and it contains:
+
+....
+
+
+This means you have access to sample-artifact-step "all information you need" in a single document and it is super easy to filter out data related to bla bla
+
+### Arnold Collections
+
+#### Step Collection
+
+#### Sample Collection
+
+### Arnold Models in cg_lims
+
+
+
 ## About EPPs
 
 The External Program Plug-in (EPP) is a script that is configuerd to be run from within a lims step.
