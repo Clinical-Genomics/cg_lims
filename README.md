@@ -150,6 +150,7 @@ What defines a stpe type model are the *process udfs* and *artifact udfs* that a
 Example: 
 
 
+<img width="554" alt="Skärmavbild 2022-03-13 kl  08 11 54" src="https://user-images.githubusercontent.com/1306333/158049460-b6846201-6099-4737-ae6a-c16715de9f07.png">
 
 
 ## About EPPs
