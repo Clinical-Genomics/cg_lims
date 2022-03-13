@@ -43,18 +43,15 @@ Testing of new code or new workflows takes place on the stage server.
 ## About Arnold
 
 ### What is Arnold and why?
-[Arnold](https://github.com/Clinical-Genomics/arnold) is a database and REST-API currently soring lims-data only. 
-
-The database currently consist of two collections `sample` and `step`.
+[Arnold](https://github.com/Clinical-Genomics/arnold) is a  REST-API and database with two collections - `sample` and `step`. Currently soring lims-data only. 
 
 Data is continuously pushed into the database from lims steps via cg_lims commands, using the arnold REST-API.
 
 So why do we want to store lims data in another database? 
 Two reasons: The design of the lims postgres database doesn't fit the kind of queries that we often need to do at cg. And 
 we are not allowed to redesign the original postgres database on wich our lims is built. 
-So what are the kind of queries that we need to ask that are cumbersome using the lims-API?
 
-#### Step Type and Workflow - General concepts that make querying easy
+#### Step Type and Workflow - General arnold fields that make querying easy
 The problem with the design of the lims postgres database is that there is nothing linking two versions of a master step,
 protocol or workflow. But when we update a version of a workflow in lims, we are obviously still working within the same 
 lab process in real life. 
@@ -67,16 +64,15 @@ In the writing moment we have 33 distinct lims-protocols where each protocol has
 where each step exist in several versions and continuously get new versions. There are a lot of master step names to keep 
 track of if we want to trend stuff!
 
-In Arnold, steps contains two general fields which solves the problem above, the general concepts **workflow** and **step_type**.
-
+In Arnold, steps contains two general fields **workflow** and **step_type**, which solve the problem above.
 
 Example: The lims workflows: "Twist v1", "TWist v2", "TWIST_v3", ect, are all just twist workflows in arnold
 
 Example: The steps "cg001 Buffer Exchange",  "Buffer Exchange v1" and  "Buffer Exchange v2" are all just buffer_exchange steps in arnold.
-xw
-#### A Arnold step is in fact a sample-step
+
+#### A arnold step is in fact a sample-step
 A step document in arnold is sample_id-step_id specific. We have collected all the information that we from experience 
-know are relevant for us into one sample-step centric document.
+know are relevant for us, into one sample-step centric document.
 
 This is the general model for a arnold step document. 
 
@@ -105,9 +101,9 @@ class Step(BaseModel):
 ### Arnold Step Models in cg_lims
 
 So the step model above is general for all steps and each step-type inherits from the general step model, but has some extra constraints to it - making it step-type specific. 
-This is to enforce eg a buffer-exchange step to always hold some specific buffer-exchange data. 
-Each step type has its own definition Model. 
-The models are all stored under [cg_lims/cg_lims/models/arnold/prep/](https://github.com/Clinical-Genomics/cg_lims/tree/master/cg_lims/models/arnold/prep). 
+This is to enforce eg a buffer-exchange step to always hold the specific buffer-exchange data. 
+Each step type has its own definition - Model. 
+The arnold models are all stored under [cg_lims/cg_lims/models/arnold/prep/](https://github.com/Clinical-Genomics/cg_lims/tree/master/cg_lims/models/arnold/prep). 
 
 ```
 ├── prep
@@ -149,6 +145,11 @@ The models are all stored under [cg_lims/cg_lims/models/arnold/prep/](https://gi
 
 
 #### Update a step-type model
+What defines a stpe type model are the *process udfs* and *artifact udfs* that are important for the specific step. These models need to be up to date with our lims system all the time, meaning that if a process or artifact udf is removed or added to a step in lims, it needs to be removed or added to the arnold step model as well. And if a master step gets a new version, the new version neame needs to be updated in the step model.
+
+Example: 
+
+
 
 
 ## About EPPs
