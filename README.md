@@ -97,8 +97,6 @@ class Step(BaseModel):
     process_udfs: Optional[dict]
 ```
 
->**NOTE** Not all process and artifact udfs from a lims process are being stoired in the arnold step, only the once that are important for cg outside the lims system - eg. for trending, trouble shooting, report generation etc.
-
 ### Arnold Step Models in cg_lims
 
 So the step model above is general for all steps and each step-type inherits from the general step model, but has some extra constraints to it - making it step-type specific. 
@@ -146,7 +144,13 @@ The arnold models are all stored under [cg_lims/cg_lims/models/arnold/prep/](htt
 
 
 #### Update a step-type model
-What defines a stpe type model beside the step_type and workflow fields, are the *process udfs* and *artifact udfs* relevant to the step. These models need to be up to date with our lims system all the time, meaning that if a process or artifact udf is removed or added to a step in lims, it needs to be removed or added to the arnold step model as well. And if a master step gets a new version, the new version neame needs to be updated in the step model.
+What defines a stpe type model beside the step_type and workflow fields, are the *process udfs* and *artifact udfs* relevant to the step. 
+
+
+>**NOTE** Not all process and artifact udfs from a lims process are being stoired in the arnold step, only the once that are important for cg outside the lims system - eg. for trending, trouble shooting, report generation etc.
+
+
+The models need to be up to date with our lims system all the time, meaning that if a process or artifact udf is removed from step in lims, it needs to be removed or added to the arnold step model as well. And if a master step gets a new version, the new version neame needs to be updated in the step model.
 
 Example: 
 
