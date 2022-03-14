@@ -40,13 +40,136 @@ You will need a password wich is kept in the safety locker at clinical genomics.
 Testing of new code or new workflows takes place on the stage server.
 
 
+## About Arnold
+
+### What is Arnold and why?
+[Arnold](https://github.com/Clinical-Genomics/arnold) is a  REST-API and database with two collections - `sample` and `step`. Currently soring lims-data only. 
+
+Data is continuously pushed into the database from lims steps via cg_lims commands, using the arnold REST-API.
+
+So why do we want to store lims data in another database? 
+Two reasons: The design of the lims postgres database doesn't fit the kind of queries that we often need to do at cg. And 
+we are not allowed to redesign the original postgres database on wich our lims is built. 
+
+#### Step Type and Workflow - General arnold fields that make querying easy
+The problem with the design of the lims postgres database is that there is nothing linking two versions of a master step,
+protocol or workflow. But when we update a version of a workflow in lims, we are obviously still working within the same 
+lab process in real life. 
+
+This lack of linking creates problems when you want to track lims data over time. Say you need to look at some volume 
+measured in the Buffer Exchange step in the TWIST workflow over time. In order to get those concentrations, you need to 
+know the name of all versions of the Buffer Exchange master steps that has been. 
+
+In the writing moment we have 33 distinct lims-protocols where each protocol has approximately four distinct steps and 
+where each step exist in several versions and continuously get new versions. There are a lot of master step names to keep 
+track of if we want to trend stuff!
+
+In Arnold, steps contains two general fields **workflow** and **step_type**, which solve the problem above.
+
+Example: The lims workflows: "Twist v1", "TWist v2", "TWIST_v3", ect, are all just twist workflows in arnold
+
+Example: The steps "cg001 Buffer Exchange",  "Buffer Exchange v1" and  "Buffer Exchange v2" are all just buffer_exchange steps in arnold.
+
+#### A arnold step is in fact a sample-step
+A step document in arnold is sample_id-step_id specific. We have collected all the information that we from experience 
+know are relevant for us, into one sample-step centric document. 
+
+This is the general model for a arnold step document. 
+
+```
+class Step(BaseModel):
+    id: str = Field(..., alias="_id")
+    prep_id: str
+    step_type: str
+    sample_id: str
+    workflow: str
+    lims_step_name: Optional[str]
+    step_id: str
+    well_position: Optional[str]
+    artifact_name: Optional[str]
+    container_name: Optional[str]
+    container_id: Optional[str]
+    container_type: Optional[str]
+    index_name: Optional[str]
+    nr_samples_in_pool: Optional[int]
+    date_run: Optional[datetime]
+    artifact_udfs: Optional[dict]
+    process_udfs: Optional[dict]
+```
+
+### Arnold Step Models in cg_lims
+
+So the step model above is general for all steps and each step-type inherits from the general step model, but has some extra constraints to it - making it step-type specific. 
+This is to enforce eg a buffer-exchange step to always hold the specific buffer-exchange data. 
+Each step type has its own definition - Model. 
+The arnold models are all stored under [cg_lims/cg_lims/models/arnold/prep/](https://github.com/Clinical-Genomics/cg_lims/tree/master/cg_lims/models/arnold/prep). 
+
+```
+├── prep
+│    ├── base_step.py
+│    ├── microbial_prep
+│    │    ├── buffer_exchange.py
+│    │    ├── microbial_library_prep_nextera.py
+│    │    ├── normailzation_of_microbial_samples_for_sequencing.py
+│    │    ├── normalization_of_microbial_samples.py
+│    │    ├── post_pcr_bead_purification.py
+│    │    └── reception_control.py
+│    ├── rna
+│    │    ├── a_tailing_and_adapter_ligation.py
+│    │    ├── aliquot_samples_for_fragmentation.py
+│    │    ├── normalization_of_samples_for_sequencing.py
+│    │    └── reception_control.py
+│    ├── sars_cov_2_prep
+│    │    ├── library_preparation.py
+│    │    ├── pooling_and_cleanup.py
+│    │    └── reception_control.py
+│    ├── twist
+│    │    ├── aliquot_samples_for_enzymatic_fragmentation_twist.py
+│    │    ├── amplify_captured_libraries.py
+│    │    ├── bead_purification_twist.py
+│    │    ├── buffer_exchange.py
+│    │    ├── capture_and_wash_twist.py
+│    │    ├── enzymatic_fragmentation_twist.py
+│    │    ├── hybridize_library_twist.py
+│    │    ├── kapa_library_preparation_twist.py
+│    │    ├── pool_samples_twist.py
+│    │    └── reception_control.py
+│    └── wgs
+│    │    ├── aliquot_sampels_for_covaris.py
+│    │    ├── endrepair_size_selection_a_tailing_adapter_ligation.py
+│    │    ├── fragment_dna_truseq_dna.py
+│    │    └── reception_control.py
+
+```
+
+
+#### Update a step-type model
+What defines a stpe type model beside the step_type and workflow fields, are the *process udfs* and *artifact udfs* relevant to the step. 
+
+
+>**NOTE** Not all process and artifact udfs from a lims process are being stoired in the arnold step, only the once that are important for cg outside the lims system - eg. for trending, trouble shooting, report generation etc.
+
+
+The models need to be up to date with our lims system all the time, meaning that if a master step gets a new version, the new version neame needs to be updated in the step model. If a process or artifact udf is removed from step in lims, it needs to be removed from the arnold step model as well. And the same if new UFDs are added to lims - if we want them as part of the arnold step, they obvously need to be added to the step model.
+
+
+Example: This is a step modle for Post-PCR bead purification. 
+
+
+<img width="554" alt="Skärmavbild 2022-03-13 kl  08 11 54" src="https://user-images.githubusercontent.com/1306333/158049460-b6846201-6099-4737-ae6a-c16715de9f07.png">
+
+If you remove the artifact udf 'Average Size (bp)' from the process in lims, it needs to be removed from ther step model. 
+
+If you update the master step 'Post-PCR bead purification v1' in lims to 'Post-PCR bead purification v2', it needs to be updated in the step model.
+
+
 ## About EPPs
 
-The External Program Plug-in (EPP) is a script that is configuerd to be run from within a lims step.
+The External Program Plug-in (EPP) is a script that is configured to be run from within a lims step.
 
 Clinical Genomics LIMS is using both scripts that are developed and maintained by Genologics, and scripts that are developed by developers at Clinical Genomics. Scripts developed and maintained by Clinical Genomics are located in [cg_lims/cg_lims/EPPs](https://github.com/Clinical-Genomics/cg_lims/tree/master/cg_lims/EPPs).
 
-Development of new EPPs is preferably done locally but the final testing is done on the stage server.
+Development of new EPPs is preferably done locally, but the final testing is done on the stage server.
 
 
 
@@ -84,7 +207,7 @@ Commands:
 
 ### Configure EPPs
 
-The branch with the new script has been installed and you want to test the script through the web interface. (Or deploy it to production. The procedure is the same.)
+The branch with the new script has been installed, and you want to test the script through the web interface. (Or deploy it to production. The procedure is the same.)
 
 Let us call the new script we want to test: `move-samples`. Running it from the command line looks like this:
 
