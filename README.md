@@ -153,12 +153,14 @@ What defines a stpe type model beside the step_type and workflow fields, are the
 The models need to be up to date with our lims system all the time, meaning that if a master step gets a new version, the new version neame needs to be updated in the step model. If a process or artifact udf is removed from step in lims, it needs to be removed from the arnold step model as well. And the same if new UFDs are added to lims - if we want them as part of the arnold step, they obvously need to be added to the step model.
 
 
-Example: This is a step modle for Post-PCR bead purification.  If you remove the artifact udf 'Average Size (bp)' from the process in lims, it needs to be removed from ther step moidel. 
-
-If you update the master step 'Post-PCR bead purification v1' in lims to 'Post-PCR bead purification v2', it needs to be updated in the step model.
+Example: This is a step modle for Post-PCR bead purification. 
 
 
 <img width="554" alt="Skärmavbild 2022-03-13 kl  08 11 54" src="https://user-images.githubusercontent.com/1306333/158049460-b6846201-6099-4737-ae6a-c16715de9f07.png">
+
+If you remove the artifact udf 'Average Size (bp)' from the process in lims, it needs to be removed from ther step moidel. 
+
+If you update the master step 'Post-PCR bead purification v1' in lims to 'Post-PCR bead purification v2', it needs to be updated in the step model.
 
 
 ## About EPPs
