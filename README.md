@@ -72,7 +72,7 @@ Example: The steps "cg001 Buffer Exchange",  "Buffer Exchange v1" and  "Buffer E
 
 #### A arnold step is in fact a sample-step
 A step document in arnold is sample_id-step_id specific. We have collected all the information that we from experience 
-know are relevant for us, into one sample-step centric document. We are not storing all process and artifact udfs in a step, only the once that are important for us outside the lims system - ex for trending, trouble shooting, report generation or whatever. 
+know are relevant for us, into one sample-step centric document. 
 
 This is the general model for a arnold step document. 
 
@@ -97,6 +97,7 @@ class Step(BaseModel):
     process_udfs: Optional[dict]
 ```
 
+>**NOTE** Not all process and artifact udfs from a lims process are being stoired in the arnold step, only the once that are important for cg outside the lims system - eg. for trending, trouble shooting, report generation etc.
 
 ### Arnold Step Models in cg_lims
 
