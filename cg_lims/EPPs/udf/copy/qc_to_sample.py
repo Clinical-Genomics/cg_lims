@@ -9,12 +9,13 @@ from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 
+LOG = logging.getLogger(__name__)
 
 def artifacts_to_sample(
     artifacts: list, sample_qc_udf: str = None
 ) -> None:
 
-    """Function to copy artifact qc flag to sample level.
+    """Function to copy artifact qc flag to sample UDF.
 
     For each artifact in the artifacts list, copying the qc_flagg
     to all samples related to the artifact. If a art is a pool, art.samples
@@ -26,17 +27,19 @@ def artifacts_to_sample(
 
     failed_udfs = 0
     passed_udfs = 0
-    for art in artifacts:
-        udf = art.qc_flag
-        if udf is not None:
-            for sample in art.samples:
-                if art.qc_flag == "PASSED":
+    for artifact in artifacts:
+        if artifact.qc_flag is not None:
+            for sample in artifact.samples:
+                if artifact.qc_flag == "PASSED":
                     sample.udf[sample_qc_udf] = "True"
                 else :
                     sample.udf[sample_qc_udf] = "False"
                 sample.put()
                 passed_udfs += 1  
         else:
+            LOG.error(
+                f"Sample {artifact.id} is missing qc_flag"
+            )
             failed_udfs += 1
     if failed_udfs:
         raise MissingUDFsError(
@@ -50,15 +53,19 @@ def artifacts_to_sample(
 )
 @click.pass_context
 def qc_to_sample(ctx, input,sample_qc_udf):
-    """Script to copy artifact QC-flag to sample"""
-
+    LOG.info(
+        f"Running {ctx.command_path} with params: {ctx.params}"
+    )
     process = ctx.obj["process"]
     try:
         artifacts = get_artifacts(process=process, input=input)
         artifacts_to_sample(
             artifacts=artifacts,
             sample_qc_udf=sample_qc_udf
-            )
-        click.echo("Udfs have been set on all samples.")
+        )
+        message = "Udfs have been set on all samples."
+        LOG.info(message)
+        click.echo(message)
     except LimsError as e:
+        LOG.error(e.message)
         sys.exit(e.message)
