@@ -72,7 +72,7 @@ Example: The steps "cg001 Buffer Exchange",  "Buffer Exchange v1" and  "Buffer E
 
 #### A arnold step is in fact a sample-step
 A step document in arnold is sample_id-step_id specific. We have collected all the information that we from experience 
-know are relevant for us, into one sample-step centric document.
+know are relevant for us, into one sample-step centric document. We are not storing all process and artifact udfs in a step, only the once that are important for us outside the lims system - ex for trending, trouble shooting, report generation or whatever. 
 
 This is the general model for a arnold step document. 
 
@@ -145,7 +145,7 @@ The arnold models are all stored under [cg_lims/cg_lims/models/arnold/prep/](htt
 
 
 #### Update a step-type model
-What defines a stpe type model are the *process udfs* and *artifact udfs* that are important for the specific step. These models need to be up to date with our lims system all the time, meaning that if a process or artifact udf is removed or added to a step in lims, it needs to be removed or added to the arnold step model as well. And if a master step gets a new version, the new version neame needs to be updated in the step model.
+What defines a stpe type model beside the step_type and workflow fields, are the *process udfs* and *artifact udfs* relevant to the step. These models need to be up to date with our lims system all the time, meaning that if a process or artifact udf is removed or added to a step in lims, it needs to be removed or added to the arnold step model as well. And if a master step gets a new version, the new version neame needs to be updated in the step model.
 
 Example: 
 
