@@ -52,7 +52,7 @@ def test_calculate_water_volume(sample_volume: float, expected_return_value: flo
     # GIVEN a sample volume less than, equal to, and greater than SAMPLE_VOLUME_BOUNDARY
 
     # WHEN calculating the water volume
-    result = calculate_water_volume(sample_volume)
+    result = calculate_water_volume(sample_volume=sample_volume, sample_volume_limit=50)
 
     # THEN the water volume should be calculated correctly
     assert result == expected_return_value
@@ -73,9 +73,7 @@ def test_calculate_beads_volume(
     # GIVEN a sample_volume and a water_volume
 
     # WHEN calculating the beads volume
-    result = calculate_beads_volume(
-        sample_volume=sample_volume, h2o_volume=water_volume
-    )
+    result = calculate_beads_volume(sample_volume=sample_volume, h2o_volume=water_volume)
 
     # THEN calculate beads volume should be twice the sum of the sample volume and water volume
     assert result == expected_return_value

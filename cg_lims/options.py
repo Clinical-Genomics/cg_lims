@@ -301,3 +301,7 @@ def lower_threshold(help: str = "Set lower threshold value") -> click.option:
 
 def upper_threshold(help: str = "Set upper threshold value") -> click.option:
     return click.option("-ut", "--upper-threshold", required=False, help=help, type=float)
+
+
+def sample_volume_limit(help: str = "Set sample volume limit") -> click.option:
+    return click.option("-svl", "--sample-voume-limit", required=False, help=help, type=float)
