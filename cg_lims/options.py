@@ -304,4 +304,4 @@ def upper_threshold(help: str = "Set upper threshold value") -> click.option:
 
 
 def sample_volume_limit(help: str = "Set sample volume limit") -> click.option:
-    return click.option("-svl", "--sample-voume-limit", required=False, help=help, type=float)
+    return click.option("-svl", "--sample-volume-limit", required=False, help=help, type=float)
