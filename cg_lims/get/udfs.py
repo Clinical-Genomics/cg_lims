@@ -1,6 +1,6 @@
 from datetime import date
 from typing import Optional
-from genologics.entities import Sample
+from genologics.entities import Sample, Process
 from genologics.lims import Lims
 
 from cg_lims.exceptions import MissingUDFsError
@@ -30,3 +30,11 @@ def get_udf(sample: Sample, udf: str) -> str:
         return sample.udf[udf]
     except Exception:
         raise MissingUDFsError(f"UDF {udf} not found on sample {sample.id}!")
+
+
+def get_process_udf(process: Process, udf: str) -> str:
+    """Returns the value of a udf on a process"""
+    try:
+        return process.udf[udf]
+    except Exception:
+        raise MissingUDFsError(f"UDF {udf} not found on process {process.id}!")
