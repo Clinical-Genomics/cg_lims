@@ -28,15 +28,20 @@ def get_file_data_and_write(artifacts: List[Artifact], file: str) -> None:
             LOG.error(message)
             raise MissingUDFsError(message=message)
 
-        sample = get_one_sample_from_artifact(artifact=artifact)
+        lims_id = get_one_sample_from_artifact(artifact=artifact).id
+
+        barcode = artifact.udf.get("Output Container Barcode", "-")
+        sample_volume = artifact.udf.get("Sample Volume (ul)", "-")
+        beads_volume = artifact.udf.get("Volume Beads (ul)", "-")
+        elution_volume = artifact.udf.get("Volume Elution (ul)", "-")
 
         file_rows[well] = [
-            artifact.udf.get("Output Container Barcode", "-"),
-            sample.id,
+            barcode,
+            lims_id,
             well,
-            artifact.udf.get("Sample Volume (ul)", "-"),
-            artifact.udf.get("Volume Beads (ul)", "-"),
-            artifact.udf.get("Volume H2O (ul)", "-"),
+            sample_volume,
+            beads_volume,
+            elution_volume,
         ]
 
     headers = [
