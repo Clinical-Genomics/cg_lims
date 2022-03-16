@@ -28,7 +28,7 @@ def artifacts_to_sample(
     failed_udfs = 0
     passed_udfs = 0
     for artifact in artifacts:
-        if artifact.qc_flag is not None:
+        if artifact.qc_flag != 'UNKNOWN' and artifact.qc_flag is not None:
             for sample in artifact.samples:
                 if artifact.qc_flag == "PASSED":
                     sample.udf[sample_qc_udf] = "True"
@@ -41,11 +41,11 @@ def artifacts_to_sample(
                 f"Sample {artifact.id} is missing qc_flag"
             )
             failed_udfs += 1
-    if failed_udfs:
+    if failed_udfs:          
         raise MissingUDFsError(
             message=f"The qc_flag was is missing for {failed_udfs} artifacts. Udfs were set on {passed_udfs} samples."
-        )            
-
+        )
+        
 @click.command()
 @options.sample_qc_udf(help="Name of sample QC udf to set.")
 @options.input(
