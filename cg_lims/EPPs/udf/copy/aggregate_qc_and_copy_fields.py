@@ -5,6 +5,7 @@ import click
 from typing import List, Tuple
 
 from genologics.entities import Process
+from genologics.lims import Lims
 
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.set.udfs import copy_udfs_to_artifacts
@@ -28,6 +29,19 @@ def get_source_udf(process: Process) -> List[Tuple[str, str]]:
     return source_udfs
 
 
+def copy_source_udfs_to_artifacts(process: Process, lims: Lims) -> None:
+    artifacts = get_artifacts(process=process, input=True)
+    source_udfs = get_source_udf(process)
+    for task in source_udfs:
+        copy_udfs_to_artifacts(artifacts=artifacts,
+                               process_types=[task[0]],
+                               lims=lims,
+                               udfs=[(task[1], task[1])],
+                               qc_flag=True,
+                               measurement=True,
+                               )
+
+
 @click.command()
 @click.pass_context
 def aggregate_qc_and_copy_fields(ctx) -> None:
@@ -39,16 +53,7 @@ def aggregate_qc_and_copy_fields(ctx) -> None:
     lims = ctx.obj["lims"]
 
     try:
-        artifacts = get_artifacts(process=process, input=True)
-        source_udfs = get_source_udf(process)
-        for task in source_udfs:
-            copy_udfs_to_artifacts(artifacts=artifacts,
-                                   process_types=[task[0]],
-                                   lims=lims,
-                                   udfs=[(task[1], task[1])],
-                                   qc_flag=True,
-                                   measurement=True,
-                                   )
+        copy_source_udfs_to_artifacts(process=process, lims=lims)
 
         message = "UDFs were successfully copied!"
         LOG.info(message)
