@@ -94,7 +94,7 @@ def get_latest_artifact(
         )
         lims_artifacts = []
         for artifact in all_lims_artifacts:
-            if len(artifact.samples) == 1:
+            if not artifact.files:
                 lims_artifacts.append(artifact)
     else:
         lims_artifacts = lims.get_artifacts(

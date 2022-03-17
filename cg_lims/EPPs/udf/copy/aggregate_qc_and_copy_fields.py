@@ -9,7 +9,7 @@ from genologics.lims import Lims
 
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.set.udfs import copy_udfs_to_artifacts
-from cg_lims.exceptions import LimsError
+from cg_lims.exceptions import LimsError, MissingUDFsError
 
 LOG = logging.getLogger(__name__)
 
@@ -26,6 +26,8 @@ def get_source_udf(process: Process) -> List[Tuple[str, str]]:
                 copy_tasks[task_number.strip()] = {copy_type.strip(): value}
     for copy_task in copy_tasks:
         source_udfs.append((copy_tasks[copy_task]['Source Step'], copy_tasks[copy_task]['Source Field']))
+    if not source_udfs:
+        raise MissingUDFsError(f"Copy task udf missing for process {process.id}.")
     return source_udfs
 
 
