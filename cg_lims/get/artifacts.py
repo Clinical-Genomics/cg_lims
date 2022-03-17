@@ -69,7 +69,11 @@ def filter_artifacts(artifacts: List[Artifact], udf: str, value) -> List[Artifac
 
 
 def get_latest_artifact(
-    lims: Lims, sample_id: str, process_types: Optional[List[str]], sample_artifact: bool = False
+    lims: Lims,
+    sample_id: str,
+    process_types: Optional[List[str]],
+    sample_artifact: bool = False,
+    measurement: Optional[bool] = False,
 ) -> Artifact:
     """Getting the most recently generated artifact by process_types and sample_id.
 
@@ -82,11 +86,22 @@ def get_latest_artifact(
     if sample_artifact and not process_types:
         return get_sample_artifact(lims=lims, sample=Sample(lims, sample_id))
 
-    lims_artifacts = lims.get_artifacts(
-        samplelimsid=sample_id,
-        type="Analyte",
-        process_type=process_types,
-    )
+    if measurement:
+        all_lims_artifacts = lims.get_artifacts(
+            samplelimsid=sample_id,
+            type="ResultFile",
+            process_type=process_types,
+        )
+        lims_artifacts = []
+        for artifact in all_lims_artifacts:
+            if len(artifact.samples) == 1:
+                lims_artifacts.append(artifact)
+    else:
+        lims_artifacts = lims.get_artifacts(
+            samplelimsid=sample_id,
+            type="Analyte",
+            process_type=process_types,
+        )
 
     if sample_artifact and not lims_artifacts:
         return get_sample_artifact(lims=lims, sample=Sample(lims, sample_id))

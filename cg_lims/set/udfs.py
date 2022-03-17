@@ -1,10 +1,12 @@
-from typing import List, Tuple, Iterator
+from typing import List, Tuple, Iterator, Optional
 
 from genologics.entities import Artifact, Process
+from genologics.lims import Lims
 
 import logging
 
 from cg_lims.exceptions import MissingUDFsError
+from cg_lims.get.artifacts import get_latest_artifact
 
 LOG = logging.getLogger(__name__)
 
@@ -55,3 +57,39 @@ def copy_udf_process_to_artifact(
         message = f"{artifact_udf} doesn't seem to be a valid artifact udf."
         LOG.error(message)
         raise MissingUDFsError(message=message)
+
+
+def copy_udfs_to_artifacts(
+    artifacts: List[Artifact],
+    process_types: List[str],
+    lims: Lims,
+    udfs: List[Tuple[str, str]],
+    sample_artifact: bool = False,
+    qc_flag: bool = False,
+    measurement: Optional[bool] = False
+):
+    """Looping over all artifacts. Getting the latest artifact to copy from. Copying."""
+
+    failed_artifacts = 0
+    for destination_artifact in artifacts:
+        try:
+            sample = destination_artifact.samples[0]
+            source_artifact = get_latest_artifact(
+                lims=lims,
+                sample_id=sample.id,
+                process_types=process_types,
+                sample_artifact=sample_artifact,
+                measurement=measurement,
+            )
+            copy_artifact_to_artifact(
+                destination_artifact=destination_artifact,
+                source_artifact=source_artifact,
+                artifact_udfs=udfs,
+                qc_flag=qc_flag,
+            )
+        except:
+            failed_artifacts += 1
+    if failed_artifacts:
+        raise MissingUDFsError(
+            message=f"Failed to set artifact udfs on {failed_artifacts} artifacts. See log for details"
+        )
