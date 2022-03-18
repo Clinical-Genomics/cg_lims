@@ -20,13 +20,13 @@ def get_path(document_title: str, process: Process, atlas_host: str) -> str:
 
     response = requests.get(f"{atlas_host}/title/{document_title}/path")
     if response.status_code != 200:
-        raise AtlasResponseFailedError(message=f"{response.status_code} : {response.text}")
+        sys.exit(f"{response.status_code} : {response.text}")
     return response.json()
 
 
 def get_document_paths(document_udfs: List[str], process: Process, host: str) -> List[str]:
     """Get method document paths from Atlas"""
-
+    method_documents = []
     for udf in document_udfs:
         document_title: str = process.udf.get(udf)
         if not document_title:
@@ -34,20 +34,18 @@ def get_document_paths(document_udfs: List[str], process: Process, host: str) ->
             continue
         if document_title == "Manual":
             continue
-        get_path(document_title, process, host)
-    method_documents: List[Optional[str]] = [get_path(udf, process, host) for udf in document_udfs]
-    return [doc for doc in method_documents if doc]
+        document_path = get_path(document_title, process, host)
+        if document_path:
+            method_documents.append(document_path)
+    return method_documents
 
 
-def set_methods_and_version(document_udfs: List[str], process: Process, host: str) -> None:
+def set_methods_and_version(method_documents: List[str], process: Process, host: str) -> None:
     """Set Method Documents and Atlas Version"""
 
-    method_documents = get_document_paths(document_udfs=document_udfs, host=host, process=process)
-    if not method_documents:
-        raise MissingUDFsError(message="Found no valid Method document UDFs in the step.")
     response = requests.get(f"{host}/version")
     if response.status_code != 200:
-        raise AtlasResponseFailedError(message=f"{response.status_code} : {response.text}")
+        raise sys.exit(f"{response.status_code} : {response.text}")
     process.udf["Methods"] = " ,".join(method_documents)
     process.udf["Atlas Version"] = response.json()
     process.put()
@@ -65,6 +63,15 @@ def method_document(ctx: click.Context, process_udfs: List[str]):
     process: Process = ctx.obj["process"]
     atlas_host: str = ctx.obj["atlas_host"]
     try:
-        set_methods_and_version(process=process, host=atlas_host, document_udfs=process_udfs)
+        method_documents = get_document_paths(
+            document_udfs=process_udfs, host=atlas_host, process=process
+        )
+        if not method_documents:
+            LOG.info(msg="Found no valid Method document UDFs in the step.")
+            click.echo("Found no Method document UDFs in the step.")
+        else:
+            set_methods_and_version(
+                process=process, host=atlas_host, method_documents=method_documents
+            )
     except LimsError as e:
         sys.exit(e.message)
