@@ -20,7 +20,7 @@ def get_path(document_title: str, process: Process, atlas_host: str) -> str:
 
     response = requests.get(f"{atlas_host}/title/{document_title}/path")
     if response.status_code != 200:
-        sys.exit(f"{response.status_code} : {response.text}")
+        raise AtlasResponseFailedError(message=f"{response.status_code} : {response.text}")
     return response.json()
 
 
@@ -45,7 +45,7 @@ def set_methods_and_version(method_documents: List[str], process: Process, host:
 
     response = requests.get(f"{host}/version")
     if response.status_code != 200:
-        raise sys.exit(f"{response.status_code} : {response.text}")
+        raise AtlasResponseFailedError(f"{response.status_code} : {response.text}")
     process.udf["Methods"] = " ,".join(method_documents)
     process.udf["Atlas Version"] = response.json()
     process.put()
