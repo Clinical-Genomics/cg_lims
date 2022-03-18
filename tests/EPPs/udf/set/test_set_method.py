@@ -36,31 +36,11 @@ def test_get_path(lims, mocker, atlas_response_mock):
 
     # WHEN running get_path with the process, the atlas api host and the document udf
     document_path = get_path(
-        process=process, document_udf=document_udf, atlas_host="https://atlas/api"
+        process=process, document_title="SomeTitle", atlas_host="https://atlas/api"
     )
 
     # THEN assert get_path returns the document path
     assert document_path == "atlas/document/path.md"
-
-
-def test_get_path_missing_udf(lims, mocker, caplog):
-    # GIVEN: a lims with a process: id="24-196211" with no udf named "Method Document"
-
-    server("flat_tests")
-    document_udf = "Method Document"
-    process = Process(lims=lims, id="24-196211")
-    process.udf.clear()
-    mocker.patch.object(requests, "get")
-
-    # WHEN running get_path with the process, the atlas api host and the document udf
-    with caplog.at_level(logging.WARNING):
-        document_path = get_path(
-            process=process, document_udf=document_udf, atlas_host="https://atlas/api"
-        )
-
-    # THEN assert get_path returns the document path
-    assert f"Process Udf: {document_udf} does not exist or was left empty." in caplog.text
-    assert document_path is None
 
 
 @pytest.fixture()
@@ -88,7 +68,7 @@ def test_get_path_wrong_document_title(lims, mocker, atlas_response_mock_fail):
     # THEN: assert AtlasResponseFailedError is being raised
     with pytest.raises(AtlasResponseFailedError) as error:
         document_path = get_path(
-            process=process, document_udf=document_udf, atlas_host="https://atlas/api"
+            process=process, document_title="SomeWrongTitle", atlas_host="https://atlas/api"
         )
 
     # THEN: assert the error message is fetched from the api response
