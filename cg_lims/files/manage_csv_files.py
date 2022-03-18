@@ -76,6 +76,8 @@ def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
         # Splitting the well_column into two temporary sort columns that are added to the data frame and to sort_columns
         well_row = f"{column}_row"
         well_col = f"{column}_col"
+        print(csv_data_frame[column])
+        print("hihi")
         csv_data_frame[well_row] = csv_data_frame[column].transform(lambda x: x[0])
         csv_data_frame[well_col] = csv_data_frame[column].transform(lambda x: int(x[1:]))
         sort_columns += [well_col, well_row]

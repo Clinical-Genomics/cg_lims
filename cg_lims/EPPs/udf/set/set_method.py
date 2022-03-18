@@ -15,13 +15,9 @@ from cg_lims.exceptions import LimsError, MissingUDFsError, AtlasResponseFailedE
 LOG = logging.getLogger(__name__)
 
 
-def get_path(document_udf: str, process: Process, atlas_host: str) -> Optional[str]:
+def get_path(document_title: str, process: Process, atlas_host: str) -> str:
     """Get method document path from Atlas"""
 
-    document_title: str = process.udf.get(document_udf)
-    if not document_title:
-        LOG.warning(f"Process Udf: {document_udf} does not exist or was left empty.")
-        return
     response = requests.get(f"{atlas_host}/title/{document_title}/path")
     if response.status_code != 200:
         raise AtlasResponseFailedError(message=f"{response.status_code} : {response.text}")
@@ -31,6 +27,14 @@ def get_path(document_udf: str, process: Process, atlas_host: str) -> Optional[s
 def get_document_paths(document_udfs: List[str], process: Process, host: str) -> List[str]:
     """Get method document paths from Atlas"""
 
+    for udf in document_udfs:
+        document_title: str = process.udf.get(udf)
+        if not document_title:
+            LOG.warning(f"Process Udf: {udf} does not exist or was left empty.")
+            continue
+        if document_title == "Manual":
+            continue
+        get_path(document_title, process, host)
     method_documents: List[Optional[str]] = [get_path(udf, process, host) for udf in document_udfs]
     return [doc for doc in method_documents if doc]
 
