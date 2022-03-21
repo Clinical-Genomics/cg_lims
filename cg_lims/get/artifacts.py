@@ -77,8 +77,8 @@ def get_latest_artifact(
 ) -> Artifact:
     """Getting the most recently generated artifact by process_types and sample_id.
 
-    Searching for all artifacts (Analytes) associated with <sample_id> that
-    were produced by <process_types>.
+    Searching for either all artifacts (Analytes), or measurements (ResultFiles),
+    associated with <sample_id> that were produced by <process_types>.
 
     Returning the artifact with latest parent_process.date_run.
     If there are many such artifacts only one will be returned."""
@@ -94,7 +94,8 @@ def get_latest_artifact(
         )
         lims_artifacts = []
         for artifact in all_lims_artifacts:
-            if not artifact.files:
+            output = [io[1] for io in artifact.parent_process.input_output_maps if io[1]['limsid'] == artifact.id]
+            if output[0]["output-generation-type"] == "PerInput":
                 lims_artifacts.append(artifact)
     else:
         lims_artifacts = lims.get_artifacts(

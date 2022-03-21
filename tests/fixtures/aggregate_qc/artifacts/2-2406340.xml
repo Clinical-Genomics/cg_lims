@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" limsid="2-2406340">
+    <name>KMP-00171T-A09 IDT_10nt_445 (TTGGCACTTA-GTGCGTCGTA)</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-241172" limsid="27-241172" />
+        <value>A:2</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9476A23" limsid="ACC9476A23" />
+    <reagent-label name="A09 IDT_10nt_445 (TTGGCACTTA-GTGCGTCGTA)" />
+    <udf:field type="Numeric" name="Amount taken (ng)">441.1764705882353</udf:field>
+    <udf:field type="Numeric" name="Volume of sample (ul)">8.823529411764707</udf:field>
+    <udf:field type="String" name="Ligation Master Mix">A</udf:field>
+    <udf:field type="String" name="PCR Plate">Plate1</udf:field>
+    <udf:field type="String" name="Output Container Barcode">123-5</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Pool samples for hybridization TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1951/stages/6859" />
+        <workflow-stage status="COMPLETE" name="Library Validation QC TWIST v2" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1951/stages/6858" />
+        <workflow-stage status="IN_PROGRESS" name="Library Validation QC TWIST v2" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1951/stages/6858" />
+    </workflow-stages>
+</art:artifact>

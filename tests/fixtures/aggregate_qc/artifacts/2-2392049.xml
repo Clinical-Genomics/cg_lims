@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2392049?state=1887755" limsid="2-2392049">
+    <name>tga220307_A1_Exome</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-304228" limsid="24-304228" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-239469" limsid="27-239469" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7965A63" limsid="ACC7965A63" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9531A2" limsid="ACC9531A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9531A3" limsid="ACC9531A3" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9531A4" limsid="ACC9531A4" />
+    <reagent-label name="C06 IDT_10nt_467 (GAAGGAGCCT-CCTCCATTAT)" />
+    <reagent-label name="B06 IDT_10nt_454 (ATTCTTGCCT-GTGCAGCTAC)" />
+    <reagent-label name="D06 IDT_10nt_480 (AGACGTGTTA-TTACAGTTGG)" />
+    <reagent-label name="E09 IDT_10nt_498 (CGCTTCTCCT-TTGGCTAGGC)" />
+    <udf:field type="Numeric" name="Missing reads Pool (M)">320</udf:field>
+    <workflow-stages>
+        <workflow-stage status="IN_PROGRESS" name="Library Validation QC TWIST v2" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1601/stages/5114" />
+        <workflow-stage status="COMPLETE" name="Define Run Format and Calculate Volumes (Nova Seq)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1851/stages/6523" />
+        <workflow-stage status="COMPLETE" name="Library Validation QC TWIST (post hyb)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1851/stages/6522" />
+        <workflow-stage status="IN_PROGRESS" name="Library Validation QC TWIST (post hyb)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1851/stages/6522" />
+    </workflow-stages>
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-2392049/demux" />
+</art:artifact>

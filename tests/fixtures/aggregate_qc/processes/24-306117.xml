@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-306117" limsid="24-306117">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1371">Tapestation QC TWIST v2</type>
+    <date-run>2022-03-17</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/1154">
+        <first-name>Karl</first-name>
+        <last-name>Svärd</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" limsid="2-2406340">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407215?state=1900026" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407215" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" limsid="2-2406340">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407216?state=1900027" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407216" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" limsid="2-2406340">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407217?state=1900028" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407217" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" limsid="2-2406340">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407218?state=1900029" output-generation-type="PerInput" output-type="ResultFile" limsid="92-2407218" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" limsid="2-2406348">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407215?state=1900026" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407215" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" limsid="2-2406348">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407216?state=1900027" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407216" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" limsid="2-2406348">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407217?state=1900028" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407217" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" limsid="2-2406348">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407219?state=1900030" output-generation-type="PerInput" output-type="ResultFile" limsid="92-2407219" />
+    </input-output-map>
+    <udf:field type="String" name="Assay">D1000 HS</udf:field>
+    <udf:field type="String" name="Criteria 1 - Operator">&gt;=</udf:field>
+    <udf:field type="String" name="Criteria 1 - Source Data Field">Size (bp)</udf:field>
+    <udf:field type="Numeric" name="Criteria 1 - Threshold Value">300</udf:field>
+    <udf:field type="String" name="Document version">12</udf:field>
+    <udf:field type="String" name="Lot no kit:">12</udf:field>
+    <udf:field type="String" name="Method document">1212</udf:field>
+    <process-parameter name="Copy DIN from Aggregate QC (DNA)" />
+</prc:process>

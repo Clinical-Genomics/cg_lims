@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-306119" limsid="24-306119">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1367">Quantit QC (Library Validation) TWIST v2</type>
+    <date-run>2022-03-17</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/1154">
+        <first-name>Karl</first-name>
+        <last-name>Svärd</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" limsid="2-2406340">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407223?state=1900036" output-generation-type="PerInput" output-type="ResultFile" limsid="92-2407223" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" limsid="2-2406340">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407225?state=1900038" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407225" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406340?state=1899587" limsid="2-2406340">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407226?state=1900039" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407226" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" limsid="2-2406348">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407224?state=1900037" output-generation-type="PerInput" output-type="ResultFile" limsid="92-2407224" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" limsid="2-2406348">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407225?state=1900038" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407225" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2406348?state=1899588" limsid="2-2406348">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-305928" limsid="151-305928" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407226?state=1900039" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2407226" />
+    </input-output-map>
+    <udf:field type="Numeric" name="Amount Needed (ng)">30</udf:field>
+    <udf:field type="String" name="Assay">dsDNA HS</udf:field>
+    <udf:field type="String" name="Criteria 1 - Operator">&gt;=</udf:field>
+    <udf:field type="String" name="Criteria 1 - Source Data Field">Concentration</udf:field>
+    <udf:field type="Numeric" name="Criteria 1 - Threshold Value">2</udf:field>
+    <udf:field type="String" name="Document Version">8</udf:field>
+    <udf:field type="String" name="Lot no: Quantification kit">12</udf:field>
+    <udf:field type="String" name="Method document">1843</udf:field>
+    <udf:field type="String" name="Method Document 2">1843</udf:field>
+    <udf:field type="Numeric" name="Sample Volume (ul)">30</udf:field>
+    <udf:field type="String" name="Instrument">Kratos</udf:field>
+    <process-parameter name="Calculate amount and set QC" />
+</prc:process>

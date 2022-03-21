@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407218?state=1900031" limsid="92-2407218">
+    <name>Fragment Analyzer KMP-00171T-A09 IDT_10nt_445 (TTGGCACTTA-GTGCGTCGTA)</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-306117" limsid="24-306117" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-241199" limsid="27-241199" />
+        <value>A:2</value>
+    </location>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9476A23" limsid="ACC9476A23" />
+    <reagent-label name="A09 IDT_10nt_445 (TTGGCACTTA-GTGCGTCGTA)" />
+    <udf:field type="Numeric" name="Size (bp)">337</udf:field>
+    <udf:field type="Numeric" name="DIN Value">9</udf:field>
+    <workflow-stages />
+</art:artifact>
