@@ -29,9 +29,8 @@ def get_document_paths(document_udfs: List[str], process: Process, host: str) ->
     method_documents = []
     for udf in document_udfs:
         document_title: str = process.udf.get(udf)
-        if not document_title:
-            LOG.warning(f"Process Udf: {udf} does not exist or was left empty.")
-        if document_title == "Manual":
+        if not document_title or (document_title == "Manual"):
+            LOG.warning(f"Process Udf: {udf} does not exist, was left empty or was set to Manual.")
             continue
         document_path = get_path(document_title, process, host)
         if document_path:
