@@ -73,8 +73,9 @@ def copy_udfs_to_artifacts(
     failed_artifacts = 0
     for destination_artifact in artifacts:
         try:
-            if destination_artifact.qc_flag == "FAILED":
-                qc_flag = False
+            qc_flag_copy = False
+            if qc_flag is True and destination_artifact.qc_flag != "FAILED":
+                qc_flag_copy = True
             sample = destination_artifact.samples[0]
             source_artifact = get_latest_artifact(
                 lims=lims,
@@ -87,7 +88,7 @@ def copy_udfs_to_artifacts(
                 destination_artifact=destination_artifact,
                 source_artifact=source_artifact,
                 artifact_udfs=udfs,
-                qc_flag=qc_flag,
+                qc_flag=qc_flag_copy,
             )
         except:
             failed_artifacts += 1
