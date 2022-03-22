@@ -10,17 +10,17 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class ProcessUDFs(BaseModel):
-    pooling_method: str = Field(..., alias="Method document (pooling)")
-    clean_up_method: str = Field(..., alias="Method document (Clean-up)")
-    lot_nr_beads_clean_up: str = Field(..., alias="Purification beads")
-    lot_nr_etoh_clean_up: str = Field(..., alias="Ethanol")
-    lot_nr_h2o_clean_up: str = Field(..., alias="Nuclease-free water")
-    lot_nr_resuspension_buffer_clean_up: str = Field(..., alias="Resuspension buffer")
+    pooling_method: Optional[str] = Field(None, alias="Method document (pooling)")
+    clean_up_method: Optional[str] = Field(None, alias="Method document (Clean-up)")
+    lot_nr_beads_clean_up: Optional[str] = Field(None, alias="Purification beads")
+    lot_nr_etoh_clean_up: Optional[str] = Field(None, alias="Ethanol")
+    lot_nr_h2o_clean_up: Optional[str] = Field(None, alias="Nuclease-free water")
+    lot_nr_resuspension_buffer_clean_up: Optional[str] = Field(None, alias="Resuspension buffer")
 
 
 class ArtifactUDFs(BaseModel):
-    finished_library_concentration: float = Field(..., alias="Concentration")
-    finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
+    finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
+    finished_library_concentration_nm: Optional[float] = Field(None, alias="Concentration (nM)")
     finished_library_size: Optional[int] = Field(None, alias="Size (bp)")
 
 
