@@ -12,12 +12,12 @@ LOG = logging.getLogger(__name__)
 class ProcessUDFs(BaseModel):
     """Normalization of RNA samples for sequencing v1"""
 
-    dilution_lot_nr: str = Field(None, alias="Dilution buffer lot no")
+    dilution_lot_nr: Optional[str] = Field(None, alias="Dilution buffer lot no")
 
 
 class ArtifactUDFs(BaseModel):
-    concentration: float = Field(..., alias="Concentration")
-    size: int = Field(..., alias="Size (bp)")
+    concentration: Optional[float] = Field(None, alias="Concentration")
+    size: Optional[int] = Field(None, alias="Size (bp)")
 
 
 class ArnoldStep(BaseStep):

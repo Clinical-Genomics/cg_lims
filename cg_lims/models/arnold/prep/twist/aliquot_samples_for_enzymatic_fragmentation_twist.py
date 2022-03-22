@@ -13,9 +13,15 @@ class ProcessUDFs(BaseModel):
     GMSlymphoid_HD829: Optional[str] = Field(None, alias="Batch no GMSlymphoid-HD829")
     GMSmyeloid_HD829: Optional[str] = Field(None, alias="Batch no GMSmyeloid-HD829")
     GMSsolid_HD832: Optional[str] = Field(None, alias="Batch no GMSsolid-HD832")
-    aliquot_samples_library_preparation_method_2: str = Field(..., alias="Method document 2")
-    aliquot_samples_library_preparation_method_1: str = Field(..., alias="Method document 1")
-    lot_nr_h2o_aliquot_samples_fragmentation: str = Field(..., alias="Nuclease free water")
+    aliquot_samples_library_preparation_method_2: Optional[str] = Field(
+        None, alias="Method document 2"
+    )
+    aliquot_samples_library_preparation_method_1: Optional[str] = Field(
+        None, alias="Method document 1"
+    )
+    lot_nr_h2o_aliquot_samples_fragmentation: Optional[str] = Field(
+        None, alias="Nuclease free water"
+    )
 
 
 class ArtifactUDFs(BaseModel):
