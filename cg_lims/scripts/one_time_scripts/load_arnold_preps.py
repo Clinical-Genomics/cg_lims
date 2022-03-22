@@ -2,63 +2,36 @@ import logging
 from typing import List, Literal
 
 import click
-from genologics.lims import Lims, Process, Sample
+from genologics.lims import Lims, Process
 import requests
 from requests import Response
 import json
 
 from cg_lims import options
-from cg_lims.get.samples import get_process_samples
+from cg_lims.EPPs.arnold.prep import build_step_documents
 from cg_lims.models.arnold.prep.base_step import BaseStep
-from cg_lims.models.arnold.prep.microbial_prep import build_microbial_step_documents
-from cg_lims.models.arnold.prep.wgs import build_wgs_documents
-from cg_lims.models.arnold.prep.sars_cov_2_prep import build_sars_cov_2_documents
-from cg_lims.models.arnold.prep.twist import build_twist_documents
-from cg_lims.models.arnold.prep.rna import build_rna_documents
-
 
 LOG = logging.getLogger(__name__)
-
-prep_document_functions = {
-    "wgs": build_wgs_documents,
-    "twist": build_twist_documents,
-    "micro": build_microbial_step_documents,
-    "cov": build_sars_cov_2_documents,
-    "rna": build_rna_documents,
-}
-
-
-def build_step_documents(
-    prep_type: Literal["wgs", "twist", "micro", "cov", "rna"], process: Process, lims: Lims
-) -> List[BaseStep]:
-    prep_document_function = prep_document_functions[prep_type]
-    samples: List[Sample] = get_process_samples(process=process)
-    all_step_documents = []
-    for sample in samples:
-        step_documents: List[BaseStep] = prep_document_function(
-            sample_id=sample.id, process_id=process.id, lims=lims
-        )
-        all_step_documents += step_documents
-    return all_step_documents
 
 
 @click.command()
 @options.prep(help="Prep type.")
 @options.process_types()
 @click.pass_context
-def load_arnold_preps(
+def update_arnold_preps(
     ctx, prep_type: Literal["wgs", "twist", "micro", "cov", "rna"], process_types: List[str]
 ):
-    """Creating Step documents from a prep in the arnold step collection."""
+    """For ALL preps defined by prep_type and process_types, updating ALL Step documents.
+    This script should in other words be run with care."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
     lims: Lims = ctx.obj["lims"]
     arnold_host: str = ctx.obj["arnold_host"]
     processes = lims.get_processes(type=process_types)
+    LOG.info(f"loading {len(processes)} processes")
     for process in processes:
         try:
-            process = Process(lims, id="24-158663")
             all_step_documents: List[BaseStep] = build_step_documents(
                 prep_type=prep_type, process=process, lims=lims
             )
@@ -69,12 +42,9 @@ def load_arnold_preps(
             )
             if not response.ok:
                 LOG.error(response.text)
-                print("no")
             else:
                 LOG.info(f"process loaded: {process.id}")
-                print("yey")
         except:
-            print("fail")
             LOG.error(f"faild with process {process.id}")
 
-    click.echo("Step documents inserted to arnold database")
+    click.echo("Done. See log file for details.")
