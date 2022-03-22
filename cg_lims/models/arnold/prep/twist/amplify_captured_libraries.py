@@ -6,15 +6,17 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class ProcessUDFs(BaseModel):
-    amplify_captured_library_method: str = Field(..., alias="Method Document")
-    lot_nr_xgen_primer_amplify_captured_library: str = Field(..., alias="xGen Library Amp primer")
-    lot_nr_amplification_kit_amplify_captured_library: str = Field(
-        ..., alias="Kapa HiFi HotStart ReadyMix"
+    amplify_captured_library_method: Optional[str] = Field(None, alias="Method Document")
+    lot_nr_xgen_primer_amplify_captured_library: Optional[str] = Field(
+        None, alias="xGen Library Amp primer"
+    )
+    lot_nr_amplification_kit_amplify_captured_library: Optional[str] = Field(
+        None, alias="Kapa HiFi HotStart ReadyMix"
     )
 
 
 class ArtifactUDFs(BaseModel):
-    nr_pcr_cycles_amplify_captured_library: int = Field(..., alias="Nr of PCR cycles")
+    nr_pcr_cycles_amplify_captured_library: Optional[int] = Field(None, alias="Nr of PCR cycles")
 
 
 class ArnoldStep(
