@@ -15,6 +15,7 @@
     <udf:field type="Numeric" name="Volume Elution (ul)">41.6</udf:field>
     <udf:field type="Numeric" name="Sample Volume (ul)">52</udf:field>
     <udf:field type="Numeric" name="Volume H2O (ul)">0</udf:field>
-    <udf:field type="String" name="Output Container Barcode">AAEQ3</udf:field>
+    <udf:field type="String" name="Input Container Barcode">AAEQ3</udf:field>
+    <udf:field type="String" name="Output Container Barcode">WRTS5</udf:field>
     <workflow-stages />
 </art:artifact>
