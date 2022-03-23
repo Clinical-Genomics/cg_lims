@@ -11,20 +11,20 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 class ProcessUDFs(BaseModel):
     """Aliquot Samples for Fragmentation (RNA) v1"""
 
-    poly_a_capture: str = Field(..., alias="RGT no: Illumina PolyA capture")
-    cdna_synthesis: str = Field(..., alias="RGT no: Illumina cDNA synthesis")
-    water: str = Field(..., alias="Lot no: Nuclease free water")
-    pcr_name: str = Field(..., alias="Thermal cycler name")
-    ampure_beads: str = Field(..., alias="Lot no: AMPure XP-beads")
-    et_oh: str = Field(..., alias="Lot no: EtOH")
+    poly_a_capture: Optional[str] = Field(None, alias="RGT no: Illumina PolyA capture")
+    cdna_synthesis: Optional[str] = Field(None, alias="RGT no: Illumina cDNA synthesis")
+    water: Optional[str] = Field(None, alias="Lot no: Nuclease free water")
+    pcr_name: Optional[str] = Field(None, alias="Thermal cycler name")
+    ampure_beads: Optional[str] = Field(None, alias="Lot no: AMPure XP-beads")
+    et_oh: Optional[str] = Field(None, alias="Lot no: EtOH")
 
 
 class ArtifactUDFs(BaseModel):
-    volume_h2o: float = Field(..., alias="Volume H2O (ul)")
-    volume_sample: float = Field(..., alias="Sample Volume (ul)")
+    volume_h2o: Optional[float] = Field(None, alias="Volume H2O (ul)")
+    volume_sample: Optional[float] = Field(None, alias="Sample Volume (ul)")
 
 
-class AliquotSamplesForEnzymaticFragmentationFields(
+class ArnoldStep(
     BaseStep,
 ):
     process_udfs: ProcessUDFs
@@ -36,14 +36,14 @@ class AliquotSamplesForEnzymaticFragmentationFields(
 
 def get_aliquot_samples_for_enzymatic_fragmentation(
     lims: Lims, sample_id: str, prep_id: str
-) -> AliquotSamplesForEnzymaticFragmentationFields:
+) -> ArnoldStep:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="Aliquot Samples for Fragmentation (RNA) v1",
     )
 
-    return AliquotSamplesForEnzymaticFragmentationFields(
+    return ArnoldStep(
         **analyte.base_fields(),
         process_udfs=ProcessUDFs(**analyte.process_udfs()),
         artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),

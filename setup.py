@@ -33,5 +33,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.6", # genologics # requires python < 3.9  - AttributeError: 'xml.etree.ElementTree.Element' object has no attribute 'getchildren'
 )

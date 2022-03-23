@@ -11,40 +11,38 @@ from cg_lims.objects import BaseAnalyte
 LOG = logging.getLogger(__name__)
 
 
-class PostPCRBeadPurificationProcessUDFS(BaseModel):
-    lot_nr_beads_library_prep: str = Field(..., alias="Lot nr: Beads")
-    lot_nr_etoh_library_prep: str = Field(..., alias="Lot nr: EtOH")
-    lot_nr_h2o_library_prep: str = Field(..., alias="Lot nr: H2O")
+class ProcessUDFs(BaseModel):
+    lot_nr_beads_library_prep: Optional[str] = Field(None, alias="Lot nr: Beads")
+    lot_nr_etoh_library_prep: Optional[str] = Field(None, alias="Lot nr: EtOH")
+    lot_nr_h2o_library_prep: Optional[str] = Field(None, alias="Lot nr: H2O")
 
 
-class PostPCRBeadPurificationArtifactUDF(BaseModel):
-    finished_library_concentration: float = Field(..., alias="Concentration")
-    finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
+class ArtifactUDFs(BaseModel):
+    finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
+    finished_library_concentration_nm: Optional[float] = Field(None, alias="Concentration (nM)")
     finished_library_size: Optional[int] = Field(None, alias="Size (bp)")
-    finished_library_average_size: float = Field(..., alias="Average Size (bp)")
+    finished_library_average_size: Optional[float] = Field(None, alias="Average Size (bp)")
 
 
-class PostPCRBeadPurificationFields(BaseStep):
-    process_udfs: PostPCRBeadPurificationProcessUDFS
-    artifact_udfs: PostPCRBeadPurificationArtifactUDF
+class ArnoldStep(BaseStep):
+    process_udfs: ProcessUDFs
+    artifact_udfs: ArtifactUDFs
 
     class Config:
         allow_population_by_field_name = True
 
 
-def get_post_bead_pcr_purification(
-    lims: Lims, sample_id: str, prep_id: str
-) -> PostPCRBeadPurificationFields:
+def get_post_bead_pcr_purification(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="Post-PCR bead purification v1",
     )
 
-    return PostPCRBeadPurificationFields(
+    return ArnoldStep(
         **analyte.base_fields(),
-        process_udfs=PostPCRBeadPurificationProcessUDFS(**analyte.process_udfs()),
-        artifact_udfs=PostPCRBeadPurificationArtifactUDF(**analyte.artifact_udfs()),
+        process_udfs=ProcessUDFs(**analyte.process_udfs()),
+        artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="post_pcr_bead_purification",
