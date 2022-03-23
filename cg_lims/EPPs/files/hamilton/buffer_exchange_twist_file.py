@@ -30,7 +30,7 @@ def get_file_data_and_write(artifacts: List[Artifact], file: str) -> None:
 
         lims_id = get_one_sample_from_artifact(artifact=artifact).id
 
-        barcode = artifact.udf.get("Output Container Barcode", "-")
+        barcode = artifact.udf.get("Input Container Barcode", "-")
         sample_volume = artifact.udf.get("Sample Volume (ul)", "-")
         beads_volume = artifact.udf.get("Volume Beads (ul)", "-")
         elution_volume = artifact.udf.get("Volume Elution (ul)", "-")
