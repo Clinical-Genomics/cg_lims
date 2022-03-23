@@ -6,7 +6,7 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 
 
 class ProcessUDFs(BaseModel):
-    amplify_captured_library_method: Optional[str] = Field(None, alias="Method Document")
+    amplify_captured_library_method: Optional[str] = Field(None, alias="Method document")
     lot_nr_xgen_primer_amplify_captured_library: Optional[str] = Field(
         None, alias="xGen Library Amp primer"
     )
