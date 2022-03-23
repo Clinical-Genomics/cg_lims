@@ -280,7 +280,12 @@ def concentration_udf_option(
 
 
 def prep(help: str = "Prep type") -> click.option:
-    return click.option("--prep-type", required=True, help=help)
+    return click.option(
+        "--prep-type",
+        required=True,
+        help=help,
+        type=click.Choice(["wgs", "twist", "micro", "cov", "rna"]),
+    )
 
 
 def subtract_volume_option(
