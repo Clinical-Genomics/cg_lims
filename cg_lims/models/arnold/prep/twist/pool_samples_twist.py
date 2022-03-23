@@ -12,8 +12,8 @@ class ArtifactUDFs(BaseModel):
 
 class ProcessUDFs(BaseModel):
 
-    speedvac_temp: float = Field(..., alias="SpeedVac temp")
-    speedvac_time: float = Field(..., alias="SpeedVac time (min)")
+    speedvac_temp: Optional[float] = Field(None, alias="SpeedVac temp")
+    speedvac_time: Optional[float] = Field(None, alias="SpeedVac time (min)")
 
 
 class ArnoldStep(BaseStep):

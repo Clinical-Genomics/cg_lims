@@ -50,12 +50,18 @@ def copy_udfs_to_all_artifacts(
 
 
 @click.command()
-@options.process_types()
-@options.sample_artifact()
-@options.artifact_udfs()
-@options.source_artifact_udfs()
-@options.measurement(help="Udfs will be set on measurements.")
-@options.input(help="Udfs will be set on input artifacts.")
+@options.process_types(help="The process type names from where you want to copy the artifact udf.")
+@options.sample_artifact(help="Use this flag if you want to copy udf from original artifact")
+@options.artifact_udfs(
+    help="The name of the udf that you want to set (Will be used also for source artifact udf if "
+    "that option has not been set.)"
+)
+@options.source_artifact_udfs(
+    help="The name of the udf that you want to copy. Not required. Use if the name of the "
+    "source udf is not the ame as the destination udf."
+)
+@options.measurement(help="Udfs will be set on measurements on the current step. Use in QC-steps.")
+@options.input(help="Udfs will be set on input artifacts. Use in the QC-Aggregation-steps")
 @options.qc_flag()
 @click.pass_context
 def artifact_to_artifact(

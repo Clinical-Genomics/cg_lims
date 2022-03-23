@@ -12,10 +12,10 @@ class ArtifactUDFs(BaseModel):
 
 
 class ProcessUDFs(BaseModel):
-    lot_nr_blockers: str = Field(..., alias="Blockers")
-    lot_nr_hybridization_kit: str = Field(..., alias="TWIST Hybridization kit")
-    pcr_instrument_hybridization: str = Field(..., alias="Thermal cycler (hyb)")
-    hybridization_method: str = Field(..., alias="Method document")
+    lot_nr_blockers: Optional[str] = Field(None, alias="Blockers")
+    lot_nr_hybridization_kit: Optional[str] = Field(None, alias="TWIST Hybridization kit")
+    pcr_instrument_hybridization: Optional[str] = Field(None, alias="Thermal cycler")
+    hybridization_method: Optional[str] = Field(None, alias="Method document")
 
 
 class ArnoldStep(BaseStep):

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
@@ -9,17 +11,17 @@ from cg_lims.models.arnold.prep.base_step import BaseStep
 class ProcessUDFs(BaseModel):
     """Library Preparation (Cov) v1"""
 
-    lot_nr_tagmentation_beads: str = Field(..., alias="Tagmentation beads")
-    lot_nr__stop_tagment_buffer: str = Field(..., alias="Stop Tagment Buffer")
-    lot_nr_index: str = Field(..., alias="Index")
-    lot_nr_pcr_mix: str = Field(..., alias="PCR-mix")
-    lot_nr_tagmentation_wash_buffer: str = Field(..., alias="Tagmentation Wash Buffer")
-    lot_nr_h2o_library_preparation: str = Field(..., alias="Nuclease-free water")
-    lot_nr_TB1: str = Field(..., alias="TB1 HT")
-    pcr_instrument_tagmentation: str = Field(..., alias="PCR machine: Tagmentation")
-    pcr_instrument_amplification: str = Field(..., alias="PCR machine: Amplification")
-    library_preparation_method: str = Field(..., alias="Method document")
-    liquid_handling_system: str = Field(..., alias="Instrument")
+    lot_nr_tagmentation_beads: Optional[str] = Field(None, alias="Tagmentation beads")
+    lot_nr__stop_tagment_buffer: Optional[str] = Field(None, alias="Stop Tagment Buffer")
+    lot_nr_index: Optional[str] = Field(None, alias="Index")
+    lot_nr_pcr_mix: Optional[str] = Field(None, alias="PCR-mix")
+    lot_nr_tagmentation_wash_buffer: Optional[str] = Field(None, alias="Tagmentation Wash Buffer")
+    lot_nr_h2o_library_preparation: Optional[str] = Field(None, alias="Nuclease-free water")
+    lot_nr_TB1: Optional[str] = Field(None, alias="TB1 HT")
+    pcr_instrument_tagmentation: Optional[str] = Field(None, alias="PCR machine: Tagmentation")
+    pcr_instrument_amplification: Optional[str] = Field(None, alias="PCR machine: Amplification")
+    library_preparation_method: Optional[str] = Field(None, alias="Method document")
+    liquid_handling_system: Optional[str] = Field(None, alias="Instrument")
 
 
 class ArnoldStep(
