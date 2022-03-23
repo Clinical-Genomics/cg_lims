@@ -6,7 +6,7 @@ from .fragment_dna_truseq_dna import get_fragemnt_dna_truseq
 from .aliquot_sampels_for_covaris import get_aliquot_samples_for_covaris
 from .reception_control import get_sample_artifact_fields
 from .endrepair_size_selection_a_tailing_adapter_ligation import get_end_repair
-from ..base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 
 
 def build_wgs_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:

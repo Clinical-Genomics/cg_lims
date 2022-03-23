@@ -1,23 +1,19 @@
-import logging
 from typing import Optional
+
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
+
 from cg_lims.models.arnold.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
-LOG = logging.getLogger(__name__)
-
 
 class ProcessUDFs(BaseModel):
-    """Normalization of RNA samples for sequencing v1"""
-
-    dilution_lot_nr: Optional[str] = Field(None, alias="Dilution buffer lot no")
+    flowcell_type: Optional[str] = Field(None, alias="Flowcell Type")
 
 
 class ArtifactUDFs(BaseModel):
-    concentration: Optional[float] = Field(None, alias="Concentration")
-    size: Optional[int] = Field(None, alias="Size (bp)")
+    sequencing_molar_concentration: Optional[float] = Field(None, alias="Concentration (nM)")
 
 
 class ArnoldStep(BaseStep):
@@ -28,15 +24,12 @@ class ArnoldStep(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_normalization_of_samples(lims: Lims, sample_id: str, prep_id: str) -> Optional[ArnoldStep]:
+def get_define_run_format(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Normalization of RNA samples for sequencing v1",
-        optional_step=True,
+        process_type="Define Run Format and Calculate Volumes (Nova Seq)",
     )
-    if not analyte.artifact:
-        return None
 
     return ArnoldStep(
         **analyte.base_fields(),
@@ -44,6 +37,6 @@ def get_normalization_of_samples(lims: Lims, sample_id: str, prep_id: str) -> Op
         artifact_udfs=ArtifactUDFs(**analyte.artifact_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="normalization_for_sequencing",
-        workflow="RNA"
+        step_type="define_run_format",
+        workflow="NovaSeq"
     )

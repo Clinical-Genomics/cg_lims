@@ -288,6 +288,15 @@ def prep(help: str = "Prep type") -> click.option:
     )
 
 
+def sequencing_method(help: str = "Sequencing Method") -> click.option:
+    return click.option(
+        "--sequencing-method",
+        required=True,
+        help=help,
+        type=click.Choice(["novaseq"]),
+    )
+
+
 def subtract_volume_option(
     help: str = "Subtracts volume taken from samples in QC checks",
 ) -> click.option:

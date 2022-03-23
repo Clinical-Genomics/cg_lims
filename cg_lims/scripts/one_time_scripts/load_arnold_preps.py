@@ -2,14 +2,14 @@ import logging
 from typing import List, Literal
 
 import click
-from genologics.lims import Lims, Process
+from genologics.lims import Lims
 import requests
 from requests import Response
 import json
 
 from cg_lims import options
 from cg_lims.EPPs.arnold.prep import build_step_documents
-from cg_lims.models.arnold.prep.base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 
 LOG = logging.getLogger(__name__)
 

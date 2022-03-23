@@ -6,7 +6,7 @@ from .a_tailing_and_adapter_ligation import get_a_tailning_and_adapter_ligation
 from .aliquot_samples_for_fragmentation import get_aliquot_samples_for_enzymatic_fragmentation
 from .reception_control import get_sample_artifact_fields
 from .normalization_of_samples_for_sequencing import get_normalization_of_samples
-from ..base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 
 
 def build_rna_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:
