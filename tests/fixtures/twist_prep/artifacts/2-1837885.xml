@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837885?state=1430954" limsid="2-1837885">
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1837885?state=1430954" limsid="2-1837885">
     <name>Pool #1</name>
     <type>Analyte</type>
     <output-type>Analyte</output-type>
@@ -14,6 +14,7 @@
     <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC8436A2" limsid="ACC8436A2" />
     <reagent-label name="A01 IDT_10nt_434 (CGACGTACAC-AGGTCGATAA)" />
     <reagent-label name="A02 IDT_10nt_435 (ACTGTCGACG-CTTCCTACAA)" />
+    <udf:field type="String" name="Nr of PCR cycles">1</udf:field>
     <workflow-stages>
         <workflow-stage status="COMPLETE" name="Bead Purification (post hybridization) TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1755/stages/5737" />
     </workflow-stages>

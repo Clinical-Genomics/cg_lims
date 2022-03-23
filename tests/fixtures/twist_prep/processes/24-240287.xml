@@ -21,7 +21,6 @@
     <udf:field type="Numeric" name="Document Version">2</udf:field>
     <udf:field type="String" name="Kapa HiFi HotStart ReadyMix">22</udf:field>
     <udf:field type="String" name="Method Document">1993</udf:field>
-    <udf:field type="Numeric" name="Nr of PCR cycles">1</udf:field>
     <udf:field type="String" name="Thermal Cycler">trooper</udf:field>
     <udf:field type="String" name="xGen Library Amp primer">12</udf:field>
 </prc:process>
