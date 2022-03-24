@@ -19,15 +19,16 @@ TWIST_STEP_TYPES = {
     "capture_and_wash",
     "amplify_captured_library",
     "reception_control",
+    "normalization_for_sequencing",
 }
 
 
 def test_twist_prep(lims):
-    # GIVEN: A lims with a process: "24-240289" (Aggregate QC (Library Validation) TWIST).
+    # GIVEN: A lims with a process: "24-309487" (Aggregate QC (Library Validation) TWIST).
     # Where the samples in the process has gone through the whole twist prep workflow:
 
     server("twist_prep")
-    process = Process(lims=lims, id="24-240289")
+    process = Process(lims=lims, id="24-309487")
 
     # WHEN running build_step_documents
     step_documents = build_step_documents(lims=lims, process=process, prep_type="twist")

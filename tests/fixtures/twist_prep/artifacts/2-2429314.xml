@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429314?state=1918284" limsid="2-2429314">
+    <name>A1</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-309479" limsid="122-309479" />
+    <qc-flag>FAILED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-243221" limsid="27-243221" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9636A1" limsid="ACC9636A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9636A2" limsid="ACC9636A2" />
+    <reagent-label name="A01 IDT_10nt_434 (CGACGTACAC-AGGTCGATAA)" />
+    <reagent-label name="A07 IDT_10nt_442 (TTAACCTGCG-CTACTGATGT)" />
+    <udf:field type="Numeric" name="Volume H2O (ul)">0</udf:field>
+    <udf:field type="Numeric" name="Total Amount (ng)">1500</udf:field>
+    <udf:field type="Numeric" name="Total Volume (ul)">17.5</udf:field>
+    <udf:field type="String" name="Output Container Barcode">5</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Target enrichment TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1952/stages/6960" />
+    </workflow-stages>
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429314/demux" />
+</art:artifact>

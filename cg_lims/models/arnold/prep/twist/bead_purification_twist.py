@@ -32,7 +32,7 @@ def get_bead_purification_twist(lims: Lims, sample_id: str, prep_id: str) -> Arn
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Bead Purification TWIST v2",
+        process_type="Target enrichment TWIST v1",
     )
 
     return ArnoldStep(
