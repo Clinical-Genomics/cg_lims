@@ -59,7 +59,7 @@ def copy_udf_process_to_artifact(
         raise MissingUDFsError(message=message)
 
 
-def copy_udfs_to_artifacts(
+def aggregate_qc_and_copy_udfs_to_artifacts(
     artifacts: List[Artifact],
     process_types: List[str],
     lims: Lims,
@@ -73,9 +73,6 @@ def copy_udfs_to_artifacts(
     failed_artifacts = 0
     for destination_artifact in artifacts:
         try:
-            qc_flag_copy = False
-            if qc_flag and destination_artifact.qc_flag != "FAILED":
-                qc_flag_copy = True
             sample = destination_artifact.samples[0]
             source_artifact = get_latest_artifact(
                 lims=lims,
@@ -88,8 +85,9 @@ def copy_udfs_to_artifacts(
                 destination_artifact=destination_artifact,
                 source_artifact=source_artifact,
                 artifact_udfs=udfs,
-                qc_flag=qc_flag_copy,
+                qc_flag=(qc_flag and destination_artifact.qc_flag != "FAILED"),
             )
+
         except:
             failed_artifacts += 1
     if failed_artifacts:
