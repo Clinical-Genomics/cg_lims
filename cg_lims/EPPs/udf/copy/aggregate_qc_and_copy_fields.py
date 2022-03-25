@@ -2,7 +2,7 @@ import logging
 import sys
 import click
 
-from typing import List, Tuple
+from typing import Dict, Literal, Any
 
 from genologics.entities import Process
 from genologics.lims import Lims
@@ -14,34 +14,41 @@ from cg_lims.exceptions import LimsError, MissingUDFsError
 LOG = logging.getLogger(__name__)
 
 
-def get_source_udf(process: Process) -> List[Tuple[str, str]]:
+def get_source_udf(
+    process: Process,
+) -> Dict[int, Dict[Literal["Source Step", "Source Field"], Any]]:
     copy_tasks = {}
-    source_udfs = []
+
     for udf, value in process.udf.items():
-        if 'Copy task' in udf:
-            task_number, copy_type = udf.split('-')
-            if task_number.strip() in copy_tasks.keys():
-                copy_tasks[task_number.strip()][copy_type.strip()] = value
-            else:
-                copy_tasks[task_number.strip()] = {copy_type.strip(): value}
-    for copy_task in copy_tasks:
-        source_udfs.append((copy_tasks[copy_task]['Source Step'], copy_tasks[copy_task]['Source Field']))
-    if not source_udfs:
-        raise MissingUDFsError(f"Copy task udf missing for process {process.id}.")
-    return source_udfs
+        if "Copy task" not in udf:
+            continue
+        task_number, copy_type = udf.split("-")
+        task_number = int(task_number.strip())
+        copy_type = copy_type.strip()
+        if copy_type not in ["Source Step", "Source Field"]:
+            raise MissingUDFsError(
+                f'Copy type was: {copy_type}! Must be "Source Step" or "Source Field"'
+            )
+        if task_number in copy_tasks:
+            copy_tasks[task_number][copy_type] = value
+        else:
+            copy_tasks[task_number] = {copy_type: value}
+
+    return copy_tasks
 
 
 def copy_source_udfs_to_artifacts(process: Process, lims: Lims) -> None:
     artifacts = get_artifacts(process=process, input=True)
-    source_udfs = get_source_udf(process)
-    for task in source_udfs:
-        copy_udfs_to_artifacts(artifacts=artifacts,
-                               process_types=[task[0]],
-                               lims=lims,
-                               udfs=[(task[1], task[1])],
-                               qc_flag=True,
-                               measurement=True,
-                               )
+    source_udfs: dict = get_source_udf(process)
+    for nr, task in source_udfs.items():
+        copy_udfs_to_artifacts(
+            artifacts=artifacts,
+            process_types=[task["Source Step"]],
+            lims=lims,
+            udfs=[(task["Source Field"], task["Source Field"])],
+            qc_flag=True,
+            measurement=True,
+        )
 
 
 @click.command()

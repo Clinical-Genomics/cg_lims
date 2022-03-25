@@ -66,7 +66,7 @@ def copy_udfs_to_artifacts(
     udfs: List[Tuple[str, str]],
     sample_artifact: bool = False,
     qc_flag: bool = False,
-    measurement: Optional[bool] = False
+    measurement: Optional[bool] = False,
 ):
     """Looping over all artifacts. Getting the latest artifact to copy from. Copying."""
 
@@ -74,7 +74,7 @@ def copy_udfs_to_artifacts(
     for destination_artifact in artifacts:
         try:
             qc_flag_copy = False
-            if qc_flag is True and destination_artifact.qc_flag != "FAILED":
+            if qc_flag and destination_artifact.qc_flag != "FAILED":
                 qc_flag_copy = True
             sample = destination_artifact.samples[0]
             source_artifact = get_latest_artifact(
