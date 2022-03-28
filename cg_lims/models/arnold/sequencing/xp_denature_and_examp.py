@@ -36,11 +36,12 @@ class ArnoldStep(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_xp_denature_and_examp(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep:
+def get_xp_denature_and_examp(lims: Lims, sample_id: str, prep_id: str) -> Optional[ArnoldStep]:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="Xp Denature & ExAmp (Nova Seq)",
+        optional_step=True,
     )
 
     return ArnoldStep(

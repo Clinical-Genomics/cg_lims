@@ -38,7 +38,7 @@ def build_step_documents(
 @click.command()
 @options.sequencing_method(help="Sequencing Method.")
 @click.pass_context
-def prep(ctx, sequencing_method: Literal["novaseq"]):
+def sequencing(ctx, sequencing_method: Literal["novaseq"]):
     """Creating Step documents from a run in the arnold step collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")

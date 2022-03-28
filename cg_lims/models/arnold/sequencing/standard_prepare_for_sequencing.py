@@ -26,11 +26,12 @@ class ArnoldStep(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_standard_prepare_for_sequencing(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep:
+def get_standard_prepare_for_sequencing(lims: Lims, sample_id: str, prep_id: str) -> Optional[ArnoldStep]:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="STANDARD Prepare for Sequencing (Nova Seq)",
+        optional_step=True,
     )
 
     return ArnoldStep(
