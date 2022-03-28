@@ -1,8 +1,8 @@
 """Base cg_lims calss definitions
 """
-from typing import Optional
+from typing import Optional, List
 
-from genologics.entities import Artifact, Sample
+from genologics.entities import Artifact, Sample, Process
 from genologics.lims import Lims
 
 from cg_lims.exceptions import (
@@ -11,8 +11,9 @@ from cg_lims.exceptions import (
     MissingArtifactError,
     MissingProcessError,
 )
-from cg_lims.get.artifacts import get_sample_artifact, get_latest_artifact
+from cg_lims.get.artifacts import get_sample_artifact, get_latest_artifact, get_artifacts
 import logging
+from statistics import mean
 
 LOG = logging.getLogger(__name__)
 
@@ -56,6 +57,14 @@ class BaseAnalyte:
         self.process_type: str = process_type
         self.optional_step: bool = optional_step
         self.artifact: Optional[Artifact] = self.get_artifact()
+        self.process = self.get_process()
+
+    def get_process(self) -> Optional[Process]:
+        """Returning parent process if existing"""
+        try:
+            return self.artifact.parent_process()
+        except:
+            return None
 
     def get_well(self) -> Optional[str]:
         """Returning artifact well if existing."""
@@ -121,17 +130,15 @@ class BaseAnalyte:
 
     def get_date(self):
         """Date when artifact was produced."""
-        if not (
-            self.artifact and self.artifact.parent_process and self.artifact.parent_process.date_run
-        ):
+        if not (self.process and self.process.date_run):
             return None
 
-        return self.artifact.parent_process.date_run
+        return self.process.date_run
 
     def process_udfs(self) -> dict:
         """Filtering process udfs by process_udf_model."""
-        if self.artifact and self.artifact.parent_process:
-            return dict(self.artifact.parent_process.udf.items())
+        if self.process:
+            return dict(self.process.udf.items())
 
         if self.optional_step:
             return {}
@@ -163,3 +170,31 @@ class BaseAnalyte:
             lims_step_name=self.process_type,
             date_run=self.get_date(),
         )
+
+
+class BclConversionAnalyte(BaseAnalyte):
+    def __init__(
+        self, q30_udf: str, sum_reads_udf: str, lims: Lims, sample_id: str, process_type: str
+    ):
+        super().__init__(lims, sample_id, process_type)
+        self.q30_udf: str = q30_udf
+        self.sum_reads_udf: str = sum_reads_udf
+        self.artifacts: Optional[List[Artifact]] = get_artifacts(process=self.process)
+
+    def get_average_q30(self) -> Optional[float]:
+        q_30 = []
+        for artifact in self.artifacts:
+            if not isinstance(artifact.udf.get(self.q30_udf), float):
+                return None
+            q_30.append(artifact.udf.get(self.q30_udf))
+
+        return mean(q_30)
+
+    def get_sum_reads(self) -> Optional[int]:
+        sum_reads = 0
+        for artifact in self.artifacts:
+            if not isinstance(artifact.udf.get(self.sum_reads_udf), int):
+                return None
+            sum_reads += artifact.udf.get(self.sum_reads_udf)
+
+        return sum_reads
