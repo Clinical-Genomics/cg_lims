@@ -9,11 +9,21 @@ from cg_lims.objects import BaseAnalyte
 
 
 class ProcessUDFs(BaseModel):
+    """Define Run Format and Calculate Volumes (Nova Seq)"""
+
     flowcell_type: Optional[str] = Field(None, alias="Flowcell Type")
+    rsb_lot_nr: Optional[str] = Field(None, alias="RSB lot nr")
+    rsb_volume: Optional[str] = Field(None, alias="RSB Volume (ul)") # Keep this or not?
+    final_loading_concentration: Optional[str] = Field(None, alias="Final Loading Concentration (pM)")
+    total_reads_requested: Optional[str] = Field(None, alias="Total nr of Reads Requested (sum of reads to sequence)")
+    method: Optional[str] = Field(None, alias="Method")
+    protocol_type: Optional[str] = Field(None, alias="Protocol type") # Keep this or not?
 
 
 class ArtifactUDFs(BaseModel):
     sequencing_molar_concentration: Optional[float] = Field(None, alias="Concentration (nM)")
+    reads_to_sequence: Optional[float] = Field(None, alias="Reads to sequence (M)")
+    adjusted_volume_per_sample: Optional[float] = Field(None, alias="Adjusted Per Sample Volume (ul)")
 
 
 class ArnoldStep(BaseStep):
