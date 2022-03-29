@@ -11,7 +11,12 @@ from cg_lims.exceptions import (
     MissingArtifactError,
     MissingProcessError,
 )
-from cg_lims.get.artifacts import get_sample_artifact, get_latest_artifact, get_artifacts
+from cg_lims.get.artifacts import (
+    get_sample_artifact,
+    get_latest_analyte,
+    get_artifacts,
+    get_latest_result_files,
+)
 import logging
 from statistics import mean
 
@@ -62,7 +67,7 @@ class BaseAnalyte:
     def get_process(self) -> Optional[Process]:
         """Returning parent process if existing"""
         try:
-            return self.artifact.parent_process()
+            return self.artifact.parent_process
         except:
             return None
 
@@ -119,7 +124,7 @@ class BaseAnalyte:
             sample = Sample(self.lims, id=self.sample_id)
             return get_sample_artifact(sample=sample, lims=self.lims)
         try:
-            return get_latest_artifact(
+            return get_latest_analyte(
                 lims=self.lims, sample_id=self.sample_id, process_types=[self.process_type]
             )
         except MissingArtifactError as e:
@@ -142,7 +147,6 @@ class BaseAnalyte:
 
         if self.optional_step:
             return {}
-
         raise MissingProcessError(
             message=f"sample didnt pass through requiered process {self.process_type}"
         )
@@ -172,14 +176,38 @@ class BaseAnalyte:
         )
 
 
-class BclConversionAnalyte(BaseAnalyte):
+class BclConversionAnalyte:
     def __init__(
-        self, q30_udf: str, sum_reads_udf: str, lims: Lims, sample_id: str, process_type: str
+        self,
+        q30_udf: str,
+        sum_reads_udf: str,
+        lims: Lims,
+        sample_id: str,
+        process: Process,
     ):
-        super().__init__(lims, sample_id, process_type)
         self.q30_udf: str = q30_udf
         self.sum_reads_udf: str = sum_reads_udf
-        self.artifacts: Optional[List[Artifact]] = get_artifacts(process=self.process)
+        self.sample_id = sample_id
+        self.lims = lims
+        self.artifact: Optional[Artifact] = None
+        self.process = process
+        self.artifacts: Optional[List[Artifact]] = self.get_artifacts()
+
+    def get_artifacts(self) -> List[Artifact]:
+        """"""
+
+        all_artifacts: List[Artifact] = self.lims.get_artifacts(
+            process_type=self.process.type.name, samplelimsid=self.sample_id, type="ResultFile"
+        )
+        artifacts_from_this_process = []
+        for artifact in all_artifacts:
+            if artifact.parent_process != self.process:
+                continue
+            if len(artifact.reagent_labels) != 1:
+                continue
+            artifacts_from_this_process.append(artifact)
+
+        return artifacts_from_this_process
 
     def get_average_q30(self) -> Optional[float]:
         q_30 = []

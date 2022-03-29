@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-309467" limsid="24-309467">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1362">Enzymatic fragmentation TWIST v2</type>
+    <date-run>2022-03-22</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/54">
+        <first-name>Cecilia</first-name>
+        <last-name>Svensson</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" limsid="2-2428841">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429131?state=1918429" output-generation-type="PerInput" output-type="Analyte" limsid="2-2429131" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" limsid="2-2428841">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429133?state=1918431" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429133" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" limsid="2-2428841">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429134?state=1918432" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429134" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" limsid="2-2428841">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429135?state=1918433" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429135" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428841?state=1918258" limsid="2-2428841">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429136?state=1918434" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429136" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" limsid="2-2428842">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429132?state=1918430" output-generation-type="PerInput" output-type="Analyte" limsid="2-2429132" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" limsid="2-2428842">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429133?state=1918431" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429133" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" limsid="2-2428842">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429134?state=1918432" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429134" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" limsid="2-2428842">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429135?state=1918433" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429135" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2428842?state=1918257" limsid="2-2428842">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309463" limsid="24-309463" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429136?state=1918434" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429136" />
+    </input-output-map>
+    <udf:field type="Numeric" name="Covaris cycles per burst">200</udf:field>
+    <udf:field type="Numeric" name="Covaris duty cycle (%)">10</udf:field>
+    <udf:field type="Numeric" name="Covaris intensity">4</udf:field>
+    <udf:field type="String" name="Covaris mode">Frequency sweeping</udf:field>
+    <udf:field type="Numeric" name="Covaris Power (W)">175</udf:field>
+    <udf:field type="Numeric" name="Covaris temperature (C)">6</udf:field>
+    <udf:field type="Numeric" name="Covaris time (s)">100</udf:field>
+    <udf:field type="String" name="Document version">1</udf:field>
+    <udf:field type="Numeric" name="Fragmentation time (min)">1</udf:field>
+    <udf:field type="Numeric" name="KAPA HyperPlus Kit">1</udf:field>
+    <udf:field type="String" name="Protocol">PCR free 350 bp_S2</udf:field>
+    <udf:field type="String" name="Method document">1993</udf:field>
+    <udf:field type="String" name="Thermal cycler name">aygo</udf:field>
+    <udf:field type="String" name="Hamilton">Leslie</udf:field>
+    <process-parameter name="Placement Map (Source Well) - File 2" />
+</prc:process>

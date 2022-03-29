@@ -14,7 +14,7 @@ class ArtifactUDFs(BaseModel):
 class ProcessUDFs(BaseModel):
     lot_nr_blockers: Optional[str] = Field(None, alias="Blockers")
     lot_nr_hybridization_kit: Optional[str] = Field(None, alias="TWIST Hybridization kit")
-    pcr_instrument_hybridization: Optional[str] = Field(None, alias="Thermal cycler")
+    pcr_instrument_hybridization: Optional[str] = Field(None, alias="Thermal cycler (hyb)")
     hybridization_method: Optional[str] = Field(None, alias="Method document")
 
 
@@ -30,7 +30,7 @@ def get_hybridize_library_twist(lims: Lims, sample_id: str, prep_id: str) -> Arn
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Hybridize Library TWIST v2",
+        process_type="Target enrichment TWIST v1",
     )
 
     return ArnoldStep(

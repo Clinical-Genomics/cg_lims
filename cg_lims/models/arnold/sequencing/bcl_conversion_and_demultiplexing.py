@@ -1,6 +1,6 @@
 from typing import Optional
 
-from genologics.lims import Lims
+from genologics.lims import Lims, Process
 from pydantic.main import BaseModel
 from pydantic import Field
 
@@ -31,24 +31,28 @@ class ArnoldStep(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_bcl_conversion_and_demultiplexing(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep:
+def get_bcl_conversion_and_demultiplexing(
+    lims: Lims, sample_id: str, prep_id: str, process_id: str
+) -> ArnoldStep:
+    process = Process(lims, id=process_id)
     bcl_analyte = BclConversionAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Bcl Conversion & Demultiplexing (Nova Seq)",
         q30_udf="% Bases >=Q30",
         sum_reads_udf="# Reads",
+        process=process,
     )
 
     return ArnoldStep(
-        **bcl_analyte.base_fields(),
-        process_udfs=ProcessUDFs(**bcl_analyte.process_udfs()),
+        process_udfs=ProcessUDFs(**dict(process.udf.items())),
         artifact_udfs=ArtifactUDFs(
             pct_bases_over_q30=bcl_analyte.get_average_q30(),
             number_of_reads=bcl_analyte.get_sum_reads(),
         ),
+        lims_step_name=process.type.name,
+        date_run=process.date_run,
         sample_id=sample_id,
         prep_id=prep_id,
         step_type="bcl_conversion_and_demultiplexing",
-        workflow="NovaSeq"
+        workflow="NovaSeq",
     )

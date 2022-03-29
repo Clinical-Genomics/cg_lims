@@ -6,7 +6,7 @@ from cg_lims.models.arnold.base_step import BaseStep
 
 
 class ProcessUDFs(BaseModel):
-    amplify_captured_library_method: Optional[str] = Field(None, alias="Method Document")
+    amplify_captured_library_method: Optional[str] = Field(None, alias="Method document")
     lot_nr_xgen_primer_amplify_captured_library: Optional[str] = Field(
         None, alias="xGen Library Amp primer"
     )
@@ -33,7 +33,7 @@ def get_amplify_captured_library_udfs(lims: Lims, sample_id: str, prep_id: str) 
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Amplify Captured Libraries TWIST v2",
+        process_type="Target enrichment TWIST v1",
     )
 
     return ArnoldStep(

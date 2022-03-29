@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:file="http://genologics.com/ri/file" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2428819?state=1918215" limsid="92-2428819">
+    <name>EPP Log</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309456" limsid="24-309456" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9636A1" limsid="ACC9636A1" />
+    <file:file limsid="40-85508" uri="http://127.0.0.1:8000/api/v2/files/40-85508" />
+    <workflow-stages />
+</art:artifact>

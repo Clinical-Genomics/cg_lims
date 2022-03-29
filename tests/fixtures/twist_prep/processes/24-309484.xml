@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-309484" limsid="24-309484">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1656">Normalization of samples for sequencing (TWIST) v1</type>
+    <date-run>2022-03-22</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/54">
+        <first-name>Cecilia</first-name>
+        <last-name>Svensson</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918286" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918286" limsid="2-2429315">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309480" limsid="24-309480" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429325?state=1918531" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429325" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918286" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918286" limsid="2-2429315">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309480" limsid="24-309480" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429326?state=1918532" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429326" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918286" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918286" limsid="2-2429315">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309480" limsid="24-309480" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429327?state=1918533" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2429327" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918286" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918286" limsid="2-2429315">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309480" limsid="24-309480" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429328?state=1918534" output-generation-type="PerInput" output-type="Analyte" limsid="2-2429328" />
+    </input-output-map>
+    <udf:field type="String" name="Method Document 1">1993</udf:field>
+    <udf:field type="String" name="Document 1 Version">1</udf:field>
+    <udf:field type="String" name="Method Document 2">1471</udf:field>
+    <udf:field type="String" name="Document 2 Version">NA</udf:field>
+    <udf:field type="String" name="Dilution buffer lot no">12</udf:field>
+    <udf:field type="Numeric" name="Final Concentration (ng/ul)">1.5</udf:field>
+    <process-parameter name="Copy concentration from Target enrichment TWIST" />
+</prc:process>

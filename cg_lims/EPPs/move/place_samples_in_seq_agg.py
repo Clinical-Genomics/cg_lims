@@ -10,7 +10,7 @@ from genologics.lims import Lims
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingArtifactError
-from cg_lims.get.artifacts import get_latest_artifact, get_sample_artifact
+from cg_lims.get.artifacts import get_latest_analyte, get_sample_artifact
 from cg_lims.get.samples import get_process_samples
 from cg_lims.put.queue import queue_artifacts
 
@@ -39,7 +39,7 @@ def get_pools_and_samples_to_queue(
         if pool_name:
             ## this is a RML - get pools from sort step
             try:
-                artifact = get_latest_artifact(lims, sample.id, process_type)
+                artifact = get_latest_analyte(lims, sample.id, process_type)
             except MissingArtifactError as e:
                 LOG.warning(e.message)
                 break_send_to_next_step = True

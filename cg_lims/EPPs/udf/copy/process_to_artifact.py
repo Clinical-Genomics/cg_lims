@@ -2,7 +2,7 @@ from typing import List
 from genologics.entities import Artifact
 from genologics.lims import Lims
 
-from cg_lims.get.artifacts import get_latest_artifact
+from cg_lims.get.artifacts import get_latest_analyte
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
@@ -28,7 +28,7 @@ def copy_udf_to_artifacts(
     for destination_artifact in artifacts:
         try:
             sample = destination_artifact.samples[0]
-            source_artifact: Artifact = get_latest_artifact(
+            source_artifact: Artifact = get_latest_analyte(
                 lims=lims, sample_id=sample.id, process_types=process_types
             )
             source_process = source_artifact.parent_process
