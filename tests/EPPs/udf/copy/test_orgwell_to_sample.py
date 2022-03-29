@@ -1,5 +1,5 @@
+from numpy import append
 import pytest
-import random
 
 from genologics.entities import Artifact, Process
 from cg_lims.exceptions import MissingUDFsError, MissingCgFieldError
@@ -16,30 +16,17 @@ from cg_lims.get.artifacts import get_artifacts
 
 def test_assign_correct(lims):
     # GIVEN artifacts with container, random well position and without parent steps.
-    udfs = list(['Original Well', 'Original Container'])
-    server("calculate_average_size_and_set_qc")
+    server("microbial_prep")
+    Name_Artifacts = ["ACC8653A1PA1","ACC8653A9PA1","ACC8653A17PA1","ACC8653A25PA1"]
+    artifacts = []
+    for ArtName in Name_Artifacts:
+        artifacts.append(Artifact(lims, ArtName))
     process = Process(lims, id='24-297378')
-    artifacts = get_artifacts(process=process)
-    
-    rows = [chr(nr) for nr in range(65, 73)]
-    for artifact in artifacts:
-        random_row = rows[random.randrange(len(rows))]
-        random_position = f"{random_row}:{random.randrange(1, 13)}"
-        random_container = f"Container {rows[random.randrange(len(rows))]}"
-
-        artifact.location[1] = random_position
-        artifact.location[0].name = random_container
-
-        artifact.put()
-
-
-
-        
-        
+    artifacts = get_artifacts(process=process, input = True)
 
     # When running function artifacts_to_sample.
-    orgwell_to_sample( artifacts, udfs)
-    # THEN the corresponding sample will have the matching qc_flag.
+    orgwell_to_sample(artifacts)
+    # THEN the corresponding sample will have the matching 'Original Well' and 'Original Container'.
     for artifact in artifacts:
         sample = artifact.samples[0]
 
@@ -48,9 +35,9 @@ def test_assign_correct(lims):
 
 
 
-def test_correct(lims):
+#def test_correct(lims):
     # GIVEN a list with artifacts without parentsteps with container, random well position and without parent steps.
-    Name_Artifacts = ["ACC8653A1PA1","ACC8653A9PA1","ACC8653A17PA1","ACC8653A25PA1"]
+    #Name_Artifacts = ["ACC8653A1PA1","ACC8653A9PA1","ACC8653A17PA1","ACC8653A25PA1"]
 
 
 
