@@ -301,3 +301,14 @@ def lower_threshold(help: str = "Set lower threshold value") -> click.option:
 
 def upper_threshold(help: str = "Set upper threshold value") -> click.option:
     return click.option("-ut", "--upper-threshold", required=False, help=help, type=float)
+
+
+def ignore_fail(
+    help: str = "Use this flag if you don't want to raise exception errors",
+) -> click.option:
+    return click.option(
+        "--ignore-fail",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
