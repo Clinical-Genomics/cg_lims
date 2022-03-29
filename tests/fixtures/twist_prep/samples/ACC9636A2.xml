@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC9636A2" limsid="ACC9636A2">
+    <name>MOL805-22</name>
+    <date-received>2022-03-22</date-received>
+    <project limsid="ACC9636" uri="http://127.0.0.1:8000/api/v2/projects/ACC9636" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC9636A2PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9636A2PA1?state=1917901" />
+    <udf:field type="String" name="customer">cust144</udf:field>
+    <udf:field type="String" name="Sample Buffer">EB-buffer</udf:field>
+    <udf:field type="String" name="Data Analysis">balsamic</udf:field>
+    <udf:field type="String" name="Capture Library version">GMCKsolid</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">PANKTTR050</udf:field>
+    <udf:field type="Date" name="Library Prep Finished">2022-03-22</udf:field>
+    <udf:field type="Date" name="Received at">2022-03-22</udf:field>
+    <udf:field type="String" name="tumor">yes</udf:field>
+    <udf:field type="String" name="Source">tissue (FFPE)</udf:field>
+    <udf:field type="String" name="Volume (uL)">54</udf:field>
+    <udf:field type="String" name="Data Delivery">fastq_qc</udf:field>
+    <udf:field type="Numeric" name="Level of Multiplexing">8</udf:field>
+    <udf:field type="String" name="Passed Initial QC">True</udf:field>
+    <udf:field type="String" name="Passed Library QC">True</udf:field>
+    <udf:field type="String" name="familyID">REFLEX-07-02</udf:field>
+    <udf:field type="String" name="Gender">F</udf:field>
+    <udf:field type="String" name="priority">clinical_trials</udf:field>
+    <udf:field type="String" name="Process only if QC OK">no</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">100</udf:field>
+    <udf:field type="String" name="Original Container">MOL805-22</udf:field>
+    <udf:field type="String" name="Original Well">1:1</udf:field>
+</smp:sample>

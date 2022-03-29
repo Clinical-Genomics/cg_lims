@@ -280,7 +280,12 @@ def concentration_udf_option(
 
 
 def prep(help: str = "Prep type") -> click.option:
-    return click.option("--prep-type", required=True, help=help)
+    return click.option(
+        "--prep-type",
+        required=True,
+        help=help,
+        type=click.Choice(["wgs", "twist", "micro", "cov", "rna"]),
+    )
 
 
 def subtract_volume_option(
@@ -312,3 +317,7 @@ def ignore_fail(
         is_flag=True,
         help=help,
     )
+  
+  
+def sample_volume_limit(help: str = "Set sample volume limit") -> click.option:
+    return click.option("-svl", "--sample-volume-limit", required=False, help=help, type=float)
