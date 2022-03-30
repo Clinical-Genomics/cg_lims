@@ -3,10 +3,10 @@ import logging
 import sys
 
 import click
+from cg_lims.get.processes import get_latest_process
 from genologics.entities import Process, Artifact
 from genologics.lims import Lims
 
-from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from typing import List, Dict, Literal, Any
@@ -65,12 +65,6 @@ def copy_udfs(input_artifacts: List[Artifact], copy_tasks: dict, lims: Lims):
                         artifact.udf[udf] = str(udf_value)
 
         artifact.put()
-
-
-def get_latest_process(processes: List[Process]):
-    processes_to_sort = [(process.id, process) for process in processes]
-    processes_to_sort.sort()
-    return processes_to_sort[-1][1]
 
 
 def get_correct_steps_for_the_artifact(
