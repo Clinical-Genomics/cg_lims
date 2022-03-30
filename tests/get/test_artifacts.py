@@ -5,7 +5,7 @@ from tests.conftest import server
 import pytest
 
 from cg_lims.exceptions import MissingArtifactError
-from cg_lims.get.artifacts import get_artifacts, get_latest_artifact
+from cg_lims.get.artifacts import get_artifacts, get_latest_analyte
 
 
 def test_get_latest_artifact(lims: Lims):
@@ -16,8 +16,8 @@ def test_get_latest_artifact(lims: Lims):
     process_type = "CG002 - Sort HiSeq Samples"
     last_date = "2020-12-28"
 
-    # WHEN running get_latest_artifact with the sample id and the process type name
-    latest_artifact = get_latest_artifact(
+    # WHEN running get_latest_analyte with the sample id and the process type name
+    latest_artifact = get_latest_analyte(
         lims=lims, sample_id=sample_id, process_types=[process_type]
     )
 
@@ -31,10 +31,10 @@ def test_get_latest_artifact_no_artifacts(lims: Lims):
     sample_id = "SampleNotRelatedToArtifacts"
     process_type = "CG002 - Sort HiSeq Samples"
 
-    # WHEN running get_latest_artifact
+    # WHEN running get_latest_analyte
     # THEN MissingArtifactError is raised
     with pytest.raises(MissingArtifactError):
-        latest_artifact = get_latest_artifact(
+        latest_artifact = get_latest_analyte(
             lims=lims, sample_id=sample_id, process_types=process_type
         )
 
