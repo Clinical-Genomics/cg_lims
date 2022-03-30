@@ -8,22 +8,23 @@ from genologics.entities import Process
 from genologics.lims import Lims
 
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.set.udfs import copy_udfs_to_artifacts
 from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.set.udfs import aggregate_qc_and_copy_udfs_to_artifacts
 
 LOG = logging.getLogger(__name__)
 
 
 def get_source_udf(
     process: Process,
-) -> Dict[int, Dict[Literal["Source Step", "Source Field"], Any]]:
+) -> Dict[str, Dict[Literal["Source Step", "Source Field"], Any]]:
     copy_tasks = {}
 
     for udf, value in process.udf.items():
         if "Copy task" not in udf:
             continue
         task_number, copy_type = udf.split("-")
-        task_number = int(task_number.strip())
+        print(task_number)
+        task_number = task_number.strip()
         copy_type = copy_type.strip()
         if copy_type not in ["Source Step", "Source Field"]:
             raise MissingUDFsError(
@@ -41,13 +42,12 @@ def copy_source_udfs_to_artifacts(process: Process, lims: Lims) -> None:
     artifacts = get_artifacts(process=process, input=True)
     source_udfs: dict = get_source_udf(process)
     for nr, task in source_udfs.items():
-        copy_udfs_to_artifacts(
+        aggregate_qc_and_copy_udfs_to_artifacts(
             artifacts=artifacts,
             process_types=[task["Source Step"]],
             lims=lims,
             udfs=[(task["Source Field"], task["Source Field"])],
             qc_flag=True,
-            measurement=True,
         )
 
 

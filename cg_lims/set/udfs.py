@@ -1,4 +1,4 @@
-from typing import List, Tuple, Iterator, Optional
+from typing import List, Tuple
 
 from genologics.entities import Artifact, Process
 from genologics.lims import Lims
@@ -6,7 +6,7 @@ from genologics.lims import Lims
 import logging
 
 from cg_lims.exceptions import MissingUDFsError
-from cg_lims.get.artifacts import get_latest_artifact
+from cg_lims.get.artifacts import get_latest_result_files
 
 LOG = logging.getLogger(__name__)
 
@@ -64,9 +64,7 @@ def aggregate_qc_and_copy_udfs_to_artifacts(
     process_types: List[str],
     lims: Lims,
     udfs: List[Tuple[str, str]],
-    sample_artifact: bool = False,
     qc_flag: bool = False,
-    measurement: Optional[bool] = False,
 ):
     """Looping over all artifacts. Getting the latest artifact to copy from. Copying."""
 
@@ -74,16 +72,15 @@ def aggregate_qc_and_copy_udfs_to_artifacts(
     for destination_artifact in artifacts:
         try:
             sample = destination_artifact.samples[0]
-            source_artifact = get_latest_artifact(
+            source_artifact = get_latest_result_files(
                 lims=lims,
                 sample_id=sample.id,
                 process_types=process_types,
-                sample_artifact=sample_artifact,
-                measurement=measurement,
+                output_generation_type="PerInput",
             )
             copy_artifact_to_artifact(
                 destination_artifact=destination_artifact,
-                source_artifact=source_artifact,
+                source_artifact=source_artifact[0],
                 artifact_udfs=udfs,
                 qc_flag=(qc_flag and destination_artifact.qc_flag != "FAILED"),
             )
