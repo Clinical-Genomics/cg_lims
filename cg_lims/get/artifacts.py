@@ -116,7 +116,12 @@ def get_latest_result_files(
     process_types: Optional[List[str]],
     output_generation_type: Literal["PerInput", "PerReagentLabel"],
 ) -> List[Artifact]:
-    """"""
+    """This function will make a lot of queries if the nr of artifacts in the step are manyu and the artifacts are pools.
+    (At least 3+2n+nk queries to teh database, where n is the number of input artifacts and k is the number of samples
+    per artifact if artifact is pool.)
+
+    Only use this function if you have to."""
+
     all_result_files = lims.get_artifacts(
         samplelimsid=sample_id,
         type="ResultFile",
