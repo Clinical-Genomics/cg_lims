@@ -2,46 +2,83 @@ import logging
 import sys
 import click
 
-from typing import List, Tuple
+from typing import List, Dict, Literal, Any
 
-from genologics.entities import Process
+from genologics.entities import Process, Artifact
 from genologics.lims import Lims
 
-from cg_lims.get.artifacts import get_artifacts
-from cg_lims.set.udfs import copy_udfs_to_artifacts
+from cg_lims.get.artifacts import get_artifacts, outputs_per_input
 from cg_lims.exceptions import LimsError, MissingUDFsError
 
 LOG = logging.getLogger(__name__)
 
 
-def get_source_udf(process: Process) -> List[Tuple[str, str]]:
+def get_copy_tasks(
+    process: Process,
+) -> Dict[str, Dict[Literal["Source Step", "Source Field"], Any]]:
     copy_tasks = {}
-    source_udfs = []
+
     for udf, value in process.udf.items():
-        if 'Copy task' in udf:
-            task_number, copy_type = udf.split('-')
-            if task_number.strip() in copy_tasks.keys():
-                copy_tasks[task_number.strip()][copy_type.strip()] = value
-            else:
-                copy_tasks[task_number.strip()] = {copy_type.strip(): value}
-    for copy_task in copy_tasks:
-        source_udfs.append((copy_tasks[copy_task]['Source Step'], copy_tasks[copy_task]['Source Field']))
-    if not source_udfs:
-        raise MissingUDFsError(f"Copy task udf missing for process {process.id}.")
-    return source_udfs
+        if "Copy task" not in udf:
+            continue
+        task_number, copy_type = udf.split("-")
+        task_number = task_number.strip()
+        copy_type = copy_type.strip()
+        if copy_type not in ["Source Step", "Source Field"]:
+            raise MissingUDFsError(
+                f'Copy type was: {copy_type}! Must be "Source Step" or "Source Field"'
+            )
+        if task_number in copy_tasks:
+            copy_tasks[task_number][copy_type] = value
+        else:
+            copy_tasks[task_number] = {copy_type: value}
+
+    return copy_tasks
 
 
-def copy_source_udfs_to_artifacts(process: Process, lims: Lims) -> None:
-    artifacts = get_artifacts(process=process, input=True)
-    source_udfs = get_source_udf(process)
-    for task in source_udfs:
-        copy_udfs_to_artifacts(artifacts=artifacts,
-                               process_types=[task[0]],
-                               lims=lims,
-                               udfs=[(task[1], task[1])],
-                               qc_flag=True,
-                               measurement=True,
-                               )
+def copy_source_udfs_to_artifacts(input_artifacts: List[Artifact], copy_tasks: dict, lims: Lims):
+    failed_udfs = []
+    for task_number, task in copy_tasks.items():
+        for artifact in input_artifacts:
+            processes = lims.get_processes(
+                inputartifactlimsid=artifact.id, type=task["Source Step"]
+            )
+            udf = task["Source Field"]
+            latest_process = get_latest_process(processes=processes)
+            selected_outputs = outputs_per_input(
+                input_artifact_id=artifact.id,
+                process=latest_process,
+                output_generation_type="PerInput",
+                output_type="ResultFile",
+            )
+            output = selected_outputs[0]  # supposed to be only one here
+            output = Artifact(lims=lims, id=output.id)
+            qc_flag_update = output.qc_flag
+            if qc_flag_update == "UNKNOWN":
+                continue
+            if artifact.qc_flag != "FAILED":
+                artifact.qc_flag = qc_flag_update
+
+            value = output.udf.get(udf)
+            if value is None:
+                failed_udfs.append(artifact.name)
+                continue
+            try:
+                artifact.udf[udf] = float(value)
+            except:
+                artifact.udf[udf] = str(value)
+
+            artifact.put()
+
+
+def get_latest_process(processes: List[Process]) -> Process:
+    if not processes:
+        raise
+    latest_process = processes[0]
+    for process in processes:
+        if latest_process.date_run < process.date_run:
+            latest_process = process
+    return latest_process
 
 
 @click.command()
@@ -55,8 +92,9 @@ def aggregate_qc_and_copy_fields(ctx) -> None:
     lims = ctx.obj["lims"]
 
     try:
-        copy_source_udfs_to_artifacts(process=process, lims=lims)
-
+        artifacts: List[Artifact] = get_artifacts(process=process, input=True)
+        copy_tasks = get_copy_tasks(process=process)
+        copy_source_udfs_to_artifacts(input_artifacts=artifacts, copy_tasks=copy_tasks, lims=lims)
         message = "UDFs were successfully copied!"
         LOG.info(message)
         click.echo(message)

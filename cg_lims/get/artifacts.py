@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Literal
 
 from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
@@ -32,6 +32,24 @@ def get_qc_output_artifacts(lims: Lims, process: Process) -> List[Artifact]:
         io[1]["limsid"] for io in input_output_maps if io[1]["output-generation-type"] == "PerInput"
     ]
     return [Artifact(lims, id=id) for id in artifact_ids if id is not None]
+
+
+def outputs_per_input(
+    input_artifact_id: str,
+    process: Process,
+    output_generation_type: Literal["PerAllInputs", "PerInput", "PerReagentLabel"],
+    output_type: Literal["Analyte", "ResultFile"],
+) -> List[Artifact]:
+    """Getting """
+    return [
+        output["uri"]
+        for input, output in process.input_output_maps
+        if (
+            output["output-type"] == output_type
+            and output["output-generation-type"] == output_generation_type
+            and input["limsid"] == input_artifact_id
+        )
+    ]
 
 
 def get_artifacts(
@@ -94,7 +112,11 @@ def get_latest_artifact(
         )
         lims_artifacts = []
         for artifact in all_lims_artifacts:
-            output = [io[1] for io in artifact.parent_process.input_output_maps if io[1]['limsid'] == artifact.id]
+            output = [
+                io[1]
+                for io in artifact.parent_process.input_output_maps
+                if io[1]["limsid"] == artifact.id
+            ]
             if output[0]["output-generation-type"] == "PerInput":
                 lims_artifacts.append(artifact)
     else:
