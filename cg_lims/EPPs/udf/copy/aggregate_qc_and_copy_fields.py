@@ -23,7 +23,6 @@ def get_source_udf(
         if "Copy task" not in udf:
             continue
         task_number, copy_type = udf.split("-")
-        print(task_number)
         task_number = task_number.strip()
         copy_type = copy_type.strip()
         if copy_type not in ["Source Step", "Source Field"]:
@@ -63,7 +62,6 @@ def aggregate_qc_and_copy_fields(ctx) -> None:
 
     try:
         copy_source_udfs_to_artifacts(process=process, lims=lims)
-
         message = "UDFs were successfully copied!"
         LOG.info(message)
         click.echo(message)
