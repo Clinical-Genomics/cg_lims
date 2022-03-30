@@ -75,7 +75,7 @@ A arnold step is allso allways part of a specific prep (or sequencing workflow),
 #### The prep_id
 Labb prep steps in arnold are joind by prep_id. The prep_id is created from the step where the arnold prep is being uploaded. 
 
-Ex. the upload of a arnold WGS prep is being run from the last prep step in the WGS workflow, before sequecning. ... 
+Ex. the upload of a arnold WGS prep is being run from the last prep step in the WGS workflow, before sequecning *Aggregate QC (Library Validation)*. 
 
 The step Id together with the prep_type creates the prepo id. 
 
