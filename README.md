@@ -77,7 +77,7 @@ Labb prep steps in arnold are joind by prep_id. The prep_id is created from the 
 
 Ex. the upload of a arnold WGS prep is being run from the last prep step in the WGS workflow, before sequecning *Aggregate QC (Library Validation)*. 
 
-The step id together with the sample id creates the prep id for that sample: <sample_id>_< last step in prep workflow id >
+The step id together with the sample id creates the prep id for that sample: <sample_id>_< the id of the last step in prep workflow>
 
 All steps that are being created, defined by the WGS prep model, will get the same prep id. Note that if a sample has run through the same step several times, its the last step that will be picked up as part of the prep and be loaded into arnold with the prep_id. 
 
