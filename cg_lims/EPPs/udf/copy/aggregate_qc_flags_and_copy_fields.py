@@ -31,7 +31,10 @@ def get_copy_tasks(
             copy_tasks[task_number][copy_type] = value
         else:
             copy_tasks[task_number] = {copy_type: value}
-
+    if copy_tasks == {}:
+        raise MissingUDFsError(
+            f'Copy task UDF missing for process {process.id}'
+        )
     return copy_tasks
 
 

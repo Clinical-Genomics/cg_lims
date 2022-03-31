@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407216?state=1900027" limsid="92-2407216">
+    <name>Tapestation PDF Report</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-306117" limsid="24-306117" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9476A23" limsid="ACC9476A23" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9587A3" limsid="ACC9587A3" />
+    <reagent-label name="B05 IDT_10nt_453 (CAGCACTACG-CGCCACAGAA)" />
+    <reagent-label name="A09 IDT_10nt_445 (TTGGCACTTA-GTGCGTCGTA)" />
+    <workflow-stages />
+</art:artifact>

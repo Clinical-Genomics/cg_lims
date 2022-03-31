@@ -10,7 +10,7 @@ from cg_lims.EPPs.udf.copy.reads_to_sequence import reads_to_sequence
 from cg_lims.EPPs.udf.copy.artifact_to_artifact import artifact_to_artifact
 from cg_lims.EPPs.udf.copy.process_to_artifact import process_to_artifact
 from cg_lims.EPPs.udf.copy.qc_to_sample import qc_to_sample
-from cg_lims.EPPs.udf.copy.aggragate_qc_flags_and_copy_fields import aggregate_qc_and_copy_fields
+from cg_lims.EPPs.udf.copy.aggregate_qc_flags_and_copy_fields import aggregate_qc_and_copy_fields
 
 
 @click.group(invoke_without_command=True)

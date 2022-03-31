@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2407219?state=1900032" limsid="92-2407219">
+    <name>Fragment Analyzer MOL694-22-B05 IDT_10nt_453 (CAGCACTACG-CGCCACAGAA)</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-306117" limsid="24-306117" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-241199" limsid="27-241199" />
+        <value>A:3</value>
+    </location>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9587A3" limsid="ACC9587A3" />
+    <reagent-label name="B05 IDT_10nt_453 (CAGCACTACG-CGCCACAGAA)" />
+    <udf:field type="Numeric" name="Size (bp)">288</udf:field>
+    <udf:field type="Numeric" name="DIN Value">9</udf:field>
+    <workflow-stages />
+</art:artifact>
