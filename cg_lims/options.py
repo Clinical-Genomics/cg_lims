@@ -317,5 +317,16 @@ def upper_threshold(help: str = "Set upper threshold value") -> click.option:
     return click.option("-ut", "--upper-threshold", required=False, help=help, type=float)
 
 
+def ignore_fail(
+    help: str = "Use this flag if you don't want to raise exception errors",
+) -> click.option:
+    return click.option(
+        "--ignore-fail",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+  
+  
 def sample_volume_limit(help: str = "Set sample volume limit") -> click.option:
     return click.option("-svl", "--sample-volume-limit", required=False, help=help, type=float)

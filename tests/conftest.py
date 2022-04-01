@@ -139,3 +139,21 @@ def hamilton_sars_cov2_indexing_file() -> str:
 def fixture_cli_runner() -> CliRunner:
     """Create a CliRunner"""
     return CliRunner()
+
+
+@pytest.fixture
+def hamilton_buffer_exchange() -> str:
+    """Get file path to valid json"""
+
+    file_path = "tests/fixtures/buffer_exchange_hamilton.txt"
+    file = Path(file_path)
+    return file.read_text()
+
+
+@pytest.fixture
+def hamilton_buffer_exchange_no_udf() -> str:
+    """Get file path to valid json"""
+
+    file_path = "tests/fixtures/buffer_exchange_hamilton_no_udf.txt"
+    file = Path(file_path)
+    return file.read_text()
