@@ -65,7 +65,10 @@ def get_artifact_by_name(process: Process, name: str) -> Artifact:
 def filter_artifacts(artifacts: List[Artifact], udf: str, value) -> List[Artifact]:
     """Returning a list of only artifacts with udf==value"""
 
-    return [a for a in artifacts if a.udf.get(udf) == value]
+    if udf is None:
+        return artifacts
+    else:
+        return [a for a in artifacts if a.udf.get(udf) == value]
 
 
 def get_latest_artifact(
