@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC9594A2" limsid="ACC9594A2">
+    <name>NTC-STAF</name>
+    <date-received>2022-03-15</date-received>
+    <project limsid="ACC9594" uri="http://127.0.0.1:8000/api/v2/projects/ACC9594" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC9594A2PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9594A2PA1?state=1899323" />
+    <udf:field type="String" name="customer">cust056</udf:field>
+    <udf:field type="String" name="Reference Genome Microbial">AP017922.1</udf:field>
+    <udf:field type="String" name="Sample Buffer">Nuclease-free water</udf:field>
+    <udf:field type="String" name="Extraction method">EZ1</udf:field>
+    <udf:field type="String" name="Data Analysis">microsalt</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">MWRNXTR003</udf:field>
+    <udf:field type="Date" name="Library Prep Finished">2022-03-17</udf:field>
+    <udf:field type="Date" name="Sequencing Finished">2022-03-21</udf:field>
+    <udf:field type="Date" name="Received at">2022-03-16</udf:field>
+    <udf:field type="String" name="Strain">S. aureus</udf:field>
+    <udf:field type="Numeric" name="Total Reads (M)">0</udf:field>
+    <udf:field type="String" name="tumor">no</udf:field>
+    <udf:field type="String" name="Source">NA</udf:field>
+    <udf:field type="String" name="Volume (uL)">50</udf:field>
+    <udf:field type="String" name="Data Delivery">fastq_qc-analysis</udf:field>
+    <udf:field type="String" name="Verified organism">yes</udf:field>
+    <udf:field type="String" name="Passed Initial QC">True</udf:field>
+    <udf:field type="String" name="Passed Library QC">True</udf:field>
+    <udf:field type="String" name="Passed Sequencing QC">True</udf:field>
+    <udf:field type="String" name="familyID">NA</udf:field>
+    <udf:field type="String" name="Gender">unknown</udf:field>
+    <udf:field type="String" name="priority">priority</udf:field>
+    <udf:field type="String" name="Process only if QC OK">no</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">6</udf:field>
+    <udf:field type="String" name="Original Container">Mikro V.11 2022</udf:field>
+    <udf:field type="String" name="Original Well">B:1</udf:field>
+    <udf:field type="String" name="Control">negative</udf:field>
+</smp:sample>

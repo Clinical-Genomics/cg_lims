@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9579A7PA1?state=1887762" limsid="ACC9579A7PA1">
+    <name>65845-1-NFLG</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-239509" limsid="27-239509" />
+        <value>G:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9579A7" limsid="ACC9579A7" />
+    <udf:field type="Boolean" name="Skip Buffer Exchange">true</udf:field>
+    <artifact-group name="Microbial WGS v6" uri="http://127.0.0.1:8000/api/v2/artifactgroups/1508" />
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Initial QC Microbial v3" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1757/stages/5904" />
+        <workflow-stage status="REMOVED" name="Reception Control" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1757/stages/5902" />
+        <workflow-stage status="IN_PROGRESS" name="Initial QC Microbial v3" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1757/stages/5904" />
+    </workflow-stages>
+</art:artifact>

@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8'?>
+<con:container xmlns:con="http://genologics.com/ri/container" uri="http://127.0.0.1:8000/api/v2/containers/27-243326" limsid="27-243326">
+    <name>27-243326</name>
+    <type uri="http://127.0.0.1:8000/api/v2/containertypes/1" name="96 well plate" />
+    <occupied-wells>25</occupied-wells>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430645" limsid="92-2430645">
+        <value>E:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430646" limsid="92-2430646">
+        <value>F:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430647" limsid="92-2430647">
+        <value>G:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430648" limsid="92-2430648">
+        <value>H:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430649" limsid="92-2430649">
+        <value>A:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430650" limsid="92-2430650">
+        <value>B:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430701" limsid="92-2430701">
+        <value>B:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430702" limsid="92-2430702">
+        <value>C:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430703" limsid="92-2430703">
+        <value>D:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430704" limsid="92-2430704">
+        <value>E:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430705" limsid="92-2430705">
+        <value>F:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430706" limsid="92-2430706">
+        <value>G:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430707" limsid="92-2430707">
+        <value>H:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430708" limsid="92-2430708">
+        <value>A:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430709" limsid="92-2430709">
+        <value>B:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430710" limsid="92-2430710">
+        <value>C:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430711" limsid="92-2430711">
+        <value>D:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430712" limsid="92-2430712">
+        <value>E:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430713" limsid="92-2430713">
+        <value>F:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430714" limsid="92-2430714">
+        <value>G:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430715" limsid="92-2430715">
+        <value>H:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430716" limsid="92-2430716">
+        <value>A:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430717" limsid="92-2430717">
+        <value>B:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430718" limsid="92-2430718">
+        <value>C:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/92-2430719" limsid="92-2430719">
+        <value>D:4</value>
+    </placement>
+    <state>Populated</state>
+</con:container>

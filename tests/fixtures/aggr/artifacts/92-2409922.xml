@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2409922?state=1903335" limsid="92-2409922">
+    <name>Qubit Measurement</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-306467" limsid="24-306467" />
+    <qc-flag>FAILED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-241354" limsid="27-241354" />
+        <value>C:4</value>
+    </location>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9579A3" limsid="ACC9579A3" />
+    <udf:field type="Numeric" name="Concentration">0.149</udf:field>
+    <udf:field type="Numeric" name="Volume (ul)">15</udf:field>
+    <udf:field type="Numeric" name="Amount (ng)">2.235</udf:field>
+    <workflow-stages />
+</art:artifact>
