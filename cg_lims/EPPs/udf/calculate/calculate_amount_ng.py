@@ -5,7 +5,7 @@ import click
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
-from cg_lims.get.artifacts import get_qc_output_artifacts
+from cg_lims.get.artifacts import get_output_artifacts_by_output_generation_type
 
 LOG = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ def calculate_amount_ng(
     lims = ctx.obj["lims"]
 
     try:
-        artifacts = get_qc_output_artifacts(lims=lims, process=process)
+        artifacts = get_output_artifacts_by_output_generation_type(lims=lims, process=process)
         missing_udfs_count = 0
         artifacts_with_missing_udf = []
         for artifact in artifacts:

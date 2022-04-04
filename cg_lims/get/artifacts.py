@@ -24,12 +24,18 @@ def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
     return artifact
 
 
-def get_qc_output_artifacts(lims: Lims, process: Process) -> List[Artifact]:
-    """Get output 'artifacts' (messuements) of a qc process"""
+def get_output_artifacts_by_output_generation_type(
+    lims: Lims,
+    process: Process,
+    output_generation_type: Optional[Literal["PerInput", "PerReagentLabel"]] = "PerInput",
+) -> List[Artifact]:
+    """Get output 'artifacts' based on output_generation_type"""
 
     input_output_maps = process.input_output_maps
     artifact_ids = [
-        io[1]["limsid"] for io in input_output_maps if io[1]["output-generation-type"] == "PerInput"
+        io[1]["limsid"]
+        for io in input_output_maps
+        if io[1]["output-generation-type"] == output_generation_type
     ]
     return [Artifact(lims, id=id) for id in artifact_ids if id is not None]
 
@@ -41,7 +47,7 @@ def get_artifacts(
     otherwise returning all output analytes of the process"""
 
     if measurement:
-        return get_qc_output_artifacts(lims=process.lims, process=process)
+        return get_output_artifacts_by_output_generation_type(lims=process.lims, process=process)
     elif input:
         return process.all_inputs(unique=True)
     else:
@@ -72,6 +78,12 @@ def filter_artifacts(artifacts: List[Artifact], udf: str, value) -> List[Artifac
 
 
 def get_latest_artifact(lims_artifacts: List[Artifact]) -> Artifact:
+    """Returning the latest generated artifact in the list of artifacts"""
+    if not lims_artifacts:
+        message = "Can not find latest artifact from a list of no artifacts"
+        LOG.error(message)
+        raise MissingArtifactError(message=message)
+
     artifacts = []
     for artifact in lims_artifacts:
         date = artifact.parent_process.date_run or datetime.today().strftime("%Y-%m-%d")
@@ -85,12 +97,11 @@ def get_latest_artifact(lims_artifacts: List[Artifact]) -> Artifact:
 def get_latest_analyte(
     lims: Lims, sample_id: str, process_types: Optional[List[str]], sample_artifact: bool = False
 ) -> Artifact:
-    """Getting the most recently generated artifact by process_types and sample_id.
+    """Getting the most recently generated analyte by process_types and sample_id.
 
-    Searching for all artifacts (Analytes) associated with <sample_id> that
-    were produced by <process_types>.
+    Searching for all Analytes associated with <sample_id> that were produced by <process_types>.
 
-    Returning the artifact with latest parent_process.date_run.
+    Returning the analyte with latest parent_process.date_run.
     If there are many such artifacts only one will be returned."""
 
     if sample_artifact and not process_types:
@@ -119,7 +130,7 @@ def get_latest_result_files(
     process_types: Optional[List[str]],
     output_generation_type: Literal["PerInput", "PerReagentLabel"],
 ) -> List[Artifact]:
-    """This function will make a lot of queries if the nr of artifacts in the step are manyu and the artifacts are pools.
+    """This function will make a lot of queries if the nr of artifacts in the step are many and the artifacts are pools.
     (At least 3+2n+nk queries to teh database, where n is the number of input artifacts and k is the number of samples
     per artifact if artifact is pool.)
 

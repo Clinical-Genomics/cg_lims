@@ -14,6 +14,7 @@ from cg_lims.exceptions import (
 from cg_lims.get.artifacts import (
     get_sample_artifact,
     get_latest_analyte,
+    get_output_artifacts_by_output_generation_type,
 )
 import logging
 from statistics import mean
@@ -172,55 +173,3 @@ class BaseAnalyte:
             lims_step_name=self.process_type,
             date_run=self.get_date(),
         )
-
-
-class BclConversionAnalyte:
-    def __init__(
-        self,
-        q30_udf: str,
-        sum_reads_udf: str,
-        lims: Lims,
-        sample_id: str,
-        process: Process,
-    ):
-        self.q30_udf: str = q30_udf
-        self.sum_reads_udf: str = sum_reads_udf
-        self.sample_id = sample_id
-        self.lims = lims
-        self.artifact: Optional[Artifact] = None
-        self.process = process
-        self.artifacts: Optional[List[Artifact]] = self.get_artifacts()
-
-    def get_artifacts(self) -> List[Artifact]:
-        """"""
-
-        all_artifacts: List[Artifact] = self.lims.get_artifacts(
-            process_type=self.process.type.name, samplelimsid=self.sample_id, type="ResultFile"
-        )
-        artifacts_from_this_process = []
-        for artifact in all_artifacts:
-            if artifact.parent_process != self.process:
-                continue
-            if len(artifact.reagent_labels) != 1:
-                continue
-            artifacts_from_this_process.append(artifact)
-
-        return artifacts_from_this_process
-
-    def get_average_q30(self) -> Optional[float]:
-        q_30 = []
-        for artifact in self.artifacts:
-            if not isinstance(artifact.udf.get(self.q30_udf), float):
-                return None
-            q_30.append(artifact.udf.get(self.q30_udf))
-
-        return mean(q_30)
-
-    def get_sum_reads(self) -> Optional[int]:
-        sum_reads = 0
-        for artifact in self.artifacts:
-            if not isinstance(artifact.udf.get(self.sum_reads_udf), int):
-                return None
-            sum_reads += artifact.udf.get(self.sum_reads_udf)
-
-        return sum_reads

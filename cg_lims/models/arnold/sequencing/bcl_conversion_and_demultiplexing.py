@@ -1,11 +1,12 @@
-from typing import Optional
+from statistics import mean
+from typing import Optional, List
 
-from genologics.lims import Lims, Process
+from genologics.lims import Lims, Process, Artifact
 from pydantic.main import BaseModel
 from pydantic import Field
 
+from cg_lims.get.artifacts import get_output_artifacts_by_output_generation_type
 from cg_lims.models.arnold.base_step import BaseStep
-from cg_lims.objects import BclConversionAnalyte
 
 
 class ProcessUDFs(BaseModel):
@@ -18,7 +19,6 @@ class ProcessUDFs(BaseModel):
 
 
 class ArtifactUDFs(BaseModel):
-    # Needs rework after new class BclConversionStep is completed
     pct_bases_over_q30: Optional[float]
     number_of_reads: Optional[float]
 
@@ -31,23 +31,40 @@ class ArnoldStep(BaseStep):
         allow_population_by_field_name = True
 
 
+def get_sum_reads(sum_reads_udf: str, artifacts: List[Artifact]) -> Optional[int]:
+    sum_reads = 0
+    for artifact in artifacts:
+        if not isinstance(artifact.udf.get(sum_reads_udf), int):
+            return None
+        sum_reads += artifact.udf.get(sum_reads_udf)
+
+    return sum_reads
+
+
+def get_average_q30(q30_udf: str, artifacts: List[Artifact]) -> Optional[float]:
+    q_30 = []
+    for artifact in artifacts:
+        if not isinstance(artifact.udf.get(q30_udf), float):
+            return None
+        q_30.append(artifact.udf.get(q30_udf))
+
+    return mean(q_30)
+
+
 def get_bcl_conversion_and_demultiplexing(
     lims: Lims, sample_id: str, prep_id: str, process_id: str
 ) -> ArnoldStep:
     process = Process(lims, id=process_id)
-    bcl_analyte = BclConversionAnalyte(
-        lims=lims,
-        sample_id=sample_id,
-        q30_udf="% Bases >=Q30",
-        sum_reads_udf="# Reads",
-        process=process,
+
+    artifacts = get_output_artifacts_by_output_generation_type(
+        process=process, output_generation_type="PerReagentLabel", lims=lims
     )
 
     return ArnoldStep(
         process_udfs=ProcessUDFs(**dict(process.udf.items())),
         artifact_udfs=ArtifactUDFs(
-            pct_bases_over_q30=bcl_analyte.get_average_q30(),
-            number_of_reads=bcl_analyte.get_sum_reads(),
+            pct_bases_over_q30=get_average_q30(artifacts=artifacts, q30_udf="% Bases >=Q30"),
+            number_of_reads=get_sum_reads(artifacts=artifacts, sum_reads_udf="# Reads"),
         ),
         lims_step_name=process.type.name,
         date_run=process.date_run,
