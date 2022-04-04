@@ -26,7 +26,7 @@ def stage_id(help: str = "Stage id.") -> click.option:
 def udf(
     help: str = "UDF name",
 ) -> click.option:
-    return click.option("-u", "--udf", required=True, help=help)
+    return click.option("-u", "--udf", required=False, help=help)
 
 
 def buffer_udf(
