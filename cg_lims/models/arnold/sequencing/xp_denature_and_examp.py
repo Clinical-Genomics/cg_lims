@@ -43,7 +43,8 @@ def get_xp_denature_and_examp(lims: Lims, sample_id: str, prep_id: str) -> Optio
         process_type="Xp Denature & ExAmp (Nova Seq)",
         optional_step=True,
     )
-
+    if not analyte.process:
+        return None
     return ArnoldStep(
         **analyte.base_fields(),
         process_udfs=ProcessUDFs(**analyte.process_udfs()),

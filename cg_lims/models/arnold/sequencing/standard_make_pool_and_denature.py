@@ -27,13 +27,17 @@ class ArnoldStep(BaseStep):
         allow_population_by_field_name = True
 
 
-def get_standard_make_pool_and_denature(lims: Lims, sample_id: str, prep_id: str) -> Optional[ArnoldStep]:
+def get_standard_make_pool_and_denature(
+    lims: Lims, sample_id: str, prep_id: str
+) -> Optional[ArnoldStep]:
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
         process_type="STANDARD Make Pool and Denature (Nova Seq)",
         optional_step=True,
     )
+    if not analyte.process:
+        return None
 
     return ArnoldStep(
         **analyte.base_fields(),

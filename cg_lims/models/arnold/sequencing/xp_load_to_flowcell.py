@@ -16,7 +16,7 @@ class ProcessUDFs(BaseModel):
     index_read_1: Optional[str] = Field(None, alias="Index Read 1")
     index_read_2: Optional[str] = Field(None, alias="Index Read 2")
     read_1_cycles: Optional[str] = Field(None, alias="Read 1 Cycles")
-    read_2_cycles: Optional[str] = Field(None, alias="Read 2 Cycles")
+    read_2_cgitycles: Optional[str] = Field(None, alias="Read 2 Cycles")
 
 
 class ArnoldStep(BaseStep):
@@ -33,7 +33,8 @@ def get_xp_load_to_flowcell(lims: Lims, sample_id: str, prep_id: str) -> Optiona
         process_type="Xp Load to Flowcell (Nova Seq)",
         optional_step=True,
     )
-
+    if not analyte.process:
+        return None
     return ArnoldStep(
         **analyte.base_fields(),
         process_udfs=ProcessUDFs(**analyte.process_udfs()),
