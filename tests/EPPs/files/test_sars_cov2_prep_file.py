@@ -14,7 +14,7 @@ def test_make_hamilton_sars_cov2_pooling_file(hamilton_sars_cov2_pooling_file, l
     server("hamilton_sars_cov2_pooling_step")
     file = Path("some_file_name")
     process = Process(lims, id="122-194650")
-    artifacts = get_artifacts(process=process, input=False)
+    artifacts = get_artifacts(process=process)
 
     # WHEN running get_file_data_and_write
     get_file_data_and_write(pool=True, file=file, destination_artifacts=artifacts)

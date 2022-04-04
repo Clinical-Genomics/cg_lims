@@ -28,14 +28,14 @@ def get_output_artifacts(
     lims: Lims,
     process: Process,
     output_type: Literal["ResultFile", "Analyte"],
-    output_generation_type: Literal["PerInput", "PerReagentLabel"],
+    output_generation_type: List[Literal["PerInput", "PerReagentLabel", "PerAllInputs"]],
 ) -> List[Artifact]:
     """Get output 'artifacts' based on output_generation_type and output_type"""
 
     artifacts = [
         Artifact(lims, id=output["limsid"])
         for input, output in process.input_output_maps
-        if output["output-generation-type"] == output_generation_type
+        if output["output-generation-type"] in output_generation_type
         and output["output-type"] == output_type
     ]
     return list(frozenset(artifacts))
@@ -57,21 +57,21 @@ def get_artifacts(
             lims=process.lims,
             process=process,
             output_type="ResultFile",
-            output_generation_type="PerInput",
+            output_generation_type=["PerInput"],
         )
     elif reagent_label:
         return get_output_artifacts(
             lims=process.lims,
             process=process,
             output_type="ResultFile",
-            output_generation_type="PerReagentLabel",
+            output_generation_type=["PerReagentLabel"],
         )
     else:
         return get_output_artifacts(
             lims=process.lims,
             process=process,
             output_type="Analyte",
-            output_generation_type="PerInput",
+            output_generation_type=["PerInput", "PerAllInputs"],
         )
 
 

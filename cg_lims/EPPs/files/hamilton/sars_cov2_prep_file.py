@@ -40,7 +40,6 @@ def get_file_data_and_write(destination_artifacts: List[Artifact], file: str, po
 
             row_data_dict = row_data.dict(by_alias=True)
             file_rows.append([row_data_dict[header] for header in HEADERS])
-
     build_csv(file=Path(file), rows=file_rows, headers=HEADERS)
     sort_csv(
         file=Path(file),
@@ -65,6 +64,7 @@ def sars_cov2_prep_file(ctx: click.Context, file: str, pooling_step: bool, suffi
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
     artifacts = get_artifacts(process=process, input=False)
+    print(artifacts)
     container_name = artifacts[0].location[0].name
     try:
         get_file_data_and_write(
