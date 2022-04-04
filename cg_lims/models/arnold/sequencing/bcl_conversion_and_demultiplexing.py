@@ -5,7 +5,7 @@ from genologics.lims import Lims, Process, Artifact
 from pydantic.main import BaseModel
 from pydantic import Field
 
-from cg_lims.get.artifacts import get_output_artifacts_by_output_generation_type
+from cg_lims.get.artifacts import get_artifacts
 from cg_lims.models.arnold.base_step import BaseStep
 
 
@@ -56,9 +56,7 @@ def get_bcl_conversion_and_demultiplexing(
 ) -> ArnoldStep:
     process = Process(lims, id=process_id)
 
-    artifacts = get_output_artifacts_by_output_generation_type(
-        process=process, output_generation_type="PerReagentLabel", lims=lims
-    )
+    artifacts = get_artifacts(process=process, reagent_label=True)
 
     return ArnoldStep(
         process_udfs=ProcessUDFs(**dict(process.udf.items())),

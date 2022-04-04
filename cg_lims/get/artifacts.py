@@ -24,34 +24,55 @@ def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
     return artifact
 
 
-def get_output_artifacts_by_output_generation_type(
+def get_output_artifacts(
     lims: Lims,
     process: Process,
-    output_generation_type: Optional[Literal["PerInput", "PerReagentLabel"]] = "PerInput",
+    output_type: Literal["ResultFile", "Analyte"],
+    output_generation_type: Literal["PerInput", "PerReagentLabel"],
 ) -> List[Artifact]:
-    """Get output 'artifacts' based on output_generation_type"""
+    """Get output 'artifacts' based on output_generation_type and output_type"""
 
-    input_output_maps = process.input_output_maps
-    artifact_ids = [
-        io[1]["limsid"]
-        for io in input_output_maps
-        if io[1]["output-generation-type"] == output_generation_type
+    artifacts = [
+        Artifact(lims, id=output["limsid"])
+        for input, output in process.input_output_maps
+        if output["output-generation-type"] == output_generation_type
+        and output["output-type"] == output_type
     ]
-    return [Artifact(lims, id=id) for id in artifact_ids if id is not None]
+    return list(frozenset(artifacts))
 
 
 def get_artifacts(
-    process: Process, input: Optional[bool] = False, measurement: Optional[bool] = False
+    process: Process,
+    input: Optional[bool] = False,
+    measurement: Optional[bool] = False,
+    reagent_label: Optional[bool] = False,
 ) -> List[Artifact]:
     """If inputs is True, returning all input analytes of the process,
     otherwise returning all output analytes of the process"""
 
-    if measurement:
-        return get_output_artifacts_by_output_generation_type(lims=process.lims, process=process)
-    elif input:
+    if input:
         return process.all_inputs(unique=True)
+    elif measurement:
+        return get_output_artifacts(
+            lims=process.lims,
+            process=process,
+            output_type="ResultFile",
+            output_generation_type="PerInput",
+        )
+    elif reagent_label:
+        return get_output_artifacts(
+            lims=process.lims,
+            process=process,
+            output_type="ResultFile",
+            output_generation_type="PerReagentLabel",
+        )
     else:
-        return [a for a in process.all_outputs(unique=True) if a.type == "Analyte"]
+        return get_output_artifacts(
+            lims=process.lims,
+            process=process,
+            output_type="Analyte",
+            output_generation_type="PerInput",
+        )
 
 
 def get_artifact_by_name(process: Process, name: str) -> Artifact:

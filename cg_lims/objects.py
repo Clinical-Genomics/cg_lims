@@ -14,7 +14,6 @@ from cg_lims.exceptions import (
 from cg_lims.get.artifacts import (
     get_sample_artifact,
     get_latest_analyte,
-    get_output_artifacts_by_output_generation_type,
 )
 import logging
 from statistics import mean
