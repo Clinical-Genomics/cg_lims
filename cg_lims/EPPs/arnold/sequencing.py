@@ -50,7 +50,6 @@ def sequencing(ctx, sequencing_method: Literal["novaseq"]):
     all_step_documents: List[BaseStep] = build_step_documents(
         sequencing_method=sequencing_method, process=process, lims=lims
     )
-
     response: Response = requests.post(
         url=f"{arnold_host}/steps",
         headers={"Content-Type": "application/json"},

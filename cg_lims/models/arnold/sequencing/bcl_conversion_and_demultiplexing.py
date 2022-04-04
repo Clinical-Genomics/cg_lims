@@ -34,9 +34,10 @@ class ArnoldStep(BaseStep):
 def get_sum_reads(sum_reads_udf: str, artifacts: List[Artifact]) -> Optional[int]:
     sum_reads = 0
     for artifact in artifacts:
-        if not isinstance(artifact.udf.get(sum_reads_udf), int):
+        try:
+            sum_reads += int(artifact.udf.get(sum_reads_udf))
+        except ValueError:
             return None
-        sum_reads += artifact.udf.get(sum_reads_udf)
 
     return sum_reads
 
@@ -44,10 +45,10 @@ def get_sum_reads(sum_reads_udf: str, artifacts: List[Artifact]) -> Optional[int
 def get_average_q30(q30_udf: str, artifacts: List[Artifact]) -> Optional[float]:
     q_30 = []
     for artifact in artifacts:
-        if not isinstance(artifact.udf.get(q30_udf), float):
+        try:
+            q_30.append(float(artifact.udf.get(q30_udf)))
+        except ValueError:
             return None
-        q_30.append(artifact.udf.get(q30_udf))
-
     return mean(q_30)
 
 
