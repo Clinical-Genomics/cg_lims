@@ -32,9 +32,7 @@ def get_copy_tasks(
         else:
             copy_tasks[task_number] = {copy_type: value}
     if copy_tasks == {}:
-        raise MissingUDFsError(
-            f'Copy task UDF missing for process {process.id}'
-        )
+        raise MissingUDFsError(f"Copy task UDF missing for process {process.id}")
     return copy_tasks
 
 
@@ -44,6 +42,7 @@ def copy_udfs(input_artifacts: List[Artifact], copy_tasks: dict, lims: Lims):
     process_types = [task["Source Step"] for task_number, task in copy_tasks.items()]
     process_types = list(set(process_types))
     for artifact in input_artifacts:
+        artifact.get()
         source_steps = get_correct_steps_for_the_artifact(
             process_types=process_types, artifact=artifact, lims=lims
         )

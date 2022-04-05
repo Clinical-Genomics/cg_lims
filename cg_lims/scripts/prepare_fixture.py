@@ -12,6 +12,7 @@ class ProcessFixure(BaseModel):
     artifacts: Path
     containers: Path
     containertypes: Path
+    processtypes: Path
     processes: Path
 
 
@@ -23,6 +24,9 @@ def build_file_structure(base_dir: str) -> ProcessFixure:
     processes = Path(f"{base_dir}/processes/")
     if not processes.exists():
         processes.mkdir(parents=True)
+    processtypes = Path(f"{base_dir}/processtypes/")
+    if not processtypes.exists():
+        processtypes.mkdir(parents=True)
     artifacts = Path(f"{base_dir}/artifacts/")
     if not artifacts.exists():
         artifacts.mkdir(parents=True)
@@ -41,6 +45,7 @@ def build_file_structure(base_dir: str) -> ProcessFixure:
         artifacts=artifacts,
         containers=containers,
         containertypes=containertypes,
+        processtypes=processtypes,
     )
 
 
@@ -77,6 +82,7 @@ def make_fixure(ctx, process: str, test_name: str):
     process.get()
     fixture_dir: ProcessFixure = build_file_structure(base_dir=test_name)
     add_file(entity=process, entity_dir=fixture_dir.processes)
+    add_file(entity=process.type, entity_dir=fixture_dir.processtypes)
     artifacts = process.all_inputs() + process.all_outputs()
     add_entities(entities=artifacts, entity_dir=fixture_dir.artifacts)
     samples = []
