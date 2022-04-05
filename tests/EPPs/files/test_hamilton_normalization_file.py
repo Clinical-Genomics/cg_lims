@@ -13,16 +13,19 @@ def test_make_hamilton_normalization_file(hamilton_normalization_file, lims):
     # reagent labels set.
     # (See entety_json_data for details)
 
-    server("make_hamilton_normalization_file")
+    server("hamilton_normalization_file")
     file = Path("some_file_name")
-    artifacts_old = [
-        Artifact(lims, id="2-1450827"),
-        Artifact(lims, id="2-1450824"),
-        Artifact(lims, id="2-1450825"),
-        Artifact(lims, id="2-1450826"),
-    ]
-    process = Process(lims, id="24-193824")
+    process = Process(lims, id="24-315081")
     artifacts = get_artifacts(process=process, input=True)
+    artifacts_alternative = [
+        Artifact(lims, id="ACC9551A97PA1"),
+        Artifact(lims, id="ACC9551A105PA1"),
+        Artifact(lims, id="ACC9551A113PA1"),
+        Artifact(lims, id="ACC9553A3PA1"),
+        Artifact(lims, id="ACC9621A7PA1"),
+        Artifact(lims, id="2-2463328"),
+        Artifact(lims, id="2-2463329"),
+    ]
 
     # WHEN running get_file_data_and_write
     get_file_data_and_write(

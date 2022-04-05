@@ -46,20 +46,9 @@ def build_csv(rows: List[List[str]], file: Path, headers: List[str]) -> Path:
     return file
 
 
-def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
-    """This function sorts a csv file based on the list of columns given.
+def sort_dataframe(csv_data_frame: pd.DataFrame, columns: List[str], well_columns: List[str] = []) -> pd.DataFrame:
+    """This function sorts a csv dataframe object based on a list of given columns."""
 
-    columns: list of columns to sort on.
-        - eg: [ "Destination Container", "Sample Well" ]
-
-    well_columns: Optional. Sub set of columns!
-        - eg: ["Sample Well"]
-        - Assumed well format like A1, B1 etc. Not A:1, B:1!
-        - Will first be sorted numerically by second field. then alphabetically on the first field:
-          (A1, B1, C1, A2, B2, C2), not (A1, A2, B1, B2, C1, C2).
-    """
-
-    csv_data_frame = pd.read_csv(file.absolute(), delimiter=",")
     temp_sort_columns = []
     sort_columns = []  # columns to sort on
 
@@ -86,7 +75,49 @@ def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
     # sorting by sort_columns
     csv_data_frame.sort_values(by=sort_columns, inplace=True)
 
-    # dropping the temp_sort_columns
-    sorted_data = csv_data_frame.drop(temp_sort_columns, axis=1)
+    # dropping the temp_sort_columns and returning results
+    return csv_data_frame.drop(temp_sort_columns, axis=1)
+
+
+def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
+    """This function sorts a csv file based on the list of columns given.
+
+    columns: list of columns to sort on.
+        - eg: [ "Destination Container", "Sample Well" ]
+
+    well_columns: Optional. Sub set of columns!
+        - eg: ["Sample Well"]
+        - Assumed well format like A1, B1 etc. Not A:1, B:1!
+        - Will first be sorted numerically by second field. then alphabetically on the first field:
+          (A1, B1, C1, A2, B2, C2), not (A1, A2, B1, B2, C1, C2).
+    """
+
+    csv_data_frame = pd.read_csv(file.absolute(), delimiter=",")
+    sorted_data = sort_dataframe(csv_data_frame=csv_data_frame,
+                                 columns=columns,
+                                 well_columns=well_columns)
 
     sorted_data.to_csv(file.absolute(), index=False)
+
+
+def sort_csv_plate_and_tube(file: Path,
+                            plate_columns: List[str],
+                            tube_columns: List[str],
+                            plate_well_columns: List[str] = [],
+                            tube_well_columns: List[str] = [],
+                            ) -> None:
+    """This function performs csv sorting on files which contain samples from tube and plates."""
+
+    csv_data_frame = pd.read_csv(file.absolute(), delimiter=",")
+    plate_csv_data_frame = csv_data_frame.loc[csv_data_frame['Source Labware'] != 'Tube']
+    tube_csv_data_frame = csv_data_frame.loc[csv_data_frame['Source Labware'] == 'Tube']
+    sorted_plate_data_frame = sort_dataframe(csv_data_frame=plate_csv_data_frame,
+                                             columns=plate_columns,
+                                             well_columns=plate_well_columns)
+    sorted_tube_data_frame = sort_dataframe(csv_data_frame=tube_csv_data_frame,
+                                            columns=tube_columns,
+                                            well_columns=tube_well_columns)
+
+    sorted_data = pd.concat([sorted_plate_data_frame, sorted_tube_data_frame])
+    sorted_data.to_csv(file.absolute(), index=False)
+
