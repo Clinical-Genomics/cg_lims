@@ -1,9 +1,10 @@
 from email.encoders import encode_quopri
 import logging
 import sys
-
 import click
-from genologics.entities import Process
+
+from typing import List
+from genologics.entities import Process, Artifact
 from genologics.lims import Lims
 
 from cg_lims import options
@@ -13,7 +14,7 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 def org_well_to_sample(
-    artifacts: list
+    artifacts: List[Artifact]
 ) -> None:
     """Function to copy artifact udf location and set to sample level.
 
@@ -26,9 +27,12 @@ def org_well_to_sample(
     
     failed_udfs = 0
     passed_udfs = 0
-
+    print("HI")
     for artifact in artifacts:
+        print(artifact.samples)
         if artifact.parent_process == None and len(artifact.samples) == 1:
+            click.echo(artifact.samples)
+            print(len(artifact.samples) == 1)
             for sample in artifact.samples:
                 try:
                     sample.udf['Original Well'] = artifact.location[1]
@@ -41,7 +45,6 @@ def org_well_to_sample(
 
         else:
             if artifact.parent_process:
-                click.echo("HI")
                 LOG.error(
                     f"Error: Not the first step for sample {artifact.id}. Can therefor not get the original container."
                 )

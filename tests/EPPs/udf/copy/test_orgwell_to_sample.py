@@ -1,9 +1,11 @@
+from tkinter import N
 from numpy import append
 import pytest
 
 from genologics.entities import Artifact, Process
 from cg_lims.exceptions import MissingUDFsError, MissingCgFieldError
 from cg_lims.EPPs.udf.copy.orgwell_to_sample import orgwell_to_sample
+from cg_lims.options import process
 from cg_lims.set.udfs import copy_artifact_to_artifact
 from tests.conftest import server
 from cg_lims.get.artifacts import get_artifacts
@@ -16,20 +18,15 @@ from cg_lims.get.artifacts import get_artifacts
 
 def test_assign_correct(lims):
     # GIVEN artifacts with container, random well position and without parent steps.
-    server("microbial_prep")
-    Name_Artifacts = ["ACC8653A1PA1","ACC8653A9PA1","ACC8653A17PA1","ACC8653A25PA1"]
-    artifacts = []
-    for ArtName in Name_Artifacts:
-        artifacts.append(Artifact(lims, ArtName))
-    process = Process(lims, id='24-297378')
-    artifacts = get_artifacts(process=process, input = True)
+    server("reception_control_twist")
+    artifacts = [ Artifact(lims=lims, id="ACC9476A2PA1"), Artifact(lims=lims, id="ACC9476A3PA1")]
 
+    print(artifacts)
     # When running function artifacts_to_sample.
     orgwell_to_sample(artifacts)
     # THEN the corresponding sample will have the matching 'Original Well' and 'Original Container'.
     for artifact in artifacts:
         sample = artifact.samples[0]
-
         assert sample.udf['Original Well'] == artifact.location[1]
         assert sample.udf['Original Container'] == artifact.location[0].name
 
