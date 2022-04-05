@@ -1,4 +1,4 @@
-from genologics.entities import Process
+from genologics.entities import Process, Processtype
 
 from cg_lims.EPPs.arnold.sequencing import build_step_documents
 from cg_lims.models.arnold.base_step import BaseStep
@@ -22,13 +22,11 @@ def test_nova_seq_standard(lims):
 
     server("novaseq_standard")
     process = Process(lims=lims, id="24-308986")
-    all_inputs = process.all_inputs()
-    print(all_inputs)
+
     # WHEN running build_step_documents for the novaseq sequencing_method
     step_documents = build_step_documents(lims=lims, process=process, sequencing_method="novaseq")
 
     # THEN assert BaseStep documents are created and all required step types in the covid prep workflow are represented
-    # for document in step_documents:
-    #    print(document)
-    #    assert isinstance(document, BaseStep)
+    for document in step_documents:
+        assert isinstance(document, BaseStep)
     # assert {document.step_type for document in step_documents} == NOVA_SEQ_STANDARD_STEP_TYPES

@@ -56,9 +56,11 @@ def get_bcl_conversion_and_demultiplexing(
     lims: Lims, sample_id: str, prep_id: str, process_id: str
 ) -> ArnoldStep:
     process = Process(lims, id=process_id)
-
+    process.get()
     artifacts = get_artifacts(process=process, reagent_label=True)
-
+    print("hkjhjkhjk")
+    print(process)
+    print(process.type)
     return ArnoldStep(
         process_udfs=ProcessUDFs(**dict(process.udf.items())),
         artifact_udfs=ArtifactUDFs(
