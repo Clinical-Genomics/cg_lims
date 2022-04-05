@@ -18,11 +18,11 @@ def build_novaseq_step_documents(sample_id: str, process_id: str, lims: Lims) ->
 
     prep_id = f"{sample_id}_{process_id}"
     step_documents = [
-        get_define_run_format(sample_id=sample_id, lims=lims, prep_id=prep_id),
-        get_standard_make_pool_and_denature(sample_id=sample_id, lims=lims, prep_id=prep_id),
-        get_standard_prepare_for_sequencing(sample_id=sample_id, lims=lims, prep_id=prep_id),
-        get_xp_denature_and_examp(sample_id=sample_id, lims=lims, prep_id=prep_id),
-        get_xp_load_to_flowcell(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        # get_define_run_format(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        # get_standard_make_pool_and_denature(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        # get_standard_prepare_for_sequencing(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        # get_xp_denature_and_examp(sample_id=sample_id, lims=lims, prep_id=prep_id),
+        # get_xp_load_to_flowcell(sample_id=sample_id, lims=lims, prep_id=prep_id),
         get_bcl_conversion_and_demultiplexing(
             sample_id=sample_id, lims=lims, prep_id=prep_id, process_id=process_id
         ),

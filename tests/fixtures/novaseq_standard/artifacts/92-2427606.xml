@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427606?state=1917171" limsid="92-2427606">
+    <name>2022-07920-06 (FASTQ reads)</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308986" limsid="24-308986" />
+    <qc-flag>PASSED</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A12" limsid="ACC9628A12" />
+    <reagent-label name="UDI 38 (GTCGCTGT-TTATATCA)" />
+    <udf:field type="Numeric" name="% Perfect Index Read">89.82</udf:field>
+    <udf:field type="Numeric" name="% Bases &gt;=Q30">92.32</udf:field>
+    <udf:field type="Numeric" name="# Reads">17714156</udf:field>
+    <workflow-stages />
+</art:artifact>

@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A41" limsid="ACC9628A41">
+    <name>2022-08165-06</name>
+    <date-received>2022-03-18</date-received>
+    <project limsid="ACC9628" uri="http://127.0.0.1:8000/api/v2/projects/ACC9628" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC9628A41PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9628A41PA1?state=1910102" />
+    <udf:field type="String" name="Comment">B:6</udf:field>
+    <udf:field type="String" name="Concentration (nM)">10.0</udf:field>
+    <udf:field type="String" name="customer">cust032</udf:field>
+    <udf:field type="Numeric" name="Sample Conc.">152.82</udf:field>
+    <udf:field type="String" name="Data Analysis">fluffy</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">RMLP05R800</udf:field>
+    <udf:field type="Date" name="Sequencing Finished">2022-03-22</udf:field>
+    <udf:field type="Date" name="Received at">2022-03-21</udf:field>
+    <udf:field type="Numeric" name="Total Reads (M)">1700.22415</udf:field>
+    <udf:field type="String" name="tumor">no</udf:field>
+    <udf:field type="String" name="Source">NA</udf:field>
+    <udf:field type="String" name="Volume (uL)">200</udf:field>
+    <udf:field type="String" name="Data Delivery">statina</udf:field>
+    <udf:field type="Date" name="Delivered at">2022-03-22</udf:field>
+    <udf:field type="String" name="Passed Sequencing QC">True</udf:field>
+    <udf:field type="String" name="pool name">2204898_NIPT</udf:field>
+    <udf:field type="String" name="familyID">NA</udf:field>
+    <udf:field type="String" name="Gender">unknown</udf:field>
+    <udf:field type="String" name="priority">priority</udf:field>
+    <udf:field type="String" name="Process only if QC OK">no</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">0</udf:field>
+    <udf:field type="String" name="Index type">NEXTflex® v2 UDI Barcodes 1 - 96</udf:field>
+    <udf:field type="String" name="Index number">18</udf:field>
+</smp:sample>

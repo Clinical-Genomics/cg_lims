@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" limsid="2-2426111">
+    <name>FC A Barbara 220321</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-242723" limsid="27-242723" />
+        <value>1:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A1" limsid="ACC9628A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A2" limsid="ACC9628A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A3" limsid="ACC9628A3" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A4" limsid="ACC9628A4" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A5" limsid="ACC9628A5" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A6" limsid="ACC9628A6" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A7" limsid="ACC9628A7" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A8" limsid="ACC9628A8" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A9" limsid="ACC9628A9" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A10" limsid="ACC9628A10" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A11" limsid="ACC9628A11" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A12" limsid="ACC9628A12" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A13" limsid="ACC9628A13" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A14" limsid="ACC9628A14" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A15" limsid="ACC9628A15" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A16" limsid="ACC9628A16" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A17" limsid="ACC9628A17" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A18" limsid="ACC9628A18" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A19" limsid="ACC9628A19" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A20" limsid="ACC9628A20" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A21" limsid="ACC9628A21" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A22" limsid="ACC9628A22" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A23" limsid="ACC9628A23" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A24" limsid="ACC9628A24" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A25" limsid="ACC9628A25" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A26" limsid="ACC9628A26" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A27" limsid="ACC9628A27" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A28" limsid="ACC9628A28" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A29" limsid="ACC9628A29" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A30" limsid="ACC9628A30" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A31" limsid="ACC9628A31" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A32" limsid="ACC9628A32" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A33" limsid="ACC9628A33" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A34" limsid="ACC9628A34" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A35" limsid="ACC9628A35" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A36" limsid="ACC9628A36" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A37" limsid="ACC9628A37" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A38" limsid="ACC9628A38" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A39" limsid="ACC9628A39" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A40" limsid="ACC9628A40" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A41" limsid="ACC9628A41" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A42" limsid="ACC9628A42" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A43" limsid="ACC9628A43" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A44" limsid="ACC9628A44" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A45" limsid="ACC9628A45" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A46" limsid="ACC9628A46" />
+    <reagent-label name="UDI 1 (AATCGTTA-AATAACGT)" />
+    <reagent-label name="UDI 13 (AATCGGCG-AATATTGA)" />
+    <reagent-label name="UDI 25 (AATCCGTT-AATATGCT)" />
+    <reagent-label name="UDI 37 (AAGATACA-AATATCTG)" />
+    <reagent-label name="UDI 49 (AAGACGAA-AATAGATT)" />
+    <reagent-label name="UDI 61 (AAGTAAGT-AATAGTCC)" />
+    <reagent-label name="UDI 73 (AAGTTATC-AATAGCAA)" />
+    <reagent-label name="UDI 85 (AAGTTGGA-AATACAGG)" />
+    <reagent-label name="UDI 2 (GTCTACAT-TTCTTGAA)" />
+    <reagent-label name="UDI 14 (TTCGCCGA-GTATACCG)" />
+    <reagent-label name="UDI 26 (TGCGTACA-TTCTCATA)" />
+    <reagent-label name="UDI 38 (GTCGCTGT-TTATATCA)" />
+    <reagent-label name="UDI 50 (TTATTATG-TTAGCGCA)" />
+    <reagent-label name="UDI 62 (TGACTGAA-TTAGACGT)" />
+    <reagent-label name="UDI 74 (GTACAGCT-TGATCGGT)" />
+    <reagent-label name="UDI 86 (GGACAACG-TGATGGCC)" />
+    <reagent-label name="UDI 3 (CGCTGCTC-GGCAGATC)" />
+    <reagent-label name="UDI 15 (CTGGCCTC-GATCCAAC)" />
+    <reagent-label name="UDI 27 (GAATCAAT-TCTGTGAT)" />
+    <reagent-label name="UDI 39 (TCGGATGT-CTGCGGAT)" />
+    <reagent-label name="UDI 51 (CGCTATTA-GCGGCCGT)" />
+    <reagent-label name="UDI 63 (AAGACTGT-GTGGACTA)" />
+    <reagent-label name="UDI 75 (CAACTGCT-AGTAGTAT)" />
+    <reagent-label name="UDI 4 (GATCAACA-CTATGTTA)" />
+    <reagent-label name="UDI 16 (GAACTTAT-AGATACGC)" />
+    <reagent-label name="UDI 28 (TGAGTCAG-CCGAACTT)" />
+    <reagent-label name="UDI 40 (CGAGCCGG-GCGGCTTG)" />
+    <reagent-label name="UDI 52 (TCTATCAG-CAGTAACC)" />
+    <reagent-label name="UDI 64 (CAATGATG-CACGGACG)" />
+    <reagent-label name="UDI 76 (CATGATGA-GTTAGAGG)" />
+    <reagent-label name="UDI 88 (CAGACCAC-GCTTCGGC)" />
+    <reagent-label name="UDI 5 (CGAAGGAC-GTTGACGC)" />
+    <reagent-label name="UDI 17 (CGTATTGG-GGTATCTT)" />
+    <reagent-label name="UDI 29 (GAATGCTC-GTCTAACA)" />
+    <reagent-label name="UDI 41 (CGATTATC-GAGTTGAT)" />
+    <reagent-label name="UDI 53 (CGGTGGTA-GCCTAGTA)" />
+    <reagent-label name="UDI 65 (CACAGTAA-CACTAGAG)" />
+    <reagent-label name="UDI 77 (TGACTACT-CCTTACAG)" />
+    <reagent-label name="UDI 89 (TTCTGGTG-CCAGTGGT)" />
+    <reagent-label name="UDI 6 (GATGCCGG-ATCTACGA)" />
+    <reagent-label name="UDI 18 (GAAGCACA-CCTCTGGC)" />
+    <reagent-label name="UDI 30 (GAATATCC-GACGCCAT)" />
+    <reagent-label name="UDI 42 (TCGAAGCT-GCACTGAG)" />
+    <reagent-label name="UDI 54 (TCACCAAT-CACGGCGC)" />
+    <reagent-label name="UDI 66 (TGGTCATT-GCAGATGG)" />
+    <reagent-label name="UDI 78 (CAGAAGAT-GTACATTG)" />
+    <udf:field type="Numeric" name="% Bases &gt;=Q30 R2">89.53641</udf:field>
+    <udf:field type="Numeric" name="% Aligned R1">0.8519459</udf:field>
+    <udf:field type="Numeric" name="% Aligned R2">0.80052066</udf:field>
+    <udf:field type="Numeric" name="% Error Rate R1">0.15314141</udf:field>
+    <udf:field type="Numeric" name="% Error Rate R2">0.4937788</udf:field>
+    <udf:field type="Numeric" name="% Bases &gt;=Q30 R1">92.55127</udf:field>
+    <udf:field type="Numeric" name="Yield PF (Gb) R1">45.832947</udf:field>
+    <udf:field type="Numeric" name="Yield PF (Gb) R2">45.818707</udf:field>
+    <udf:field type="Numeric" name="Intensity Cycle 1 R1">1166.766</udf:field>
+    <udf:field type="Numeric" name="Intensity Cycle 1 R2">1065.0193</udf:field>
+    <udf:field type="String" name="Loading Workflow Type">NovaSeq Standard</udf:field>
+    <udf:field type="String" name="Flowcell Type">SP</udf:field>
+    <workflow-stages>
+        <workflow-stage status="REMOVED" name="Bcl Conversion &amp; Demultiplexing (Nova Seq)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1758/stages/5959" />
+    </workflow-stages>
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111/demux" />
+</art:artifact>
