@@ -29,4 +29,4 @@ def test_nova_seq_standard(lims):
     # THEN assert BaseStep documents are created and all required step types in the covid prep workflow are represented
     for document in step_documents:
         assert isinstance(document, BaseStep)
-    # assert {document.step_type for document in step_documents} == NOVA_SEQ_STANDARD_STEP_TYPES
+    assert {document.step_type for document in step_documents} == NOVA_SEQ_STANDARD_STEP_TYPES

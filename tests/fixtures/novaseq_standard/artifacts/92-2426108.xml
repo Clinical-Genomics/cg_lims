@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:file="http://genologics.com/ri/file" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427737?state=1917292" limsid="92-2427737">
-    <name>EPP Log</name>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2426108?state=1916313" limsid="92-2426108">
+    <name>Run Recipe</name>
     <type>ResultFile</type>
     <output-type>ResultFile</output-type>
-    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308986" limsid="24-308986" />
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
     <qc-flag>UNKNOWN</qc-flag>
     <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A1" limsid="ACC9628A1" />
     <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A2" limsid="ACC9628A2" />
@@ -54,6 +54,5 @@
     <reagent-label name="UDI 54 (TCACCAAT-CACGGCGC)" />
     <reagent-label name="UDI 66 (TGGTCATT-GCAGATGG)" />
     <reagent-label name="UDI 78 (CAGAAGAT-GTACATTG)" />
-    <file:file limsid="40-85330" uri="http://127.0.0.1:8000/api/v2/files/40-85330" />
     <workflow-stages />
 </art:artifact>

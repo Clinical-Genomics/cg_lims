@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/122-308965" limsid="122-308965">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1010">STANDARD Make Pool and Denature (Nova Seq)</type>
+    <date-run>2022-03-21</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/11">
+        <first-name>Anna</first-name>
+        <last-name>Leinfelt</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425919?state=1916224" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425919?state=1916224" limsid="2-2425919">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308961" limsid="24-308961" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" output-generation-type="PerAllInputs" output-type="Analyte" limsid="2-2426105" />
+    </input-output-map>
+    <udf:field type="String" name="NaOH lot nr">RNBJ2243</udf:field>
+    <udf:field type="String" name="PhiX lot nr">20602966</udf:field>
+    <udf:field type="Numeric" name="Minimum Per Sample Volume (ul)">5</udf:field>
+    <udf:field type="Numeric" name="NaOH Volume (ul)">25</udf:field>
+    <udf:field type="Numeric" name="Number of Samples in Pool">0</udf:field>
+    <udf:field type="Numeric" name="Total Sample Volume (ul)">0</udf:field>
+    <udf:field type="Numeric" name="Tris-HCl Volume (ul)">25</udf:field>
+    <udf:field type="Numeric" name="Volume of Pool to Denature (ul)">100</udf:field>
+    <udf:field type="String" name="Tris-HCl lot nr">2377005</udf:field>
+    <udf:field type="Numeric" name="PhiX Volume (ul)">0.6</udf:field>
+    <process-parameter name="Check NovaSeq Settings" />
+</prc:process>

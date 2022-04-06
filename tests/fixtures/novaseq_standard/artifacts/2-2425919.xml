@@ -1,10 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
-<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:file="http://genologics.com/ri/file" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427737?state=1917292" limsid="92-2427737">
-    <name>EPP Log</name>
-    <type>ResultFile</type>
-    <output-type>ResultFile</output-type>
-    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308986" limsid="24-308986" />
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425919?state=1916224" limsid="2-2425919">
+    <name>2204898_NIPT</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308961" limsid="24-308961" />
     <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-242716" limsid="27-242716" />
+        <value>1:1</value>
+    </location>
+    <working-flag>true</working-flag>
     <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A1" limsid="ACC9628A1" />
     <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A2" limsid="ACC9628A2" />
     <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A3" limsid="ACC9628A3" />
@@ -54,6 +59,13 @@
     <reagent-label name="UDI 54 (TCACCAAT-CACGGCGC)" />
     <reagent-label name="UDI 66 (TGGTCATT-GCAGATGG)" />
     <reagent-label name="UDI 78 (CAGAAGAT-GTACATTG)" />
-    <file:file limsid="40-85330" uri="http://127.0.0.1:8000/api/v2/files/40-85330" />
-    <workflow-stages />
+    <udf:field type="Numeric" name="Adjusted Per Sample Volume (ul)">10</udf:field>
+    <udf:field type="String" name="Reads to sequence (M)">1600</udf:field>
+    <udf:field type="Numeric" name="Concentration (nM)">10</udf:field>
+    <udf:field type="Numeric" name="Per Sample Volume (ul)">10</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="STANDARD Make Pool and Denature (Nova Seq)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1758/stages/5953" />
+        <workflow-stage status="COMPLETE" name="Sequence Aggregation" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1753/stages/5501" />
+    </workflow-stages>
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425919/demux" />
 </art:artifact>

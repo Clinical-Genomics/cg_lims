@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1007">STANDARD Prepare for Sequencing (Nova Seq)</type>
+    <date-run>2022-03-21</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/11">
+        <first-name>Anna</first-name>
+        <last-name>Leinfelt</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" limsid="2-2426105">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-308965" limsid="122-308965" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2426108?state=1916313" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2426108" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" limsid="2-2426105">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-308965" limsid="122-308965" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2426109?state=1916314" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2426109" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" limsid="2-2426105">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-308965" limsid="122-308965" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2426110?state=1916315" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2426110" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" limsid="2-2426105">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-308965" limsid="122-308965" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" output-generation-type="PerInput" output-type="Analyte" limsid="2-2426111" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426105?state=1916310" limsid="2-2426105">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-308965" limsid="122-308965" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112?state=1916317" output-generation-type="PerInput" output-type="Analyte" limsid="2-2426112" />
+    </input-output-map>
+    <udf:field type="String" name="BaseSpace Sequence Hub Configuration">Run Monitoring Only</udf:field>
+    <udf:field type="String" name="Experiment Name">HYTMVDRXY</udf:field>
+    <udf:field type="Numeric" name="Index Read 2">8</udf:field>
+    <udf:field type="String" name="Paired End">True</udf:field>
+    <udf:field type="Numeric" name="Read 2 Cycles">51</udf:field>
+    <udf:field type="String" name="Workflow">GenerateFASTQ</udf:field>
+    <udf:field type="String" name="Workflow Type">Dual Index</udf:field>
+    <udf:field type="Numeric" name="Read 1 Cycles">51</udf:field>
+    <udf:field type="Numeric" name="Index Read 1">8</udf:field>
+    <udf:field type="String" name="Run Mode">SP</udf:field>
+    <process-parameter name="Set Run Mode" />
+</prc:process>

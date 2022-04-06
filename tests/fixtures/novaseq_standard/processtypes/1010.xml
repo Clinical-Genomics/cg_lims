@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ptp:process-type xmlns:ptp="http://genologics.com/ri/processtype" uri="http://127.0.0.1:8000/api/v2/processtypes/1010" name="STANDARD Make Pool and Denature (Nova Seq)">
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3382" name="Bulk Pool Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3383" name="Flowcell Type" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3384" name="Minimum Per Sample Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3385" name="NaOH Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/4459" name="NaOH lot nr" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3386" name="Number of Flowcells to Sequence" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3387" name="Number of Samples in Pool" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3801" name="PhiX Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/4460" name="PhiX lot nr" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3388" name="Protocol type" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3389" name="Total Sample Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3390" name="Tris-HCl Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/4467" name="Tris-HCl lot nr" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3391" name="Volume of Pool to Denature (ul)" />
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1622" name="Check NovaSeq Settings">
+        <string>bash -c "/home/glsai/miniconda3/envs/epp_master/bin/check_protocol_nova.py --pid {processLuid} -s 'STANDARD Make Pool and Denature (Nova Seq)' -x 'Xp Make Pool (Nova Seq)'"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1619" name="Validate Inputs Flowcell Type and Single Pool">
+        <string>bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/novaseq/novaseq-extensions.jar script:validate_flowcell_for_input_pools -i {stepURI:v2} -u {username} -p {password} -l {compoundOutputFileLuid1} -validateSingleOutput true -poolType bulk"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1620" name="Validate Unique Indexes">
+        <string>bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/ngs-common/v5/EPP/ngs-extensions.jar -i {stepURI:v2} -u {username} -p {password} script:validateUniqueIndexes"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <process-input>
+        <artifact-type>Analyte</artifact-type>
+        <display-name>Analyte</display-name>
+        <remove-working-flag>true</remove-working-flag>
+    </process-input>
+    <process-output>
+        <artifact-type>Analyte</artifact-type>
+        <display-name>Analyte</display-name>
+        <output-generation-type>PerAllInputs</output-generation-type>
+        <variability-type>Fixed</variability-type>
+        <number-of-outputs>1</number-of-outputs>
+        <output-name>{PoolName}</output-name>
+        <assign-working-flag>true</assign-working-flag>
+    </process-output>
+    <process-type-attribute name="Enabled">true</process-type-attribute>
+    <process-type-attribute name="Family">PoolSamples</process-type-attribute>
+    <process-type-attribute name="ContextCode">PSL</process-type-attribute>
+    <process-type-attribute name="OutputContextCode">PL</process-type-attribute>
+    <process-type-attribute name="ConsumeVolume">true</process-type-attribute>
+    <process-type-attribute name="DefaultSort">ROW</process-type-attribute>
+    <process-type-attribute name="ModifyInputOutput">None</process-type-attribute>
+    <process-type-attribute name="NamingTagHandlers">com.genologics.platform.behaviourmanagement.process.commands.outputnaming.PoolNamingTagHandler</process-type-attribute>
+    <process-type-attribute name="OnlyEnableDoneAtLastPanel">true</process-type-attribute>
+    <process-type-attribute name="OutputContainerType">Tube</process-type-attribute>
+    <process-type-attribute name="OutputSorting">Input container and placement</process-type-attribute>
+    <process-type-attribute name="ProcessGroup">3. MiSeq</process-type-attribute>
+    <process-type-attribute name="ProcessTabView">Display and maximize the Input/Output Explorer mini-tabbed page</process-type-attribute>
+    <process-type-attribute name="QCAdjustmentType">None</process-type-attribute>
+    <process-type-attribute name="SameReagent">false</process-type-attribute>
+    <process-type-attribute name="SkipInputPanel">true</process-type-attribute>
+    <process-type-attribute name="VolumeAdjustmentType">None</process-type-attribute>
+    <process-type-attribute name="WorkspaceColumns">12</process-type-attribute>
+    <process-type-attribute name="WorkspaceRows">8</process-type-attribute>
+    <permitted-containers>
+        <container-type uri="http://127.0.0.1:8000/api/v2/containertypes/2" name="Tube" />
+    </permitted-containers>
+    <permitted-reagent-categories />
+    <required-reagent-kits />
+    <permitted-control-types />
+    <permitted-instrument-types />
+    <queue-fields />
+    <ice-bucket-fields />
+    <step-fields />
+    <sample-fields />
+    <step-properties>
+        <step-property value="column" name="placementDefaultPattern" />
+    </step-properties>
+    <epp-triggers />
+</ptp:process-type>
