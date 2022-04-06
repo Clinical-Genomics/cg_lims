@@ -118,6 +118,15 @@ def hamilton_normalization_file() -> str:
 
 
 @pytest.fixture
+def hamilton_normalization_csv() -> str:
+    """Get file path to valid json"""
+
+    file_path = "tests/fixtures/hamilton_normalization_csv.txt"
+    file = Path(file_path)
+    return file.read_text()
+
+
+@pytest.fixture
 def hamilton_sars_cov2_pooling_file() -> str:
     """Get file path to valid json"""
 

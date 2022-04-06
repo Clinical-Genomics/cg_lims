@@ -1,9 +1,8 @@
 from tests.conftest import server
 from pathlib import Path
 
-from genologics.entities import Artifact, Process
+from genologics.entities import Artifact
 from cg_lims.EPPs.files.hamilton.normalization_file import get_file_data_and_write
-from cg_lims.get.artifacts import get_artifacts
 
 
 def test_make_hamilton_normalization_file(hamilton_normalization_file, lims):
@@ -15,14 +14,13 @@ def test_make_hamilton_normalization_file(hamilton_normalization_file, lims):
 
     server("make_hamilton_normalization_file")
     file = Path("some_file_name")
-    artifacts_old = [
+
+    artifacts = [
         Artifact(lims, id="2-1450827"),
         Artifact(lims, id="2-1450824"),
         Artifact(lims, id="2-1450825"),
         Artifact(lims, id="2-1450826"),
     ]
-    process = Process(lims, id="24-193824")
-    artifacts = get_artifacts(process=process, input=True)
 
     # WHEN running get_file_data_and_write
     get_file_data_and_write(
