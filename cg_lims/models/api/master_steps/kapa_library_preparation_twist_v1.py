@@ -8,7 +8,7 @@ from cg_lims.models.api.master_steps.base_step import (
     BaseStep,
     get_process_udf,
 )
-from cg_lims.get.artifacts import get_latest_artifact
+from cg_lims.get.artifacts import get_latest_analyte
 
 
 class KAPALibraryPreparation(BaseStep):
@@ -28,7 +28,7 @@ class KAPALibraryPreparation(BaseStep):
     @validator("artifact", always=True)
     def get_artifact(cls, v, values):
         try:
-            return get_latest_artifact(
+            return get_latest_analyte(
                 lims=values.get("lims"),
                 sample_id=values.get("sample_id"),
                 process_types=["KAPA Library Preparation TWIST v1"],

@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-308986" limsid="24-308986">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1005">Bcl Conversion &amp; Demultiplexing (Nova Seq)</type>
+    <date-run>2022-03-22</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/104">
+        <first-name>Keyvan</first-name>
+        <last-name>Elhami</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112?state=1916317" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112?state=1916317" limsid="2-2426112">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427643?state=1917248" output-generation-type="PerReagentLabel" output-type="ResultFile" limsid="92-2427643" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112?state=1916317" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112?state=1916317" limsid="2-2426112">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427642?state=1917247" output-generation-type="PerReagentLabel" output-type="ResultFile" limsid="92-2427642" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112?state=1916317" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112?state=1916317" limsid="2-2426112">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427641?state=1917246" output-generation-type="PerReagentLabel" output-type="ResultFile" limsid="92-2427641" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" limsid="2-2426111">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427547?state=1917202" output-generation-type="PerReagentLabel" output-type="ResultFile" limsid="92-2427547" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" limsid="2-2426111">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427546?state=1917201" output-generation-type="PerReagentLabel" output-type="ResultFile" limsid="92-2427546" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" limsid="2-2426111">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427545?state=1917100" output-generation-type="PerReagentLabel" output-type="ResultFile" limsid="92-2427545" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112?state=1916317" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112?state=1916317" limsid="2-2426112">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427737?state=1917292" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2427737" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111?state=1916316" limsid="2-2426111">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2427737?state=1917292" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2427737" />
+    </input-output-map>
+    <udf:field type="Numeric" name="Threshold for % bases &gt;= Q30">90</udf:field>
+    <udf:field type="String" name="CASAVA">/opt/gls/CASAVA/</udf:field>
+    <udf:field type="Text" name="Comments">See dev #303</udf:field>
+    <udf:field type="String" name="Folder name for demultiplexed output">Unaligned</udf:field>
+    <udf:field type="Numeric" name="Maximum clusters per FASTQ file">4000000</udf:field>
+    <udf:field type="String" name="MODE">HARVEST</udf:field>
+    <udf:field type="String" name="Number of allowed mismatches per index?">0</udf:field>
+    <udf:field type="Numeric" name="Number of CPU cores to use?">1</udf:field>
+    <udf:field type="String" name="Method Document">Demultiplexing</udf:field>
+    <udf:field type="String" name="Methods">docs/production/data_analysis/workflows/demultiplexing.md</udf:field>
+    <udf:field type="String" name="Atlas Version">6.6.1</udf:field>
+    <process-parameter name="Queueing Samples NovaSeq (to RML v6)" />
+</prc:process>

@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Literal
 
 from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
@@ -24,28 +24,55 @@ def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
     return artifact
 
 
-def get_qc_output_artifacts(lims: Lims, process: Process) -> List[Artifact]:
-    """Get output 'artifacts' (messuements) of a qc process"""
+def get_output_artifacts(
+    lims: Lims,
+    process: Process,
+    output_type: Literal["ResultFile", "Analyte"],
+    output_generation_type: List[Literal["PerInput", "PerReagentLabel", "PerAllInputs"]],
+) -> List[Artifact]:
+    """Get output 'artifacts' based on output_generation_type and output_type"""
 
-    input_output_maps = process.input_output_maps
-    artifact_ids = [
-        io[1]["limsid"] for io in input_output_maps if io[1]["output-generation-type"] == "PerInput"
+    artifacts = [
+        Artifact(lims, id=output["limsid"])
+        for input, output in process.input_output_maps
+        if output["output-generation-type"] in output_generation_type
+        and output["output-type"] == output_type
     ]
-    return [Artifact(lims, id=id) for id in artifact_ids if id is not None]
+    return list(frozenset(artifacts))
 
 
 def get_artifacts(
-    process: Process, input: Optional[bool] = False, measurement: Optional[bool] = False
+    process: Process,
+    input: Optional[bool] = False,
+    measurement: Optional[bool] = False,
+    reagent_label: Optional[bool] = False,
 ) -> List[Artifact]:
     """If inputs is True, returning all input analytes of the process,
     otherwise returning all output analytes of the process"""
 
-    if measurement:
-        return get_qc_output_artifacts(lims=process.lims, process=process)
-    elif input:
+    if input:
         return process.all_inputs(unique=True)
+    elif measurement:
+        return get_output_artifacts(
+            lims=process.lims,
+            process=process,
+            output_type="ResultFile",
+            output_generation_type=["PerInput"],
+        )
+    elif reagent_label:
+        return get_output_artifacts(
+            lims=process.lims,
+            process=process,
+            output_type="ResultFile",
+            output_generation_type=["PerReagentLabel"],
+        )
     else:
-        return [a for a in process.all_outputs(unique=True) if a.type == "Analyte"]
+        return get_output_artifacts(
+            lims=process.lims,
+            process=process,
+            output_type="Analyte",
+            output_generation_type=["PerInput", "PerAllInputs"],
+        )
 
 
 def get_artifact_by_name(process: Process, name: str) -> Artifact:
@@ -71,15 +98,31 @@ def filter_artifacts(artifacts: List[Artifact], udf: str, value) -> List[Artifac
         return [a for a in artifacts if a.udf.get(udf) == value]
 
 
-def get_latest_artifact(
+def get_latest_artifact(lims_artifacts: List[Artifact]) -> Artifact:
+    """Returning the latest generated artifact in the list of artifacts"""
+    if not lims_artifacts:
+        message = "Can not find latest artifact from a list of no artifacts"
+        LOG.error(message)
+        raise MissingArtifactError(message=message)
+
+    artifacts = []
+    for artifact in lims_artifacts:
+        date = artifact.parent_process.date_run or datetime.today().strftime("%Y-%m-%d")
+        artifacts.append((date, artifact.id, artifact))
+
+    artifacts.sort()
+    date, id, latest_art = artifacts[-1]
+    return latest_art
+
+
+def get_latest_analyte(
     lims: Lims, sample_id: str, process_types: Optional[List[str]], sample_artifact: bool = False
 ) -> Artifact:
-    """Getting the most recently generated artifact by process_types and sample_id.
+    """Getting the most recently generated analyte by process_types and sample_id.
 
-    Searching for all artifacts (Analytes) associated with <sample_id> that
-    were produced by <process_types>.
+    Searching for all Analytes associated with <sample_id> that were produced by <process_types>.
 
-    Returning the artifact with latest parent_process.date_run.
+    Returning the analyte with latest parent_process.date_run.
     If there are many such artifacts only one will be returned."""
 
     if sample_artifact and not process_types:
@@ -99,12 +142,43 @@ def get_latest_artifact(
         LOG.error(message)
         raise MissingArtifactError(message=message)
 
-    artifacts = []
-    for artifact in lims_artifacts:
-        date = artifact.parent_process.date_run or datetime.today().strftime("%Y-%m-%d")
-        artifacts.append((date, artifact.id, artifact))
+    return get_latest_artifact(lims_artifacts=lims_artifacts)
 
-    artifacts.sort()
-    date, id, latest_art = artifacts[-1]
 
-    return latest_art
+def get_latest_result_files(
+    lims: Lims,
+    sample_id: str,
+    process_types: Optional[List[str]],
+    output_generation_type: Literal["PerInput", "PerReagentLabel"],
+) -> List[Artifact]:
+    """This function will make a lot of queries if the nr of artifacts in the step are many and the artifacts are pools.
+    (At least 3+2n+nk queries to teh database, where n is the number of input artifacts and k is the number of samples
+    per artifact if artifact is pool.)
+
+    Only use this function if you have to."""
+
+    all_result_files = lims.get_artifacts(
+        samplelimsid=sample_id,
+        type="ResultFile",
+        process_type=process_types,
+    )
+    sample = Sample(lims=lims, id=sample_id)
+    latest = get_latest_artifact(lims_artifacts=all_result_files)
+    latest_process: Process = latest.parent_process
+
+    specific_result_files = []
+    for input, output in latest_process.input_output_maps:
+        if output["output-generation-type"] != output_generation_type:
+            continue
+        artifact = Artifact(lims, id=output["limsid"])
+        if sample not in artifact.samples:
+            continue
+
+        specific_result_files.append(artifact)
+
+    if not specific_result_files:
+        message = f"Could not find a artifact with sample: {sample_id} generated by process: {' ,'.join(process_types)}"
+        LOG.error(message)
+        raise MissingArtifactError(message=message)
+
+    return specific_result_files

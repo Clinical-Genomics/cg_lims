@@ -2,7 +2,7 @@
 
 import click
 
-from .load_arnold_preps import update_arnold_preps
+from .load_arnold_steps import update_arnold_preps, update_arnold_runs
 
 
 @click.group(invoke_without_command=True)
@@ -13,3 +13,4 @@ def one_time(ctx):
 
 
 one_time.add_command(update_arnold_preps)
+one_time.add_command(update_arnold_runs)

@@ -13,8 +13,8 @@ from .aliquot_samples_for_enzymatic_fragmentation_twist import (
 from .amplify_captured_libraries import get_amplify_captured_library_udfs
 from .enzymatic_fragmentation_twist import get_enzymatic_fragmentation
 from .reception_control import get_sample_artifact_fields
+from cg_lims.models.arnold.base_step import BaseStep
 from .normalization_of_samples_for_sequencing import get_normalization_of_samples
-from ..base_step import BaseStep
 
 
 def build_twist_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:

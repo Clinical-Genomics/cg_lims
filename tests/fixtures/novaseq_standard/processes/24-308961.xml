@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-308961" limsid="24-308961">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1006">Define Run Format and Calculate Volumes (Nova Seq)</type>
+    <date-run>2022-03-21</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/11">
+        <first-name>Anna</first-name>
+        <last-name>Leinfelt</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425918?state=1916223" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425918?state=1916223" limsid="2-2425918">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-308960" limsid="122-308960" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425919?state=1916224" output-generation-type="PerInput" output-type="Analyte" limsid="2-2425919" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425918?state=1916223" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425918?state=1916223" limsid="2-2425918">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-308960" limsid="122-308960" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2425920?state=1916225" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2425920" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425918?state=1916223" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425918?state=1916223" limsid="2-2425918">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-308960" limsid="122-308960" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2425921?state=1916226" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2425921" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425918?state=1916223" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2425918?state=1916223" limsid="2-2425918">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-308960" limsid="122-308960" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2425922?state=1916227" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2425922" />
+    </input-output-map>
+    <udf:field type="String" name="Method">1830</udf:field>
+    <udf:field type="Numeric" name="Adjusted Bulk Pool Volume (ul)">100</udf:field>
+    <udf:field type="Numeric" name="Bulk Pool Volume (ul)">100</udf:field>
+    <udf:field type="Text" name="Comments">FC A</udf:field>
+    <udf:field type="Numeric" name="Final Loading Concentration (pM)">200</udf:field>
+    <udf:field type="Numeric" name="Minimum Per Sample Volume (ul)">5</udf:field>
+    <udf:field type="String" name="Protocol type">NovaSeq Standard</udf:field>
+    <udf:field type="Numeric" name="RSB Volume (ul)">90</udf:field>
+    <udf:field type="String" name="Total nr of Reads Requested (sum of reads to sequence)">1600.0</udf:field>
+    <udf:field type="Numeric" name="Total Sample Volume (ul)">10</udf:field>
+    <udf:field type="String" name="RSB lot nr">169027081</udf:field>
+    <udf:field type="Numeric" name="Version">7</udf:field>
+    <udf:field type="String" name="Flowcell Type">SP</udf:field>
+    <process-parameter name="Check Duplicate Samples" />
+</prc:process>

@@ -10,7 +10,7 @@ from genologics.lims import Lims
 
 from cg_lims import options
 from cg_lims.exceptions import DuplicateSampleError, LimsError, MissingArtifactError
-from cg_lims.get.artifacts import filter_artifacts, get_artifacts, get_latest_artifact
+from cg_lims.get.artifacts import filter_artifacts, get_artifacts, get_latest_analyte
 from cg_lims.put.queue import queue_artifacts
 
 LOG = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ def get_artifacts_to_requeue(
     for art in rerun_arts:
         representative_sample_id = art.samples[0].id  ## hantera med if samples..
         try:
-            requeue_art = get_latest_artifact(lims, representative_sample_id, process_type)
+            requeue_art = get_latest_analyte(lims, representative_sample_id, process_type)
         except MissingArtifactError as e:
             LOG.warning(e.message)
             break_rerun = True

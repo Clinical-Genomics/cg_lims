@@ -6,7 +6,7 @@ import click
 from genologics.entities import Artifact
 
 from cg_lims.exceptions import FailingQCError, LimsError, MissingUDFsError
-from cg_lims.get.artifacts import get_qc_output_artifacts
+from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
 
 LOG = logging.getLogger(__name__)
@@ -73,7 +73,7 @@ def twist_qc_amount(ctx):
     lims = ctx.obj["lims"]
 
     try:
-        artifacts = get_qc_output_artifacts(lims=lims, process=process)
+        artifacts = get_artifacts(process=process, measurement=True)
         calculate_amount_and_set_qc(artifacts)
         message = "Amounts have been calculated and qc flags set for all samples."
         LOG.info(message)

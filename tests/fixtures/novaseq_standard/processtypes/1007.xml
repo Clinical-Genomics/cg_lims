@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ptp:process-type xmlns:ptp="http://genologics.com/ri/processtype" uri="http://127.0.0.1:8000/api/v2/processtypes/1007" name="STANDARD Prepare for Sequencing (Nova Seq)">
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3341" name="BaseSpace Sequence Hub Configuration" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3342" name="Experiment Name" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3343" name="Index Read 1" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3344" name="Index Read 2" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3751" name="Library Tube Barcode" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3345" name="NaOH" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3346" name="Paired End" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3347" name="Read 1 Cycles" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3348" name="Read 2 Cycles" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3349" name="Resuspension Buffer (RSB)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3350" name="Run Mode" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3351" name="Sample Sheet Path" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3352" name="Tris-HCl" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3353" name="Use Custom Index Read 1 Primer" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3354" name="Use Custom Read 1 Primer" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3355" name="Use Custom Read 2 Primer" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3356" name="Workflow" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3357" name="Workflow Type" />
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1706" name="Set Run Mode">
+        <string>bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/ngs-common/v5/EPP/ngs-extensions.jar -i {stepURI:v2} -u {username} -p {password} \
+    script:evaluateDynamicExpression \
+        -exp 'output.::Flowcell Type:: = input.::Flowcell Type:: ; step.::Run Mode:: = input.::Flowcell Type:: ; output.::Loading Workflow Type:: = input.::Loading Workflow Type:: ; if (!step.::Experiment Name::.matches(::[a-zA-Z0-9-_]+::)) { fail(::Experiment Name contains prohibited characters. Allowed characters are: a-z, A-Z, 0-9, -, and _::) }; if (step.::Workflow Type:: == ::No Index::) { if (step.::Index Read 1:: != 0) { fail(::Index Read 1 must be 0 if the Workflow Type is No Index.::) } } else { if (step.::Index Read 1:: == 0) { fail(::Index Read 1 must be greater than 0 if the Workflow Type is :: + step.::Workflow Type:: + ::.::) } }; nextStep = ::ADVANCE::' \
+        -log {compoundOutputFileLuid2} \
+        -t true"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1615" name="Validate Flowcell Barcode">
+        <string>bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/ngs-common/v5/EPP/ngs-extensions.jar -i {stepURI:v2} -u {username} -p {password} \
+    script:evaluateDynamicExpression \
+        -exp 'if (input.::Flowcell Type:: == ::S1:: &amp;&amp; !output.container.name.matches( ::[A-Za-z0-9]{5}DRX[A-Za-z0-9]{1}:: ) ) {fail ( ::Invalid Flowcell Barcode. Please verify and try again.:: ) } ; if (input.::Flowcell Type:: == ::S2:: &amp;&amp; !output.container.name.matches( ::[A-Za-z0-9]{5}DMX[A-Za-z0-9]{1}:: ) ) {fail ( ::Invalid Flowcell Barcode. Please verify and try again.:: ) } ; if (input.::Flowcell Type:: == ::S4:: &amp;&amp; !output.container.name.matches( ::[A-Za-z0-9]{5}DSX[A-Za-z0-9]{1}:: ) ) {fail ( ::Invalid Flowcell Barcode. Please verify and try again.:: ) } ; output.::Flowcell Type:: = input.::Flowcell Type::' \
+        -log {compoundOutputFileLuid2}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <process-input>
+        <artifact-type>Analyte</artifact-type>
+        <display-name>Analyte</display-name>
+        <remove-working-flag>true</remove-working-flag>
+    </process-input>
+    <process-output>
+        <artifact-type>Analyte</artifact-type>
+        <display-name>Analyte</display-name>
+        <output-generation-type>PerInput</output-generation-type>
+        <variability-type>Variable</variability-type>
+        <output-name>{InputItemName}</output-name>
+        <assign-working-flag>true</assign-working-flag>
+    </process-output>
+    <process-output>
+        <artifact-type>ResultFile</artifact-type>
+        <display-name>ResultFile</display-name>
+        <output-generation-type>PerAllInputs</output-generation-type>
+        <variability-type>Fixed</variability-type>
+        <number-of-outputs>3</number-of-outputs>
+        <output-name>{LIST:Run Recipe,Sample Sheet,Log File}</output-name>
+    </process-output>
+    <process-type-attribute name="Enabled">true</process-type-attribute>
+    <process-type-attribute name="Family">Configured</process-type-attribute>
+    <process-type-attribute name="ContextCode">FRA</process-type-attribute>
+    <process-type-attribute name="OutputContextCode">DN</process-type-attribute>
+    <process-type-attribute name="ConsumeVolume">true</process-type-attribute>
+    <process-type-attribute name="InheritsQC">false</process-type-attribute>
+    <process-type-attribute name="ModifyInputOutput">All</process-type-attribute>
+    <process-type-attribute name="OnlyEnableDoneAtLastPanel">true</process-type-attribute>
+    <process-type-attribute name="OutputContainerType">Library Tube</process-type-attribute>
+    <process-type-attribute name="OutputSorting">Input container and placement</process-type-attribute>
+    <process-type-attribute name="ProcessGroup">3. NovaSeq 6000</process-type-attribute>
+    <process-type-attribute name="ProcessTabView">Display the UDF information associated with all the outputs</process-type-attribute>
+    <process-type-attribute name="QCAdjustmentType">None</process-type-attribute>
+    <process-type-attribute name="SkipInputPanel">true</process-type-attribute>
+    <process-type-attribute name="VolumeAdjustmentType">None</process-type-attribute>
+    <permitted-containers />
+    <permitted-reagent-categories />
+    <required-reagent-kits />
+    <permitted-control-types />
+    <permitted-instrument-types />
+    <queue-fields />
+    <ice-bucket-fields />
+    <step-fields />
+    <sample-fields />
+    <step-properties>
+        <step-property value="column" name="placementDefaultPattern" />
+    </step-properties>
+    <epp-triggers />
+</ptp:process-type>
