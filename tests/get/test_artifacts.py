@@ -12,8 +12,6 @@ def test_get_latest_artifact(lims: Lims):
     # GIVEN a lims with a sample that has been run through the same
     # type of process three times but on different dates.
     server("test_get_artifacts")
-
-    print(server())
     sample_id = "ACC7236A52"
     process_type = "CG002 - Sort HiSeq Samples"
     last_date = "2020-12-28"
