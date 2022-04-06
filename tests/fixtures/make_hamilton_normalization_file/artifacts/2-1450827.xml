@@ -14,6 +14,6 @@
 <udf:field type="Numeric" name="Sample Volume (ul)">4</udf:field>
 <udf:field type="Numeric" name="Volume H2O (ul)">4</udf:field>
 <udf:field type="Numeric" name="Concentration">12</udf:field>
-<udf:field type="String" name="Barcode">newbarcode</udf:field>
+<udf:field type="String" name="Output Container Barcode">newbarcode</udf:field>
 <workflow-stages/>
 </art:artifact>

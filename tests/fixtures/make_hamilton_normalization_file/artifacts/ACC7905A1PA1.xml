@@ -15,7 +15,7 @@
 <udf:field type="Numeric" name="Concentration">12</udf:field>
 <udf:field type="Numeric" name="DIN Value">3</udf:field>
 <udf:field type="Numeric" name="Level of Multiplexing">4</udf:field>
-<udf:field type="String" name="Barcode">barcode1</udf:field>
+<udf:field type="String" name="Output Container Barcode">barcode1</udf:field>
 <artifact-group name="TWIST v3" uri="http://127.0.0.1:8000/api/v2/artifactgroups/1403"/>
 <artifact-group name="WGS PCR free v4" uri="http://127.0.0.1:8000/api/v2/artifactgroups/1303"/>
 <artifact-group name="CG001 Genotyping" uri="http://127.0.0.1:8000/api/v2/artifactgroups/701"/>

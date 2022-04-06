@@ -18,7 +18,7 @@
 <udf:field type="Numeric" name="Volume H2O (ul)">2</udf:field>
 <udf:field type="Numeric" name="Concentration">12</udf:field>
 <udf:field type="Numeric" name="DIN Value">3</udf:field>
-<udf:field type="String" name="Barcode">barcode2</udf:field>
+<udf:field type="String" name="Output Container Barcode">barcode2</udf:field>
 <workflow-stages>
 <workflow-stage status="COMPLETE" name="Aliquot samples for enzymatic fragmentation TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1601/stages/5105"/>
 <workflow-stage status="IN_PROGRESS" name="Aliquot samples for enzymatic fragmentation TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1601/stages/5105"/>
