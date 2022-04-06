@@ -13,9 +13,7 @@ class ProcessUDFs(BaseModel):
     """Bcl Conversion & Demultiplexing (Nova Seq)"""
 
     method_document: Optional[str] = Field(None, alias="Method Document")  # and atlas version pudf?
-    pct_Q30_bases_threshold: Optional[str] = Field(
-        None, alias="Threshold for % bases >= Q30"
-    )  # keep or not?
+    pct_Q30_bases_threshold: Optional[str] = Field(None, alias="Threshold for % bases >= Q30")
 
 
 class ArtifactUDFs(BaseModel):
@@ -58,9 +56,6 @@ def get_bcl_conversion_and_demultiplexing(
     process = Process(lims, id=process_id)
     process.get()
     artifacts = get_artifacts(process=process, reagent_label=True)
-    print("hkjhjkhjk")
-    print(process)
-    print(process.type)
     return ArnoldStep(
         process_udfs=ProcessUDFs(**dict(process.udf.items())),
         artifact_udfs=ArtifactUDFs(
