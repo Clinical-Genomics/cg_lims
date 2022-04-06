@@ -12,7 +12,8 @@ from cg_lims.models.arnold.base_step import BaseStep
 class ProcessUDFs(BaseModel):
     """Bcl Conversion & Demultiplexing (Nova Seq)"""
 
-    method_document: Optional[str] = Field(None, alias="Method Document")  # and atlas version pudf?
+    methods: Optional[str] = Field(None, alias="Methods")
+    atlas_version: Optional[str] = Field(None, alias="Atlas Version")
     pct_Q30_bases_threshold: Optional[str] = Field(None, alias="Threshold for % bases >= Q30")
 
 
