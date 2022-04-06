@@ -33,8 +33,12 @@ def get_file_data_and_write(
     """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells."""
 
     failed_samples = []
+    missing_source_barcode = []
+    missing_destination_barcode = []
     file_rows = []
     for destination_artifact in destination_artifacts:
+        if destination_artifact.udf.get("Output Container Barcode") is None:
+            missing_destination_barcode.append(destination_artifact.id)
         source_artifacts = destination_artifact.input_artifact_list()
         buffer = True
         for source_artifact in source_artifacts:
@@ -57,12 +61,10 @@ def get_file_data_and_write(
 
             file_rows.append([row_data_dict[header] for header in HEADERS])
 
+            if source_artifact.udf.get("Output Container Barcode") is None:
+                missing_source_barcode.append(source_artifact.id)
+
     build_csv(file=Path(file), rows=file_rows, headers=HEADERS)
-    #sort_csv(
-    #    file=Path(file),
-    #    columns=["Barcode Source Container", "Source Well", "Destination Well"],
-    #    well_columns=["Source Well", "Destination Well"],
-    #)
     sort_csv_plate_and_tube(file=Path(file),
                             plate_columns=["Barcode Source Container", "Source Well"],
                             tube_columns=["Destination Well"],
@@ -72,6 +74,12 @@ def get_file_data_and_write(
     if failed_samples:
         raise MissingUDFsError(
             f"All samples were not added to the file. Udfs missing for samples: {', '.join(failed_samples)}"
+        )
+    if missing_source_barcode or missing_destination_barcode:
+        raise MissingUDFsError(
+            f"Barcodes missing for some artifacts. "
+            f"Missing source barcode: {', '.join(missing_source_barcode)} "
+            f"Missing destination barcode: {', '.join(missing_destination_barcode)}."
         )
 
 

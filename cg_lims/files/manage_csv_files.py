@@ -120,4 +120,3 @@ def sort_csv_plate_and_tube(file: Path,
 
     sorted_data = pd.concat([sorted_plate_data_frame, sorted_tube_data_frame])
     sorted_data.to_csv(file.absolute(), index=False)
-
