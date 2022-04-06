@@ -1,121 +1,121 @@
 <?xml version='1.0' encoding='utf-8'?>
-<ptp:process-type xmlns:file="http://genologics.com/ri/file" xmlns:ptp="http://genologics.com/ri/processtype" uri="https://127.0.0.1:8000/api/v2/processtypes/1005" name="Bcl Conversion Demultiplexing (Nova Seq)">
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3303" name="Adapter Sequence"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3304" name="Additional Options"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/5355" name="Atlas Version"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3305" name="CASAVA"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3306" name="Comments"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3307" name="Document Version"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3308" name="Folder name for demultiplexed output"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3309" name="Ignore Missing Bcl"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3310" name="Ignore Missing Stats"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3313" name="MODE"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3311" name="Maximum clusters per FASTQ file"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3312" name="Method Document"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/5354" name="Methods"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3315" name="Number of CPU cores to use?"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3314" name="Number of allowed mismatches per index?"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3316" name="Run ID"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3317" name="Threshold for # Reads"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3319" name="Threshold for % Perfect Index Reads"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3318" name="Threshold for % bases >= Q30"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3320" name="Threshold for Undemultiplexed Index Yield"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3321" name="Tiles"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3322" name="Use Bases Mask"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/3323" name="With Failed Reads"/>
-<parameter uri="https://127.0.0.1:8000/api/v2/configuration/automations/673" name="Demultiplexing">
-<string>bash -c "/home/glsai/miniconda3/envs/epp_master/bin/bcl2fastq.py -p {processLuid}"</string>
-<run-program-per-event>false</run-program-per-event>
-<channel>limsserver</channel>
-<invocation-type>PostProcess</invocation-type>
-</parameter>
-<parameter uri="https://127.0.0.1:8000/api/v2/configuration/automations/2308" name="Queueing Samples NovaSeq (to RML v6)">
-<string>bash -c -l "conda activate cg_lims lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid} move place-samples-in-seq-agg -w 1753 -s 5501 -n 'Define Run Format and Calculate Volumes (Nova Seq)'  lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid} udf set method-document -pru 'Method Document' "</string>
-<run-program-per-event>false</run-program-per-event>
-<channel>limsserver</channel>
-<invocation-type>PostProcess</invocation-type>
-</parameter>
-<parameter uri="https://127.0.0.1:8000/api/v2/configuration/automations/1629" name="Set Next Steps - Remove">
-<string>bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/ngs-common/v5/EPP/ngs-extensions.jar -i {stepURI:v2} -u {username} -p {password} script:evaluateDynamicExpression -t false -h false -exp 'nextStep = ::REMOVE::' -log {compoundOutputFileLuid1}"</string>
-<run-program-per-event>false</run-program-per-event>
-<channel>limsserver</channel>
-<invocation-type>PostProcess</invocation-type>
-</parameter>
-<process-input>
-<artifact-type>Analyte</artifact-type>
-<display-name>Analyte</display-name>
-<remove-working-flag>true</remove-working-flag>
-</process-input>
-<process-output>
-<artifact-type>ResultFile</artifact-type>
-<display-name>ResultFile</display-name>
-<output-generation-type>PerAllInputs</output-generation-type>
-<variability-type>Fixed</variability-type>
-<number-of-outputs>1</number-of-outputs>
-<output-name>{LIST:EPP Log}</output-name>
-</process-output>
-<process-output>
-<artifact-type>ResultFile</artifact-type>
-<display-name>ResultFile</display-name>
-<output-generation-type>PerReagentLabel</output-generation-type>
-<variability-type>VariableByInput</variability-type>
-<output-name>{SubmittedSampleName} (FASTQ reads)</output-name>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/70" name="# Reads"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/74" name="% Bases >=Q30"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/73" name="% One Mismatch Reads (Index)"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/69" name="%PF"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/72" name="% Perfect Index Read"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/71" name="% of Raw Clusters Per Lane"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/75" name="Ave Q Score"/>
-<field-definition uri="https://127.0.0.1:8000/api/v2/configuration/udfs/68" name="Yield PF (Gb)"/>
-</process-output>
-<process-type-attribute name="Enabled">true</process-type-attribute>
-<process-type-attribute name="Family">Configured</process-type-attribute>
-<process-type-attribute name="ContextCode">DMX</process-type-attribute>
-<process-type-attribute name="OutputContextCode">DM</process-type-attribute>
-<process-type-attribute name="ConsumeVolume">true</process-type-attribute>
-<process-type-attribute name="InheritsQC">false</process-type-attribute>
-<process-type-attribute name="ModifyInputOutput">All</process-type-attribute>
-<process-type-attribute name="OnlyEnableDoneAtLastPanel">false</process-type-attribute>
-<process-type-attribute name="OutputSorting">Input LIMS ID</process-type-attribute>
-<process-type-attribute name="ProcessGroup">3. Illumina SBS</process-type-attribute>
-<process-type-attribute name="ProcessTabView">Display the UDF information associated with all the outputs</process-type-attribute>
-<process-type-attribute name="QCAdjustmentType">None</process-type-attribute>
-<process-type-attribute name="SkipInputPanel">true</process-type-attribute>
-<process-type-attribute name="VolumeAdjustmentType">None</process-type-attribute>
-<permitted-containers/>
-<permitted-reagent-categories/>
-<required-reagent-kits/>
-<permitted-control-types/>
-<permitted-instrument-types/>
-<queue-fields/>
-<ice-bucket-fields/>
-<step-fields>
-<step-field style="USER_DEFINED" attach-to="ConfiguredProcess" name="Comments"/>
-<step-field style="USER_DEFINED" attach-to="ConfiguredProcess" name="Method Document"/>
-<step-field style="USER_DEFINED" attach-to="ConfiguredProcess" name="Threshold for % bases >= Q30"/>
-</step-fields>
-<sample-fields>
-<sample-field style="USER_DEFINED" attach-to="ResultFile" name="# Reads"/>
-<sample-field style="USER_DEFINED" attach-to="ResultFile" name="% Bases >=Q30"/>
-<sample-field style="USER_DEFINED" attach-to="ResultFile" name="% Perfect Index Read"/>
-<sample-field style="USER_DEFINED" attach-to="Analyte" name="% Phasing R1"/>
-<sample-field style="USER_DEFINED" attach-to="Analyte" name="% Phasing R2"/>
-<sample-field style="USER_DEFINED" attach-to="Analyte" name="% Prephasing R1"/>
-<sample-field style="USER_DEFINED" attach-to="Analyte" name="% Prephasing R2"/>
-<sample-field style="BUILT_IN" attach-to="Container" name="Container Name"/>
-<sample-field style="BUILT_IN" attach-to="Project" name="Project Name"/>
-<sample-field style="BUILT_IN" attach-to="Analyte" name="Reagent Name"/>
-<sample-field style="BUILT_IN" attach-to="Analyte" name="Sample Name"/>
-<sample-field style="BUILT_IN" attach-to="Container" name="Well"/>
-</sample-fields>
-<step-properties>
-<step-property value="false" name="measurementWithFile"/>
-<step-property value="true" name="qcProtocolStep"/>
-<step-property value="true" name="expandContainerGroupsCheckBox"/>
-<step-property value="row" name="placementDefaultPattern"/>
-</step-properties>
-<epp-triggers>
-<epp-trigger status="RECORD_DETAILS" point="AFTER" type="AUTOMATIC" name="Set Next Steps - Remove"/>
-</epp-triggers>
+<ptp:process-type xmlns:ptp="http://genologics.com/ri/processtype" uri="http://127.0.0.1:8000/api/v2/processtypes/1005" name="Bcl Conversion amp; Demultiplexing (Nova Seq)">
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3303" name="Adapter Sequence" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3304" name="Additional Options" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/5355" name="Atlas Version" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3305" name="CASAVA" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3306" name="Comments" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3307" name="Document Version" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3308" name="Folder name for demultiplexed output" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3309" name="Ignore Missing Bcl" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3310" name="Ignore Missing Stats" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3313" name="MODE" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3311" name="Maximum clusters per FASTQ file" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3312" name="Method Document" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/5354" name="Methods" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3315" name="Number of CPU cores to use?" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3314" name="Number of allowed mismatches per index?" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3316" name="Run ID" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3317" name="Threshold for # Reads" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3319" name="Threshold for % Perfect Index Reads" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3318" name="Threshold for % bases gt;= Q30" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3320" name="Threshold for Undemultiplexed Index Yield" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3321" name="Tiles" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3322" name="Use Bases Mask" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3323" name="With Failed Reads" />
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/673" name="Demultiplexing">
+        <string>bash -c "/home/glsai/miniconda3/envs/epp_master/bin/bcl2fastq.py -p {processLuid}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/2308" name="Queueing Samples NovaSeq (to RML v6)">
+        <string>bash -c -l "conda activate cg_lims amp;amp;  lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid}  move place-samples-in-seq-agg -w 1753 -s 5501 -n 'Define Run Format and Calculate Volumes (Nova Seq)'  amp;amp;  lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid} udf set method-document -pru 'Method Document' "</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1629" name="Set Next Steps - Remove">
+        <string>bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/ngs-common/v5/EPP/ngs-extensions.jar -i {stepURI:v2} -u {username} -p {password} script:evaluateDynamicExpression -t false -h false -exp 'nextStep = ::REMOVE::' -log {compoundOutputFileLuid1}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <process-input>
+        <artifact-type>Analyte</artifact-type>
+        <display-name>Analyte</display-name>
+        <remove-working-flag>true</remove-working-flag>
+    </process-input>
+    <process-output>
+        <artifact-type>ResultFile</artifact-type>
+        <display-name>ResultFile</display-name>
+        <output-generation-type>PerReagentLabel</output-generation-type>
+        <variability-type>VariableByInput</variability-type>
+        <output-name>{SubmittedSampleName} (FASTQ reads)</output-name>
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/70" name="# Reads" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/74" name="% Bases gt;=Q30" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/73" name="% One Mismatch Reads (Index)" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/69" name="%PF" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/72" name="% Perfect Index Read" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/71" name="% of Raw Clusters Per Lane" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/75" name="Ave Q Score" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/68" name="Yield PF (Gb)" />
+    </process-output>
+    <process-output>
+        <artifact-type>ResultFile</artifact-type>
+        <display-name>ResultFile</display-name>
+        <output-generation-type>PerAllInputs</output-generation-type>
+        <variability-type>Fixed</variability-type>
+        <number-of-outputs>1</number-of-outputs>
+        <output-name>{LIST:EPP Log}</output-name>
+    </process-output>
+    <process-type-attribute name="Enabled">true</process-type-attribute>
+    <process-type-attribute name="Family">Configured</process-type-attribute>
+    <process-type-attribute name="ContextCode">DMX</process-type-attribute>
+    <process-type-attribute name="OutputContextCode">DM</process-type-attribute>
+    <process-type-attribute name="ConsumeVolume">true</process-type-attribute>
+    <process-type-attribute name="InheritsQC">false</process-type-attribute>
+    <process-type-attribute name="ModifyInputOutput">All</process-type-attribute>
+    <process-type-attribute name="OnlyEnableDoneAtLastPanel">false</process-type-attribute>
+    <process-type-attribute name="OutputSorting">Input LIMS ID</process-type-attribute>
+    <process-type-attribute name="ProcessGroup">3. Illumina SBS</process-type-attribute>
+    <process-type-attribute name="ProcessTabView">Display the UDF information associated with all the outputs</process-type-attribute>
+    <process-type-attribute name="QCAdjustmentType">None</process-type-attribute>
+    <process-type-attribute name="SkipInputPanel">true</process-type-attribute>
+    <process-type-attribute name="VolumeAdjustmentType">None</process-type-attribute>
+    <permitted-containers />
+    <permitted-reagent-categories />
+    <required-reagent-kits />
+    <permitted-control-types />
+    <permitted-instrument-types />
+    <queue-fields />
+    <ice-bucket-fields />
+    <step-fields>
+        <step-field style="USER_DEFINED" attach-to="ConfiguredProcess" name="Comments" />
+        <step-field style="USER_DEFINED" attach-to="ConfiguredProcess" name="Method Document" />
+        <step-field style="USER_DEFINED" attach-to="ConfiguredProcess" name="Threshold for % bases gt;= Q30" />
+    </step-fields>
+    <sample-fields>
+        <sample-field style="USER_DEFINED" attach-to="ResultFile" name="# Reads" />
+        <sample-field style="USER_DEFINED" attach-to="ResultFile" name="% Bases gt;=Q30" />
+        <sample-field style="USER_DEFINED" attach-to="ResultFile" name="% Perfect Index Read" />
+        <sample-field style="USER_DEFINED" attach-to="Analyte" name="% Phasing R1" />
+        <sample-field style="USER_DEFINED" attach-to="Analyte" name="% Phasing R2" />
+        <sample-field style="USER_DEFINED" attach-to="Analyte" name="% Prephasing R1" />
+        <sample-field style="USER_DEFINED" attach-to="Analyte" name="% Prephasing R2" />
+        <sample-field style="BUILT_IN" attach-to="Container" name="Container Name" />
+        <sample-field style="BUILT_IN" attach-to="Project" name="Project Name" />
+        <sample-field style="BUILT_IN" attach-to="Analyte" name="Reagent Name" />
+        <sample-field style="BUILT_IN" attach-to="Analyte" name="Sample Name" />
+        <sample-field style="BUILT_IN" attach-to="Container" name="Well" />
+    </sample-fields>
+    <step-properties>
+        <step-property value="false" name="measurementWithFile" />
+        <step-property value="true" name="qcProtocolStep" />
+        <step-property value="true" name="expandContainerGroupsCheckBox" />
+        <step-property value="row" name="placementDefaultPattern" />
+    </step-properties>
+    <epp-triggers>
+        <epp-trigger status="RECORD_DETAILS" point="AFTER" type="AUTOMATIC" name="Set Next Steps - Remove" />
+    </epp-triggers>
 </ptp:process-type>
