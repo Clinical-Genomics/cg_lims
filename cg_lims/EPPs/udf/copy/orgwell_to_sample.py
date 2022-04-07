@@ -14,7 +14,7 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 def org_well_to_sample(
-    artifacts: List[Artifact]
+    artifacts: list
 ) -> None:
     """Function to copy artifact udf location and set to sample level.
 
@@ -24,32 +24,27 @@ def org_well_to_sample(
 
     Arguments:
         artifacts: list of artifacts to copy from"""
-    
+
     failed_udfs = 0
     passed_udfs = 0
-    print("HI")
     for artifact in artifacts:
-        print(artifact.samples)
         if artifact.parent_process == None and len(artifact.samples) == 1:
-            click.echo(artifact.samples)
-            print(len(artifact.samples) == 1)
             for sample in artifact.samples:
                 try:
                     sample.udf['Original Well'] = artifact.location[1]
                     sample.udf['Original Container'] = artifact.location[0].name
                     sample.put()
-                    click.echo(artifact.location[1])
                     passed_udfs += 1
                 except:
                     failed_udfs += 1    
-
         else:
             if artifact.parent_process:
+                click.echo("HI3")
                 LOG.error(
                     f"Error: Not the first step for sample {artifact.id}. Can therefor not get the original container."
                 )
-
             elif len(artifact.samples)!=1:
+                click.echo("HI4")
                 LOG.error(
                     f"Error: more than one sample per artifact for {artifact.id}. Assumes a 1-1 relation between sample and artifact."
                 )
@@ -57,8 +52,6 @@ def org_well_to_sample(
                 LOG.error(
                     f"Error: unknown error for {artifact.id}."
                 )
-
-
     if failed_udfs:
         raise MissingUDFsError(
             message=f"The udf 'Original Well' or 'Original Container' is missing for {failed_udfs} artifacts. Udfs were set on {passed_udfs} samples."
