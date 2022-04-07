@@ -78,7 +78,7 @@ def get_file_data_and_write(
     if missing_source_barcode or missing_destination_barcode:
         raise MissingUDFsError(
             f"Barcodes missing for some artifacts. "
-            f"Missing source barcode: {', '.join(missing_source_barcode)}."
+            f"Missing source barcode: {', '.join(missing_source_barcode)}. "
             f"Missing destination barcode: {', '.join(missing_destination_barcode)}."
         )
 
