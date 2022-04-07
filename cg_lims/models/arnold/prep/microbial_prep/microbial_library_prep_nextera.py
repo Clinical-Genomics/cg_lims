@@ -19,6 +19,8 @@ class ProcessUDFS(BaseModel):
     pcr_instrument_incubation: Optional[str] = Field(None, alias="PCR instrument incubation")
     pcr_instrument_amplification: Optional[str] = Field(None, alias="PCR instrument amplification")
     nr_pcr_cycles: Optional[int] = Field(None, alias="Nr PCR cycles")
+    methods: Optional[str] = Field(None, alias="Methods")
+    atlas_version: Optional[str] = Field(None, alias="Atlas Version")
 
 
 class ArnoldStep(BaseStep):

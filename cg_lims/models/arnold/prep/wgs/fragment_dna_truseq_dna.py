@@ -15,6 +15,8 @@ class ProcessUDFS(BaseModel):
     lot_nr_resuspension_buffer_fragmentation: Optional[str] = Field(
         None, alias="Lot no: Resuspension Buffer"
     )
+    methods: Optional[str] = Field(None, alias="Methods")
+    atlas_version: Optional[str] = Field(None, alias="Atlas Version")
 
 
 class ArnoldStep(BaseStep):
