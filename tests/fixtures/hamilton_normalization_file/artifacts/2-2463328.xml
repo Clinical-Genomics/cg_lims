@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2463328?state=1945828" limsid="2-2463328">
+    <name>2022-06590-03</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-315073" limsid="24-315073" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-246276" limsid="27-246276" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9571A2" limsid="ACC9571A2" />
+    <udf:field type="Numeric" name="Volume Beads (ul)">300</udf:field>
+    <udf:field type="Numeric" name="Volume Elution (ul)">120</udf:field>
+    <udf:field type="Numeric" name="Sample Volume (ul)">150</udf:field>
+    <udf:field type="String" name="Output Container Barcode">123abc</udf:field>
+    <workflow-stages>
+        <workflow-stage status="SKIPPED" name="Initial QC TWIST v3" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1851/stages/6512" />
+        <workflow-stage status="IN_PROGRESS" name="Aliquot samples for enzymatic fragmentation TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1851/stages/6513" />
+    </workflow-stages>
+</art:artifact>

@@ -109,10 +109,10 @@ def kapa_library_preparation_file_missing_udf() -> str:
 
 
 @pytest.fixture
-def hamilton_normalization_file() -> str:
+def hamilton_normalization_csv() -> str:
     """Get file path to valid json"""
 
-    file_path = "tests/fixtures/hamilton_normalization.txt"
+    file_path = "tests/fixtures/hamilton_normalization_csv.txt"
     file = Path(file_path)
     return file.read_text()
 

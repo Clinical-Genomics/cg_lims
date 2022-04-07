@@ -1,0 +1,6 @@
+Source Labware,Barcode Source Container,Source Well,Sample Volume,Destination Labware,Barcode Destination Container,Destination Well,Buffer Volume
+96 well plate,,A1,1.0568232737848644,96 well plate,barcode_123,A1,0.0
+96 well plate,,F3,2.6932665642626867,96 well plate,barcode_123,A1,0.0
+96 well plate,,C9,2.5106703489831785,96 well plate,barcode_123,A1,0.0
+96 well plate,,D9,3.004145721095111,96 well plate,barcode_123,A1,0.0
+96 well plate,,E9,8.408825903668491,96 well plate,barcode_123,B2,0.8560800044573487
