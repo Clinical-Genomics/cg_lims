@@ -5,6 +5,7 @@ from typing import List
 import pandas as pd
 
 from cg_lims.exceptions import CSVColumnError
+pd.set_option('mode.chained_assignment', None)
 
 
 def make_plate_file(
