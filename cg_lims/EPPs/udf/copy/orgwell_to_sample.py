@@ -8,7 +8,7 @@ from genologics.entities import Process, Artifact
 from genologics.lims import Lims
 
 from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.exceptions import LimsError, InvalidValueError
 from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
@@ -39,24 +39,27 @@ def org_well_to_sample(
                     failed_udfs += 1    
         else:
             if artifact.parent_process:
-                click.echo("HI3")
                 LOG.error(
                     f"Error: Not the first step for sample {artifact.id}. Can therefor not get the original container."
                 )
+                failed_udfs += 1
+
             elif len(artifact.samples)!=1:
-                click.echo("HI4")
                 LOG.error(
                     f"Error: more than one sample per artifact for {artifact.id}. Assumes a 1-1 relation between sample and artifact."
                 )
+                failed_udfs += 1
+
             else:
                 LOG.error(
                     f"Error: unknown error for {artifact.id}."
                 )
-    if failed_udfs:
-        raise MissingUDFsError(
-            message=f"The udf 'Original Well' or 'Original Container' is missing for {failed_udfs} artifacts. Udfs were set on {passed_udfs} samples."
-        )
+                failed_udfs += 1
 
+    if failed_udfs:
+        raise InvalidValueError(
+            message=f"Failed to set 'Original Well' and 'Original Container' for {failed_udfs} artifacts. Udfs were set on {passed_udfs} samples."
+        )
 
 @click.command()
 @options.input(
@@ -72,6 +75,8 @@ def orgwell_to_sample(ctx, input):
         org_well_to_sample(
             artifacts
             )
+        message = "Udfs have been set on all samples."
+        LOG.info(message)
         click.echo("Udfs have been set on all samples.")
     except LimsError as e:
         sys.exit(e.message)
