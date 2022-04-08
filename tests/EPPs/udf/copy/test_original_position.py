@@ -1,19 +1,13 @@
 from genologics.entities import Artifact, Process
-import click
-from cg_lims.EPPs.udf.copy.orgwell_to_sample import orgwell_to_sample, org_well_to_sample
+from cg_lims.EPPs.udf.copy.orgwell_to_sample import org_well_to_sample
 from tests.conftest import server
+from cg_lims.exceptions import InvalidValueError
 import pytest
-from cg_lims.get.artifacts import get_artifacts
-
 
 def test_assign_position(lims):
-    # GIVEN artifacts with container, random well position and without parent steps.
+    # GIVEN artifacts with container, position and without parent steps.
     server("reception_control_twist")
-    process = Process(lims, id="24-315065")
-    artifacts = get_artifacts(process=process, input=True)
-
     artifacts = [Artifact(lims=lims, id="ACC9476A2PA1"), Artifact(lims=lims, id="ACC9476A3PA1")]
-    print(artifacts)
 
     # When running function orgwell_to_sample.
     org_well_to_sample(artifacts=artifacts)
@@ -21,11 +15,38 @@ def test_assign_position(lims):
     # THEN the corresponding sample will have the matching 'Original Well' and 'Original Container'.
     for artifact in artifacts:
         sample = artifact.samples[0]
-        print(
-            "Sample Original Well:",
-            sample.udf["Original Well"],
-            ". Artifact:",
-            artifact.location[1],
-        )
         assert sample.udf["Original Well"] == artifact.location[1]
         assert sample.udf["Original Container"] == artifact.location[0].name
+
+def test_replace(lims):
+    # GIVEN artifacts with container, position and without parent steps.
+    # And sample with already assigned 'Original Well' and 'Original Container'.
+    server("reception_control_twist")
+    artifact = [Artifact(lims=lims, id="ACC9476A23PA1")]
+    sample = artifact[0].samples[0]
+    sample.udf['Original Well'] = "foo"
+    sample.udf['Original Container'] = "bar"
+    sample.put()
+
+    # When running function org_well_to_sample.
+    if artifact[0].location[1] == None and artifact[0].location[0].name != None:
+        org_well_to_sample(artifact)
+    
+    # THEN the corresponding sample will have the matching 'Original Well' and 'Original Container'.
+    assert sample.udf["Original Well"] == artifact[0].location[1]
+    assert sample.udf["Original Container"] == artifact[0].location[0].name
+
+def test_replace(lims):
+    # GIVEN artifacts with parent steps.
+    server("covid_prep")
+    artifacts = [Artifact(lims=lims, id="2-1837696"), Artifact(lims=lims, id="2-1837697")]
+
+    for artifact in artifacts:
+        if artifact.parent_process == None:
+            exit()
+
+    org_well_to_sample(artifacts)
+    # WHEN running function artifacts_to_sample.
+    # THEN MissingUDFsERROR should be raised.
+    with pytest.raises(InvalidValueError) as error_message:
+        org_well_to_sample(artifacts)
