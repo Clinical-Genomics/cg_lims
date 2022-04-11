@@ -2,6 +2,7 @@ from genologics.entities import Artifact, Process
 from cg_lims.EPPs.udf.copy.orgwell_to_sample import org_well_to_sample
 from tests.conftest import server
 from cg_lims.exceptions import InvalidValueError
+from cg_lims.get.artifacts import get_artifacts
 import pytest
 
 def test_assign_position(lims):
@@ -29,14 +30,14 @@ def test_replace(lims):
     sample.put()
 
     # When running function org_well_to_sample.
-    if artifact[0].location[1] == None and artifact[0].location[0].name != None:
+    if artifact[0].location[1] != None and artifact[0].location[0].name != None:
         org_well_to_sample(artifact)
     
     # THEN the corresponding sample will have the matching 'Original Well' and 'Original Container'.
     assert sample.udf["Original Well"] == artifact[0].location[1]
     assert sample.udf["Original Container"] == artifact[0].location[0].name
 
-def test_replace(lims):
+def test_exceptions_with_parent(lims):
     # GIVEN artifacts with parent steps.
     server("covid_prep")
     artifacts = [Artifact(lims=lims, id="2-1837696"), Artifact(lims=lims, id="2-1837697")]
@@ -44,9 +45,33 @@ def test_replace(lims):
     for artifact in artifacts:
         if artifact.parent_process == None:
             exit()
-
-    org_well_to_sample(artifacts)
-    # WHEN running function artifacts_to_sample.
-    # THEN MissingUDFsERROR should be raised.
+    
+    # WHEN running function org_well_to_sample.
+    # THEN InvalidValueError should be raised.
     with pytest.raises(InvalidValueError) as error_message:
-        org_well_to_sample(artifacts)
+        org_well_to_sample(artifacts=artifacts)
+
+def test_exceptions_with_parent(lims):
+    # GIVEN artifacts with parent steps.
+    server("covid_prep")
+    artifacts = [Artifact(lims=lims, id="2-1837696"), Artifact(lims=lims, id="2-1837697")]
+
+    for artifact in artifacts:
+        if artifact.parent_process == None:
+            exit()
+    
+    # WHEN running function org_well_to_sample.
+    # THEN InvalidValueError should be raised.
+    with pytest.raises(InvalidValueError) as error_message:
+        org_well_to_sample(artifacts=artifacts)
+
+#def test_exceptions_pool(lims):
+    # GIVEN a pool
+#    server("missing_reads_pool")
+#    process = Process(lims, id="24-196210")
+#    artifacts = get_artifacts(process=process, input = True)
+#    print(artifacts)
+
+    # WHEN running function org_well_to_sample.
+    # THEN InvalidValueError should be raised.
+
