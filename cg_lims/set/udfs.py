@@ -14,6 +14,7 @@ def copy_artifact_to_artifact(
     source_artifact: Artifact,
     artifact_udfs: List[Tuple[str, str]],
     qc_flag: bool = False,
+    keep_failed_flags: bool = False,
 ) -> None:
     """Copying artifact udfs from source artifact to destination artifact.
     Will also copy qc_flag if set to True
@@ -28,9 +29,16 @@ def copy_artifact_to_artifact(
             missing_udfs += 1
             continue
         destination_artifact.udf[destination_udf] = source_artifact.udf[source_udf]
-        if qc_flag:
-            destination_artifact.qc_flag = source_artifact.qc_flag
         artifacts_to_put = True
+
+    if qc_flag:
+        if keep_failed_flags and destination_artifact.qc_flag == "FAILED":
+            message = f"QC for destination artifact {destination_artifact.id} is failed, " \
+                      f"flag not copied over from source artifact {source_artifact.id}"
+            LOG.error(message)
+        else:
+            destination_artifact.qc_flag = source_artifact.qc_flag
+            artifacts_to_put = True
 
     if artifacts_to_put:
         destination_artifact.put()
