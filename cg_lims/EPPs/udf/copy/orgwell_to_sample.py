@@ -8,7 +8,7 @@ from genologics.entities import Process, Artifact
 from genologics.lims import Lims
 
 from cg_lims import options
-from cg_lims.exceptions import LimsError, InvalidValueError
+from cg_lims.exceptions import LimsError, InvalidValueError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
@@ -25,8 +25,8 @@ def org_well_to_sample(
     Arguments:
         artifacts: list of artifacts to copy from"""
 
-    failed_udfs = 0
-    passed_udfs = 0
+    failed = 0
+    passed = 0
     for artifact in artifacts:
         if artifact.parent_process == None and len(artifact.samples) == 1:
             for sample in artifact.samples:
@@ -34,31 +34,34 @@ def org_well_to_sample(
                     sample.udf['Original Well'] = artifact.location[1]
                     sample.udf['Original Container'] = artifact.location[0].name
                     sample.put()
-                    passed_udfs += 1
+                    passed += 1
                 except:
-                    failed_udfs += 1    
+                    LOG.error(
+                    f"Error: Sample {artifact.id} missing udf location. Can therefor not assign values."
+                )
+                    failed += 1    
         else:
             if artifact.parent_process:
                 LOG.error(
                     f"Error: Not the first step for sample {artifact.id}. Can therefor not get the original container."
                 )
-                failed_udfs += 1
+                failed += 1
 
             elif len(artifact.samples)!=1:
                 LOG.error(
                     f"Error: more than one sample per artifact for {artifact.id}. Assumes a 1-1 relation between sample and artifact."
                 )
-                failed_udfs += 1
-
+                failed += 1
+            
             else:
                 LOG.error(
                     f"Error: unknown error for {artifact.id}."
                 )
-                failed_udfs += 1
+                failed += 1
 
-    if failed_udfs:
+    if failed:
         raise InvalidValueError(
-            message=f"Failed to set 'Original Well' and 'Original Container' for {failed_udfs} artifacts. Udfs were set on {passed_udfs} samples."
+            message=f"Failed to set 'Original Well' and 'Original Container' for {failed} artifacts. Udfs were set on {passed} samples."
         )
 
 @click.command()
