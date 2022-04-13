@@ -1,8 +1,8 @@
 """Base cg_lims calss definitions
 """
-from typing import Optional
+from typing import Optional, List
 
-from genologics.entities import Artifact, Sample
+from genologics.entities import Artifact, Sample, Process
 from genologics.lims import Lims
 
 from cg_lims.exceptions import (
@@ -11,8 +11,12 @@ from cg_lims.exceptions import (
     MissingArtifactError,
     MissingProcessError,
 )
-from cg_lims.get.artifacts import get_sample_artifact, get_latest_artifact
+from cg_lims.get.artifacts import (
+    get_sample_artifact,
+    get_latest_analyte,
+)
 import logging
+from statistics import mean
 
 LOG = logging.getLogger(__name__)
 
@@ -56,6 +60,14 @@ class BaseAnalyte:
         self.process_type: str = process_type
         self.optional_step: bool = optional_step
         self.artifact: Optional[Artifact] = self.get_artifact()
+        self.process = self.get_process()
+
+    def get_process(self) -> Optional[Process]:
+        """Returning parent process if existing"""
+        try:
+            return self.artifact.parent_process
+        except:
+            return None
 
     def get_well(self) -> Optional[str]:
         """Returning artifact well if existing."""
@@ -110,7 +122,7 @@ class BaseAnalyte:
             sample = Sample(self.lims, id=self.sample_id)
             return get_sample_artifact(sample=sample, lims=self.lims)
         try:
-            return get_latest_artifact(
+            return get_latest_analyte(
                 lims=self.lims, sample_id=self.sample_id, process_types=[self.process_type]
             )
         except MissingArtifactError as e:
@@ -121,21 +133,18 @@ class BaseAnalyte:
 
     def get_date(self):
         """Date when artifact was produced."""
-        if not (
-            self.artifact and self.artifact.parent_process and self.artifact.parent_process.date_run
-        ):
+        if not (self.process and self.process.date_run):
             return None
 
-        return self.artifact.parent_process.date_run
+        return self.process.date_run
 
     def process_udfs(self) -> dict:
         """Filtering process udfs by process_udf_model."""
-        if self.artifact and self.artifact.parent_process:
-            return dict(self.artifact.parent_process.udf.items())
+        if self.process:
+            return dict(self.process.udf.items())
 
         if self.optional_step:
             return {}
-
         raise MissingProcessError(
             message=f"sample didnt pass through requiered process {self.process_type}"
         )

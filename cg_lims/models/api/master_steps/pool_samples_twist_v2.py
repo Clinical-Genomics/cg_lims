@@ -4,7 +4,7 @@ from genologics.entities import Artifact, Process
 from pydantic import Field, validator
 
 from cg_lims.models.api.master_steps.base_step import get_artifact_udf, BaseStep
-from cg_lims.get.artifacts import get_latest_artifact
+from cg_lims.get.artifacts import get_latest_analyte
 
 
 class PoolsamplesforhybridizationTWIST(BaseStep):
@@ -16,7 +16,7 @@ class PoolsamplesforhybridizationTWIST(BaseStep):
     @validator("artifact", always=True)
     def get_artifact(cls, v, values):
         try:
-            return get_latest_artifact(
+            return get_latest_analyte(
                 lims=values.get("lims"),
                 sample_id=values.get("sample_id"),
                 process_types=["pool samples TWIST v2"],

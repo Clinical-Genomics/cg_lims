@@ -5,30 +5,30 @@ from pydantic.main import BaseModel
 from pydantic import Field
 
 from cg_lims.objects import BaseAnalyte
-from cg_lims.models.arnold.prep.base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 
 
 class ProcessUDFs(BaseModel):
     lot_nr_truseq_library_preparation_kit: Optional[str] = Field(
         None, alias="Lot no: TruSeq DNA PCR-Free Sample Prep Kit"
     )
-    lot_nr_index: str = Field(..., alias="Lot no: Adaptor Plate")
-    lot_nr_beads: str = Field(..., alias="Lot no: SP Beads")
+    lot_nr_index: Optional[str] = Field(None, alias="Lot no: Adaptor Plate")
+    lot_nr_beads: Optional[str] = Field(None, alias="Lot no: SP Beads")
     lot_nr_lucigen_library_preparation_kit: Optional[str] = Field(
         None, alias="Lot no: Lucigen prep kit"
     )
-    pcr_instrument_incubation: str = Field(..., alias="PCR machine")
-    lot_nr_h2o_library_preparation: str = Field(..., alias="Lot no: Nuclease free water")
+    pcr_instrument_incubation: Optional[str] = Field(None, alias="PCR machine")
+    lot_nr_h2o_library_preparation: Optional[str] = Field(None, alias="Lot no: Nuclease free water")
     lot_nr_resuspension_buffer_library_preparation: Optional[str] = Field(
         None, alias="Lot no: Resuspension buffer"
     )
-    library_preparation_method: str = Field(..., alias="Method document")
-    lot_nr_etoh_library_preparation: str = Field(..., alias="Ethanol lot")
+    library_preparation_method: Optional[str] = Field(None, alias="Method document")
+    lot_nr_etoh_library_preparation: Optional[str] = Field(None, alias="Ethanol lot")
 
 
 class ArtifactUDFs(BaseModel):
     finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
-    finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
+    finished_library_concentration_nm: Optional[float] = Field(None, alias="Concentration (nM)")
     finished_library_size: Optional[int] = Field(None, alias="Size (bp)")
 
 

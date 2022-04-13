@@ -3,7 +3,7 @@ from typing import Optional
 from genologics.lims import Lims
 from pydantic import Field, BaseModel
 from cg_lims.objects import BaseAnalyte
-from cg_lims.models.arnold.prep.base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 
 
 class ArtifactUDFs(BaseModel):
@@ -12,10 +12,10 @@ class ArtifactUDFs(BaseModel):
 
 
 class ProcessUDFs(BaseModel):
-    lot_nr_blockers: str = Field(..., alias="Blockers")
-    lot_nr_hybridization_kit: str = Field(..., alias="TWIST Hybridization kit")
-    pcr_instrument_hybridization: str = Field(..., alias="Thermal cycler")
-    hybridization_method: str = Field(..., alias="Method document")
+    lot_nr_blockers: Optional[str] = Field(None, alias="Blockers")
+    lot_nr_hybridization_kit: Optional[str] = Field(None, alias="TWIST Hybridization kit")
+    pcr_instrument_hybridization: Optional[str] = Field(None, alias="Thermal cycler (hyb)")
+    hybridization_method: Optional[str] = Field(None, alias="Method document")
 
 
 class ArnoldStep(BaseStep):
@@ -30,7 +30,7 @@ def get_hybridize_library_twist(lims: Lims, sample_id: str, prep_id: str) -> Arn
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Hybridize Library TWIST v2",
+        process_type="Target enrichment TWIST v1",
     )
 
     return ArnoldStep(

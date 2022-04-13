@@ -8,7 +8,7 @@ from .normalization_of_microbial_samples import get_normalization_of_mictobial_s
 from .buffer_exchange import get_buffer_exchange
 from .normailzation_of_microbial_samples_for_sequencing import get_normalization_of_samples
 from .post_pcr_bead_purification import get_post_bead_pcr_purification
-from ..base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 
 
 def build_microbial_step_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:

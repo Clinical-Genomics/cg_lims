@@ -11,12 +11,14 @@ from cg_lims.EPPs.udf.copy.artifact_to_artifact import artifact_to_artifact
 from cg_lims.EPPs.udf.copy.process_to_artifact import process_to_artifact
 from cg_lims.EPPs.udf.copy.qc_to_sample import qc_to_sample
 from cg_lims.EPPs.udf.copy.orgwell_to_sample import orgwell_to_sample
+from cg_lims.EPPs.udf.copy.aggregate_qc_flags_and_copy_fields import aggregate_qc_and_copy_fields
 
 @click.group(invoke_without_command=True)
 @click.pass_context
 def copy(ctx):
     """Main entry point of copy commands"""
     pass
+
 
 copy.add_command(artifact_to_sample)
 copy.add_command(sample_to_artifact)
@@ -26,3 +28,4 @@ copy.add_command(artifact_to_artifact)
 copy.add_command(process_to_artifact)
 copy.add_command(qc_to_sample)
 copy.add_command(orgwell_to_sample)
+copy.add_command(aggregate_qc_and_copy_fields)

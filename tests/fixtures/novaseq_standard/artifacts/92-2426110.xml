@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:file="http://genologics.com/ri/file" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2426110?state=1916315" limsid="92-2426110">
+    <name>Log File</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-308968" limsid="24-308968" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A1" limsid="ACC9628A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A2" limsid="ACC9628A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9628A3" limsid="ACC9628A3" />
+    <reagent-label name="UDI 1 (AATCGTTA-AATAACGT)" />
+    <reagent-label name="UDI 13 (AATCGGCG-AATATTGA)" />
+    <reagent-label name="UDI 25 (AATCCGTT-AATATGCT)" />
+    <reagent-label name="UDI 37 (AAGATACA-AATATCTG)" />
+    <reagent-label name="UDI 49 (AAGACGAA-AATAGATT)" />
+    <reagent-label name="UDI 61 (AAGTAAGT-AATAGTCC)" />
+    <reagent-label name="UDI 73 (AAGTTATC-AATAGCAA)" />
+    <reagent-label name="UDI 85 (AAGTTGGA-AATACAGG)" />
+    <reagent-label name="UDI 2 (GTCTACAT-TTCTTGAA)" />
+    <reagent-label name="UDI 14 (TTCGCCGA-GTATACCG)" />
+    <reagent-label name="UDI 26 (TGCGTACA-TTCTCATA)" />
+    <reagent-label name="UDI 38 (GTCGCTGT-TTATATCA)" />
+    <reagent-label name="UDI 50 (TTATTATG-TTAGCGCA)" />
+    <reagent-label name="UDI 62 (TGACTGAA-TTAGACGT)" />
+    <reagent-label name="UDI 74 (GTACAGCT-TGATCGGT)" />
+    <reagent-label name="UDI 86 (GGACAACG-TGATGGCC)" />
+    <reagent-label name="UDI 3 (CGCTGCTC-GGCAGATC)" />
+    <reagent-label name="UDI 15 (CTGGCCTC-GATCCAAC)" />
+    <reagent-label name="UDI 27 (GAATCAAT-TCTGTGAT)" />
+    <reagent-label name="UDI 39 (TCGGATGT-CTGCGGAT)" />
+    <reagent-label name="UDI 51 (CGCTATTA-GCGGCCGT)" />
+    <reagent-label name="UDI 63 (AAGACTGT-GTGGACTA)" />
+    <reagent-label name="UDI 75 (CAACTGCT-AGTAGTAT)" />
+    <reagent-label name="UDI 4 (GATCAACA-CTATGTTA)" />
+    <reagent-label name="UDI 16 (GAACTTAT-AGATACGC)" />
+    <reagent-label name="UDI 28 (TGAGTCAG-CCGAACTT)" />
+    <reagent-label name="UDI 40 (CGAGCCGG-GCGGCTTG)" />
+    <reagent-label name="UDI 52 (TCTATCAG-CAGTAACC)" />
+    <reagent-label name="UDI 64 (CAATGATG-CACGGACG)" />
+    <reagent-label name="UDI 76 (CATGATGA-GTTAGAGG)" />
+    <reagent-label name="UDI 88 (CAGACCAC-GCTTCGGC)" />
+    <reagent-label name="UDI 5 (CGAAGGAC-GTTGACGC)" />
+    <reagent-label name="UDI 17 (CGTATTGG-GGTATCTT)" />
+    <reagent-label name="UDI 29 (GAATGCTC-GTCTAACA)" />
+    <reagent-label name="UDI 41 (CGATTATC-GAGTTGAT)" />
+    <reagent-label name="UDI 53 (CGGTGGTA-GCCTAGTA)" />
+    <reagent-label name="UDI 65 (CACAGTAA-CACTAGAG)" />
+    <reagent-label name="UDI 77 (TGACTACT-CCTTACAG)" />
+    <reagent-label name="UDI 89 (TTCTGGTG-CCAGTGGT)" />
+    <reagent-label name="UDI 6 (GATGCCGG-ATCTACGA)" />
+    <reagent-label name="UDI 18 (GAAGCACA-CCTCTGGC)" />
+    <reagent-label name="UDI 30 (GAATATCC-GACGCCAT)" />
+    <reagent-label name="UDI 42 (TCGAAGCT-GCACTGAG)" />
+    <reagent-label name="UDI 54 (TCACCAAT-CACGGCGC)" />
+    <reagent-label name="UDI 66 (TGGTCATT-GCAGATGG)" />
+    <reagent-label name="UDI 78 (CAGAAGAT-GTACATTG)" />
+    <file:file limsid="40-85249" uri="http://127.0.0.1:8000/api/v2/files/40-85249" />
+    <workflow-stages />
+</art:artifact>

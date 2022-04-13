@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918286" limsid="2-2429315">
+    <name>A1</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309480" limsid="24-309480" />
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-243222" limsid="27-243222" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9636A1" limsid="ACC9636A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9636A2" limsid="ACC9636A2" />
+    <reagent-label name="A01 IDT_10nt_434 (CGACGTACAC-AGGTCGATAA)" />
+    <reagent-label name="A07 IDT_10nt_442 (TTAACCTGCG-CTACTGATGT)" />
+    <udf:field type="Numeric" name="Amount (ng)">750</udf:field>
+    <udf:field type="Numeric" name="Concentration (nM)">95.1873286628084</udf:field>
+    <udf:field type="Numeric" name="Size (bp)">400</udf:field>
+    <udf:field type="String" name="PCR Plate">1</udf:field>
+    <udf:field type="Numeric" name="Concentration">25</udf:field>
+    <udf:field type="String" name="Capture kit lot nr.">123</udf:field>
+    <udf:field type="String" name="Bait Set">gmck_solid_4.1</udf:field>
+    <udf:field type="String" name="Nr of PCR cycles">5</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Normalization of samples for sequencing (TWIST)" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1952/stages/6962" />
+    </workflow-stages>
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315/demux" />
+</art:artifact>

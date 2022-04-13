@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ptp:process-type xmlns:ptp="http://genologics.com/ri/processtype" uri="http://127.0.0.1:8000/api/v2/processtypes/1006" name="Define Run Format and Calculate Volumes (Nova Seq)">
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3324" name="Adjusted Bulk Pool Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3325" name="Bulk Pool Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3326" name="Comments" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3328" name="EB Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3329" name="Final Concentration (nM)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3330" name="Final Loading Concentration (pM)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3331" name="Flowcell Type" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3804" name="Lane" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/4457" name="Method" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3332" name="Minimum Per Sample Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3333" name="Number of Flowcells to Sequence" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3334" name="Number of Lanes to Sequence" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3335" name="Number of Reads Expected" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3336" name="Protocol type" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3337" name="RSB Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3327" name="RSB lot nr" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3339" name="Total Sample Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3340" name="Total Volume (ul)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3338" name="Total nr of Reads Requested (sum of reads to sequence)" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/4458" name="Version" />
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1402" name="0. Check Indexes">
+        <string>/home/glsai/miniconda3/envs/epp_master/bin/check_indexes_before_aliquot.py -p {processLuid} -l {compoundOutputFileLuid2}</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/2310" name="3. Get Reads To Sequence (M)">
+        <string>bash -c -l "conda activate cg_lims &amp;&amp;  lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid}  udf copy reads-to-sequence"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1605" name="Calculate Volumes for NovaSeq">
+        <string>bash -c "/home/glsai/miniconda3/envs/epp_master/bin/calc_volumes_nova.py -p {processLuid}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/2106" name="Check Duplicate Samples">
+        <string>bash -c "/home/glsai/miniconda3/envs/epp_master/bin/check_duplicate_samples.py -p {processLuid}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/2565" name="Copy Concentration (nM) (Microbial)">
+        <string>bash -c -l "conda activate cg_lims &amp;&amp; lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid} udf copy process-to-artifact -audf 'Concentration (nM)' -pudf 'Final Concentration (nM)' -n 'CG002 - Normalization of microbial samples for sequencing'"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/2553" name="Copy Concentration (nM) from Library Preparation or Sample-Artifact">
+        <string>bash -c -l "conda activate cg_lims &amp;&amp; lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid} udf copy artifact-to-artifact  -n 'Library Prep (Dev) v3' -n 'CG002 - RML Library Pooling' -n 'Normalization of RNA samples for sequencing v1' -n 'Pooling and Clean-up (Cov) v1' -n 'Bead Purification TWIST v2' -n 'Normalization of samples for sequencing (TWIST) v1' -n 'End repair Size selection A-tailing and Adapter ligation (TruSeq PCR-free DNA)' -n  --sample-artifact -au  'Concentration (nM)'"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/2201" name="Copy Concentration from Sample (NIPT)">
+        <string>bash -c -l "conda activate cg_lims &amp;&amp;  lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid} udf copy sample-to-artifact -sudf 'Concentration (nM)' -audf 'Concentration (nM)'"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1705" name="Make NovaSeq Pooling Map">
+        <string>bash -c "/home/glsai/miniconda3/envs/epp_master/bin/make_nova_pool_map.py --pid {processLuid} --res {compoundOutputFileLuid1}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <process-input>
+        <artifact-type>Analyte</artifact-type>
+        <display-name>Analyte</display-name>
+        <remove-working-flag>false</remove-working-flag>
+    </process-input>
+    <process-output>
+        <artifact-type>Analyte</artifact-type>
+        <display-name>Analyte</display-name>
+        <output-generation-type>PerInput</output-generation-type>
+        <variability-type>Fixed</variability-type>
+        <number-of-outputs>1</number-of-outputs>
+        <output-name>{InputItemName}</output-name>
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/1260" name="Concentration" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/1745" name="EB Volume (ul)" />
+        <assign-working-flag>true</assign-working-flag>
+    </process-output>
+    <process-output>
+        <artifact-type>ResultFile</artifact-type>
+        <display-name>ResultFile</display-name>
+        <output-generation-type>PerAllInputs</output-generation-type>
+        <variability-type>Fixed</variability-type>
+        <number-of-outputs>3</number-of-outputs>
+        <output-name>{LIST:Script Log,Placement Map,index check}</output-name>
+    </process-output>
+    <process-type-attribute name="Enabled">true</process-type-attribute>
+    <process-type-attribute name="Family">Configured</process-type-attribute>
+    <process-type-attribute name="ContextCode">ALP</process-type-attribute>
+    <process-type-attribute name="OutputContextCode">CG</process-type-attribute>
+    <process-type-attribute name="ConsumeVolume">true</process-type-attribute>
+    <process-type-attribute name="InheritsQC">false</process-type-attribute>
+    <process-type-attribute name="ModifyInputOutput">All</process-type-attribute>
+    <process-type-attribute name="OnlyEnableDoneAtLastPanel">false</process-type-attribute>
+    <process-type-attribute name="OutputSorting">Input LIMS ID</process-type-attribute>
+    <process-type-attribute name="ProcessGroup">Configured Processes</process-type-attribute>
+    <process-type-attribute name="ProcessTabView">Use the default display</process-type-attribute>
+    <process-type-attribute name="QCAdjustmentType">None</process-type-attribute>
+    <process-type-attribute name="SkipInputPanel">true</process-type-attribute>
+    <process-type-attribute name="VolumeAdjustmentType">None</process-type-attribute>
+    <permitted-containers />
+    <permitted-reagent-categories />
+    <required-reagent-kits />
+    <permitted-control-types />
+    <permitted-instrument-types />
+    <queue-fields />
+    <ice-bucket-fields />
+    <step-fields />
+    <sample-fields>
+        <sample-field style="BUILT_IN" attach-to="Analyte" name="LIMS ID (Derived Sample)" />
+    </sample-fields>
+    <step-properties>
+        <step-property value="same shape" name="placementDefaultPattern" />
+    </step-properties>
+    <epp-triggers>
+        <epp-trigger status="RECORD_DETAILS" point="AFTER" type="AUTOMATIC" name="Check Duplicate Samples" />
+    </epp-triggers>
+</ptp:process-type>

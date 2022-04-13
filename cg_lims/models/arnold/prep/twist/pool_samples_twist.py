@@ -3,7 +3,7 @@ from genologics.lims import Lims
 from pydantic import Field, BaseModel
 from cg_lims.objects import BaseAnalyte
 
-from cg_lims.models.arnold.prep.base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 
 
 class ArtifactUDFs(BaseModel):
@@ -12,8 +12,8 @@ class ArtifactUDFs(BaseModel):
 
 class ProcessUDFs(BaseModel):
 
-    speedvac_temp: float = Field(..., alias="SpeedVac temp")
-    speedvac_time: float = Field(..., alias="SpeedVac time (min)")
+    speedvac_temp: Optional[float] = Field(None, alias="SpeedVac temp")
+    speedvac_time: Optional[float] = Field(None, alias="SpeedVac time (min)")
 
 
 class ArnoldStep(BaseStep):

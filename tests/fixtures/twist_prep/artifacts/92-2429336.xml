@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2429336?state=1918543" limsid="92-2429336">
+    <name>File Placeholder</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-309487" limsid="24-309487" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9636A1" limsid="ACC9636A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9636A2" limsid="ACC9636A2" />
+    <reagent-label name="A01 IDT_10nt_434 (CGACGTACAC-AGGTCGATAA)" />
+    <reagent-label name="A07 IDT_10nt_442 (TTAACCTGCG-CTACTGATGT)" />
+    <workflow-stages />
+</art:artifact>

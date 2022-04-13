@@ -4,15 +4,15 @@ from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 from cg_lims.objects import BaseAnalyte
-from cg_lims.models.arnold.prep.base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 
 
 class SampleArtifactUDFs(BaseModel):
     """Aggregate QC (RNA) v1"""
 
-    sample_rin: float = Field(None, alias="RIN")
-    sample_concentration: float = Field(None, alias="Concentration")
-    sample_amount: float = Field(None, alias="Amount (ng)")
+    sample_rin: Optional[float] = Field(None, alias="RIN")
+    sample_concentration: Optional[float] = Field(None, alias="Concentration")
+    sample_amount: Optional[float] = Field(None, alias="Amount (ng)")
 
 
 class SampleArtifactFields(BaseStep):

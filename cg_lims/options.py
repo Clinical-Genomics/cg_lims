@@ -26,7 +26,7 @@ def stage_id(help: str = "Stage id.") -> click.option:
 def udf(
     help: str = "UDF name",
 ) -> click.option:
-    return click.option("-u", "--udf", required=True, help=help)
+    return click.option("-u", "--udf", required=False, help=help)
 
 
 def buffer_udf(
@@ -280,7 +280,21 @@ def concentration_udf_option(
 
 
 def prep(help: str = "Prep type") -> click.option:
-    return click.option("--prep-type", required=True, help=help)
+    return click.option(
+        "--prep-type",
+        required=True,
+        help=help,
+        type=click.Choice(["wgs", "twist", "micro", "cov", "rna"]),
+    )
+
+
+def sequencing_method(help: str = "Sequencing Method") -> click.option:
+    return click.option(
+        "--sequencing-method",
+        required=True,
+        help=help,
+        type=click.Choice(["novaseq"]),
+    )
 
 
 def subtract_volume_option(
@@ -301,3 +315,18 @@ def lower_threshold(help: str = "Set lower threshold value") -> click.option:
 
 def upper_threshold(help: str = "Set upper threshold value") -> click.option:
     return click.option("-ut", "--upper-threshold", required=False, help=help, type=float)
+
+
+def ignore_fail(
+    help: str = "Use this flag if you don't want to raise exception errors",
+) -> click.option:
+    return click.option(
+        "--ignore-fail",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
+  
+  
+def sample_volume_limit(help: str = "Set sample volume limit") -> click.option:
+    return click.option("-svl", "--sample-volume-limit", required=False, help=help, type=float)

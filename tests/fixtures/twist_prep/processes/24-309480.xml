@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-309480" limsid="24-309480">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1655">Target enrichment TWIST v1</type>
+    <date-run>2022-03-22</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/54">
+        <first-name>Cecilia</first-name>
+        <last-name>Svensson</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429314?state=1918284" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429314?state=1918284" limsid="2-2429314">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-309479" limsid="122-309479" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/2-2429315?state=1918520" output-generation-type="PerInput" output-type="Analyte" limsid="2-2429315" />
+    </input-output-map>
+    <udf:field type="String" name="Blockers">1</udf:field>
+    <udf:field type="String" name="Document version">1</udf:field>
+    <udf:field type="String" name="Hyb time start">1</udf:field>
+    <udf:field type="String" name="Method document">1</udf:field>
+    <udf:field type="String" name="Total hybridization time (h)">1</udf:field>
+    <udf:field type="String" name="TWIST Hybridization kit">1</udf:field>
+    <udf:field type="String" name="Vapor lock">1</udf:field>
+    <udf:field type="String" name="Ethanol">1</udf:field>
+    <udf:field type="String" name="Kapa HiFi HotStart ReadyMix">1</udf:field>
+    <udf:field type="String" name="Nuclease free water">1</udf:field>
+    <udf:field type="String" name="Thermal cycler (hyb)">Trooper</udf:field>
+    <udf:field type="String" name="Thermal cycler (amplification)">Trooper</udf:field>
+    <udf:field type="String" name="Twist Binding and Purification beads">1</udf:field>
+    <udf:field type="String" name="Twist Wash Buffers">1</udf:field>
+    <udf:field type="String" name="xGen Library Amp primer">1</udf:field>
+    <process-parameter name="Check Required - Target enrichment TWIST v1" />
+</prc:process>

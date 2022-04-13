@@ -5,23 +5,23 @@ from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 
-from cg_lims.models.arnold.prep.base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
 LOG = logging.getLogger(__name__)
 
 
 class ProcessUDFs(BaseModel):
-    lot_nr_beads_library_prep: str = Field(..., alias="Lot nr: Beads")
-    lot_nr_etoh_library_prep: str = Field(..., alias="Lot nr: EtOH")
-    lot_nr_h2o_library_prep: str = Field(..., alias="Lot nr: H2O")
+    lot_nr_beads_library_prep: Optional[str] = Field(None, alias="Lot nr: Beads")
+    lot_nr_etoh_library_prep: Optional[str] = Field(None, alias="Lot nr: EtOH")
+    lot_nr_h2o_library_prep: Optional[str] = Field(None, alias="Lot nr: H2O")
 
 
 class ArtifactUDFs(BaseModel):
-    finished_library_concentration: float = Field(..., alias="Concentration")
-    finished_library_concentration_nm: float = Field(..., alias="Concentration (nM)")
+    finished_library_concentration: Optional[float] = Field(None, alias="Concentration")
+    finished_library_concentration_nm: Optional[float] = Field(None, alias="Concentration (nM)")
     finished_library_size: Optional[int] = Field(None, alias="Size (bp)")
-    finished_library_average_size: float = Field(..., alias="Average Size (bp)")
+    finished_library_average_size: Optional[float] = Field(None, alias="Average Size (bp)")
 
 
 class ArnoldStep(BaseStep):

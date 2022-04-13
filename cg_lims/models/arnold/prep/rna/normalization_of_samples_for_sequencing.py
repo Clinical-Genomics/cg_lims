@@ -3,7 +3,7 @@ from typing import Optional
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
-from cg_lims.models.arnold.prep.base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
 
 LOG = logging.getLogger(__name__)
@@ -12,12 +12,12 @@ LOG = logging.getLogger(__name__)
 class ProcessUDFs(BaseModel):
     """Normalization of RNA samples for sequencing v1"""
 
-    dilution_lot_nr: str = Field(None, alias="Dilution buffer lot no")
+    dilution_lot_nr: Optional[str] = Field(None, alias="Dilution buffer lot no")
 
 
 class ArtifactUDFs(BaseModel):
-    concentration: float = Field(..., alias="Concentration")
-    size: int = Field(..., alias="Size (bp)")
+    concentration: Optional[float] = Field(None, alias="Concentration")
+    size: Optional[int] = Field(None, alias="Size (bp)")
 
 
 class ArnoldStep(BaseStep):

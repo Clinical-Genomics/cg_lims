@@ -1,12 +1,14 @@
+from typing import Optional
+
 from genologics.lims import Lims
 from pydantic.main import BaseModel
 from pydantic import Field
 from cg_lims.objects import BaseAnalyte
-from cg_lims.models.arnold.prep.base_step import BaseStep
+from cg_lims.models.arnold.base_step import BaseStep
 
 
 class ArtifactUDF(BaseModel):
-    sample_amount_needed: float = Field(..., alias="Amount needed (ng)")
+    sample_amount_needed: Optional[float] = Field(None, alias="Amount needed (ng)")
 
 
 class ArnoldStep(BaseStep):

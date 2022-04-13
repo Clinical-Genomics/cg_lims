@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<con:container xmlns:con="http://genologics.com/ri/container" uri="http://127.0.0.1:8000/api/v2/containers/27-242723" limsid="27-242723">
+    <name>HYTMVDRXY</name>
+    <type uri="http://127.0.0.1:8000/api/v2/containertypes/354" name="SP" />
+    <occupied-wells>2</occupied-wells>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426111" limsid="2-2426111">
+        <value>1:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/2-2426112" limsid="2-2426112">
+        <value>2:1</value>
+    </placement>
+    <state>Populated</state>
+</con:container>
