@@ -9,7 +9,8 @@ from cg_lims.objects import BaseAnalyte
 
 
 class ProcessUDFs(BaseModel):
-    sample_normalization_method: Optional[str] = Field(None, alias="Method document")
+    methods: Optional[str] = Field(None, alias="Methods")
+    atlas_version: Optional[str] = Field(None, alias="Atlas Version")
     normalized_sample_concentration: Optional[float] = Field(
         None, alias="Final Concentration (ng/ul)"
     )

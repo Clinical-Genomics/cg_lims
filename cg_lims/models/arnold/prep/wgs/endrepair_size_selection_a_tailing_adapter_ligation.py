@@ -22,7 +22,8 @@ class ProcessUDFs(BaseModel):
     lot_nr_resuspension_buffer_library_preparation: Optional[str] = Field(
         None, alias="Lot no: Resuspension buffer"
     )
-    library_preparation_method: Optional[str] = Field(None, alias="Method document")
+    methods: Optional[str] = Field(None, alias="Methods")
+    atlas_version: Optional[str] = Field(None, alias="Atlas Version")
     lot_nr_etoh_library_preparation: Optional[str] = Field(None, alias="Ethanol lot")
 
 

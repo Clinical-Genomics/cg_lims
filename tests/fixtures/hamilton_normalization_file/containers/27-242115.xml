@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<con:container xmlns:con="http://genologics.com/ri/container" uri="http://127.0.0.1:8000/api/v2/containers/27-242115" limsid="27-242115">
+    <name>2022-07689-02</name>
+    <type uri="http://127.0.0.1:8000/api/v2/containertypes/2" name="Tube" />
+    <occupied-wells>1</occupied-wells>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9621A7PA1" limsid="ACC9621A7PA1">
+        <value>1:1</value>
+    </placement>
+    <state>Populated</state>
+</con:container>

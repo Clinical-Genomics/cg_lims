@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='utf-8'?>
+<con:container xmlns:con="http://genologics.com/ri/container" uri="http://127.0.0.1:8000/api/v2/containers/27-237971" limsid="27-237971">
+    <name>#553432 SBG2004-1_plate2</name>
+    <type uri="http://127.0.0.1:8000/api/v2/containertypes/1" name="96 well plate" />
+    <occupied-wells>77</occupied-wells>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A97PA1" limsid="ACC9551A97PA1">
+        <value>A:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A98PA1" limsid="ACC9551A98PA1">
+        <value>B:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A99PA1" limsid="ACC9551A99PA1">
+        <value>C:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A100PA1" limsid="ACC9551A100PA1">
+        <value>D:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A101PA1" limsid="ACC9551A101PA1">
+        <value>E:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A102PA1" limsid="ACC9551A102PA1">
+        <value>F:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A103PA1" limsid="ACC9551A103PA1">
+        <value>G:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A104PA1" limsid="ACC9551A104PA1">
+        <value>H:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A105PA1" limsid="ACC9551A105PA1">
+        <value>A:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A106PA1" limsid="ACC9551A106PA1">
+        <value>B:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A107PA1" limsid="ACC9551A107PA1">
+        <value>C:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A108PA1" limsid="ACC9551A108PA1">
+        <value>D:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A109PA1" limsid="ACC9551A109PA1">
+        <value>E:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A110PA1" limsid="ACC9551A110PA1">
+        <value>F:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A111PA1" limsid="ACC9551A111PA1">
+        <value>G:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A112PA1" limsid="ACC9551A112PA1">
+        <value>H:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A113PA1" limsid="ACC9551A113PA1">
+        <value>A:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A114PA1" limsid="ACC9551A114PA1">
+        <value>B:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A115PA1" limsid="ACC9551A115PA1">
+        <value>C:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A116PA1" limsid="ACC9551A116PA1">
+        <value>D:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A117PA1" limsid="ACC9551A117PA1">
+        <value>E:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A118PA1" limsid="ACC9551A118PA1">
+        <value>F:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A119PA1" limsid="ACC9551A119PA1">
+        <value>G:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A120PA1" limsid="ACC9551A120PA1">
+        <value>H:3</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A121PA1" limsid="ACC9551A121PA1">
+        <value>A:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A122PA1" limsid="ACC9551A122PA1">
+        <value>B:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A123PA1" limsid="ACC9551A123PA1">
+        <value>C:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A124PA1" limsid="ACC9551A124PA1">
+        <value>D:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A125PA1" limsid="ACC9551A125PA1">
+        <value>E:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A126PA1" limsid="ACC9551A126PA1">
+        <value>F:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A127PA1" limsid="ACC9551A127PA1">
+        <value>G:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A128PA1" limsid="ACC9551A128PA1">
+        <value>H:4</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A129PA1" limsid="ACC9551A129PA1">
+        <value>A:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A130PA1" limsid="ACC9551A130PA1">
+        <value>B:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A131PA1" limsid="ACC9551A131PA1">
+        <value>C:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A132PA1" limsid="ACC9551A132PA1">
+        <value>D:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A133PA1" limsid="ACC9551A133PA1">
+        <value>E:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A134PA1" limsid="ACC9551A134PA1">
+        <value>F:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A135PA1" limsid="ACC9551A135PA1">
+        <value>G:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A136PA1" limsid="ACC9551A136PA1">
+        <value>H:5</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A137PA1" limsid="ACC9551A137PA1">
+        <value>A:6</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A138PA1" limsid="ACC9551A138PA1">
+        <value>B:6</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A139PA1" limsid="ACC9551A139PA1">
+        <value>C:6</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A140PA1" limsid="ACC9551A140PA1">
+        <value>D:6</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A141PA1" limsid="ACC9551A141PA1">
+        <value>E:6</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A142PA1" limsid="ACC9551A142PA1">
+        <value>F:6</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A143PA1" limsid="ACC9551A143PA1">
+        <value>G:6</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A144PA1" limsid="ACC9551A144PA1">
+        <value>H:6</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A145PA1" limsid="ACC9551A145PA1">
+        <value>A:7</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A146PA1" limsid="ACC9551A146PA1">
+        <value>B:7</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A147PA1" limsid="ACC9551A147PA1">
+        <value>C:7</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A148PA1" limsid="ACC9551A148PA1">
+        <value>D:7</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A149PA1" limsid="ACC9551A149PA1">
+        <value>E:7</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A150PA1" limsid="ACC9551A150PA1">
+        <value>F:7</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A151PA1" limsid="ACC9551A151PA1">
+        <value>G:7</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A152PA1" limsid="ACC9551A152PA1">
+        <value>H:7</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A153PA1" limsid="ACC9551A153PA1">
+        <value>A:8</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A154PA1" limsid="ACC9551A154PA1">
+        <value>B:8</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A155PA1" limsid="ACC9551A155PA1">
+        <value>C:8</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A156PA1" limsid="ACC9551A156PA1">
+        <value>D:8</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A157PA1" limsid="ACC9551A157PA1">
+        <value>E:8</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A158PA1" limsid="ACC9551A158PA1">
+        <value>F:8</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A159PA1" limsid="ACC9551A159PA1">
+        <value>G:8</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A160PA1" limsid="ACC9551A160PA1">
+        <value>H:8</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A161PA1" limsid="ACC9551A161PA1">
+        <value>A:9</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A162PA1" limsid="ACC9551A162PA1">
+        <value>B:9</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A163PA1" limsid="ACC9551A163PA1">
+        <value>C:9</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A164PA1" limsid="ACC9551A164PA1">
+        <value>D:9</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A165PA1" limsid="ACC9551A165PA1">
+        <value>E:9</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A166PA1" limsid="ACC9551A166PA1">
+        <value>F:9</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A167PA1" limsid="ACC9551A167PA1">
+        <value>G:9</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A168PA1" limsid="ACC9551A168PA1">
+        <value>H:9</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A169PA1" limsid="ACC9551A169PA1">
+        <value>A:10</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A170PA1" limsid="ACC9551A170PA1">
+        <value>B:10</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A171PA1" limsid="ACC9551A171PA1">
+        <value>C:10</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A172PA1" limsid="ACC9551A172PA1">
+        <value>D:10</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A173PA1" limsid="ACC9551A173PA1">
+        <value>E:10</value>
+    </placement>
+    <state>Populated</state>
+</con:container>

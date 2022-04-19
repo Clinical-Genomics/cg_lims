@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9551A113PA1?state=1901673" limsid="ACC9551A113PA1">
+    <name>b-SBG0308</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <qc-flag>PASSED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-237971" limsid="27-237971" />
+        <value>A:3</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9551A113" limsid="ACC9551A113" />
+    <udf:field type="Numeric" name="Amount (ng)">1899.36</udf:field>
+    <udf:field type="Boolean" name="Skip Buffer Exchange">true</udf:field>
+    <udf:field type="Numeric" name="Volume (ul)">35</udf:field>
+    <udf:field type="Numeric" name="Size (bp)">22955</udf:field>
+    <udf:field type="Numeric" name="Concentration">59.355</udf:field>
+    <udf:field type="Numeric" name="DIN Value">8.4</udf:field>
+    <udf:field type="Numeric" name="Level of Multiplexing">8</udf:field>
+    <udf:field type="String" name="Output Container Barcode">same_brc</udf:field>
+    <workflow-stages>
+        <workflow-stage status="REMOVED" name="Reception Control TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1851/stages/6510" />
+        <workflow-stage status="REMOVED" name="Initial QC TWIST v3" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1952/stages/6953" />
+        <workflow-stage status="REMOVED" name="Initial QC TWIST v3" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1851/stages/6512" />
+        <workflow-stage status="COMPLETE" name="Aliquot samples for enzymatic fragmentation TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1952/stages/6954" />
+        <workflow-stage status="IN_PROGRESS" name="Aliquot samples for enzymatic fragmentation TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1952/stages/6954" />
+        <workflow-stage status="REMOVED" name="Reception Control TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1851/stages/6510" />
+    </workflow-stages>
+</art:artifact>

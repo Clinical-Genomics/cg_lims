@@ -15,6 +15,8 @@ class ProcessUDFs(BaseModel):
     lot_nr_beads_library_prep: Optional[str] = Field(None, alias="Lot nr: Beads")
     lot_nr_etoh_library_prep: Optional[str] = Field(None, alias="Lot nr: EtOH")
     lot_nr_h2o_library_prep: Optional[str] = Field(None, alias="Lot nr: H2O")
+    methods: Optional[str] = Field(None, alias="Methods")
+    atlas_version: Optional[str] = Field(None, alias="Atlas Version")
 
 
 class ArtifactUDFs(BaseModel):

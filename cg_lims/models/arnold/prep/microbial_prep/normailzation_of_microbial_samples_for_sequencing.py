@@ -16,7 +16,8 @@ class ProcessUDFS(BaseModel):
     normalized_library_concentration: Optional[float] = Field(
         None, alias="Final Concentration (nM)"
     )
-    library_normalization_method: Optional[str] = Field(None, alias="Method document")
+    methods: Optional[str] = Field(None, alias="Methods")
+    atlas_version: Optional[str] = Field(None, alias="Atlas Version")
 
 
 class ArnoldStep(BaseStep):
