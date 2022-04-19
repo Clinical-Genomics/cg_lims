@@ -13,6 +13,8 @@ class ProcessUDFs(BaseModel):
     """Normalization of RNA samples for sequencing v1"""
 
     dilution_lot_nr: str = Field(None, alias="Dilution buffer lot no")
+    methods: Optional[str] = Field(None, alias="Methods")
+    atlas_version: Optional[str] = Field(None, alias="Atlas Version")
 
 
 class ArtifactUDFs(BaseModel):
