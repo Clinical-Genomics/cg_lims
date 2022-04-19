@@ -330,3 +330,14 @@ def ignore_fail(
   
 def sample_volume_limit(help: str = "Set sample volume limit") -> click.option:
     return click.option("-svl", "--sample-volume-limit", required=False, help=help, type=float)
+
+
+def keep_failed_flags(
+    help: str = "Stops the overwriting of failed QC flags.",
+) -> click.option:
+    return click.option(
+        "--keep-failed-flags",
+        default=False,
+        is_flag=True,
+        help=help,
+    )
