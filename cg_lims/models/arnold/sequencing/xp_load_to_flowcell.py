@@ -9,7 +9,7 @@ from cg_lims.objects import BaseAnalyte
 
 
 class ProcessUDFs(BaseModel):
-    """Xp Load to Flowcell (Nova Seq)"""
+    """Xp Load to FlowCell (Nova Seq)"""
 
     workflow_type: Optional[str] = Field(None, alias="Workflow Type")
     paired_end: Optional[str] = Field(None, alias="Paired End")
@@ -30,7 +30,7 @@ def get_xp_load_to_flowcell(lims: Lims, sample_id: str, prep_id: str) -> Optiona
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Xp Load to Flowcell (Nova Seq)",
+        process_type="Xp Load to FlowCell (Nova Seq)",
         optional_step=True,
     )
     if not analyte.process:

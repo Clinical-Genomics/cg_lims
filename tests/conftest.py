@@ -13,6 +13,7 @@ import time
 from limsmock.server import run_server
 from pydantic import BaseModel, Field
 
+from tests.fixtures.flowcell_document import FLOW_CELL_DOCUMENT
 
 PORT = 8000
 HOST = "127.0.0.1"
@@ -157,3 +158,8 @@ def hamilton_buffer_exchange_no_udf() -> str:
     file_path = "tests/fixtures/buffer_exchange_hamilton_no_udf.txt"
     file = Path(file_path)
     return file.read_text()
+
+
+@pytest.fixture
+def flow_cell_fixture() -> dict:
+    return FLOW_CELL_DOCUMENT

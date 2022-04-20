@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457243?state=1940521" limsid="92-2457243">
+    <name>Lane 1</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314318" limsid="24-314318" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A1" limsid="ACC9673A1" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A2" limsid="ACC9673A2" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A3" limsid="ACC9673A3" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A4" limsid="ACC9673A4" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A5" limsid="ACC9673A5" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A6" limsid="ACC9673A6" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A7" limsid="ACC9673A7" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A8" limsid="ACC9673A8" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A9" limsid="ACC9673A9" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A10" limsid="ACC9673A10" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A11" limsid="ACC9673A11" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A12" limsid="ACC9673A12" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A13" limsid="ACC9673A13" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A14" limsid="ACC9673A14" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A15" limsid="ACC9673A15" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A16" limsid="ACC9673A16" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A17" limsid="ACC9673A17" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A18" limsid="ACC9673A18" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A19" limsid="ACC9673A19" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A20" limsid="ACC9673A20" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A21" limsid="ACC9673A21" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A22" limsid="ACC9673A22" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A23" limsid="ACC9673A23" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A24" limsid="ACC9673A24" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A25" limsid="ACC9673A25" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A26" limsid="ACC9673A26" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A27" limsid="ACC9673A27" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A28" limsid="ACC9673A28" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A29" limsid="ACC9673A29" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A30" limsid="ACC9673A30" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A31" limsid="ACC9673A31" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A32" limsid="ACC9673A32" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A33" limsid="ACC9673A33" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A34" limsid="ACC9673A34" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A35" limsid="ACC9673A35" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A36" limsid="ACC9673A36" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A37" limsid="ACC9673A37" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A38" limsid="ACC9673A38" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A39" limsid="ACC9673A39" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A40" limsid="ACC9673A40" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A41" limsid="ACC9673A41" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A42" limsid="ACC9673A42" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A43" limsid="ACC9673A43" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A44" limsid="ACC9673A44" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A45" limsid="ACC9673A45" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A46" limsid="ACC9673A46" />
+    <reagent-label name="UDI 7 (CTACGAAG-CTCGACAG)" />
+    <reagent-label name="UDI 19 (CTTAATAC-CCATTGTG)" />
+    <reagent-label name="UDI 31 (CTTATGAA-GCCAATGT)" />
+    <reagent-label name="UDI 43 (CTATCATT-GACCACCT)" />
+    <reagent-label name="UDI 55 (CTGGAAGC-GGTGCAGA)" />
+    <reagent-label name="UDI 67 (CAACCGTG-CTCTCACG)" />
+    <reagent-label name="UDI 79 (TGAGGCGC-GGAGACCA)" />
+    <reagent-label name="UDI 91 (AAGTACAG-GTCACGTC)" />
+    <reagent-label name="UDI 8 (GATGCGTC-GAGGCTGC)" />
+    <reagent-label name="UDI 20 (GAAGTCTT-ACTACGGT)" />
+    <reagent-label name="UDI 32 (TCGGCACC-CCAACGTC)" />
+    <reagent-label name="UDI 44 (CGCGCCAA-TGGCTAGG)" />
+    <reagent-label name="UDI 56 (TCCTCGAT-GTAACTGC)" />
+    <reagent-label name="UDI 68 (TGGTGCAC-GGAATCAC)" />
+    <reagent-label name="UDI 80 (CAGGTTCC-CGAACACC)" />
+    <reagent-label name="UDI 92 (CCGTGCCA-GCAGCTCC)" />
+    <reagent-label name="UDI 9 (CTACGGCA-CCTCGTAG)" />
+    <reagent-label name="UDI 21 (GAAGAGGC-AAGTGCTA)" />
+    <reagent-label name="UDI 33 (AAGAAGCG-GTAGATAA)" />
+    <reagent-label name="UDI 45 (CGAACGGA-CCTACCGG)" />
+    <reagent-label name="UDI 57 (AAGAGAGC-CAGCCAGT)" />
+    <reagent-label name="UDI 69 (CCACAATG-CGTTGACG)" />
+    <reagent-label name="UDI 81 (TGAACAGG-GAGAACAA)" />
+    <reagent-label name="UDI 10 (GATTCCTT-CATAGGCA)" />
+    <reagent-label name="UDI 22 (CGGATAAC-GCCGAACG)" />
+    <reagent-label name="UDI 34 (CTCACGAT-CTTACGGC)" />
+    <reagent-label name="UDI 46 (CTACTGAC-GGAGGATG)" />
+    <reagent-label name="UDI 58 (TCAACGAG-CGTCAACC)" />
+    <reagent-label name="UDI 70 (TGTGTGCC-CATCAGGT)" />
+    <reagent-label name="UDI 82 (CAGTGTGG-TGTGAATC)" />
+    <reagent-label name="UDI 94 (TTACCTGG-ACGATTGC)" />
+    <reagent-label name="UDI 11 (CTACTCGA-AGATGAAC)" />
+    <reagent-label name="UDI 23 (GAATCTGG-TGTCCACG)" />
+    <reagent-label name="UDI 35 (TCGGTCGA-CCAAGTGC)" />
+    <reagent-label name="UDI 47 (TCTTAAGT-CGCTGAAT)" />
+    <reagent-label name="UDI 59 (TGCGAGAC-GCCGGCGA)" />
+    <reagent-label name="UDI 83 (TTCCACCA-GGTTAAGG)" />
+    <reagent-label name="UDI 95 (CTGCAACG-GACATTCG)" />
+    <reagent-label name="UDI 12 (GATTCGAG-CCGAGTAT)" />
+    <reagent-label name="UDI 24 (CTGATTGA-GACACACT)" />
+    <reagent-label name="UDI 36 (TCGGTAAG-CTAACTCA)" />
+    <reagent-label name="UDI 48 (TTAGAGTC-TGTGACGA)" />
+    <reagent-label name="UDI 60 (CCTGGTGT-GCCTCCGG)" />
+    <reagent-label name="UDI 72 (TGTGTTAA-GGCACGGT)" />
+    <reagent-label name="UDI 84 (CCGCTGTT-AGACCGCA)" />
+    <reagent-label name="UDI 71 (CACCACGG-CGTTGTAA)" />
+    <udf:field type="Numeric" name="% Aligned R1">1.1394016</udf:field>
+    <udf:field type="Numeric" name="% Aligned R2">1.1248153</udf:field>
+    <udf:field type="Numeric" name="% Bases &gt;=Q30 R1">97.00332</udf:field>
+    <udf:field type="Numeric" name="% Bases &gt;=Q30 R2">94.808105</udf:field>
+    <udf:field type="Numeric" name="% Error Rate R1">0.05317854</udf:field>
+    <udf:field type="Numeric" name="% Error Rate R2">0.10533127</udf:field>
+    <udf:field type="Numeric" name="% Phasing R1">0.078578666</udf:field>
+    <udf:field type="Numeric" name="% Prephasing R1">0.05591099</udf:field>
+    <udf:field type="Numeric" name="% Prephasing R2">0.01379684</udf:field>
+    <udf:field type="Numeric" name="%PF R1">89.53323</udf:field>
+    <udf:field type="Numeric" name="%PF R2">89.53323</udf:field>
+    <udf:field type="Numeric" name="Cluster Density (K/mm^2) R1">2961.2705</udf:field>
+    <udf:field type="Numeric" name="Cluster Density (K/mm^2) R2">2961.2705</udf:field>
+    <udf:field type="Numeric" name="Intensity Cycle 1 R1">1847.5</udf:field>
+    <udf:field type="Numeric" name="Intensity Cycle 1 R2">1615.3206</udf:field>
+    <udf:field type="Numeric" name="Reads PF (M) R1">571.52386</udf:field>
+    <udf:field type="Numeric" name="Reads PF (M) R2">571.52386</udf:field>
+    <udf:field type="Numeric" name="Yield PF (Gb) R1">28.607214</udf:field>
+    <udf:field type="Numeric" name="Yield PF (Gb) R2">28.590956</udf:field>
+    <udf:field type="Numeric" name="% Phasing R2">0.05741619</udf:field>
+    <workflow-stages />
+</art:artifact>
