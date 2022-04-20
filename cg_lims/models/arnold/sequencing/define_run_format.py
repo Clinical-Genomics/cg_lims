@@ -11,7 +11,7 @@ from cg_lims.objects import BaseAnalyte
 class ProcessUDFs(BaseModel):
     """Define Run Format and Calculate Volumes (Nova Seq)"""
 
-    flowcell_type: Optional[str] = Field(None, alias="Flowcell Type")
+    flowcell_type: Optional[str] = Field(None, alias="FlowCell Type")
     rsb_lot_nr: Optional[str] = Field(None, alias="RSB lot nr")
     final_loading_concentration: Optional[str] = Field(
         None, alias="Final Loading Concentration (pM)"

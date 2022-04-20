@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ptp:process-type xmlns:ptp="http://genologics.com/ri/processtype" uri="http://127.0.0.1:8000/api/v2/processtypes/1004" name="AUTOMATED - NovaSeq Run">
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3281" name="Buffer Expiration Date" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3282" name="Buffer Lot Number" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3283" name="Buffer Part Number" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3284" name="Buffer Serial Barcode" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3953" name="Done" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3285" name="Flow Cell Expiration Date" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3286" name="Flow Cell ID" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3287" name="Flow Cell Lot Number" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3288" name="Flow Cell Mode" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3289" name="Flow Cell Part Number" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3290" name="Loading Workflow Type" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3291" name="Output Folder" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3292" name="PE Cycle Kit" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3293" name="PE Expiration Date" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3294" name="PE Lot Number" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3295" name="PE Part Number" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3296" name="PE Serial Barcode" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3297" name="Run ID" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3298" name="SBS Cycle Kit" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3299" name="SBS Expiration Date" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3300" name="SBS Lot Number" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3301" name="SBS Part Number" />
+    <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3302" name="SBS Serial Barcode" />
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1702" name="Get Run Parameters and Run Info">
+        <string>bash -l -c "/home/glsai/miniconda3/envs/epp_master/bin/attach_novaseq_xml.py --pid {processLuid} &amp;&amp; /opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/novaseq/novaseq-extensions.jar -i {stepURI:v2} -u {username} -p {password} -l {compoundOutputFileLuid3} script:parse_novaseq_run_parameters -r {compoundOutputFileLuid0} script:generate_link_to_run_folder -d {compoundOutputFileLuid2} &amp;&amp; /home/glsai/miniconda3/envs/epp_master/bin/replace_output_folder_path.py --pid {processLuid}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1602" name="Read InterOp Metrics">
+        <string>/opt/gls/clarity/bin/java -Djava.library.path=/opt/gls/clarity/extensions/novaseq/lib -jar /opt/gls/clarity/extensions/novaseq/novaseq-remote-extensions.jar script:read_interop_metrics -i {stepURI:v2} -u {username} -p {password} -l {compoundOutputFileLuid3} -t novaseq -a &amp;&amp; bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/ngs-common/v5/EPP/ngs-extensions.jar -i {stepURI:v2} -u {username} -p {password} script:evaluateDynamicExpression -t false -h false -exp 'input.::Done:: = true' -log {compoundOutputFileLuid1}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter uri="http://127.0.0.1:8000/api/v2/configuration/automations/1603" name="Set Next Steps">
+        <string>bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/ngs-common/v5/EPP/ngs-extensions.jar -i {stepURI:v2} -u {username} -p {password} script:evaluateDynamicExpression -exp 'nextStep = ::ADVANCE::' -log {compoundOutputFileLuid3}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <process-input>
+        <artifact-type>Analyte</artifact-type>
+        <display-name>Analyte</display-name>
+        <remove-working-flag>true</remove-working-flag>
+    </process-input>
+    <process-output>
+        <artifact-type>ResultFile</artifact-type>
+        <display-name>ResultFile</display-name>
+        <output-generation-type>PerAllInputs</output-generation-type>
+        <variability-type>Fixed</variability-type>
+        <number-of-outputs>4</number-of-outputs>
+        <output-name>{LIST:Run Parameters,Run Info,Link to Run Folder,Log File}</output-name>
+    </process-output>
+    <process-output>
+        <artifact-type>ResultFile</artifact-type>
+        <display-name>ResultFile</display-name>
+        <output-generation-type>PerInput</output-generation-type>
+        <variability-type>Fixed</variability-type>
+        <number-of-outputs>1</number-of-outputs>
+        <output-name>Lane {OutputItemNumber}</output-name>
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3261" name="% Aligned R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3262" name="% Aligned R2" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3263" name="% Bases &gt;=Q30 R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3264" name="% Bases &gt;=Q30 R2" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3265" name="% Error Rate R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3266" name="% Error Rate R2" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3271" name="%PF R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3272" name="%PF R2" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3267" name="% Phasing R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3268" name="% Phasing R2" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3269" name="% Prephasing R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3270" name="% Prephasing R2" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3273" name="Cluster Density (K/mm^2) R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3274" name="Cluster Density (K/mm^2) R2" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3275" name="Intensity Cycle 1 R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3276" name="Intensity Cycle 1 R2" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3277" name="Reads PF (M) R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3278" name="Reads PF (M) R2" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3279" name="Yield PF (Gb) R1" />
+        <field-definition uri="http://127.0.0.1:8000/api/v2/configuration/udfs/3280" name="Yield PF (Gb) R2" />
+    </process-output>
+    <process-type-attribute name="Enabled">true</process-type-attribute>
+    <process-type-attribute name="Family">Configured</process-type-attribute>
+    <process-type-attribute name="ContextCode">SBS</process-type-attribute>
+    <process-type-attribute name="OutputContextCode">SB</process-type-attribute>
+    <process-type-attribute name="ConsumeVolume">true</process-type-attribute>
+    <process-type-attribute name="InheritsQC">false</process-type-attribute>
+    <process-type-attribute name="ModifyInputOutput">All</process-type-attribute>
+    <process-type-attribute name="OnlyEnableDoneAtLastPanel">false</process-type-attribute>
+    <process-type-attribute name="OutputSorting">Input LIMS ID</process-type-attribute>
+    <process-type-attribute name="ProcessGroup">3. NovaSeq 6000</process-type-attribute>
+    <process-type-attribute name="ProcessTabView">Display the UDF information associated with all the outputs</process-type-attribute>
+    <process-type-attribute name="QCAdjustmentType">None</process-type-attribute>
+    <process-type-attribute name="SkipInputPanel">true</process-type-attribute>
+    <process-type-attribute name="VolumeAdjustmentType">None</process-type-attribute>
+    <permitted-containers />
+    <permitted-reagent-categories />
+    <required-reagent-kits />
+    <permitted-control-types />
+    <permitted-instrument-types />
+    <queue-fields />
+    <ice-bucket-fields />
+    <step-fields />
+    <sample-fields />
+    <step-properties>
+        <step-property value="false" name="qcProtocolStep" />
+        <step-property value="0/{LIST:Run Parameters,Run Info,Link to Run Folder,Log File}/isAutoAttached=true|1/{LIST:Run Parameters,Run Info,Link to Run Folder,Log File}/isAutoAttached=true" name="autoAttachFiles" />
+        <step-property value="column" name="placementDefaultPattern" />
+    </step-properties>
+    <step-setup>
+        <files>
+            <file shared-result-file-index="0">
+                <message>Will be uploaded automatically</message>
+            </file>
+            <file shared-result-file-index="1">
+                <message>Will be uploaded automatically</message>
+            </file>
+        </files>
+    </step-setup>
+    <epp-triggers />
+</ptp:process-type>

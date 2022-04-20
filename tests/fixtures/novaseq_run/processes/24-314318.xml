@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-314318" limsid="24-314318">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1004">AUTOMATED - NovaSeq Run</type>
+    <date-run>2022-04-01</date-run>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/960">
+        <first-name>Henning</first-name>
+        <last-name>Onsbring</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" limsid="2-2457238">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457243?state=1940521" output-generation-type="PerInput" output-type="ResultFile" limsid="92-2457243" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" limsid="2-2457238">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457245?state=1940523" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2457245" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" limsid="2-2457238">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457246?state=1940524" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2457246" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" limsid="2-2457238">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457247?state=1940525" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2457247" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457238?state=1940516" limsid="2-2457238">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457248?state=1940526" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2457248" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" limsid="2-2457239">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457244?state=1940522" output-generation-type="PerInput" output-type="ResultFile" limsid="92-2457244" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" limsid="2-2457239">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457245?state=1940523" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2457245" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" limsid="2-2457239">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457246?state=1940524" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2457246" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" limsid="2-2457239">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457247?state=1940525" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2457247" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" uri="http://127.0.0.1:8000/api/v2/artifacts/2-2457239?state=1940517" limsid="2-2457239">
+            <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-314317" limsid="24-314317" />
+        </input>
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2457248?state=1940526" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2457248" />
+    </input-output-map>
+    <udf:field type="Boolean" name="Done">false</udf:field>
+    <udf:field type="Date" name="Buffer Expiration Date">2022-10-29</udf:field>
+    <udf:field type="String" name="Buffer Lot Number">50000301</udf:field>
+    <udf:field type="String" name="Buffer Part Number">20013524</udf:field>
+    <udf:field type="String" name="Buffer Serial Barcode">NV5308210-BUFFR</udf:field>
+    <udf:field type="Date" name="Flow Cell Expiration Date">2023-01-15</udf:field>
+    <udf:field type="String" name="Flow Cell ID">H355WDRX2</udf:field>
+    <udf:field type="String" name="Flow Cell Lot Number">20618046</udf:field>
+    <udf:field type="String" name="Flow Cell Mode">SP</udf:field>
+    <udf:field type="String" name="Flow Cell Part Number">20026406</udf:field>
+    <udf:field type="String" name="Loading Workflow Type">NovaSeqStandard</udf:field>
+    <udf:field type="String" name="PE Cycle Kit">545</udf:field>
+    <udf:field type="Date" name="PE Expiration Date">2023-01-22</udf:field>
+    <udf:field type="String" name="PE Lot Number">20616666</udf:field>
+    <udf:field type="String" name="PE Part Number">20031059</udf:field>
+    <udf:field type="String" name="PE Serial Barcode">NV3906938-RGCPE</udf:field>
+    <udf:field type="String" name="Output Folder">\\130.237.80.51\Runs\220331_A00621_0655_AH355WDRX2\</udf:field>
+    <udf:field type="String" name="Run ID">220331_A00621_0655_AH355WDRX2</udf:field>
+    <udf:field type="String" name="SBS Cycle Kit">138</udf:field>
+    <udf:field type="Date" name="SBS Expiration Date">2022-12-24</udf:field>
+    <udf:field type="String" name="SBS Lot Number">20606846</udf:field>
+    <udf:field type="String" name="SBS Part Number">20031052</udf:field>
+    <udf:field type="String" name="SBS Serial Barcode">NV3841513-RGSBS</udf:field>
+    <process-parameter name="Set Next Steps" />
+</prc:process>

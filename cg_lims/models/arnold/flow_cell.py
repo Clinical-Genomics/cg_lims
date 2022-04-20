@@ -28,7 +28,7 @@ class Lane(BaseModel):
     percent_phasing_r2: Optional[float] = Field(None, alias="% Phasing R2")
 
 
-class Flowcell(BaseModel):
+class FlowCell(BaseModel):
     instrument: Optional[str] = Field(None, alias="instrument")
     date: Optional[date]
     done: Optional[bool] = Field(None, alias="Done")

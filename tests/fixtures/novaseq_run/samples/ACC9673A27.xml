@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC9673A27" limsid="ACC9673A27">
+    <name>2022-09198-06</name>
+    <date-received>2022-03-30</date-received>
+    <project limsid="ACC9673" uri="http://127.0.0.1:8000/api/v2/projects/ACC9673" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC9673A27PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9673A27PA1?state=1939001" />
+    <udf:field type="Numeric" name="Sample Conc.">201.25</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">0</udf:field>
+    <udf:field type="Numeric" name="Total Reads (M)">2164.760396</udf:field>
+    <udf:field type="String" name="Volume (uL)">200</udf:field>
+    <udf:field type="String" name="Gender">unknown</udf:field>
+    <udf:field type="String" name="Process only if QC OK">no</udf:field>
+    <udf:field type="String" name="Comment">D:4</udf:field>
+    <udf:field type="String" name="Index type">NEXTflex® v2 UDI Barcodes 1 - 96</udf:field>
+    <udf:field type="String" name="Index number">46</udf:field>
+    <udf:field type="String" name="pool name">2205646_NIPT</udf:field>
+    <udf:field type="String" name="familyID">NA</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">RMLP05R800</udf:field>
+    <udf:field type="String" name="Data Analysis">fluffy</udf:field>
+    <udf:field type="String" name="customer">cust032</udf:field>
+    <udf:field type="String" name="priority">priority</udf:field>
+    <udf:field type="String" name="Source">NA</udf:field>
+    <udf:field type="String" name="Concentration (nM)">10.0</udf:field>
+    <udf:field type="String" name="Passed Sequencing QC">True</udf:field>
+    <udf:field type="String" name="tumor">no</udf:field>
+    <udf:field type="Date" name="Delivered at">2022-04-01</udf:field>
+    <udf:field type="Date" name="Sequencing Finished">2022-04-01</udf:field>
+    <udf:field type="Date" name="Received at">2022-03-31</udf:field>
+    <udf:field type="String" name="Data Delivery">statina</udf:field>
+</smp:sample>
