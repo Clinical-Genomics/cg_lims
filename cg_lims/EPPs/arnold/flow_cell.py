@@ -5,10 +5,9 @@ import click
 from genologics.lims import Process, Lims, Artifact
 import requests
 from requests import Response
-import json
 
 from cg_lims.exceptions import LimsError
-from cg_lims.get.artifacts import get_artifacts, get_output_artifacts
+from cg_lims.get.artifacts import get_output_artifacts
 
 from cg_lims.models.arnold.flow_cell import FlowCell, Lane
 
@@ -29,8 +28,8 @@ def build_flow_cell_document(process: Process, lanes: List[Artifact]) -> FlowCel
 
 @click.command()
 @click.pass_context
-def flowcell(ctx):
-    """Creating FlowCell documents from a run in the arnold flowcell collection."""
+def flow_cell(ctx):
+    """Creating FlowCell documents from a run in the arnold flow_cell collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process: Process = ctx.obj["process"]

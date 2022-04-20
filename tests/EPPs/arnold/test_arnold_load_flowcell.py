@@ -22,7 +22,7 @@ def test_load_flowcell(lims, flow_cell_fixture):
     # WHEN running build_flow_cell_document
     flow_cell: FlowCell = build_flow_cell_document(process=process, lanes=lanes)
 
-    # THEN assert the flowcell document with its lanes was created.
+    # THEN assert the flow_cell document with its lanes was created.
     flow_cell_dict = flow_cell.dict()
 
     lanes = flow_cell_dict.pop("lanes")
