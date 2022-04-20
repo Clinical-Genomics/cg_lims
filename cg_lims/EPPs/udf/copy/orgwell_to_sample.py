@@ -13,7 +13,7 @@ from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
 
-def org_well_to_sample(
+def original_well_to_sample(
     artifacts: list
 ) -> None:
     """Function to copy artifact udf location and set to sample level.
