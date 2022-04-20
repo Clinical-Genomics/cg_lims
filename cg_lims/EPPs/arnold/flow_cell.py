@@ -21,7 +21,7 @@ def build_flow_cell_document(process: Process, lanes: List[Artifact]) -> FlowCel
     for lane in lanes:
         if not lane.location:
             continue
-        flowcell.lanes.append(Lane(**dict(lane.udf.items())))
+        flowcell.lanes.append(Lane(name=lane.name, **dict(lane.udf.items())))
 
     return flowcell
 

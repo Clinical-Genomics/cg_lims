@@ -1,11 +1,11 @@
-from typing import Optional, List, Dict, Any
+from typing import Optional, List
 from datetime import date, datetime
 
-from pydantic import BaseModel, Field, validator, root_validator
+from pydantic import BaseModel, Field, validator
 
 
 class Lane(BaseModel):
-    # container_: Optional[float] = Field(None, alias="??")
+    name: Optional[str] = ""
     percent_aligned_r1: Optional[float] = Field(None, alias="% Aligned R1")
     percent_aligned_r2: Optional[float] = Field(None, alias="% Aligned R2")
     percent_bases_q30_r1: Optional[float] = Field(None, alias="% Bases >=Q30 R1")
@@ -41,13 +41,11 @@ class FlowCell(BaseModel):
     flow_cell_lot_number: Optional[str] = Field(None, alias="Flow Cell Lot Number")
     flow_cell_mode: Optional[str] = Field(None, alias="Flow Cell Mode")
     flow_cell_part_number: Optional[str] = Field(None, alias="Flow Cell Part Number")
-    loading_workflow_type: Optional[str] = Field(None, alias="Loading Workflow Type")
     pe_cycle_kit: Optional[str] = Field(None, alias="PE Cycle Kit")
     pe_expiration_date: Optional[date] = Field(None, alias="PE Expiration Date")
     pe_lot_number: Optional[str] = Field(None, alias="PE Lot Number")
     pe_part_number: Optional[str] = Field(None, alias="PE Part Number")
     pe_serial_barcode: Optional[str] = Field(None, alias="PE Serial Barcode")
-    output_folder: Optional[str] = Field(None, alias="Output Folder")
     run_id: Optional[str] = Field(None, alias="Run ID")
     sbs_cycle_kit: Optional[str] = Field(None, alias="SBS Cycle Kit")
     sbs_expiration_date: Optional[date] = Field(None, alias="SBS Expiration Date")

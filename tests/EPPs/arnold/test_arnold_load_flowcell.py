@@ -4,9 +4,7 @@ from cg_lims.EPPs.arnold.flow_cell import build_flow_cell_document
 from cg_lims.get.artifacts import get_output_artifacts
 from cg_lims.models.arnold.flow_cell import FlowCell
 
-from tests.conftest import (
-    server,
-)
+from tests.conftest import server
 
 
 def test_load_flowcell(lims, flow_cell_fixture):
@@ -24,7 +22,6 @@ def test_load_flowcell(lims, flow_cell_fixture):
 
     # THEN assert the flow_cell document with its lanes was created.
     flow_cell_dict = flow_cell.dict()
-
     lanes = flow_cell_dict.pop("lanes")
     fixture_lanes = flow_cell_fixture.pop("lanes")
     for lane in fixture_lanes:
