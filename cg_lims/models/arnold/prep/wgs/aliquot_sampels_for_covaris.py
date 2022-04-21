@@ -14,6 +14,7 @@ class ArtifactUDF(BaseModel):
 class ProcessUDFs(BaseModel):
     methods: Optional[str] = Field(None, alias="Methods")
     atlas_version: Optional[str] = Field(None, alias="Atlas Version")
+    resuspension_buffer: Optional[str] = Field(None, alias="Lot no: EB or RB")
 
 
 class ArnoldStep(BaseStep):

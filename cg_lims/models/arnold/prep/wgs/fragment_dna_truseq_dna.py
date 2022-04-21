@@ -10,6 +10,7 @@ from cg_lims.models.arnold.base_step import BaseStep
 
 class ProcessUDFS(BaseModel):
     lot_nr_covaris_tube: Optional[str] = Field(None, alias="Lot no: Covaris tube")
+    lot_nr_covaris_plate_tube: Optional[str] = Field(None, alias="Lot no: Covaris plate or tube")
     fragmentation_method: Optional[str] = Field(None, alias="Method Document 1")
     covaris_protocol: Optional[str] = Field(None, alias="Protocol")
     lot_nr_resuspension_buffer_fragmentation: Optional[str] = Field(
@@ -17,6 +18,9 @@ class ProcessUDFS(BaseModel):
     )
     methods: Optional[str] = Field(None, alias="Methods")
     atlas_version: Optional[str] = Field(None, alias="Atlas Version")
+    lot_nr_ethanol: Optional[str] = Field(None, alias= "Lot no: Ethanol")
+    lot_nr_water: Optional[str] = Field(None, alias= "Lot no: Nuclease free water")
+    lot_nr_beads: Optional[str] = Field(None, alias= "Lot no: Beads")
 
 
 class ArnoldStep(BaseStep):
