@@ -42,7 +42,7 @@ def original_well_to_sample(
             failed += 1
             continue
 
-        for sample in artifact.samples:
+sample = artifact.samples[0]
             try:
                 sample.udf['Original Well'] = artifact.location[1]
                 sample.udf['Original Container'] = artifact.location[0].name
