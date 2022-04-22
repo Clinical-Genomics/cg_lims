@@ -1,4 +1,3 @@
-from email.encoders import encode_quopri
 import logging
 import sys
 import click
