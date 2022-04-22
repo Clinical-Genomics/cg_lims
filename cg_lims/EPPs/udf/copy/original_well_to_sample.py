@@ -61,7 +61,7 @@ sample = artifact.samples[0]
 
 @click.command()
 @options.input(
-    help="Use this flag if you want copy udfs from input artifacts. Defaulte is output artifacts."
+    help="Use this flag if you want copy udfs from input artifacts. Default is output artifacts."
 )
 @click.pass_context
 def original_position_to_sample(ctx, input):
