@@ -41,17 +41,17 @@ def original_well_to_sample(
             failed += 1
             continue
 
-sample = artifact.samples[0]
-            try:
-                sample.udf['Original Well'] = artifact.location[1]
-                sample.udf['Original Container'] = artifact.location[0].name
-                sample.put()
-                passed += 1
-            except:
-                LOG.error(
-                    f"Error: Sample {artifact.id} missing udf location. Can therefor not assign values."
-            )
-                failed += 1
+        sample = artifact.samples[0]
+        try:
+            sample.udf['Original Well'] = artifact.location[1]
+            sample.udf['Original Container'] = artifact.location[0].name
+            sample.put()
+            passed += 1
+        except:
+            LOG.error(
+                f"Error: Sample {artifact.id} missing udf location. Can therefor not assign values."
+        )
+            failed += 1
 
     if failed:
         raise InvalidValueError(
