@@ -50,7 +50,7 @@ sample = artifact.samples[0]
                 passed += 1
             except:
                 LOG.error(
-                f"Error: Sample {artifact.id} missing udf location. Can therefor not assign values."
+                    f"Error: Sample {artifact.id} missing udf location. Can therefor not assign values."
             )
                 failed += 1
 
