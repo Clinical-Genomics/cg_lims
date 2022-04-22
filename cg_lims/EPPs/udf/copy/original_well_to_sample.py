@@ -30,7 +30,7 @@ def original_well_to_sample(
     for artifact in artifacts:        
         if artifact.parent_process:
             LOG.error(
-            f"Error: Not the first step for sample {artifact.id}. Can therefor not get the original container."
+                f"Error: Not the first step for sample {artifact.id}. Can therefor not get the original container."
             )
             failed += 1
             continue
