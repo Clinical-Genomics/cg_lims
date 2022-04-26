@@ -43,7 +43,7 @@ def get_copy_tasks(
 
 def copy_udfs(input_artifacts: List[Artifact], copy_tasks: dict, lims: Lims, reception_control: List[str]):
     """Loop through all artifacts and copy udfs from the correct steps. QC flags are collected from the
-       reception control step if no fitting source processes can be found."""
+       reception control step if specified and no fitting source processes can be found."""
     failed_udfs = []
     process_types = [task["Source Step"] for task_number, task in copy_tasks.items()]
     process_types = list(set(process_types))
