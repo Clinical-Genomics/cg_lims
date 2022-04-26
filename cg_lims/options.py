@@ -341,14 +341,3 @@ def keep_failed_flags(
         is_flag=True,
         help=help,
     )
-
-
-def covid_workflow(
-    help: str = "Flag for steps in the covid workflow",
-) -> click.option:
-    return click.option(
-        "--covid-workflow",
-        default=False,
-        is_flag=True,
-        help=help,
-    )
