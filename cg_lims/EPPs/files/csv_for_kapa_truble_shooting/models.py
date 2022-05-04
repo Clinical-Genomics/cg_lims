@@ -28,6 +28,7 @@ class DebugKapaCSV(BaseModel):
     kapa_size_bp: str = Field(None, alias="PreHybLibrarySize")
     kapa_concentration: str = Field(None, alias="PreHybConcentration")
     pool_amount_of_sample: str = Field(None, alias="PoolAmount")
+    pool_name: str = Field(None, alias="PoolName")
     capt_enrichment_kit: str = Field(None, alias="CaptureEnrichmentKit")
     capt_hybridization_time: str = Field(None, alias="CaptureHybridizationTime")
     bead_size_bp: str = Field(None, alias="PostHybLibrarySize")
@@ -67,6 +68,7 @@ class DebugKapaCSV(BaseModel):
 
     def set_pool(self, pool):
         self.pool_amount_of_sample = pool.amount_of_sample
+        self.pool_name = pool.pool_name
 
     def set_capture(self, capture):
         self.capt_enrichment_kit = capture.enrichment_kit
@@ -105,6 +107,7 @@ HEADERS = [
     "PreHybLibrarySize",
     "PreHybConcentration",
     "PoolAmount",
+    "PoolName",
     "CaptureEnrichmentKit",
     "CaptureHybridizationTime",
     "BufferExchangeConcentration",

@@ -33,3 +33,7 @@ class PoolsamplesforhybridizationTWIST(BaseStep):
     @validator("amount_of_sample", always=True)
     def get_amount_of_sample(cls, v, values):
         return get_artifact_udf(values.get("artifact"), "Total Amount (ng)")
+    
+    @validator("pool_name", always=True)
+    def get_pool_name(cls, v, values):
+        return values.get("artifact").name
