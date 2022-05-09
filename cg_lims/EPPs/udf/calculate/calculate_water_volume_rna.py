@@ -14,7 +14,6 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 TOTAL_VOLUME = 25
-VALID_AMOUNTS_NEEDED = [200, 300, 400, 500]
 
 
 def calculate_sample_and_water_volumes(artifacts: List[Artifact]):
@@ -29,11 +28,6 @@ def calculate_sample_and_water_volumes(artifacts: List[Artifact]):
             )
             missing_udfs += 1
             continue
-        if amount_needed not in VALID_AMOUNTS_NEEDED:
-            raise InvalidValueError(
-                f"'Amount needed (ng)' missing or incorrect for one or more samples. Value can "
-                f"only be {', '.join(map(str, VALID_AMOUNTS_NEEDED))}."
-            )
         sample_volume = amount_needed / concentration
         artifact.udf["Sample Volume (ul)"] = sample_volume
         artifact.udf["Volume H2O (ul)"] = TOTAL_VOLUME - sample_volume
