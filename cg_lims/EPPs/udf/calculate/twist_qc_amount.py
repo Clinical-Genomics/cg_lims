@@ -23,7 +23,7 @@ def get_qc(source: str, conc: float, amount: float) -> str:
         if amount >= 10 and conc <= 250 and conc >= 0.2:
             qc = "PASSED"
     else:
-        if amount >= 500 and conc <= 250 and conc >= 8.33:
+        if amount >= 250 and conc <= 250 and conc >= 8.33:
             qc = "PASSED"
 
     return qc
