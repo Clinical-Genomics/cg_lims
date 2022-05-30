@@ -22,9 +22,9 @@ def calculate_sample_and_water_volumes(artifacts: List[Artifact]):
     for artifact in artifacts:
         concentration = artifact.udf.get("Concentration")
         amount_needed = artifact.udf.get("Amount needed (ng)")
-        if concentration is None:
+        if concentration is None or amount_needed is None:
             LOG.error(
-                f"Sample {artifact.samples[0].name} is missing udf 'Concentration'."
+                f"Sample {artifact.samples[0].name} is missing udf 'Concentration' or 'Amount needed'."
             )
             missing_udfs += 1
             continue
