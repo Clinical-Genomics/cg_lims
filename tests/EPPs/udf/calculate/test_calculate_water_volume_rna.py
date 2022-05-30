@@ -23,6 +23,28 @@ def test_calculate_water_volume_rna_missing_concentration(artifact_1: Artifact):
     )
 
 @pytest.mark.parametrize(
+    "concentration",
+    [
+        100,
+    ],
+)
+def test_calculate_water_volume_rna_amount_needed_missing(
+    concentration, artifact_1: Artifact
+):
+    # GIVEN a list of artifacts with one artifact having no 'Amount Needed (ng)' udf
+    artifact_1.udf["Concentration"] = concentration
+    del artifact_1.udf["Amount needed (ng)"]
+    artifacts = [artifact_1]
+
+    # WHEN calculating sample and water volumes for all samples
+    with pytest.raises(InvalidValueError) as error_message:
+        calculate_sample_and_water_volumes(artifacts)
+
+    # THEN the InvalidValueError exception should be raised
+    assert (
+        f"'Amount needed (ng)' missing or incorrect for one or more samples."
+        in error_message.value.message
+@pytest.mark.parametrize(
     "concentration, amount_needed, expected_water_volume, expected_sample_volume",
     [
         (100, 200, 23.0, 2.0),
