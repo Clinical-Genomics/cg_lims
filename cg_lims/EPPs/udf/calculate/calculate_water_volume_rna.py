@@ -36,8 +36,9 @@ def calculate_sample_and_water_volumes(artifacts: List[Artifact]):
     if missing_udfs:
         raise MissingUDFsError(
             f"Could not apply calculation for {missing_udfs} out of {len(artifacts)} sample(s): "
-            f"'Concentration' is missing!"
+            f"'Concentration' or 'Amount needed (ng)' is missing!"
         )
+
 
 
 @click.command()

@@ -1,0 +1,11 @@
+INFO:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Running lims epps udf calculate calculate-water-volume-rna with params: {}
+ERROR:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Sample RNA-T-K4205-22 is missing udf 'Concentration' or 'Amount needed'.
+ERROR:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Could not apply calculation for 1 out of 1 sample(s): 'Concentration' is missing!
+INFO:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Running lims epps udf calculate calculate-water-volume-rna with params: {}
+ERROR:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Sample RNA-T-K4205-22 is missing udf 'Concentration' or 'Amount needed'.
+ERROR:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Could not apply calculation for 1 out of 1 sample(s): 'Concentration' or 'Amount needed (ng)' is missing!
+INFO:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Running lims epps udf calculate calculate-water-volume-rna with params: {}
+INFO:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Sample and H2O volumes have been calculated!
+INFO:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Running lims epps udf calculate calculate-water-volume-rna with params: {}
+ERROR:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Sample RNA-T-K4205-22 is missing udf 'Concentration' or 'Amount needed'.
+ERROR:cg_lims.EPPs.udf.calculate.calculate_water_volume_rna:Could not apply calculation for 1 out of 1 sample(s): 'Concentration' or 'Amount needed (ng)' is missing!
