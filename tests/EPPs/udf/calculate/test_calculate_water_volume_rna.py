@@ -41,7 +41,8 @@ def test_calculate_water_volume_rna_amount_needed_missing(
     # THEN the InvalidValueError exception should be raised
     assert (
         f"Could not apply calculation for 1 out of 1 sample(s): 'Concentration' or 'Amount needed (ng)' is missing!"
-        in error_message.value.message)
+        in error_message.value.message
+    )
 
 @pytest.mark.parametrize(
     "concentration, amount_needed, expected_water_volume, expected_sample_volume",
