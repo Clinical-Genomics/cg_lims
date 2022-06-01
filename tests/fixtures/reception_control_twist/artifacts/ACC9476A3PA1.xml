@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9476A3PA1?state=1839947" limsid="ACC9476A3PA1">
+    <name>MOL16-22T</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <qc-flag>UNKNOWN</qc-flag>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC9476A3" limsid="ACC9476A3" />
+    <artifact-group name="TWIST v7" uri="http://127.0.0.1:8000/api/v2/artifactgroups/1752" />
+    <workflow-stages>
+        <workflow-stage status="IN_PROGRESS" name="Reception Control TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1952/stages/6950" />
+        <workflow-stage status="REMOVED" name="Reception Control TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1851/stages/6510" />
+    </workflow-stages>
+</art:artifact>

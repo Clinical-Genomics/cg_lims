@@ -9,8 +9,7 @@ from cg_lims.models.arnold.base_step import BaseStep
 
 
 class ProcessUDFS(BaseModel):
-    lot_nr_covaris_tube: Optional[str] = Field(None, alias="Lot no: Covaris tube")
-    lot_nr_covaris_plate_tube: Optional[str] = Field(None, alias="Lot no: Covaris plate or tube")
+    lot_nr_covaris_tube: Optional[str] = Field(None, alias="Lot no: Covaris plate or tube")
     fragmentation_method: Optional[str] = Field(None, alias="Method Document 1")
     covaris_protocol: Optional[str] = Field(None, alias="Protocol")
     lot_nr_resuspension_buffer_fragmentation: Optional[str] = Field(

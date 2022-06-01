@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" uri="http://127.0.0.1:8000/api/v2/processes/24-315065" limsid="24-315065">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1370">Reception Control no placement v2</type>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/1007">
+        <first-name>Rasmus</first-name>
+        <last-name>Burge</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9476A2PA1?state=1839946" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9476A2PA1?state=1839946" limsid="ACC9476A2PA1" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9476A3PA1?state=1839947" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9476A3PA1?state=1839947" limsid="ACC9476A3PA1" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9476A23PA1?state=1840417" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC9476A23PA1?state=1840417" limsid="ACC9476A23PA1" />
+    </input-output-map>
+    <process-parameter name="Arnold Upload Sample" />
+</prc:process>
