@@ -37,4 +37,4 @@ class PoolsamplesforhybridizationTWIST(BaseStep):
 
     @validator("pool_name", always=True)
     def get_pool_name(cls, v, values):
-        return get_artifacts(values.get("artifact")).name
+        return values.get("artifact").name
