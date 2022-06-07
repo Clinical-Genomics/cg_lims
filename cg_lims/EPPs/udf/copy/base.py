@@ -12,6 +12,7 @@ from cg_lims.EPPs.udf.copy.process_to_artifact import process_to_artifact
 from cg_lims.EPPs.udf.copy.qc_to_sample import qc_to_sample
 from cg_lims.EPPs.udf.copy.original_well_to_sample import original_position_to_sample
 from cg_lims.EPPs.udf.copy.aggregate_qc_flags_and_copy_fields import aggregate_qc_and_copy_fields
+from cg_lims.EPPs.udf.copy.location_to_artifact import location_to_artifact
 
 @click.group(invoke_without_command=True)
 @click.pass_context
@@ -29,3 +30,4 @@ copy.add_command(process_to_artifact)
 copy.add_command(qc_to_sample)
 copy.add_command(original_position_to_sample)
 copy.add_command(aggregate_qc_and_copy_fields)
+copy.add_command(location_to_artifact)
