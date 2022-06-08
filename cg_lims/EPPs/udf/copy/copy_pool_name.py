@@ -26,15 +26,9 @@ def pool_name_to_sample(
 
     failed = 0
     passed = 0
-    for artifact in artifacts:        
-        if artifact.parent_process:
-            LOG.error(
-                f"Error: Not the first step for sample {artifact.id}. Can therefor not get the original container."
-            )
-            failed += 1
-            continue
+    for artifact in artifacts:
 
-        for sample in artifact.samples[0]:
+        for sample in artifact.samples:
 
             try:
                 sample.udf['Pool Name'] = artifact.name
