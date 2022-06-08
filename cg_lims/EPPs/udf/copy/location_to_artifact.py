@@ -17,11 +17,10 @@ def copy_location_to_artifact(
     """Function to copy artifact udf location and set to artifact level.
 
     For each artifact in the artifacts list, copying the location and set
-    sample udf 'Original Well' and 'Original Container' to all samples 
-    related to the artifact. 
+    it for artifact udfs specified by user.
 
     Arguments:
-        artifacts: list of artifacts to copy from"""
+        artifacts: list of artifacts to copy location to"""
 
     failed = 0
     passed = 0
@@ -40,7 +39,7 @@ def copy_location_to_artifact(
 
     if failed:
         raise InvalidValueError(
-            message=f"Failed to set 'Original Well' and 'Original Container' for {failed} artifacts. Udfs were set on {passed} samples."
+            message=f"Failed to set {source_artifact_udfs[0]} and {source_artifact_udfs[1]} for {failed} artifacts. Udfs were set on {passed} samples."
         )
 
 @click.command()
@@ -48,11 +47,11 @@ def copy_location_to_artifact(
     help="Use this flag if you want copy udfs from input artifacts. Default is output artifacts."
 )
 @options.source_artifact_udfs(
-    help="The name of the udf that you want to copy, like 'Library plate name' and 'Library plate well'"
+    help="The name of the udf that you want to copy."
 )
 @click.pass_context
 def location_to_artifact(ctx, input, source_artifact_udfs: Optional[List[str]] ):
-    """Script to copy artifact udf to sample udf"""
+    """Script to copy location to artifact udf"""
 
     process = ctx.obj["process"]
     try:
