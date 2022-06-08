@@ -56,13 +56,13 @@ def pool_name_to_sample(
     help="Use this flag if you want copy udfs from input artifacts. Default is output artifacts."
 )
 @click.pass_context
-def original_position_to_sample(ctx, input):
+def pool_to_sample(ctx, input):
     """Script to copy artifact udf to sample udf"""
 
     process = ctx.obj["process"]
     try:
         artifacts = get_artifacts(process=process, input=input)
-        original_well_to_sample(
+        pool_name_to_sample(
             artifacts
             )
         message = "Udfs have been set on all samples."
