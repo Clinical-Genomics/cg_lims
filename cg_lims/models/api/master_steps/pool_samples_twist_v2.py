@@ -3,7 +3,7 @@ from typing import Optional
 from genologics.entities import Artifact, Process
 from pydantic import Field, validator
 
-from cg_lims.models.api.master_steps.base_step import get_artifact_udf, BaseStep
+from cg_lims.models.api.master_steps.base_step import get_artifact_udf, get_artifact_name, BaseStep
 from cg_lims.get.artifacts import get_latest_analyte, get_artifacts
 
 
@@ -12,7 +12,7 @@ class PoolsamplesforhybridizationTWIST(BaseStep):
     artifact: Optional[Artifact]
     process: Optional[Process]
     amount_of_sample: Optional[str] = Field(None, alias="Total Amount (ng)")
-    pool_name: Optional[Artifact]
+    pool_name: Optional[str]
 
     @validator("artifact", always=True)
     def get_artifact(cls, v, values):
@@ -37,4 +37,4 @@ class PoolsamplesforhybridizationTWIST(BaseStep):
 
     @validator("pool_name", always=True)
     def get_pool_name(cls, v, values):
-        return values.get("artifact").name
+        return get_artifact_name(values.get("artifact"))

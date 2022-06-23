@@ -8,6 +8,12 @@ def get_artifact_udf(artifact, udf):
     return None
 
 
+def get_artifact_name(artifact):
+    if artifact:
+        return artifact.name
+    return None
+
+
 def get_process_udf(process, udf):
     if process:
         return process.udf.get(udf)
