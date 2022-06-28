@@ -34,7 +34,15 @@ class HybridizeLibraryTWIST(BaseStep):
                 process_types=["Hybridize Library TWIST v2"],
             )
         except:
-            return None
+            try:
+                artifact = get_latest_analyte(
+                    lims=values.get("lims"),
+                    sample_id=values.get("sample_id"),
+                    process_types=["Target enrichment TWIST v1"],
+                )
+            except:
+                artifact = None
+        return artifact
 
     @validator("process", always=True)
     def get_process(cls, v, values):
@@ -71,7 +79,10 @@ class HybridizeLibraryTWIST(BaseStep):
 
     @validator("thermal_cycler", always=True)
     def get_thermal_cycler(cls, v, values):
-        return get_process_udf(values.get("process"), "Thermal cycler")
+        thermal_cycler = get_process_udf(values.get("process"), "Thermal cycler")
+        if not thermal_cycler:
+            thermal_cycler = get_process_udf(values.get("process"), "Thermal cycler (hyb)")
+        return thermal_cycler
 
     @validator("method_document", always=True)
     def get_method_document(cls, v, values):
