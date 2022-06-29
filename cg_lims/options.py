@@ -341,3 +341,19 @@ def keep_failed_flags(
         is_flag=True,
         help=help,
     )
+
+
+def dilution_file(help: str = "Input qPCR result file.") -> click.option:
+    return click.option(
+        "--dilution-file",
+        required=False,
+        help=help,
+    )
+
+
+def dilution_log(help: str = "Output dilution log") -> click.option:
+    return click.option(
+        "--dilution-log",
+        required=False,
+        help=help,
+    )
