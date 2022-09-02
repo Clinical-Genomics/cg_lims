@@ -357,3 +357,37 @@ def dilution_log(help: str = "Output dilution log") -> click.option:
         required=False,
         help=help,
     )
+
+
+def dilution_threshold(help: str = "Threshold for dilution difference.") -> click.option:
+    return click.option(
+        "--dilution-threshold",
+        required=False,
+        help=help
+    )
+
+
+def d1_dilution_range(help: str = "Allowed range of difference in concentration between dilutions in series d1."
+                   ) -> click.option:
+    return click.option(
+        "--d1-dilution-range",
+        required=False,
+        help=help
+    )
+
+
+def d2_dilution_range(help: str = "Allowed range of difference in concentration between dilutions in series d2."
+                   ) -> click.option:
+    return click.option(
+        "--d2-dilution-range",
+        required=False,
+        help=help
+    )
+
+
+def size_bp(help: str = "Fragment size in base pairs.") -> click.option:
+    return click.option(
+        "--size-bp",
+        required=False,
+        help=help
+    )
