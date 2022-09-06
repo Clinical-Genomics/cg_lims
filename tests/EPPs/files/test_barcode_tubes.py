@@ -1,4 +1,4 @@
-from tests.conftest import artifact_1, server
+from tests.conftest import server
 from pathlib import Path
 from cg_lims.exceptions import InvalidValueError, MissingValueError
 import pytest
