@@ -163,3 +163,11 @@ def hamilton_buffer_exchange_no_udf() -> str:
 @pytest.fixture
 def flow_cell_fixture() -> dict:
     return FLOW_CELL_DOCUMENT
+
+@pytest.fixture
+def barcode_tubes_csv() -> str:
+    """Get file path to valid json"""
+
+    file_path = "tests/fixtures/barcode_tubes_csv.txt"
+    file = Path(file_path)
+    return file.read_text()
