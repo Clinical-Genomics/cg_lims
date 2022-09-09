@@ -23,7 +23,15 @@ class CaptureandWashTWIST(BaseStep):
                 process_types=["Capture and Wash TWIST v2"],
             )
         except:
-            return None
+            try:
+                artifact = get_latest_analyte(
+                    lims=values.get("lims"),
+                    sample_id=values.get("sample_id"),
+                    process_types=["Target enrichment TWIST v1"],
+                )
+            except:
+                artifact = None
+        return artifact
 
     @validator("process", always=True)
     def get_process(cls, v, values):
