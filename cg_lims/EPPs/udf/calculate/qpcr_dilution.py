@@ -3,20 +3,19 @@ from __future__ import division
 from genologics.entities import Artifact
 
 from statistics import mean
+from typing import Dict, List
 import numpy
 import pandas as pd
 import copy
 import click
-from typing import Dict, List, TextIO
+import logging
+import sys
 
 from cg_lims import options
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
 from cg_lims.globals import WELL_TRANSFORMER
 from cg_lims.exceptions import MissingFileError, FileError, LimsError
-
-import logging
-import sys
 
 LOG = logging.getLogger(__name__)
 
@@ -260,8 +259,8 @@ class PerArtifact:
 
 
 def calculate_and_set_concentrations(artifacts: List[Artifact],
-                                     dilution_data: Dict,
-                                     dilution_log: TextIO,
+                                     dilution_file: str,
+                                     dilution_log: str,
                                      dilution_thresholds: List[float],
                                      size_bp: int
                                      ) -> str:
@@ -272,6 +271,8 @@ def calculate_and_set_concentrations(artifacts: List[Artifact],
     failed_samples = 0
     passed_arts = 0
     failed_arts = 0
+    dilution_log = open(dilution_log, 'a')
+    dilution_data = make_dilution_data(dilution_file=dilution_file)
     dilution_data_copy = copy.deepcopy(dilution_data)
     for artifact in artifacts:
         sample = get_one_sample_from_artifact(artifact)
@@ -319,6 +320,8 @@ def calculate_and_set_concentrations(artifacts: List[Artifact],
                 'Could not make calculations for this sample. Some data might be missing in the dilution file.\n')
             failed_arts += 1
 
+    dilution_log.close()
+
     output_message = f"Updated {passed_arts} artifact(s), skipped {failed_arts} artifact(s)" \
                      f" with wrong and/or blank values for some UDFs."
 
@@ -357,20 +360,17 @@ def qpcr_dilution(ctx,
     process = ctx.obj["process"]
 
     try:
-        dilution_log_file = open(dilution_log, 'a')
         artifacts: List[Artifact] = get_artifacts(process=process, measurement=True)
-        dilution_data: Dict = make_dilution_data(dilution_file=dilution_file)
-        d1_range_float = make_float_list(d1_dilution_range)
-        d2_range_float = make_float_list(d2_dilution_range)
-        dilution_thresholds = [float(dilution_threshold), d1_range_float, d2_range_float]
+        d1_range_float: List[float] = make_float_list(d1_dilution_range)
+        d2_range_float: List[float] = make_float_list(d2_dilution_range)
+        dilution_thresholds: List[float] = [float(dilution_threshold), d1_range_float, d2_range_float]
         message: str = calculate_and_set_concentrations(
             artifacts=artifacts,
-            dilution_data=dilution_data,
-            dilution_log=dilution_log_file,
+            dilution_file=dilution_file,
+            dilution_log=dilution_log,
             dilution_thresholds=dilution_thresholds,
             size_bp=int(size_bp)
         )
-        dilution_log_file.close()
         LOG.info(message)
         click.echo(message)
     except LimsError as e:

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2753955?state=2183488" limsid="92-2753955">
+    <name>qPCR Measurement</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-348406" limsid="24-348406" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-273762" limsid="27-273762" />
+        <value>A:1</value>
+    </location>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC10218A9" limsid="ACC10218A9" />
+    <reagent-label name="A09 - UDI0065" />
+    <workflow-stages />
+</art:artifact>
