@@ -80,34 +80,3 @@ def test_calculate_and_set_concentrations_fail(qpcr_dilution_file_failed, lims):
             f" WARNING: Failed to set UDFs on 1 samples, due to unstable dilution measurements"
             in error_message.value.message
     )
-
-
-def test_calculate_and_set_concentrations_missing_file(lims):
-    # GIVEN: a set of dilution thresholds, fragment size, a set of input artifacts and a missing dilution file.
-
-    server("qpcr_dilution")
-    dil_log = Path("dil_log")
-    dilution_threshold = 0.4
-    d1_dilution_range = [2.5, 5.0]
-    d2_dilution_range = [0.7, 1.5]
-    dilution_thresholds = [dilution_threshold, d1_dilution_range, d2_dilution_range]
-    size_bp = 470
-    artifacts = [Artifact(lims=lims, id="92-2753955"),
-                 Artifact(lims=lims, id="92-2753956")]
-
-    # WHEN running calculate_and_set_concentrations
-    with pytest.raises(MissingFileError) as error_message:
-        output_message = calculate_and_set_concentrations(
-                artifacts=artifacts,
-                dilution_file="file_that_doesnt_exist",
-                dilution_log=dil_log,
-                dilution_thresholds=dilution_thresholds,
-                size_bp=size_bp
-            )
-
-    # THEN the MissingFileError exception should be raised with the correct message
-    dil_log.unlink()
-    assert (
-            f"qPCR result file is missing!"
-            in error_message.value.message
-    )

@@ -28,10 +28,7 @@ def make_float_list(input_string: str) -> List[float]:
 
 
 def make_dilution_data(dilution_file: str) -> Dict:
-    try:
-        df = pd.read_excel(dilution_file)
-    except FileNotFoundError:
-        raise MissingFileError("qPCR result file is missing!")
+    df = pd.read_excel(dilution_file)
     dilution_data = {}
     for index, row in df.iterrows():
         well = row['Well']
