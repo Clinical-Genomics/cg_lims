@@ -12,8 +12,9 @@ import logging
 import sys
 
 from cg_lims import options
-from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.artifacts import get_artifacts, get_artifact_by_name
 from cg_lims.get.samples import get_one_sample_from_artifact
+from cg_lims.get.files import get_file_path
 from cg_lims.globals import WELL_TRANSFORMER
 from cg_lims.exceptions import MissingFileError, FileError, LimsError
 
@@ -336,7 +337,8 @@ def calculate_and_set_concentrations(artifacts: List[Artifact],
 
 
 @click.command()
-@options.dilution_file()
+@options.file_placeholder(help="qPCR result file placeholder name.")
+@options.local_file()
 @options.dilution_log()
 @options.dilution_threshold()
 @options.d1_dilution_range()
@@ -344,7 +346,8 @@ def calculate_and_set_concentrations(artifacts: List[Artifact],
 @options.size_bp()
 @click.pass_context
 def qpcr_dilution(ctx,
-                  dilution_file: str,
+                  file: str,
+                  local_file: str,
                   dilution_log: str,
                   dilution_threshold: str,
                   d1_dilution_range: str,
@@ -356,6 +359,12 @@ def qpcr_dilution(ctx,
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
 
+    if local_file:
+        dilution_file_path = local_file
+    else:
+        file_art = get_artifact_by_name(process=process, name=file)
+        dilution_file_path = get_file_path(file_art)
+
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, measurement=True)
         d1_range_float: List[float] = make_float_list(d1_dilution_range)
@@ -363,7 +372,7 @@ def qpcr_dilution(ctx,
         dilution_thresholds: List[float] = [float(dilution_threshold), d1_range_float, d2_range_float]
         message: str = calculate_and_set_concentrations(
             artifacts=artifacts,
-            dilution_file=dilution_file,
+            dilution_file=dilution_file_path,
             dilution_log=dilution_log,
             dilution_thresholds=dilution_thresholds,
             size_bp=int(size_bp)
