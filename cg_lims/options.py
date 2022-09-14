@@ -341,3 +341,13 @@ def keep_failed_flags(
         is_flag=True,
         help=help,
     )
+
+
+def container_type( help: str = "Specific container type, Tube or Plate.", ) -> click.option:
+    return click.option(
+        "-ct",
+        "--container-type",
+        required=True,
+        multiple=False,
+        help=help,
+    )
