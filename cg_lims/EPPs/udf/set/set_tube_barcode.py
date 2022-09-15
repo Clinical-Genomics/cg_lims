@@ -1,6 +1,7 @@
 import logging
 import sys
 import click
+from datetime import datetime
 
 from pathlib import Path
 from typing import List
@@ -16,53 +17,44 @@ def get_barcode_set_udf(
     artifact_udf: str,
     container_type: str,
 ):
-    """Assigning barcode udf"""
+
+    """Assigning barcode to a barcode udf"""
     
     assigned_artifacts = 0
-    unassigned_artifacts = 0
-    total_artifacts = len(artifacts)
     unexpected_container_type = 0
     failed_samples = []
 
     for artifact in artifacts:
         try:
-            barcode = str(artifact.samples[0].id)
             art_container_type = str(artifact.container.type.name)
             
-
             if art_container_type.lower() != container_type.lower():
-                
-                unassigned_artifacts += 1
 
                 LOG.info(
-                    f"Sample {barcode} does not have container type \"Tube\" therefore excluded"
+                    f"Sample {str(artifact.samples[0].id)} does not have container type \"Tube\" therefore excluded"
                 )
                 continue
 
             else:
+                barcode = str(artifact.samples[0].id)
+
                 artifact.udf[artifact_udf] = barcode
                 artifact.put()
                 assigned_artifacts += 1
-                
 
         except:
             unexpected_container_type += 1
             failed_samples.append(str(artifact.samples[0].id))
 
 
-    rest_check = total_artifacts - unassigned_artifacts - assigned_artifacts
-
     if unexpected_container_type:
         failed_message = ", ".join(map(str, failed_samples))
         raise InvalidValueError(
-            f"Samples {failed_message} are missing udf container or udf \"{artifact_udf}\"."
+            f"Samples {failed_message}, are missing udf container or udf \"{artifact_udf}\"."
         )
     
-    elif rest_check:
-        raise MissingValueError( f"There are {rest_check} samples with container type {container_type}.")
-    
     elif not assigned_artifacts:
-        raise MissingValueError( f"No barcode assigned.")
+        raise MissingValueError( f"No barcode assigned. Samples might not have container type \"{container_type}\".")
 
 @click.command()
 @options.artifact_udf(
