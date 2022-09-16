@@ -10,3 +10,4 @@ matplotlib
 pymongo
 coloredlogs
 openpyxl
+xlrd==1.2.0
