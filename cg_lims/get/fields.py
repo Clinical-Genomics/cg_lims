@@ -83,3 +83,24 @@ def get_index_well(artifact: Artifact):
         return f"{index_well_row}{index_well_col}"
     else:
         return "-"
+
+
+def get_barcode(artifact: Artifact, container: str):
+    """Central script for generation of barcode. Looks at container type and 
+    assign barcode according to Atlas document 'Barcodes at Clinical Genomics'"""
+    
+    # Barcode for plates.
+    if container.lower() == '96 well plate':
+        return ""
+    
+    # Barcode for pool.
+    elif len(artifact.samples) > 1:
+        return str(artifact.name)
+    
+    # Barcode for tube.
+    elif container.lower() == 'tube':
+        return str(artifact.samples[0].id)
+    
+    else:
+        return "-"
+    

@@ -347,7 +347,7 @@ def container_type( help: str = "Specific container type, Tube or Plate.", ) -> 
     return click.option(
         "-ct",
         "--container-type",
-        required=True,
+        required=False,
         multiple=False,
         help=help,
     )

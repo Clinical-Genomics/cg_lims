@@ -21,20 +21,31 @@ def get_barcode_set_udf(
     """Assigning barcode to a barcode udf"""
     
     assigned_artifacts = 0
-    unexpected_container_type = 0
+    failed_artifact = 0
     failed_samples = []
 
     for artifact in artifacts:
         try:
             art_container_type = str(artifact.container.type.name)
             
-            if art_container_type.lower() != container_type.lower():
+            # Removes all incorrect container types. 
+            if container_type:
+                if art_container_type.lower() != container_type.lower():
 
-                LOG.info(
-                    f"Sample {str(artifact.samples[0].id)} does not have container type \"Tube\" therefore excluded"
-                )
-                continue
+                    LOG.info(
+                        f"Sample {str(artifact.samples[0].id)} does not have container type \"Tube\" therefore excluded"
+                    )
+                    continue
 
+                # Sample is of type "container_type".
+                else:
+                    barcode = str(artifact.samples[0].id)
+
+                    artifact.udf[artifact_udf] = barcode
+                    artifact.put()
+                    assigned_artifacts += 1
+
+            # Get all barcode to all samples.
             else:
                 barcode = str(artifact.samples[0].id)
 
@@ -43,16 +54,17 @@ def get_barcode_set_udf(
                 assigned_artifacts += 1
 
         except:
-            unexpected_container_type += 1
+            failed_artifact += 1
             failed_samples.append(str(artifact.samples[0].id))
 
-
-    if unexpected_container_type:
+    # Triggered if any failed samples.
+    if failed_artifact:
         failed_message = ", ".join(map(str, failed_samples))
         raise InvalidValueError(
             f"Samples {failed_message}, are missing udf container or udf \"{artifact_udf}\"."
         )
     
+    # Notifies that no sample got barcode.
     elif not assigned_artifacts:
         raise MissingValueError( f"No barcode assigned. Samples might not have container type \"{container_type}\".")
 
