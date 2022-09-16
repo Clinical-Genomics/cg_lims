@@ -3,7 +3,7 @@ import click
 from .set_samples_reads_missing import set_reads_missing_on_new_samples
 from .set_sample_date import set_sample_date
 from .set_method import method_document
-from .set_tube_barcode import assign_tube_barcode
+from .set_tube_barcode import assign_barcode
 
 
 @click.group(invoke_without_command=True)
@@ -16,4 +16,4 @@ def set(context: click.Context):
 set.add_command(set_reads_missing_on_new_samples)
 set.add_command(set_sample_date)
 set.add_command(method_document)
-set.add_command(assign_tube_barcode)
+set.add_command(assign_barcode)
