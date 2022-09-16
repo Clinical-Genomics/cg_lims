@@ -10,6 +10,7 @@ import copy
 import click
 import logging
 import sys
+import warnings
 
 from cg_lims import options
 from cg_lims.get.artifacts import get_artifacts, get_artifact_by_name
@@ -19,6 +20,7 @@ from cg_lims.globals import WELL_TRANSFORMER
 from cg_lims.exceptions import MissingFileError, FileError, LimsError
 
 LOG = logging.getLogger(__name__)
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 def make_float_list(input_string: str) -> List[float]:
