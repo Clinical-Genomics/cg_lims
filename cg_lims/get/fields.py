@@ -91,7 +91,7 @@ def get_barcode(artifact: Artifact, container: str):
     
     # Barcode for plates.
     if container.lower() == '96 well plate':
-        return ""
+        return None
     
     # Barcode for pool.
     elif len(artifact.samples) > 1:

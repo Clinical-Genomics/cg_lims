@@ -48,7 +48,7 @@ def get_barcode_set_udf(
                 else:
                     barcode = get_barcode(artifact, str(container_type))
 
-                    if barcode != "" and barcode != "-":
+                    if barcode != "" and barcode != "-" and barcode != None:
                         artifact.udf[artifact_udf] = barcode
                         artifact.put()
                         assigned_artifacts += 1
@@ -63,7 +63,7 @@ def get_barcode_set_udf(
             else:
                 barcode = get_barcode(artifact, str(art_container_type))
 
-                if barcode != "" and barcode != "-":
+                if barcode != "" and barcode != "-" and barcode != None:
                     artifact.udf[artifact_udf] = barcode
                     artifact.put()
                     assigned_artifacts += 1
@@ -88,7 +88,7 @@ def get_barcode_set_udf(
     
     # Notifies that no sample got a barcode.
     elif not assigned_artifacts:
-        raise MissingValueError( f"No barcode assigned. Check parameters, container_type: \"{container_type}\".")
+        raise MissingValueError( f"No barcode assigned.")
 
 @click.command()
 @options.artifact_udf(
