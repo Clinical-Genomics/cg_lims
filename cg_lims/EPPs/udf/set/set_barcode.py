@@ -88,7 +88,7 @@ def get_barcode_set_udf(
     
     # Notifies that no sample got a barcode.
     elif not assigned_artifacts:
-        raise MissingValueError( f"No barcode assigned.")
+        raise MissingValueError( f"No barcode assigned. Check parameters.")
 
 @click.command()
 @options.artifact_udf(
