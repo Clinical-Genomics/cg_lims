@@ -53,7 +53,7 @@ def get_barcode_set_udf(
                         artifact.put()
                         assigned_artifacts += 1
                     
-                    # Triggered if barcode is not defined for sample type.
+                    # Triggered if barcode is not defined (i.e empty string).
                     else:
                         LOG.info(
                         f"Sample {str(artifact.samples[0].id)} does not have defined barcode therefore excluded"
@@ -68,7 +68,7 @@ def get_barcode_set_udf(
                     artifact.put()
                     assigned_artifacts += 1
                 
-                # Triggered if barcode is not defined for sample type.
+                # Triggered if barcode is not defined (i.e empty string).
                 else:
                     LOG.info(
                     f"Sample {str(artifact.samples[0].id)} does not have defined barcode therefore excluded"

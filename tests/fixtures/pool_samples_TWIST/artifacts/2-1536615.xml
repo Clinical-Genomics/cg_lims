@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1536615?state=1182637" limsid="2-1536615">
+    <name>tga210524_A1_Exome_requeued</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/122-202801" limsid="122-202801" />
+    <qc-flag>FAILED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-150518" limsid="27-150518" />
+        <value>1:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7974A6" limsid="ACC7974A6" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7974A7" limsid="ACC7974A7" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7974A9" limsid="ACC7974A9" />
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7974A14" limsid="ACC7974A14" />
+    <reagent-label name="A09 IDT_10nt_660 (TTCGGCCAGT-TAACCTTGCA)" />
+    <reagent-label name="F08 IDT_10nt_725 (CTGTGAAGCG-TTAGGTGAAG)" />
+    <reagent-label name="D08 IDT_10nt_700 (CCTTGTCATT-TGTTGATGAG)" />
+    <reagent-label name="C08 IDT_10nt_687 (TCGGCTGGAT-CCGCTAGCTT)" />
+    <udf:field type="Numeric" name="Volume H2O (ul)">0</udf:field>
+    <udf:field type="Numeric" name="Total Amount (ng)">1500</udf:field>
+    <udf:field type="Numeric" name="Total Volume (ul)">45</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Hybridize Library TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1601/stages/5110" />
+    </workflow-stages>
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-1536615/demux" />
+</art:artifact>
