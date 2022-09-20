@@ -17,7 +17,7 @@ from cg_lims.get.artifacts import get_artifacts, get_artifact_by_name
 from cg_lims.get.samples import get_one_sample_from_artifact
 from cg_lims.get.files import get_file_path
 from cg_lims.globals import WELL_TRANSFORMER
-from cg_lims.exceptions import MissingFileError, FileError, LimsError
+from cg_lims.exceptions import FileError, LimsError
 
 LOG = logging.getLogger(__name__)
 warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -219,7 +219,7 @@ class PerArtifact:
                     return
                 else:
                     control_1e03 = True
-                    self.index['1E03'] = str(int(numpy.argmax(diff_from_mean_1e03)))
+                    self.index['1E03'] = int(numpy.argmax(diff_from_mean_1e03))
             else:
                 ind = self.index['1E04']
                 if type(ind) == int:
@@ -228,7 +228,7 @@ class PerArtifact:
                     self.index['1E04'] = 'Fail'
                     return
                 else:
-                    self.index['1E04'] = str(int(numpy.argmax(diff_from_mean_1e04)))
+                    self.index['1E04'] = int(numpy.argmax(diff_from_mean_1e04))
         if not d2_in_range:
             array = numpy.array(self.Cq['2E03'])
             diff_from_mean_2e03 = numpy.absolute(array - numpy.median(array))/numpy.median(array).tolist()
@@ -244,7 +244,7 @@ class PerArtifact:
                     self.index['2E03'] = 'Fail'
                     return
                 else:
-                    self.index['2E03'] = str(int(numpy.argmax(diff_from_mean_2e03)))
+                    self.index['2E03'] = int(numpy.argmax(diff_from_mean_2e03))
             else:
                 if self.index['1E03'] is not None:
                     if control_1e03 and self.index['1E03'] != numpy.argmax(outlier_1e03):
@@ -258,7 +258,7 @@ class PerArtifact:
                         self.index['1E03'] = 'Fail'
                         return
                 else:
-                    self.index['1E03'] = str(int(numpy.argmax(diff_from_mean_1e03)))
+                    self.index['1E03'] = int(numpy.argmax(diff_from_mean_1e03))
 
 
 def calculate_and_set_concentrations(artifacts: List[Artifact],
