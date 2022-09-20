@@ -46,7 +46,7 @@ def get_barcode_set_udf(
 
                 # Sample has the correct "container_type".
                 else:
-                    barcode = get_barcode(artifact, str(container_type))
+                    barcode = get_barcode(artifact)
 
                     if barcode != "" and barcode != "-" and barcode != None:
                         artifact.udf[artifact_udf] = barcode
@@ -61,7 +61,7 @@ def get_barcode_set_udf(
 
             # Get all barcode to all samples.
             else:
-                barcode = get_barcode(artifact, str(art_container_type))
+                barcode = get_barcode(artifact)
 
                 if barcode != "" and barcode != "-" and barcode != None:
                     artifact.udf[artifact_udf] = barcode

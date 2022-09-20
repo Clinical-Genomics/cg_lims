@@ -40,7 +40,7 @@ def test_with_tube(lims):
                 artifact.udf[barcode_udf]
         
         else:
-            barcode = get_barcode(artifact, container)
+            barcode = get_barcode(artifact)
             assert artifact.udf[barcode_udf] == barcode
 
 
@@ -91,7 +91,7 @@ def test_pool_barcode(lims):
 
     # THEN correct barcode should be assigned.
     for artifact in artifacts:        
-        barcode = get_barcode(artifact, container)
+        barcode = get_barcode(artifact)
         assert artifact.udf[barcode_udf] == barcode
 
 def test_InvalidValueError(lims):
