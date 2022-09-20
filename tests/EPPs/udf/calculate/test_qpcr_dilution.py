@@ -75,8 +75,10 @@ def test_calculate_and_set_concentrations_fail(qpcr_dilution_file_failed, lims):
 
     # THEN the FileError exception should be raised with the correct message
     dil_log.unlink()
+    print(error_message.value.message)
     assert (
-            f"Updated 1 artifact(s), skipped 0 artifact(s) with wrong and/or blank values for some UDFs."
-            f" WARNING: Failed to set UDFs on 1 samples, due to unstable dilution measurements"
+            f"Updated 1 artifact(s), skipped 0 artifact(s) with wrong and/or blank values for some UDFs. "
+            f"WARNING: Removed replicate from 1 samples. See log file for details. "
+            f"WARNING: Failed to set UDFs on 1 samples, due to unstable dilution measurements"
             in error_message.value.message
     )
