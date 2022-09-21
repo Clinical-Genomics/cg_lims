@@ -2,7 +2,6 @@ import logging
 import sys
 import click
 
-from pathlib import Path
 from typing import List
 from genologics.lims import Artifact
 from cg_lims import options
@@ -11,6 +10,7 @@ from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.fields import get_barcode
 
 LOG = logging.getLogger(__name__)
+
 
 def get_barcode_set_udf(
     artifacts: List[Artifact],
@@ -28,59 +28,39 @@ def get_barcode_set_udf(
     """
     
     assigned_artifacts = 0
-    failed_artifact = 0
     failed_samples = []
 
     for artifact in artifacts:
         try:
-            art_container_type = str(artifact.container.type.name)
-            
-            # Removes all incorrect container types if option is used. 
-            if container_type:
-                if art_container_type.lower() != container_type.lower():
+            art_container_type = artifact.container.type.name
 
-                    LOG.info(
-                        f"Sample {str(artifact.samples[0].id)} does not have container type {container_type} therefore excluded"
-                    )
-                    continue
+            # Assigns barcodes too all samples if no container type is given
+            if not container_type:
+                barcode = get_barcode(artifact)
+                artifact.udf[artifact_udf] = barcode
+                artifact.put()
+                assigned_artifacts += 1
 
-                # Sample has the correct "container_type".
-                else:
-                    barcode = get_barcode(artifact)
+            # Removes all incorrect container types if option is used.
+            elif art_container_type.lower() != container_type.lower():
+                LOG.info(
+                    f"Sample {str(artifact.samples[0].id)} does not have container"
+                    f" type {container_type} therefore excluded."
+                )
 
-                    if barcode != "" and barcode != "-" and barcode != None:
-                        artifact.udf[artifact_udf] = barcode
-                        artifact.put()
-                        assigned_artifacts += 1
-                    
-                    # Triggered if barcode is not defined (i.e empty string).
-                    else:
-                        LOG.info(
-                        f"Sample {str(artifact.samples[0].id)} does not have defined barcode therefore excluded"
-                        )
-
-            # Get all barcode to all samples.
+            # Sample has the correct "container_type".
             else:
                 barcode = get_barcode(artifact)
-
-                if barcode != "" and barcode != "-" and barcode != None:
-                    artifact.udf[artifact_udf] = barcode
-                    artifact.put()
-                    assigned_artifacts += 1
-                
-                # Triggered if barcode is not defined (i.e empty string).
-                else:
-                    LOG.info(
-                    f"Sample {str(artifact.samples[0].id)} does not have defined barcode therefore excluded"
-                    )
+                artifact.udf[artifact_udf] = barcode
+                artifact.put()
+                assigned_artifacts += 1
 
         # Collects failed samples.
         except:
-            failed_artifact += 1
-            failed_samples.append(str(artifact.samples[0].id))
+            failed_samples.append(artifact.samples[0].id)
 
     # Triggered if any failed samples.
-    if failed_artifact:
+    if failed_samples:
         failed_message = ", ".join(map(str, failed_samples))
         raise InvalidValueError(
             f"Samples {failed_message}, are missing udf container or udf \"{artifact_udf}\"."
@@ -88,12 +68,11 @@ def get_barcode_set_udf(
     
     # Notifies that no sample got a barcode.
     elif not assigned_artifacts:
-        raise MissingValueError( f"No barcode assigned. Check parameters.")
+        raise MissingValueError(f"No barcode assigned. Check parameters.")
+
 
 @click.command()
-@options.artifact_udf(
-    help="The name of the barcode udf."
-)
+@options.artifact_udf(help="The name of the barcode udf.")
 @options.input()
 @options.container_type()
 @click.pass_context
@@ -114,6 +93,9 @@ def assign_barcode(
             artifact_udf=artifact_udf,
             container_type=container_type
         )
-        click.echo("Barcodes were successfully generated.")
+        message = "Barcodes were successfully generated."
+        LOG.info(message)
+        click.echo(message)
     except LimsError as e:
+        LOG.error(e.message)
         sys.exit(e.message)

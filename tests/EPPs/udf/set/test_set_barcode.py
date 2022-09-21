@@ -1,13 +1,11 @@
-from concurrent.futures import process
-from re import A
 import pytest
-from genologics.entities import Artifact, Process
 
+from genologics.entities import Artifact, Process
 from cg_lims.exceptions import InvalidValueError, MissingValueError
 from cg_lims.EPPs.udf.set.set_barcode import get_barcode_set_udf
-from tests.conftest import server
 from cg_lims.get.fields import get_barcode
 from cg_lims.get.artifacts import get_artifacts
+from tests.conftest import server
 
 
 def test_with_tube(lims):
@@ -29,16 +27,13 @@ def test_with_tube(lims):
         del artifact.udf[barcode_udf]
 
     # WHEN running get_barcode_set_udf
-    get_barcode_set_udf(artifacts, barcode_udf, container)
+    get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container)
 
     # THEN only tubes should get barcodes and be correct.
-    
     for artifact in artifacts:
-
         if artifact.container.type.name != container:
             with pytest.raises(KeyError) as e_info:
                 artifact.udf[barcode_udf]
-        
         else:
             barcode = get_barcode(artifact)
             assert artifact.udf[barcode_udf] == barcode
@@ -51,7 +46,7 @@ def test_plate_barcode(lims):
     # have barcode_udf. 
 
     barcode_udf = 'Output Container Barcode'
-    container = '96 well plate'
+    container = 'Some container name'
     server("hamilton_normalization_file")
     artifacts = [
         Artifact(lims, id="ACC9553A3PA1"),
@@ -62,11 +57,10 @@ def test_plate_barcode(lims):
 
     # WHEN running get_barcode_set_udf
     with pytest.raises(MissingValueError) as error_message:
-        get_barcode_set_udf(artifacts, barcode_udf, container)
+        get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container)
 
     # THEN InvalidValueError exception should be raised.
-    # Because plate barcode has no specific barcode. 
-
+    # Because plate barcode has no specific barcode.
     assert(
         f"No barcode assigned."
         in error_message.value.message
@@ -87,23 +81,51 @@ def test_pool_barcode(lims):
             exit()
 
     # WHEN running function get_barcode_set_udf.
-    get_barcode_set_udf(artifacts, barcode_udf, container)
+    get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container)
 
     # THEN correct barcode should be assigned.
     for artifact in artifacts:        
         barcode = get_barcode(artifact)
         assert artifact.udf[barcode_udf] == barcode
 
-def test_InvalidValueError(lims):
+
+def test_no_container_type(lims):
+    # GIVEN four artifacts, two of them (ACC9553A3PA1
+    # and ACC9621A7PA1) have container type "Tube" and
+    # the other two (ACC9551A97PA1 and ACC9551A105PA1)
+    # belong to a "96 well plate" container
+
+    barcode_udf = 'Output Container Barcode'
+    server("hamilton_normalization_file")
+    artifacts = [
+        Artifact(lims, id="ACC9553A3PA1"),
+        Artifact(lims, id="ACC9551A97PA1"),
+        Artifact(lims, id="ACC9621A7PA1"),
+        Artifact(lims, id="ACC9551A105PA1"),
+    ]
+
+    for artifact in artifacts:
+        del artifact.udf[barcode_udf]
+
+    # WHEN running get_barcode_set_udf
+    get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type="")
+
+    # THEN all artifacts should get barcodes and be correct.
+    for artifact in artifacts:
+        barcode = get_barcode(artifact)
+        assert artifact.udf[barcode_udf] == barcode
+
+
+def test_invalid_value(lims):
     # GIVEN artifacts missing container type.
     server("missing_reads_pool")
     barcode_udf = 'Output Container Barcode'
     container = "Tube"
-    artifact = [Artifact(lims, id= "2-1439512")]
+    artifact = [Artifact(lims, id="2-1439512")]
 
     # WHEN running function get_barcode_set_udf.
     with pytest.raises(InvalidValueError) as error_message:
-        get_barcode_set_udf(artifact, barcode_udf, container)
+        get_barcode_set_udf(artifacts=artifact, artifact_udf=barcode_udf, container_type=container)
 
     # THEN InvalidValueError should be triggered.
     assert (
@@ -112,7 +134,7 @@ def test_InvalidValueError(lims):
     )
 
 
-def test_MissingValueError(lims):
+def test_missing_value(lims):
     # GIVEN two artifacts, with container "Tube"
     # and container set to "No_tubes".
     barcode_udf = 'Output Container Barcode'
@@ -128,7 +150,7 @@ def test_MissingValueError(lims):
 
     # WHEN running function get_barcode_set_udf.
     with pytest.raises(MissingValueError) as error_message:
-        get_barcode_set_udf(artifacts, barcode_udf, container)
+        get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container)
 
     # THEN no barcodes should be assigned and barcode_udf should not 
     # exists.
@@ -139,4 +161,3 @@ def test_MissingValueError(lims):
     
     with pytest.raises(KeyError):
         artifact.udf[barcode_udf]
-
