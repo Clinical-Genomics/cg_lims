@@ -95,11 +95,11 @@ def get_barcode(artifact: Artifact):
     if artifact_container_type == "96 well plate":
         return artifact.container.name
 
-    # Barcode for pool placed in specified container type.
+    # Barcode for pool placed in tube.
     elif len(artifact.samples) > 1 and artifact_container_type == "tube":
         return artifact.name
     
-    # Barcode for sample in specified container type.
+    # Barcode for sample in tube.
     elif artifact_container_type == "tube":
         return artifact.samples[0].id
     
