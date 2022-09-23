@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/artifacts/2-1520130?state=1170744" limsid="2-1520130">
+    <name>2021-14506-02-D08 IDT_10nt_700 (CCTTGTCATT-TGTTGATGAG)</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/151-200359" limsid="151-200359" />
+    <qc-flag>FAILED</qc-flag>
+    <location>
+        <container uri="http://127.0.0.1:8000/api/v2/containers/27-148598" limsid="27-148598" />
+        <value>D:3</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7974A7" limsid="ACC7974A7" />
+    <reagent-label name="D08 IDT_10nt_700 (CCTTGTCATT-TGTTGATGAG)" />
+    <udf:field type="Numeric" name="Amount (ng)">234.555</udf:field>
+    <udf:field type="Numeric" name="Volume of sample (ul)">15</udf:field>
+    <udf:field type="Numeric" name="Concentration (nM)">87.2348283253</udf:field>
+    <udf:field type="Numeric" name="Size (bp)">273</udf:field>
+    <udf:field type="String" name="Ligation Master Mix">A</udf:field>
+    <udf:field type="Numeric" name="Amount taken (ng)">398.68413061797514</udf:field>
+    <udf:field type="String" name="PCR Plate">Plate1</udf:field>
+    <udf:field type="Numeric" name="Concentration">15.637</udf:field>
+    <workflow-stages>
+        <workflow-stage status="COMPLETE" name="Pool samples for hybridization TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1601/stages/5109" />
+        <workflow-stage status="COMPLETE" name="Pool samples for hybridization TWIST" uri="http://127.0.0.1:8000/api/v2/configuration/workflows/1601/stages/5109" />
+    </workflow-stages>
+</art:artifact>

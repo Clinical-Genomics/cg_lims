@@ -383,3 +383,13 @@ def size_bp(help: str = "Fragment size in base pairs.") -> click.option:
         required=False,
         help=help
     )
+
+
+def container_type( help: str = "Specific container type, Tube or Plate.", ) -> click.option:
+    return click.option(
+        "-ct",
+        "--container-type",
+        required=False,
+        multiple=False,
+        help=help,
+    )
