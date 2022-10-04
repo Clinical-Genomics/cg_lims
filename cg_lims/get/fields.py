@@ -101,7 +101,7 @@ def get_barcode(artifact: Artifact):
     
     # Barcode for sample in tube.
     elif artifact_container_type == "tube":
-        return artifact.samples[0].id
+        return artifact.samples[0].id[3:]
     
     else:
         LOG.info(

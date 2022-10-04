@@ -1,3 +1,3 @@
-Barcodes
-ACC9553A3
-ACC9621A7
+Barcode
+9553A3
+9621A7
