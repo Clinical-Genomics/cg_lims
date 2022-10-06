@@ -38,7 +38,7 @@ def get_barcode_set_udf(
             
             else:
                 measurement_artifact = artifact
-                artifact = artifact.samples[0].artifact
+                artifact = artifact.input_artifact_list()[0]
 
         try:
             art_container_type = artifact.container.type.name
