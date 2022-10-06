@@ -97,7 +97,7 @@ def assign_barcode(
     ctx: click.Context,
     artifact_udf: str,
     input: bool,
-    measurement: bool = False,
+    measurement: bool,
     container_type: str,
 ):
     """Assigned barcode to UDF"""
