@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<prc:process xmlns:prc="http://genologics.com/ri/process" uri="http://127.0.0.1:8000/api/v2/processes/24-349794" limsid="24-349794">
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/679">CG002 - Reception Control</type>
+    <technician uri="http://127.0.0.1:8000/api/v2/researchers/1154">
+        <first-name>Karl</first-name>
+        <last-name>Svärd</last-name>
+    </technician>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10237A2PA1?state=2188186" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10237A2PA1?state=2188186" limsid="ACC10237A2PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762637?state=2190591" output-generation-type="PerInput" output-type="ResultFile" limsid="92-2762637" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10237A2PA1?state=2188186" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10237A2PA1?state=2188186" limsid="ACC10237A2PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762640?state=2190594" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2762640" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10237A2PA1?state=2188186" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10237A2PA1?state=2188186" limsid="ACC10237A2PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762641?state=2190595" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2762641" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A8PA1?state=2188499" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A8PA1?state=2188499" limsid="ACC10242A8PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762638?state=2190592" output-generation-type="PerInput" output-type="ResultFile" limsid="92-2762638" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A8PA1?state=2188499" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A8PA1?state=2188499" limsid="ACC10242A8PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762640?state=2190594" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2762640" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A8PA1?state=2188499" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A8PA1?state=2188499" limsid="ACC10242A8PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762641?state=2190595" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2762641" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A1PA1?state=2188502" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A1PA1?state=2188502" limsid="ACC10243A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762639?state=2190593" output-generation-type="PerInput" output-type="ResultFile" limsid="92-2762639" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A1PA1?state=2188502" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A1PA1?state=2188502" limsid="ACC10243A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762640?state=2190594" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2762640" />
+    </input-output-map>
+    <input-output-map>
+        <input post-process-uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A1PA1?state=2188502" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A1PA1?state=2188502" limsid="ACC10243A1PA1" />
+        <output uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762641?state=2190595" output-generation-type="PerAllInputs" output-type="ResultFile" limsid="92-2762641" />
+    </input-output-map>
+    <process-parameter name="copy orig well" />
+</prc:process>

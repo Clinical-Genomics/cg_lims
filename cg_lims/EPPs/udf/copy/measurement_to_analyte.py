@@ -20,11 +20,9 @@ def copy_udfs_to_all_analytes(
     """Looping over all analytes and copying over the measurement values for the given UDFs."""
 
     failed_artifacts = 0
-    print(f"Measurements: {measurements}")
     for measurement in measurements:
         try:
             analyte = measurement.input_artifact_list()[0]
-            print(f"Analyte: {analyte}")
             copy_artifact_to_artifact(
                 destination_artifact=analyte,
                 source_artifact=measurement,
@@ -55,7 +53,6 @@ def measurement_to_analyte(
     process = ctx.obj["process"]
 
     udfs = list(zip(artifact_udfs, artifact_udfs))
-    print(f"UDF object: {udfs}")
 
     try:
         measurements = get_artifacts(process=process, measurement=True)
