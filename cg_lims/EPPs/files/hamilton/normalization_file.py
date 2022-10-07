@@ -107,7 +107,7 @@ def barcode_file(
         get_file_data_and_write(
             pool=pooling_step,
             destination_artifacts=artifacts,
-            file=f"{file}-hamilton-normalization.txt",
+            file=f"{file}-hamilton-normalization.csv",
             volume_udf=volume_udf,
             buffer_udf=buffer_udf,
         )
