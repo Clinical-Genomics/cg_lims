@@ -88,20 +88,26 @@ def get_file_data_and_write(
 @options.buffer_udf()
 @options.volume_udf()
 @options.pooling_step()
+@options.measurement()
 @click.pass_context
 def barcode_file(
-    ctx: click.Context, file: str, volume_udf: str, buffer_udf: str, pooling_step: bool
+        ctx: click.Context,
+        file: str,
+        volume_udf: str,
+        buffer_udf: str,
+        pooling_step: bool,
+        measurement: bool = False,
 ):
     """Script to make a hamilton normalization file"""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
-    artifacts = get_artifacts(process=process, input=False)
+    artifacts = get_artifacts(process=process, measurement=measurement)
     try:
         get_file_data_and_write(
             pool=pooling_step,
             destination_artifacts=artifacts,
-            file=f"{file}-hamilton-normalization.txt",
+            file=f"{file}-hamilton-normalization.csv",
             volume_udf=volume_udf,
             buffer_udf=buffer_udf,
         )

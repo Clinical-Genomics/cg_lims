@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<con:container xmlns:con="http://genologics.com/ri/container" uri="http://127.0.0.1:8000/api/v2/containers/27-271566" limsid="27-271566">
+    <name>2213347 C SciL OP_20220721_1419_5QNN</name>
+    <type uri="http://127.0.0.1:8000/api/v2/containertypes/1" name="96 well plate" />
+    <occupied-wells>10</occupied-wells>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A1PA1" limsid="ACC10242A1PA1">
+        <value>A:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A2PA1" limsid="ACC10242A2PA1">
+        <value>B:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A3PA1" limsid="ACC10242A3PA1">
+        <value>C:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A4PA1" limsid="ACC10242A4PA1">
+        <value>D:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A5PA1" limsid="ACC10242A5PA1">
+        <value>E:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A6PA1" limsid="ACC10242A6PA1">
+        <value>F:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A7PA1" limsid="ACC10242A7PA1">
+        <value>G:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A8PA1" limsid="ACC10242A8PA1">
+        <value>H:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A9PA1" limsid="ACC10242A9PA1">
+        <value>A:2</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10242A10PA1" limsid="ACC10242A10PA1">
+        <value>B:2</value>
+    </placement>
+    <state>Populated</state>
+</con:container>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/samples/ACC10243A1" limsid="ACC10243A1">
+    <name>DNA-T-K10632-22</name>
+    <date-received>2022-07-21</date-received>
+    <project limsid="ACC10243" uri="http://127.0.0.1:8000/api/v2/projects/ACC10243" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <artifact limsid="ACC10243A1PA1" uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A1PA1?state=2171471" />
+    <udf:field type="String" name="customer">cust143</udf:field>
+    <udf:field type="String" name="Data Analysis">balsamic</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">WGSPCFS120</udf:field>
+    <udf:field type="Date" name="Received at">2022-10-07</udf:field>
+    <udf:field type="String" name="tumor">yes</udf:field>
+    <udf:field type="String" name="Source">tissue (fresh frozen)</udf:field>
+    <udf:field type="String" name="Volume (uL)">40.0</udf:field>
+    <udf:field type="String" name="Data Delivery">scout</udf:field>
+    <udf:field type="String" name="Passed Initial QC">True</udf:field>
+    <udf:field type="String" name="familyID">K10632-22WGS</udf:field>
+    <udf:field type="String" name="Gender">F</udf:field>
+    <udf:field type="String" name="priority">research</udf:field>
+    <udf:field type="String" name="Process only if QC OK">yes</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">2400</udf:field>
+    <udf:field type="String" name="Original Container">YL037</udf:field>
+    <udf:field type="String" name="Original Well">A:1</udf:field>
+</smp:sample>
