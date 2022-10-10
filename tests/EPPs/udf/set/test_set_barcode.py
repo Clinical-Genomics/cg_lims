@@ -8,7 +8,7 @@ from cg_lims.get.artifacts import get_artifacts
 from tests.conftest import server
 
 
-def test_with_tube(lims):
+def test_tube_barcode(lims):
     # GIVEN four artifacts, only two of them ACC9553A3PA1
     # and ACC9621A7PA1 have container type "Tube" and are the
     # only ones to be have assigned a barcode udf.
@@ -27,7 +27,7 @@ def test_with_tube(lims):
         del artifact.udf[barcode_udf]
 
     # WHEN running get_barcode_set_udf
-    get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container)
+    get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container, measurement=False)
 
     # THEN only tubes should get barcodes and be correct.
     for artifact in artifacts:
@@ -57,7 +57,7 @@ def test_plate_barcode(lims):
 
     # WHEN running get_barcode_set_udf
     with pytest.raises(MissingValueError) as error_message:
-        get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container)
+        get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container, measurement=False)
 
     # THEN InvalidValueError exception should be raised.
     # Because plate barcode has no specific barcode.
@@ -81,7 +81,7 @@ def test_pool_barcode(lims):
             exit()
 
     # WHEN running function get_barcode_set_udf.
-    get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container)
+    get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container, measurement=False)
 
     # THEN correct barcode should be assigned.
     for artifact in artifacts:        
@@ -108,7 +108,7 @@ def test_no_container_type(lims):
         del artifact.udf[barcode_udf]
 
     # WHEN running get_barcode_set_udf
-    get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type="")
+    get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type="", measurement=False)
 
     # THEN all artifacts should get barcodes and be correct.
     for artifact in artifacts:
@@ -125,7 +125,7 @@ def test_invalid_value(lims):
 
     # WHEN running function get_barcode_set_udf.
     with pytest.raises(InvalidValueError) as error_message:
-        get_barcode_set_udf(artifacts=artifact, artifact_udf=barcode_udf, container_type=container)
+        get_barcode_set_udf(artifacts=artifact, artifact_udf=barcode_udf, container_type=container, measurement=False)
 
     # THEN InvalidValueError should be triggered.
     assert (
@@ -150,7 +150,7 @@ def test_missing_value(lims):
 
     # WHEN running function get_barcode_set_udf.
     with pytest.raises(MissingValueError) as error_message:
-        get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container)
+        get_barcode_set_udf(artifacts=artifacts, artifact_udf=barcode_udf, container_type=container, measurement=False)
 
     # THEN no barcodes should be assigned and barcode_udf should not 
     # exists.
@@ -163,12 +163,60 @@ def test_missing_value(lims):
         artifact.udf[barcode_udf]
 
 
-def test_on_measurement(lims):
+def test_container_on_measurement(lims):
     # GIVEN measurements with different containers.
+    barcode_udf = 'Output Container Barcode'
+    container = 'Tube'
     server("reception_control_wgs")
     process = Process(lims, id="24-349794")
     measurements = get_artifacts(process=process, measurement=True)
 
+    for measurement in measurements:
+        try:
+            del measurement.udf[barcode_udf]
+        except:
+            continue
+
     # WHEN running get_barcode_set_udf
+    
+    get_barcode_set_udf(artifacts=measurements, artifact_udf=barcode_udf, container_type=container, measurement=True)
 
     # THEN barcodes should be assigned on measurement level only to samples with correct container.
+    for measurement in measurements:
+        if measurement.samples[0].artifact.container.type.name != container:
+            with pytest.raises(KeyError):
+                measurement.udf[barcode_udf]
+        
+        else:
+            barcode = get_barcode(measurement.samples[0].artifact)
+            assert measurement.udf[barcode_udf] == barcode
+
+
+def test_missing_value_on_measurement(lims):
+    # GIVEN measurements with different containers.
+    barcode_udf = 'Output Container Barcode'
+    container = 'No_tubes'
+    server("reception_control_wgs")
+    process = Process(lims, id="24-349794")
+    measurements = get_artifacts(process=process, measurement=True)
+
+    for measurement in measurements:
+        try:
+            del measurement.udf[barcode_udf]
+        except:
+            continue
+
+
+    # WHEN running function get_barcode_set_udf.
+    with pytest.raises(MissingValueError) as error_message:
+        get_barcode_set_udf(artifacts=measurements, artifact_udf=barcode_udf, container_type=container, measurement=True)
+
+    # THEN no barcodes should be assigned and barcode_udf should not 
+    # exists.
+    assert (
+        f"No barcode assigned. Check parameters."
+        in error_message.value.message
+    )
+    
+    with pytest.raises(KeyError):
+        measurement.udf[barcode_udf]
