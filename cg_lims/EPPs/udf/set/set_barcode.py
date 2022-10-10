@@ -16,6 +16,7 @@ def get_barcode_set_udf(
     artifacts: List[Artifact],
     artifact_udf: str,
     container_type: str,
+    measurement: bool,
 ):
 
     """Assigning barcode to a barcode udf.
@@ -31,6 +32,14 @@ def get_barcode_set_udf(
     failed_samples = []
 
     for artifact in artifacts:
+        if measurement:
+            if len(artifact.samples) > 1:
+                LOG.info(f"Sample {str(artifact.id)} is a pool, and will be excluded")
+            
+            else:
+                measurement_artifact = artifact
+                artifact = artifact.input_artifact_list()[0]
+
         try:
             art_container_type = artifact.container.type.name
 
@@ -51,9 +60,16 @@ def get_barcode_set_udf(
             # Sample has the correct "container_type".
             else:
                 barcode = get_barcode(artifact)
-                artifact.udf[artifact_udf] = barcode
-                artifact.put()
-                assigned_artifacts += 1
+
+                if measurement:
+                    measurement_artifact.udf[artifact_udf] = barcode
+                    measurement_artifact.put()
+                    assigned_artifacts += 1
+                
+                else:
+                    artifact.udf[artifact_udf] = barcode
+                    artifact.put()
+                    assigned_artifacts += 1
 
         # Collects failed samples.
         except:
@@ -74,24 +90,27 @@ def get_barcode_set_udf(
 @click.command()
 @options.artifact_udf(help="The name of the barcode udf.")
 @options.input()
+@options.measurement()
 @options.container_type()
 @click.pass_context
 def assign_barcode(
     ctx: click.Context,
     artifact_udf: str,
     input: bool,
+    measurement: bool,
     container_type: str,
 ):
     """Assigned barcode to UDF"""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
-    artifacts = get_artifacts(process=process, input=input)
+    artifacts = get_artifacts(process=process, input=input, measurement=measurement)
     try:
         get_barcode_set_udf(
             artifacts=artifacts,
             artifact_udf=artifact_udf,
-            container_type=container_type
+            container_type=container_type,
+            measurement=measurement,
         )
         message = "Barcodes were successfully generated."
         LOG.info(message)
