@@ -31,9 +31,9 @@ def copy_udfs_to_all_analytes(
         except:
             failed_artifacts += 1
     if failed_artifacts:
-        udfs_summary=", and udf ".join(str(x[0]) for x in udfs)
+        udfs_summary="\', and udf \'".join(str(x[0]) for x in udfs)
         raise MissingUDFsError(
-            message=f"Failed to set artifact udf {udfs_summary} on {failed_artifacts} artifacts. See log for details"
+            message=f"Failed to set artifact udf \'{udfs_summary}\' on {failed_artifacts} artifacts. See log for details"
         )
 
 
