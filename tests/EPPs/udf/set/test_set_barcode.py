@@ -195,7 +195,7 @@ def test_container_on_measurement(lims):
 def test_missing_value_on_measurement(lims):
     # GIVEN measurements with different containers.
     barcode_udf = 'Output Container Barcode'
-    container = 'No_tubes'
+    container = 'foobar'
     server("reception_control_wgs")
     process = Process(lims, id="24-349794")
     measurements = get_artifacts(process=process, measurement=True)
