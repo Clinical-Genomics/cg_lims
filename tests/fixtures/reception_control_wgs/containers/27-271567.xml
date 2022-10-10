@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<con:container xmlns:con="http://genologics.com/ri/container" uri="http://127.0.0.1:8000/api/v2/containers/27-271567" limsid="27-271567">
+    <name>YL037</name>
+    <type uri="http://127.0.0.1:8000/api/v2/containertypes/1" name="96 well plate" />
+    <occupied-wells>4</occupied-wells>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A1PA1" limsid="ACC10243A1PA1">
+        <value>A:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A2PA1" limsid="ACC10243A2PA1">
+        <value>B:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A3PA1" limsid="ACC10243A3PA1">
+        <value>C:1</value>
+    </placement>
+    <placement uri="http://127.0.0.1:8000/api/v2/artifacts/ACC10243A4PA1" limsid="ACC10243A4PA1">
+        <value>D:1</value>
+    </placement>
+    <state>Populated</state>
+</con:container>

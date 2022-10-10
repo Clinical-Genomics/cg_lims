@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" uri="http://127.0.0.1:8000/api/v2/artifacts/92-2762638?state=2190592" limsid="92-2762638">
+    <name>22242-I-1A</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process uri="http://127.0.0.1:8000/api/v2/processes/24-349794" limsid="24-349794" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC10242A8" limsid="ACC10242A8" />
+    <workflow-stages />
+</art:artifact>
