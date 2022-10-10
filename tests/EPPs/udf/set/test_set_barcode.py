@@ -178,7 +178,6 @@ def test_container_on_measurement(lims):
             continue
 
     # WHEN running get_barcode_set_udf
-    
     get_barcode_set_udf(artifacts=measurements, artifact_udf=barcode_udf, container_type=container, measurement=True)
 
     # THEN barcodes should be assigned on measurement level only to samples with correct container.
