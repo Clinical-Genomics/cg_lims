@@ -205,7 +205,6 @@ def test_missing_value_on_measurement(lims):
         except:
             continue
 
-
     # WHEN running function get_barcode_set_udf.
     with pytest.raises(MissingValueError) as error_message:
         get_barcode_set_udf(artifacts=measurements, artifact_udf=barcode_udf, container_type=container, measurement=True)
