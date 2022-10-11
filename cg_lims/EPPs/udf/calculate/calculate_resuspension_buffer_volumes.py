@@ -19,8 +19,10 @@ LOG = logging.getLogger(__name__)
 
 AMOUNT_NEEDED_LUCIGEN = 200
 AMOUNT_NEEDED_TRUSEQ = 1100
+AMOUNT_NEEDED_TAGMENTATION = 500
 TOTAL_VOLUME_LUCIGEN = 25
 TOTAL_VOLUME_TRUSEQ = 55
+TOTAL_VOLUME_TAGMENTATION = 25
 
 
 def calculate_rb_volume(artifacts: List[Artifact]):
@@ -29,22 +31,25 @@ def calculate_rb_volume(artifacts: List[Artifact]):
     for artifact in artifacts:
         concentration = artifact.udf.get("Concentration")
         amount_needed = artifact.udf.get("Amount needed (ng)")
+        allowed_amounts = [AMOUNT_NEEDED_LUCIGEN, AMOUNT_NEEDED_TRUSEQ, AMOUNT_NEEDED_TAGMENTATION]
         if concentration is None:
             LOG.error(
                 f"Sample {artifact.id} is missing udf 'Concentration'."
             )
             missing_udfs += 1
             continue
-        if amount_needed not in [AMOUNT_NEEDED_LUCIGEN, AMOUNT_NEEDED_TRUSEQ]:
+        if amount_needed not in allowed_amounts:
             raise InvalidValueError(
                 f"'Amount needed (ng)' missing or incorrect for one or more samples. Value can "
-                f"only be {', '.join(map(str, [AMOUNT_NEEDED_LUCIGEN, AMOUNT_NEEDED_TRUSEQ]))}."
+                f"only be {', '.join(map(str, allowed_amounts))}."
             )
         sample_volume = amount_needed / concentration
         if amount_needed == AMOUNT_NEEDED_LUCIGEN:
             artifact.udf["RB Volume (ul)"] = TOTAL_VOLUME_LUCIGEN - sample_volume
         if amount_needed == AMOUNT_NEEDED_TRUSEQ:
             artifact.udf["RB Volume (ul)"] = TOTAL_VOLUME_TRUSEQ - sample_volume
+        if amount_needed == AMOUNT_NEEDED_TAGMENTATION:
+            artifact.udf["RB Volume (ul)"] = TOTAL_VOLUME_TAGMENTATION - sample_volume
         artifact.udf["Sample Volume (ul)"] = sample_volume
         artifact.put()
 

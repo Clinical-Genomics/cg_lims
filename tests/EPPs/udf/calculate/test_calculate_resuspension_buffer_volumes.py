@@ -74,6 +74,7 @@ def test_calculate_rb_volume_invalid_amount_needed(
     "concentration, amount_needed, expected_rb_volume, expected_sample_volume",
     [
         (100, 200, 23.0, 2.0),
+        (100, 500, 20.0, 5.0),
         (100, 1100, 44.0, 11.0),
     ],
 )
