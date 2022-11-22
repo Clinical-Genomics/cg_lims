@@ -9,6 +9,7 @@ from cg_lims import options
 from .check_config import check_config
 from .prepare_fixture import make_fixure
 from .one_time_scripts.base import one_time
+from .fetch_sample_info import fetch_sample_info
 
 
 @click.group(invoke_without_command=True)
@@ -24,3 +25,4 @@ def scripts(ctx, log: str):
 scripts.add_command(check_config)
 scripts.add_command(make_fixure)
 scripts.add_command(one_time)
+scripts.add_command(fetch_sample_info)
