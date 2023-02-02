@@ -3,7 +3,8 @@ from __future__ import division
 from genologics.entities import Artifact
 
 from statistics import mean
-from typing import Dict, List
+from typing import Dict, List, Tuple
+from itertools import product
 import numpy
 import pandas as pd
 import copy
@@ -53,6 +54,15 @@ def make_dilution_data(dilution_file: str) -> Dict:
     return dilution_data
 
 
+def calculate_alternatives(failed_dilutions: Dict) -> List[Tuple[str]]:
+    alternatives = []
+    for dil, status in failed_dilutions.items():
+        if status is True:
+            dil_alts = [(dil, "alt"), (dil, "norm")]
+            alternatives.append(dil_alts)
+    return list(product(*alternatives))
+
+
 class PerArtifact:
     """Artifact specific class do determine measurement outliers and calculate dilution.
     CHECK 1.
@@ -89,10 +99,11 @@ class PerArtifact:
                    '2E03': self.dilution_data[self.well]['Cq']['2E03'],
                    '1E04': self.dilution_data[self.well]['Cq']['1E04']}
         self.index = {'1E03': '', '2E03': '', '1E04': ''}
+        self.first_check_fail = {'1E03': False, '2E03': False, '1E04': False}
         self.popped_dilutes = {'1E03': '', '2E03': '', '1E04': ''}
         self.failed_sample = False
 
-    def check_dilution_range(self, alternate=False):
+    def check_dilution_range(self, alternate_solution=None):
         """CHECK 1.
         Compares the Cq-values within each dilution for the sample.
         If they differ by more than the replicate_diff value within the dilution:
@@ -112,7 +123,7 @@ class PerArtifact:
                     self.index[dil] = 'Fail'
                     return
                 else:
-                    if alternate:
+                    if alternate_solution and (dil, 'alt') in alternate_solution:
                         ind = numpy.argsort(diff_from_mean)[1]
                     else:
                         ind = numpy.argmax(diff_from_mean)
@@ -179,7 +190,7 @@ class PerArtifact:
         """Log for failed sample"""
         self.dilution_log.write(dil + ' Measurements : ' + str(self.Cq[dil]) + '\n')
         self.dilution_log.write('Removed measurement: ' + str(self.popped_dilutes[dil]) + '\n')
-        self.dilution_log.write('One outlier removed, but distance still to big. \n\n')
+        self.dilution_log.write('One outlier removed, but distance still too big. \n\n')
 
     def _check_distance(self):
         """Compares the difference between the mean of the triplicates for the different dilutions.
@@ -248,7 +259,7 @@ class PerArtifact:
             else:
                 if self.index['1E03'] is not None:
                     if control_1e03 and self.index['1E03'] != numpy.argmax(outlier_1e03):
-                        LOG.info('Distance to big. Conflicting outliers. ')
+                        LOG.info('Distance too big. Conflicting outliers. ')
                         self.failed_sample = True
                         self.index['1E03'] = 'Fail'
                         return
@@ -291,17 +302,21 @@ def calculate_and_set_concentrations(artifacts: List[Artifact],
                              dilution_thresholds=dilution_thresholds)
             pa.check_dilution_range()
             pa.check_distance_find_outlier()
-            if pa.failed_sample:
+            if pa.failed_sample and True in pa.first_check_fail.values():
                 LOG.info(f"Sample {sample_id} failed first run of calculations. Trying different set of replicates.")
                 dilution_log.write("Trying different set of replicates.\n\n")
-                pa = PerArtifact(artifact=artifact,
-                                 dilution_data=dilution_data_copy,
-                                 sample_id=sample_id,
-                                 log=dilution_log,
-                                 size_bp=size_bp,
-                                 dilution_thresholds=dilution_thresholds)
-                pa.check_dilution_range(alternate=True)
-                pa.check_distance_find_outlier()
+                alternatives = calculate_alternatives(pa.first_check_fail)
+                for alternative in alternatives:
+                    pa = PerArtifact(artifact=artifact,
+                                     dilution_data=dilution_data_copy,
+                                     sample_id=sample_id,
+                                     log=dilution_log,
+                                     size_bp=size_bp,
+                                     dilution_thresholds=dilution_thresholds)
+                    pa.check_dilution_range(alternate_solution=alternative)
+                    pa.check_distance_find_outlier()
+                    if not pa.failed_sample:
+                        continue
             for dil in pa.index.keys():
                 ind = pa.index[dil]
                 if type(ind) == int:
