@@ -99,7 +99,7 @@ def add_wells(container_info: Dict[str, WellInfo]):
     """Building the plate wells for the visual placement map."""
 
     html = []
-    columns = range(1, 14)
+    columns = range(1, 13)
     rows = ["A", "B", "C", "D", "E", "F", "G", "H"]
     for rowname in rows:
         html.append(f"""<tr style="height: 12%;"><td class="bold-column row-name">{rowname}</td>""")

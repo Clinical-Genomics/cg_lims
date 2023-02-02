@@ -69,7 +69,6 @@ VISUAL_PLACEMENT_MAP_HEADER = """
 <th>10</th>
 <th>11</th>
 <th>12</th>
-<th>13</th>
 </tr>
 </thead>"""
 
