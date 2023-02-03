@@ -21,7 +21,7 @@ LOG = logging.getLogger(__name__)
 
 
 def get_placement_map_data(
-    lims: Lims, process: Process, udfs: List[str], original_well: str
+    lims: Lims, process: Process, input_udfs: List[str], output_udfs: List[str], original_well: str
 ) -> dict:
     """collecting the data for the placement map."""
 
@@ -37,13 +37,13 @@ def get_placement_map_data(
                 placement_map[destination_container] = {}
             destination_well = output_artifact.location[1]
             placement_map[destination_container][destination_well] = make_source_dest_info(
-                input_artifact, output_artifact, original_well, udfs
+                input_artifact, output_artifact, original_well, input_udfs, output_udfs
             )
     return placement_map
 
 
 def make_source_dest_info(
-    source_artifact: Artifact, dest_artifact: Artifact, original_well: str, udfs: List[str]
+    source_artifact: Artifact, dest_artifact: Artifact, original_well: str, input_udfs: List[str], output_udfs: List[str]
 ) -> WellInfo:
     """Collecting info about a well."""
 
@@ -67,6 +67,7 @@ def make_source_dest_info(
         container_name = source_artifact.location[0].name
         well_source = "Source Well"
         well = source_artifact.location[1]
+    udf_info = more_sample_info(source_artifact, input_udfs) + more_sample_info(dest_artifact, output_udfs)
     return WellInfo(
         project_name=sample.project.name,
         sample_name=sample_name,
@@ -76,7 +77,7 @@ def make_source_dest_info(
         container_name=container_name,
         well_source=well_source,
         well=well,
-        exta_udf_info=more_sample_info(source_artifact, udfs),
+        exta_udf_info=udf_info,
         dest_well=dest_artifact.location[1],
     )
 
@@ -90,7 +91,7 @@ def more_sample_info(artifact: Artifact, udfs: List[str]) -> str:
         if value is not None:
             if isinstance(value, float):
                 value = round(value, 2)
-            html.append(f"{udf} : {value}")
+            html.append(f"{udf} : {value}<br>")
     return "".join(html)
 
 
@@ -98,11 +99,11 @@ def add_wells(container_info: Dict[str, WellInfo]):
     """Building the plate wells for the visual placement map."""
 
     html = []
-    coulmns = range(1, 14)
+    columns = range(1, 13)
     rows = ["A", "B", "C", "D", "E", "F", "G", "H"]
     for rowname in rows:
         html.append(f"""<tr style="height: 12%;"><td class="bold-column row-name">{rowname}</td>""")
-        for column in coulmns:
+        for column in columns:
             well_location = f"{rowname}:{column}"
             if well_location in container_info:
                 # If there is an artifact in the well:
@@ -151,9 +152,10 @@ def make_html(placement_map: dict, process: Process, original_well: str) -> str:
 @click.command()
 @options.file_placeholder(help="File placeholder name.")
 @options.sample_udfs(help="Sample UDFs to show in the placement map.")
+@options.artifact_udfs(help="Output artifact UDFs to show in the placement map.")
 @options.original_well()
 @click.pass_context
-def placement_map(ctx, file: str, sample_udfs: List[str], original_well: str):
+def placement_map(ctx, file: str, sample_udfs: List[str], artifact_udfs: List[str], original_well: str):
     """Create a 96 well placement map."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -161,7 +163,7 @@ def placement_map(ctx, file: str, sample_udfs: List[str], original_well: str):
     lims = ctx.obj["lims"]
 
     try:
-        placement_map_data = get_placement_map_data(lims, process, sample_udfs, original_well)
+        placement_map_data = get_placement_map_data(lims, process, sample_udfs, artifact_udfs, original_well)
         html = make_html(placement_map_data, process, original_well)
         with open(f"{file}.html", "w") as file:
             file.write(html)
