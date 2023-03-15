@@ -86,7 +86,7 @@ def config() -> Path:
 def enzymatic_fragmentation_file() -> str:
     """Get file path to valid json"""
 
-    file_path = "tests/fixtures/Enzymatic_fragmentation"
+    file_path = "tests/fixtures/Enzymatic_fragmentation.csv"
     file = Path(file_path)
     return file.read_text()
 
@@ -95,7 +95,7 @@ def enzymatic_fragmentation_file() -> str:
 def kapa_library_preparation_file() -> str:
     """Get file path to valid json"""
 
-    file_path = "tests/fixtures/KAPA_Library_Preparation"
+    file_path = "tests/fixtures/KAPA_Library_Preparation.csv"
     file = Path(file_path)
     return file.read_text()
 
@@ -104,7 +104,7 @@ def kapa_library_preparation_file() -> str:
 def kapa_library_preparation_file_missing_udf() -> str:
     """Get file path to valid json"""
 
-    file_path = "tests/fixtures/KAPA_Library_Preparation_missing_udf"
+    file_path = "tests/fixtures/KAPA_Library_Preparation_missing_udf.csv"
     file = Path(file_path)
     return file.read_text()
 
