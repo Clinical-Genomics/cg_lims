@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:udf="http://genologics.com/ri/userdefined" xmlns:ri="http://genologics.com/ri" xmlns:file="http://genologics.com/ri/file" xmlns:smp="http://genologics.com/ri/sample" uri="http://127.0.0.1:8000/api/v2/samples/dummy_sample2" limsid="dummy_sample2">
+    <name>2020-29224-06</name>
+    <date-received>2020-11-11</date-received>
+    <project limsid="ACC7272" uri="http://127.0.0.1:8000/api/v2/projects/dummy_sample2"/>
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/3">
+        <first-name>API</first-name>
+        <last-name>Access</last-name>
+    </submitter>
+    <udf:field type="String" name="Comment">Anlagstest, EDTA i buffert, Fosterprov, QF=XY</udf:field>
+    <udf:field type="String" name="customer">cust002</udf:field>
+    <udf:field type="String" name="Sample Buffer">Other (specify in "Comments")</udf:field>
+    <udf:field type="String" name="Data Analysis">MIP</udf:field>
+    <udf:field type="String" name="Sequencing Analysis">EXOKTTR020</udf:field>
+    <udf:field type="Date" name="Library Prep Finished">2020-11-30</udf:field>
+    <udf:field type="Boolean" name="Sample Delivered">true</udf:field>
+    <udf:field type="Date" name="Sequencing Finished">2020-12-01</udf:field>
+    <udf:field type="Date" name="Received at">2020-11-13</udf:field>
+    <udf:field type="Numeric" name="Total Reads (M)">88.721318</udf:field>
+    <udf:field type="String" name="tumor">no</udf:field>
+    <udf:field type="String" name="Source">cell-free DNA</udf:field>
+    <udf:field type="Date" name="Delivered at">2020-12-01</udf:field>
+    <udf:field type="String" name="Passed Initial QC">True</udf:field>
+    <udf:field type="String" name="Passed Library QC">True</udf:field>
+    <udf:field type="String" name="Passed Sequencing QC">True</udf:field>
+    <udf:field type="String" name="familyID">F0037069</udf:field>
+    <udf:field type="String" name="Gender">M</udf:field>
+    <udf:field type="String" name="priority">priority</udf:field>
+    <udf:field type="String" name="Process only if QC OK">no</udf:field>
+    <udf:field type="Numeric" name="Reads missing (M)">0</udf:field>
+    <udf:field type="String" name="Original Container">2020-29224-06</udf:field>
+    <udf:field type="String" name="Original Well">1:1</udf:field>
+</smp:sample>

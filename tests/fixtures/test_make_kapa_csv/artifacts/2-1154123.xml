@@ -13,7 +13,7 @@
 <udf:field type="Numeric" name="Amount (ng)">400</udf:field>
 <udf:field type="Numeric" name="Sample Volume (ul)">12.5</udf:field>
 <udf:field type="Numeric" name="Volume H2O (ul)">17.5</udf:field>
-<udf:field type="Numeric" name="Amount needed (ng)">250</udf:field>
+<udf:field type="Numeric" name="Amount needed (ng)">20</udf:field>
 <udf:field type="Numeric" name="Concentration">20</udf:field>
 <udf:field type="Numeric" name="DIN Value">5</udf:field>
 <workflow-stages>
