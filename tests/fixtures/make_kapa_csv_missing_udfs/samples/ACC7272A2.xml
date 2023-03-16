@@ -19,7 +19,7 @@
     <udf:field type="Date" name="Received at">2020-11-13</udf:field>
     <udf:field type="Numeric" name="Total Reads (M)">88.721318</udf:field>
     <udf:field type="String" name="tumor">no</udf:field>
-    <udf:field type="String" name="Source">tissue (fresh frozen)</udf:field>
+    <udf:field type="String" name="Source">cell-free DNA</udf:field>
     <udf:field type="Date" name="Delivered at">2020-12-01</udf:field>
     <udf:field type="String" name="Passed Initial QC">True</udf:field>
     <udf:field type="String" name="Passed Library QC">True</udf:field>

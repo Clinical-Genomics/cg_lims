@@ -11,10 +11,9 @@ from cg_lims.exceptions import MissingArtifactError, MissingUDFsError
 
 
 def test_get_file_data_and_write_kapa_library_preparation(kapa_library_preparation_file, lims):
-    # GIVEN: A file name and a lims with two samples that has been run
-    # through a process of type "Aliquot samples for enzymatic fragmentation TWIST v2",
-    # where they got udf: Amount needed (ng) set. The two samples are now in another
-    # step where they have location and reagent labels set.
+    # GIVEN: A file name and a lims with two samples (one gDNA and the other cfDNA) that has been run
+    # through a process of type <amount_step>, where they got udf: Amount needed (ng) set.
+    # The two samples are now in another step where they have location and reagent labels set.
     # (See entety_json_data for details)
     server("test_make_kapa_csv")
     file_name = "some_file_name"
@@ -33,7 +32,7 @@ def test_get_file_data_and_write_kapa_library_preparation(kapa_library_preparati
 
 
 def test_get_file_data_and_write_enzymatic_fragmentation(enzymatic_fragmentation_file, lims):
-    # GIVEN: A file name. and a lims with two samples that has been run
+    # GIVEN: A file name and a lims with two samples (one gDNA and the other cfDNA) that has been run
     # through a process of type <amount_step>. There  they got udf: Amount needed (ng) set.
     # The two samples are now in another step where they have location but no
     # reagent labels set.
@@ -55,7 +54,7 @@ def test_get_file_data_and_write_enzymatic_fragmentation(enzymatic_fragmentation
 
 
 def test_get_file_data_and_write_missing_udf(kapa_library_preparation_file_missing_udf, lims):
-    # GIVEN: A file name. and a lims with two samples that has been run
+    # GIVEN: A file name and a lims with two samples (one gDNA and the other cfDNA) that has been run
     # through a process of type <amount_step>. There one sample did not get the udf: Amount needed (ng) set.
     # The two samples are now in another step where they have location and
     # reagent labels set.
@@ -76,8 +75,8 @@ def test_get_file_data_and_write_missing_udf(kapa_library_preparation_file_missi
 
 
 def test_get_file_data_and_write_missing_artifact(kapa_library_preparation_file_missing_udf, lims):
-    # GIVEN: A file name. and a lims with two samples that has NOT been run
-    # through a process of type <amount_step>.
+    # GIVEN: A file name and a lims with two samples (one gDNA and the other cfDNA)
+    # that has NOT been run through a process of type <amount_step>.
     # The two samples are now in another step where they have location and
     # reagent labels set.
     # (See entety_json_data for details)
