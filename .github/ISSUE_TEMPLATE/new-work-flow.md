@@ -3,7 +3,7 @@ name: New Work Flow
 about: Administrative steps to go through
 title: ''
 labels: ''
-assignees: mayabrandi
+assignees: 
 
 ---
 
