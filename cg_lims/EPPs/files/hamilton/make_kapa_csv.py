@@ -17,8 +17,7 @@ LOG = logging.getLogger(__name__)
 
 MINIMUM_AMOUNT = 10
 LIGATION_MIX_THRESHOLD = 25
-PCR_PLATE_THRESHOLDS = {"gDNA": [50, 200],
-                        "cfDNA": [25]}
+PCR_PLATE_THRESHOLDS = [25, 150, 250]
 
 
 def get_ligation_master_mix(amount: int) -> str:
@@ -36,27 +35,15 @@ def get_ligation_master_mix(amount: int) -> str:
 def get_pcr_plate(amount: int) -> str:
     """Depending on amount of DNA the samples are run with different number
     of PCR-cycles. These are run in three different PCR-plates.
-    This function sets the PCR-plate for the threshold determined for genomic DNA.
+    This function sets the PCR-plate for the thresholds determined for all source types.
     """
 
-    if amount < PCR_PLATE_THRESHOLDS["gDNA"][0]:
+    if amount < PCR_PLATE_THRESHOLDS[0]:
         return "Plate3"
-    elif amount < PCR_PLATE_THRESHOLDS["gDNA"][1]:
+    elif amount < PCR_PLATE_THRESHOLDS[1]:
         return "Plate2"
     else:
         return "Plate1"
-
-
-def get_pcr_plate_cell_free(amount: int) -> str:
-    """Depending on amount of DNA the samples are run with different number
-    of PCR-cycles. These are run in three different PCR-plates.
-    This function sets the PCR-plate for the threshold determined for cell free DNA.
-    """
-
-    if amount < PCR_PLATE_THRESHOLDS["cfDNA"][0]:
-        return "Plate3"
-    else:
-        return "Plate2"
 
 
 def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file: str) -> None:
@@ -66,7 +53,6 @@ def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file:
     file_rows = {}
     for art in artifacts:
         sample_id = art.samples[0].id
-        source_type = art.samples[0].udf.get("Source")
         index_well = get_index_well(art)
         well = art.location[1].replace(":", "")
         amount_artifact = get_latest_analyte(lims, sample_id, amount_step)
@@ -79,11 +65,7 @@ def get_file_data_and_write(lims: Lims, amount_step: str, artifacts: list, file:
         amount = max(amount, MINIMUM_AMOUNT)
 
         ligation_master_mix = get_ligation_master_mix(amount)
-
-        if source_type == "cell-free DNA":
-            pcr_plate = get_pcr_plate_cell_free(amount)
-        else:
-            pcr_plate = get_pcr_plate(amount)
+        pcr_plate = get_pcr_plate(amount)
 
         file_rows[well] = [
             sample_id,
