@@ -74,6 +74,6 @@ def sample_to_artifact(ctx, sample_udf, artifact_udf, measurement, input, ignore
     try:
         artifacts = get_artifacts(process=process, input=input, measurement=measurement)
         udf_copy_sample_to_artifact(artifacts=artifacts, sample_udf=sample_udf, art_udf=artifact_udf, lims=lims, ignore_fail=ignore_fail)
-        click.echo("Udfs have been set on all samples.")
+        click.echo("Udfs have been set on all possible samples.")
     except LimsError as e:
         sys.exit(e.message)
