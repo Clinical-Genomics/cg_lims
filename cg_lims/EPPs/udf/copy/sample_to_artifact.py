@@ -13,7 +13,9 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 
-def udf_copy_sample_to_artifact(artifacts: list, sample_udf: str, art_udf: str, lims, ignore_fail: bool = False) -> None:
+def udf_copy_sample_to_artifact(
+    artifacts: list, sample_udf: str, art_udf: str, lims, ignore_fail: bool = False
+) -> None:
     """Function to copy sample UDF to artifact.
 
     For each artifact in the artifacts list, picking the first sample in the art.samples list.
@@ -73,7 +75,13 @@ def sample_to_artifact(ctx, sample_udf, artifact_udf, measurement, input, ignore
 
     try:
         artifacts = get_artifacts(process=process, input=input, measurement=measurement)
-        udf_copy_sample_to_artifact(artifacts=artifacts, sample_udf=sample_udf, art_udf=artifact_udf, lims=lims, ignore_fail=ignore_fail)
+        udf_copy_sample_to_artifact(
+            artifacts=artifacts,
+            sample_udf=sample_udf,
+            art_udf=artifact_udf,
+            lims=lims,
+            ignore_fail=ignore_fail,
+        )
         click.echo("UDFs have been set on all possible samples.")
     except LimsError as e:
         sys.exit(e.message)
