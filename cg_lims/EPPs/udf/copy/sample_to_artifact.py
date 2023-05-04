@@ -14,7 +14,7 @@ LOG = logging.getLogger(__name__)
 
 
 def udf_copy_sample_to_artifact(artifacts: list, sample_udf: str, art_udf: str, lims, ignore_fail: bool = False) -> None:
-    """Function to copy sample udf to artifact.
+    """Function to copy sample UDF to artifact.
 
     For each artifact in the artifacts list, picking the first sample in the art.samples list.
     copying the samp_udf from the sample to the art_udf on the artifact.
@@ -24,8 +24,8 @@ def udf_copy_sample_to_artifact(artifacts: list, sample_udf: str, art_udf: str, 
 
     Arguments:
         artifacts: list of artifacts to copy from
-        art_udf: artifact udf to get
-        sample_udf: sample udf to set
+        art_udf: artifact UDF to get
+        sample_udf: sample UDF to set
         ignore_fail: option to ignore warnings"""
     failed_udfs = 0
     passed_udfs = 0
@@ -41,32 +41,32 @@ def udf_copy_sample_to_artifact(artifacts: list, sample_udf: str, art_udf: str, 
             except:
                 failed_udfs += 1
                 LOG.error(
-                    f"Udf: {sample_udf} missing on sample {sample.id} or it could not be converted to type {udf_type}"
+                    f"UDF: {sample_udf} missing on sample {sample.id} or it could not be converted to type {udf_type}"
                 )
                 continue
 
         art.udf[art_udf] = udf
         art.put()
         LOG.info(
-            f"copied udf {sample_udf} from sample {sample.id} to artifact: {art.id}, udf: {art_udf}"
+            f"copied UDF {sample_udf} from sample {sample.id} to artifact: {art.id}, UDF: {art_udf}"
         )
         passed_udfs += 1
 
     if failed_udfs and ignore_fail is False:
         raise MissingUDFsError(
-            message=f"The udf '{sample_udf}' is missing for {failed_udfs} samples. Udfs were set on {passed_udfs} artifacts."
+            message=f"The UDF '{sample_udf}' is missing for {failed_udfs} samples. UDFs were set on {passed_udfs} artifacts."
         )
 
 
 @click.command()
-@options.sample_udf(help="Sample udf to set.")
-@options.artifact_udf(help="Artifact udf to get.")
-@options.measurement(help="Udfs will be set on measurements.")
-@options.input(help="Udfs will be set on input artifacts.")
+@options.sample_udf(help="Sample UDF to set.")
+@options.artifact_udf(help="Artifact UDF to get.")
+@options.measurement(help="UDFs will be set on measurements.")
+@options.input(help="UDFs will be set on input artifacts.")
 @options.ignore_fail(help="Script will not raise exception errors when not all UDFs are set.")
 @click.pass_context
 def sample_to_artifact(ctx, sample_udf, artifact_udf, measurement, input, ignore_fail):
-    """Script to copy artifact udf to sample udf"""
+    """Script to copy sample UDF value to an artifact UDF field."""
 
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
@@ -74,6 +74,6 @@ def sample_to_artifact(ctx, sample_udf, artifact_udf, measurement, input, ignore
     try:
         artifacts = get_artifacts(process=process, input=input, measurement=measurement)
         udf_copy_sample_to_artifact(artifacts=artifacts, sample_udf=sample_udf, art_udf=artifact_udf, lims=lims, ignore_fail=ignore_fail)
-        click.echo("Udfs have been set on all possible samples.")
+        click.echo("UDFs have been set on all possible samples.")
     except LimsError as e:
         sys.exit(e.message)
