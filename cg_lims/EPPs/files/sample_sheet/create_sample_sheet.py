@@ -15,13 +15,13 @@ LOG = logging.getLogger(__name__)
 
 
 def get_artifact_lane(artifact: Artifact) -> int:
-    """Parse out the lane where an artifact is placed"""
+    ""Return the lane where an artifact is placed"""
     return int(artifact.location[1].split(":")[0])
 
 
 def get_non_pooled_artifacts(artifact: Artifact) -> List[Artifact]:
-    """Find the parent artifact of the sample. Should hold the reagent_label"""
-    artifacts = []
+    """Return the parent artifact of the sample. Should hold the reagent_label"""
+    artifacts: List[Artifact] = []
 
     if len(artifact.samples) == 1:
         artifacts.append(artifact)
@@ -29,12 +29,11 @@ def get_non_pooled_artifacts(artifact: Artifact) -> List[Artifact]:
 
     for artifact_input in artifact.input_artifact_list():
         artifacts.extend(get_non_pooled_artifacts(artifact_input))
-
     return artifacts
 
 
 def get_reagent_label(artifact) -> Optional[str]:
-    """Get the first and only reagent label from an artifact"""
+    """Return the first and only reagent label from an artifact"""
     labels: List[str] = artifact.reagent_labels
     if len(labels) > 1:
         raise ValueError("Expecting at most one reagent label. Got ({}).".format(len(labels)))
@@ -107,12 +106,11 @@ def get_lane_sample_object(run_settings: NovaSeqXRun, lane: int, artifact: Artif
             index1=indexes[0],
             index2=None,
         )
-    else:
-        raise ValueError(f"Expecting 1 or 2 total indexes. Got ({len(indexes)}).")
+    raise ValueError(f"Expecting 1 or 2 total indexes. Got ({len(indexes)}).")
 
 
 def create_bcl_data_section(run_settings: NovaSeqXRun) -> str:
-    section = f"{SampleSheetHeader.BCL_DATA_SECTION}\n"
+    section : str = f"{SampleSheetHeader.BCL_DATA_SECTION}\n"
     section = section + run_settings.get_bcl_data_header()
     lane_artifacts = get_lane_artifacts(run_settings.process)
     for lane in lane_artifacts:
@@ -126,7 +124,7 @@ def create_bcl_data_section(run_settings: NovaSeqXRun) -> str:
 
 
 def create_sample_sheet_from_process(process: Process) -> str:
-    run_settings = NovaSeqXRun(process=process)
+    run_settings: NovaSeqXRun = NovaSeqXRun(process=process)
     return (
         run_settings.create_file_header_section()
         + run_settings.create_reads_section()
@@ -145,7 +143,7 @@ def create_sample_sheet(ctx, file: str):
 
     try:
         sample_sheet = create_sample_sheet_from_process(process=process)
-        run_name = process.udf.get("Experiment Name")
+        run_name: str = process.udf.get("Experiment Name")
         with open(f"{file}_samplesheet_{run_name}.csv", "w") as file:
             file.write(sample_sheet)
         click.echo("The file was successfully generated.")

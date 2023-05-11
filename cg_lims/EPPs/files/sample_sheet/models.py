@@ -106,13 +106,12 @@ class LaneSample:
         index_cycles: int,
         backwards: bool = False,
     ):
-        diff = index_cycles - index_length
+        diff: int = index_cycles - index_length
         if diff > 0 and backwards:
             return f"N{diff}I{index_length}"
         elif diff > 0 and not backwards:
             return f"I{index_length}N{diff}"
-        else:
-            return f"I{index_length}"
+        return f"I{index_length}"
 
     def get_override_cycles(self) -> str:
         read_1_setting = f"Y{self.run_settings.read_1_cycles}"
