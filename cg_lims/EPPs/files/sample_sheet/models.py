@@ -1,11 +1,27 @@
 from genologics.lims import Process
 from typing import Optional
 import logging
+from enum import Enum
 
 LOG = logging.getLogger(__name__)
 
 
-class SampleSheetHeader:
+class StrEnum(str, Enum):
+    def __str__(self) -> str:
+        return str.__str__(self)
+
+
+class IntEnum(int, Enum):
+    def __int__(self) -> int:
+        return int.__int__(self)
+
+
+class IndexSetup(IntEnum):
+    DUAL_INDEX: int = 2
+    SINGLE_INDEX: int = 1
+
+
+class SampleSheetHeader(StrEnum):
     FILE_SECTION: str = "[Header]"
     READS_SECTION: str = "[Reads]"
     SETTINGS_SECTION: str = "[Sequencing_Settings]"
@@ -30,21 +46,22 @@ class NovaSeqXRun:
     fastq_compression_format: str
     trim_adapters: Optional[bool] = False
 
-    def __init__(self, process):
-        self.process = process
-        self.run_name = process.udf.get("Experiment Name")
-        self.instrument_type = "NovaSeqxPlus"
-        self.instrument_platform = "NovaSeqXSeries"
-        self.index_orientation = "Forward"
-        self.read_1_cycles = process.udf.get("Read 1 Cycles")
-        self.read_2_cycles = process.udf.get("Read 2 Cycles")
-        self.index_1_cycles = process.udf.get("Index Read 1")
-        self.index_2_cycles = process.udf.get("Index Read 2")
-        self.bclconvert_software_version = "4.1.5"
-        self.bclconvert_app_version = "4.1.5"
-        self.fastq_compression_format = "gzip"
+    def __init__(self, process: Process):
+        self.process: Process = process
+        self.run_name: str = process.udf.get("Experiment Name")
+        self.instrument_type: str = "NovaSeqxPlus"
+        self.instrument_platform: str = "NovaSeqXSeries"
+        self.index_orientation: str = "Forward"
+        self.read_1_cycles: int = process.udf.get("Read 1 Cycles")
+        self.read_2_cycles: int = process.udf.get("Read 2 Cycles")
+        self.index_1_cycles: int = process.udf.get("Index Read 1")
+        self.index_2_cycles: int = process.udf.get("Index Read 2")
+        self.bclconvert_software_version: str = "4.1.5"
+        self.bclconvert_app_version: str = "4.1.5"
+        self.fastq_compression_format: str = "gzip"
 
-    def create_file_header_section(self) -> str:
+    def create_head_section(self) -> str:
+        """Return the [Head] section of the sample sheet."""
         return (
             f"{SampleSheetHeader.FILE_SECTION},\n"
             f"FileFormatVersion,{self.file_format}\n"
@@ -55,6 +72,7 @@ class NovaSeqXRun:
         )
 
     def create_reads_section(self) -> str:
+        """Return the [Reads] section of the sample sheet."""
         return (
             f"{SampleSheetHeader.READS_SECTION}\n"
             f"Read1Cycles,{self.read_1_cycles}\n"
@@ -63,7 +81,8 @@ class NovaSeqXRun:
             f"Index2Cycles,{self.index_2_cycles}\n\n"
         )
 
-    def get_bcl_data_header(self) -> str:
+    def get_bcl_data_header_row(self) -> str:
+        """Return the .csv-header of the BCLConvert_Data content section."""
         base_header = "Lane,Sample_ID,Index"
         if self.index_2_cycles:
             base_header = base_header + ",Index2"
@@ -93,43 +112,46 @@ class LaneSample:
         index1: str,
         index2: Optional[str],
     ):
-        self.run_settings = run_settings
-        self.lane = lane
-        self.sample_id = sample_id
-        self.index_1 = index1
+        self.run_settings: NovaSeqXRun = run_settings
+        self.lane: int = lane
+        self.sample_id: str = sample_id
+        self.index_1: str = index1
         if index2:
-            self.index_2 = index2
+            self.index_2: str = index2
 
     @staticmethod
     def _get_index_override(
         index_length: int,
         index_cycles: int,
-        backwards: bool = False,
+        is_backwards: bool = False,
     ):
+        """Return override cycles settings of an index."""
         diff: int = index_cycles - index_length
-        if diff > 0 and backwards:
+        if diff > 0 and is_backwards:
             return f"N{diff}I{index_length}"
-        elif diff > 0 and not backwards:
+        elif diff > 0 and not is_backwards:
             return f"I{index_length}N{diff}"
         return f"I{index_length}"
 
     def get_override_cycles(self) -> str:
-        read_1_setting = f"Y{self.run_settings.read_1_cycles}"
-        read_2_setting = f"Y{self.run_settings.read_2_cycles}"
-        index_1_setting = self._get_index_override(
+        """Return override cycles setting for a sample in a lane."""
+        read_1_setting: str = f"Y{self.run_settings.read_1_cycles}"
+        read_2_setting: str = f"Y{self.run_settings.read_2_cycles}"
+        index_1_setting: str = self._get_index_override(
             index_length=len(self.index_1),
             index_cycles=self.run_settings.index_1_cycles,
-            backwards=False,
+            is_backwards=False,
         )
-        index_2_setting = self._get_index_override(
+        index_2_setting: str = self._get_index_override(
             index_length=len(self.index_2),
             index_cycles=self.run_settings.index_2_cycles,
-            backwards=True,
+            is_backwards=True,
         )
         return f"{read_1_setting};{index_1_setting};{index_2_setting};{read_2_setting}"
 
-    def get_bclconversion_data(self) -> str:
-        line = f"{self.lane},{self.sample_id},{self.index_1},{self.index_2}"
+    def get_bclconversion_data_row(self) -> str:
+        """Return the BCLConvert_Data row of a sample in a lane."""
+        line: str = f"{self.lane},{self.sample_id},{self.index_1},{self.index_2}"
         if self.run_settings.override_cycles:
             line = line + f",{self.get_override_cycles()}"
         if self.adapter_read_1 or self.adapter_read_2:
