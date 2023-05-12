@@ -37,10 +37,13 @@ def get_non_pooled_artifacts(artifact: Artifact) -> List[Artifact]:
     return artifacts
 
 
-def get_reagent_label(artifact) -> Optional[str]:
+def get_reagent_label(artifact: Artifact) -> Optional[str]:
     """Return the first and only reagent label from an artifact"""
     labels: List[str] = artifact.reagent_labels
     if len(labels) > 1:
+        LOG.error(
+            f"Got an unexpected amount of reagent labels ({len(labels)}), for artifact {artifact.id}."
+        )
         raise ValueError(f"Expecting at most one reagent label. Got {len(labels)}.")
     return labels[0] if labels else None
 
@@ -51,6 +54,9 @@ def get_reagent_index(lims: Lims, label: str) -> str:
     reagent_types: List[ReagentType] = lims.get_reagent_types(name=label)
 
     if len(reagent_types) > 1:
+        LOG.error(
+            f"Got an unexpected amount of reagent types ({len(reagent_types)}), for label {label}."
+        )
         raise ValueError(f"Expecting at most one reagent type. Got {len(reagent_types)}.")
 
     try:
@@ -61,7 +67,12 @@ def get_reagent_index(lims: Lims, label: str) -> str:
 
     match = re.match(r"^.+ \((.+)\)$", label)
     if match and match.group(1) != sequence:
-        raise ValueError(f"Given reagent label name doesn't match its index sequence.")
+        LOG.error(
+            f"Given reagent label name ({label}) doesn't match its index sequence ({sequence})."
+        )
+        raise ValueError(
+            f"Given reagent label name ({label}) doesn't match its index sequence ({sequence})."
+        )
 
     return sequence
 
@@ -159,6 +170,6 @@ def create_sample_sheet(ctx, file: str):
         run_name: str = process.udf.get("Experiment Name")
         with open(f"{file}_samplesheet_{run_name}.csv", "w") as file:
             file.write(sample_sheet_content)
-        click.echo("The file was successfully generated.")
+        click.echo("The sample sheet was successfully generated.")
     except LimsError as e:
         sys.exit(e.message)
