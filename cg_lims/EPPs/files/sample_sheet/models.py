@@ -42,7 +42,7 @@ class NovaSeqXRun:
     index_2_cycles: Optional[int]
     override_cycles: Optional[bool] = True
     bclconvert_software_version: str
-    bclconvert_app_version: str
+    bclconvert_app_version: Optional[str]
     fastq_compression_format: str
     trim_adapters: Optional[bool] = False
 
@@ -56,9 +56,8 @@ class NovaSeqXRun:
         self.read_2_cycles: int = process.udf.get("Read 2 Cycles")
         self.index_1_cycles: int = process.udf.get("Index Read 1")
         self.index_2_cycles: int = process.udf.get("Index Read 2")
-        self.bclconvert_software_version: str = "4.1.5"
-        self.bclconvert_app_version: str = "4.1.5"
-        self.fastq_compression_format: str = "gzip"
+        self.bclconvert_software_version: str = process.udf.get("BCLConvert Software Version")
+        self.fastq_compression_format: str = process.udf.get("Compression Format")
 
     def create_head_section(self) -> str:
         """Return the [Head] section of the sample sheet."""
