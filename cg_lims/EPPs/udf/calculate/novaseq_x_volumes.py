@@ -71,14 +71,13 @@ def calculate_total_reads(artifacts: List[Artifact]) -> float:
     total_amount: float = 0
     no_reads: int = 0
     for artifact in artifacts:
-        target_reads: float = artifact.udf.get("Reads to sequence (M)")
-        if not target_reads or target_reads == 0:
+        target_reads: float = float(artifact.udf.get("Reads to sequence (M)", 0))
+        if target_reads == 0:
             no_reads += 1
             LOG.info(f"Artifact {artifact.id} has no targeted reads to sequence.")
         else:
             total_amount = total_amount + target_reads
     if no_reads:
-        print(f"Warning: {no_reads} sample(s)/pool(s) have no 'Reads to sequence (M)' amount.")
         LOG.info(f"Warning: {no_reads} sample(s)/pool(s) have no 'Reads to sequence (M)' amount.")
     return total_amount
 
@@ -88,8 +87,10 @@ def calculate_and_set_sample_volume(
 ) -> None:
     """Calculate and set the sample volume on artifact level."""
     total_reads: float = calculate_total_reads(artifacts=artifacts)
+    if total_reads == 0:
+        raise InvalidValueError("You need to specify an amount of reads to sequence larger than 0.")
     for artifact in artifacts:
-        fraction_of_pool: float = artifact.udf.get("Reads to sequence (M)", 0) / total_reads
+        fraction_of_pool: float = float(artifact.udf.get("Reads to sequence (M)", 0)) / total_reads
         if not artifact.udf.get("Concentration (nM)"):
             raise MissingUDFsError(
                 f"UDF 'Concentration (nM)' missing for artifact {artifact.name}."
@@ -178,7 +179,6 @@ def set_volumes_and_total_reads(process: Process) -> None:
         artifacts=artifacts, adjusted_bulk_volume=adjusted_bulk_volume
     )
 
-    process.udf["Bulk Pool Volume (ul)"] = bulk_volume
     process.udf["Adjusted Bulk Pool Volume (ul)"] = adjusted_bulk_volume
     process.udf["Total Sample Volume (ul)"] = round(total_sample_volume, 2)
     process.udf["RSB Volume (ul)"] = round(rsb_volume, 2)
