@@ -23,7 +23,10 @@ from cg_lims.EPPs.udf.calculate.twist_aliquot_volume import twist_aliquot_volume
 from cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer import (
     get_volumes_from_buffer,
 )
-from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import calculate_average_size_and_set_qc
+from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import (
+    calculate_average_size_and_set_qc,
+)
+from cg_lims.EPPs.udf.calculate.calculate_novaseq_x_volumes import calculate_novaseq_x_volumes
 
 # commands
 from cg_lims.EPPs.udf.calculate.twist_pool import twist_pool
@@ -53,3 +56,4 @@ calculate.add_command(calculate_resuspension_buffer_volume)
 calculate.add_command(calculate_water_volume_rna)
 calculate.add_command(calculate_microbial_aliquot_volumes)
 calculate.add_command(calculate_average_size_and_set_qc)
+calculate.add_command(calculate_novaseq_x_volumes)
