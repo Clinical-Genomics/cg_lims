@@ -189,7 +189,7 @@ def set_volumes_and_total_reads(process: Process) -> None:
 @click.command()
 @click.pass_context
 def novaseq_x_volumes(ctx):
-    """Calculates and sets volumes required for preparation of NovaSeq x sequencing pools."""
+    """Calculates and sets volumes required for preparation of NovaSeq X pools."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
