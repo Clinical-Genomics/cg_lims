@@ -16,13 +16,18 @@ def calculate_sample_volume(
 ) -> float:
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
-        raise InvalidValueError(f"The final concentration can't be higher than the original one.")
+        error_message: str = f"The final concentration ({final_concentration} nM) can't be higher than the original one ({sample_concentration} nM)."
+        LOG.error(error_message)
+        raise InvalidValueError(error_message)
     return (final_concentration * total_volume) / sample_concentration
 
 
 def calculate_buffer_volume(total_volume: float, sample_volume: float) -> float:
     """Calculate and return the buffer volume needed to reach the desired total volume."""
     if sample_volume > total_volume:
+        LOG.info(
+            f"Sample volume is already larger than the total one. Setting buffer volume to 0 ul."
+        )
         return 0
     return total_volume - sample_volume
 
@@ -74,5 +79,5 @@ def pool_normalization(ctx: click.Context):
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
-        LOG.info(e.message)
+        LOG.error(e.message)
         sys.exit(e.message)
