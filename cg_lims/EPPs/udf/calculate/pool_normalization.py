@@ -4,11 +4,48 @@ from typing import List
 
 import click
 from genologics.entities import Artifact, Process
+from typing import Optional
 
-from cg_lims.exceptions import LimsError, InvalidValueError
+from cg_lims.exceptions import LimsError, InvalidValueError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
+
+
+def get_final_concentration(process: Process, final_concentration_udf: str) -> float:
+    """Return final concentration value from process."""
+    final_concentration: Optional[float] = process.udf.get(final_concentration_udf)
+    if not final_concentration:
+        error_message: str = (
+            f"Process {process.id} is missing a value for UDF '{final_concentration_udf}'."
+        )
+        LOG.error(error_message)
+        raise MissingUDFsError(error_message)
+    return final_concentration
+
+
+def get_artifact_concentration(artifact: Artifact, concentration_udf: str) -> float:
+    """Return concentration value from artifact."""
+    concentration: Optional[float] = artifact.udf.get(concentration_udf)
+    if not concentration:
+        error_message: str = (
+            f"Artifact {artifact.id} is missing a value for UDF '{concentration_udf}'."
+        )
+        LOG.error(error_message)
+        raise MissingUDFsError(error_message)
+    return concentration
+
+
+def get_total_volume(artifact: Artifact, total_volume_udf: str) -> float:
+    """Return total volume value from artifact."""
+    total_volume: Optional[float] = artifact.udf.get(total_volume_udf)
+    if not total_volume:
+        error_message: str = (
+            f"Artifact {artifact.id} is missing a value for UDF '{total_volume_udf}'."
+        )
+        LOG.error(error_message)
+        raise MissingUDFsError(error_message)
+    return total_volume
 
 
 def calculate_sample_volume(
@@ -16,7 +53,10 @@ def calculate_sample_volume(
 ) -> float:
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
-        error_message: str = f"The final concentration ({final_concentration} nM) can't be higher than the original one ({sample_concentration} nM)."
+        error_message: str = (
+            f"The final concentration ({final_concentration} nM) can't be"
+            f" higher than the original one ({sample_concentration} nM)."
+        )
         LOG.error(error_message)
         raise InvalidValueError(error_message)
     return (final_concentration * total_volume) / sample_concentration
@@ -42,8 +82,10 @@ def set_artifact_volumes(
 ) -> None:
     """Set volume UDFs on artifact level, given a list of artifacts, final concentration, and UDF names."""
     for artifact in artifacts:
-        concentration: float = artifact.udf.get(concentration_udf)
-        total_volume: float = artifact.udf.get(total_volume_udf)
+        concentration: float = get_artifact_concentration(
+            artifact=artifact, concentration_udf=concentration_udf
+        )
+        total_volume: float = get_total_volume(artifact=artifact, total_volume_udf=total_volume_udf)
         sample_volume: float = calculate_sample_volume(
             final_concentration=final_concentration,
             total_volume=total_volume,
@@ -66,7 +108,9 @@ def pool_normalization(ctx: click.Context):
     process: Process = ctx.obj["process"]
     artifacts: List[Artifact] = get_artifacts(process=process)
     try:
-        final_concentration: float = process.udf.get("Final Concentration (nM)")
+        final_concentration: float = get_final_concentration(
+            process=process, final_concentration_udf="Final Concentration (nM)"
+        )
         set_artifact_volumes(
             artifacts=artifacts,
             final_concentration=final_concentration,
@@ -75,7 +119,7 @@ def pool_normalization(ctx: click.Context):
             buffer_volume_udf="Volume Buffer (ul)",
             concentration_udf="Concentration (nM)",
         )
-        message: str = "Volumes were successfully calculated and set."
+        message: str = "Volumes were successfully calculated."
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
