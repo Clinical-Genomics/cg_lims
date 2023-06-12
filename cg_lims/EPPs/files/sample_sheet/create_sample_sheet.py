@@ -4,13 +4,16 @@ import sys
 import click
 
 from typing import List, Optional, Dict
-from genologics.lims import Artifact, Process, Lims, ReagentType
+from genologics.lims import Lims
+from genologics.entities import Artifact, Process, ReagentType
 from cg_lims import options
-from cg_lims.exceptions import LimsError, InvalidValueError, MissingValueError
+from cg_lims.exceptions import LimsError, InvalidValueError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.EPPs.files.sample_sheet.models import (
     IndexSetup,
+    IndexType,
     SampleSheetHeader,
+    IlluminaIndex,
     NovaSeqXRun,
     LaneSample,
 )
@@ -77,11 +80,16 @@ def get_reagent_index(lims: Lims, label: str) -> str:
     return sequence
 
 
-def get_sample_indexes(artifact: Artifact) -> List[str]:
+def get_sample_indexes(artifact: Artifact) -> List[IlluminaIndex]:
     """Return the indexes that the sample has been prepped with."""
     reagent: str = get_reagent_label(artifact=artifact)
-    index_sequence: str = get_reagent_index(lims=artifact.lims, label=reagent)
-    return index_sequence.split("-")
+    index_sequences: List[str] = get_reagent_index(lims=artifact.lims, label=reagent).split("-")
+    indexes: List[IlluminaIndex] = [
+        IlluminaIndex(sequence=index_sequences[0], type=IndexType.INDEX_1)
+    ]
+    if index_sequences[1]:
+        indexes.append(IlluminaIndex(sequence=index_sequences[1], type=IndexType.INDEX_2))
+    return indexes
 
 
 def sort_lanes(lane_artifacts: Dict[int, Artifact]) -> Dict[int, Artifact]:
@@ -108,26 +116,111 @@ def create_bcl_settings_section(run_settings: NovaSeqXRun) -> str:
     )
 
 
-def get_lane_sample_object(run_settings: NovaSeqXRun, lane: int, artifact: Artifact) -> LaneSample:
-    """Return LaneSample object representing the data of a lane-sample instance in the BCLConvert_Data section."""
-    indexes: List[str] = get_sample_indexes(artifact=artifact)
+def get_index_list(artifacts: List[Artifact]) -> List[IlluminaIndex]:
+    """Return a list containing all indexes present in a list of given artifacts."""
+    index_list: List[IlluminaIndex] = []
+    for artifact in artifacts:
+        indexes: List[IlluminaIndex] = get_sample_indexes(artifact=artifact)
+        index_list.extend(indexes)
+    return index_list
+
+
+def string_hamming_distance(index_1: str, index_2: str) -> Optional[int]:
+    """Return the hamming distance of two strings."""
+    if len(index_1) != len(index_2):
+        return None
+    return sum(n1 != n2 for n1, n2 in zip(index_1, index_2))
+
+
+def calculate_index_hamming_distance(
+    index_1: IlluminaIndex, index_2: IlluminaIndex
+) -> Optional[int]:
+    """Calculate and return the hamming distance of two indexes."""
+    if index_1.type != index_2.type:
+        return None
+    elif len(index_1.sequence) == len(index_2.sequence):
+        return string_hamming_distance(index_1=index_1.sequence, index_2=index_2.sequence)
+    elif len(index_1.sequence) < len(index_2.sequence):
+        if index_1.type == IndexType.INDEX_1:
+            return string_hamming_distance(
+                index_1=index_1.sequence, index_2=index_2.sequence[: len(index_1.sequence)]
+            )
+        elif index_1.type == IndexType.INDEX_2:
+            return string_hamming_distance(
+                index_1=index_1.sequence, index_2=index_2.sequence[-len(index_1.sequence) :]
+            )
+    else:
+        if index_1.type == IndexType.INDEX_1:
+            return string_hamming_distance(
+                index_1=index_1.sequence[: len(index_2.sequence)], index_2=index_2.sequence
+            )
+        elif index_1.type == IndexType.INDEX_2:
+            return string_hamming_distance(
+                index_1=index_1.sequence[-len(index_2.sequence) :], index_2=index_2.sequence
+            )
+    message: str = f"Non-supported index type identified for indexes {index_1.sequence} and {index_2.sequence}: '{index_1.type}'."
+    LOG.error(message)
+    raise InvalidValueError(message)
+
+
+def get_barcode_mismatches(index: IlluminaIndex, all_indexes: List[IlluminaIndex]) -> int:
+    """Return the highest number of barcode mismatches allowed for an index."""
+    if len(all_indexes) > len(set(all_indexes)):
+        message: str = f"Duplicate indexes have been identified! Aborting sample sheet generation."
+        LOG.error(message)
+        raise InvalidValueError(message)
+    for comparison_index in all_indexes:
+        hamming_distance: int = calculate_index_hamming_distance(
+            index_1=index, index_2=comparison_index
+        )
+        if comparison_index.sequence == index.sequence or hamming_distance is None:
+            continue
+        elif hamming_distance < 3:
+            LOG.info(
+                f"Low hamming distance ({hamming_distance}) found between indexes {index.sequence} and {comparison_index.sequence}. "
+                f"Setting barcode mismatches to 0."
+            )
+            return 0
+    return 1
+
+
+def get_lane_sample_object(
+    run_settings: NovaSeqXRun, lane: int, artifact: Artifact, all_indexes: List[IlluminaIndex]
+) -> LaneSample:
+    """Return a LaneSample object representing the data of a lane-sample row in the BCLConvert_Data section."""
+    indexes: List[IlluminaIndex] = get_sample_indexes(artifact=artifact)
     if len(indexes) == IndexSetup.DUAL_INDEX:
+        barcode_mismatch_index_1: int = get_barcode_mismatches(
+            index=indexes[0], all_indexes=all_indexes
+        )
+        barcode_mismatch_index_2: int = get_barcode_mismatches(
+            index=indexes[1], all_indexes=all_indexes
+        )
         return LaneSample(
             run_settings=run_settings,
             lane=lane,
             sample_id=artifact.samples[0].id,
-            index1=indexes[0],
-            index2=indexes[1],
+            index_1=indexes[0].sequence,
+            index_2=indexes[1].sequence,
+            barcode_mismatch_index_1=barcode_mismatch_index_1,
+            barcode_mismatch_index_2=barcode_mismatch_index_2,
         )
     elif len(indexes) == IndexSetup.SINGLE_INDEX:
+        barcode_mismatch_index_1: int = get_barcode_mismatches(
+            index=indexes[0], all_indexes=all_indexes
+        )
         return LaneSample(
             run_settings=run_settings,
             lane=lane,
             sample_id=artifact.samples[0],
-            index1=indexes[0],
-            index2=None,
+            index_1=indexes[0].sequence,
+            index_2=None,
+            barcode_mismatch_index_1=barcode_mismatch_index_1,
+            barcode_mismatch_index_2=None,
         )
-    raise ValueError(f"Expecting 1 or 2 total indexes. Got ({len(indexes)}).")
+    message: str = f"Expecting 1 or 2 total indexes. Got ({len(indexes)})."
+    LOG.error(message)
+    raise ValueError(message)
 
 
 def create_bcl_data_section(run_settings: NovaSeqXRun) -> str:
@@ -137,9 +230,13 @@ def create_bcl_data_section(run_settings: NovaSeqXRun) -> str:
     lane_artifacts: Dict[int, Artifact] = get_lane_artifacts(process=run_settings.process)
     for lane in lane_artifacts:
         unpooled_artifacts: List[Artifact] = get_non_pooled_artifacts(artifact=lane_artifacts[lane])
+        pool_indexes: List[IlluminaIndex] = get_index_list(artifacts=unpooled_artifacts)
         for artifact in unpooled_artifacts:
             lane_sample = get_lane_sample_object(
-                run_settings=run_settings, lane=lane, artifact=artifact
+                run_settings=run_settings,
+                lane=lane,
+                artifact=artifact,
+                all_indexes=pool_indexes,
             )
             section = section + lane_sample.get_bclconversion_data_row()
     return section

@@ -21,12 +21,26 @@ class IndexSetup(IntEnum):
     SINGLE_INDEX: int = 1
 
 
+class IndexType(StrEnum):
+    INDEX_1: str = "i7"
+    INDEX_2: str = "i5"
+
+
 class SampleSheetHeader(StrEnum):
     FILE_SECTION: str = "[Header]"
     READS_SECTION: str = "[Reads]"
     SETTINGS_SECTION: str = "[Sequencing_Settings]"
     BCL_SETTINGS_SECTION: str = "[BCLConvert_Settings]"
     BCL_DATA_SECTION: str = "[BCLConvert_Data]"
+
+
+class IlluminaIndex:
+    sequence: str
+    type: str
+
+    def __init__(self, sequence: str, type: str):
+        self.sequence: str = sequence
+        self.type: str = type
 
 
 class NovaSeqXRun:
@@ -45,6 +59,7 @@ class NovaSeqXRun:
     bclconvert_app_version: Optional[str]
     fastq_compression_format: str
     trim_adapters: Optional[bool] = False
+    barcode_mismatches: Optional[bool] = True
 
     def __init__(self, process: Process):
         self.process: Process = process
@@ -89,6 +104,8 @@ class NovaSeqXRun:
             base_header = base_header + ",OverrideCycles"
         if self.trim_adapters:
             base_header = base_header + ",AdapterRead1,AdapterRead2"
+        if self.barcode_mismatches:
+            base_header = base_header + ",BarcodeMismatchesIndex1,BarcodeMismatchesIndex2"
         return base_header + "\n"
 
 
@@ -100,23 +117,29 @@ class LaneSample:
     index_2: Optional[str] = None
     adapter_read_1: Optional[str] = None
     adapter_read_2: Optional[str] = None
-    barcode_mismatch_index_1: Optional[int] = None
-    barcode_mismatch_index_2: Optional[int] = None
+    barcode_mismatch_index_1: Optional[int]
+    barcode_mismatch_index_2: Optional[int]
 
     def __init__(
         self,
         run_settings: NovaSeqXRun,
         lane: int,
         sample_id: str,
-        index1: str,
-        index2: Optional[str],
+        index_1: str,
+        index_2: Optional[str],
+        barcode_mismatch_index_1: Optional[int],
+        barcode_mismatch_index_2: Optional[int],
     ):
         self.run_settings: NovaSeqXRun = run_settings
         self.lane: int = lane
         self.sample_id: str = sample_id
-        self.index_1: str = index1
-        if index2:
-            self.index_2: str = index2
+        self.index_1: str = index_1
+        if index_2:
+            self.index_2: str = index_2
+        # if barcode_mismatch_index_1:
+        self.barcode_mismatch_index_1 = barcode_mismatch_index_1
+        # if barcode_mismatch_index_2:
+        self.barcode_mismatch_index_2 = barcode_mismatch_index_2
 
     @staticmethod
     def _get_index_override(
@@ -155,4 +178,6 @@ class LaneSample:
             line = line + f",{self.get_override_cycles()}"
         if self.adapter_read_1 or self.adapter_read_2:
             line = line + f",{self.adapter_read_1},{self.adapter_read_2}"
+        if self.run_settings.barcode_mismatches:
+            line = line + f",{self.barcode_mismatch_index_1},{self.barcode_mismatch_index_2}"
         return line + "\n"
