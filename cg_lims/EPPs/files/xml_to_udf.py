@@ -112,7 +112,7 @@ def set_process_udfs(xml: ElementTree, process: Process) -> None:
         if consumable.find("Type").text not in CONSUMABLE_KEYS.keys():
             continue
         for parameter_name, udf_name in CONSUMABLE_KEYS[consumable_type].items():
-            process.udf[udf_name] = xml.find(parameter_name).text
+            process.udf[udf_name] = consumable.find(parameter_name).text
 
     process.put()
 
