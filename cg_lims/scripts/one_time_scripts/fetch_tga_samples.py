@@ -70,6 +70,8 @@ def fetch_tga_samples(ctx, file: str, from_date: str, to_date: str):
     with open(file, "w") as file:
         file.write(FILE_HEADER + "\n")
         for sample in samples:
+            if not sample.date_received:
+                continue
             if not from_date <= convert_to_datetime(date_string=sample.date_received) <= to_date:
                 continue
             for app_tag in APP_TAGS:
