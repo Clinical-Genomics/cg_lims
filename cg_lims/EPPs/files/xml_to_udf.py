@@ -15,9 +15,9 @@ from cg_lims.exceptions import LimsError, MissingFileError
 
 LOG = logging.getLogger(__name__)
 
-RUN_PARAMETERS_KEYS: Dict[str] = {"RunId": "Run ID", "OutputFolder": "Output Folder"}
+RUN_PARAMETERS_KEYS: Dict[str, str] = {"RunId": "Run ID", "OutputFolder": "Output Folder"}
 
-CONSUMABLE_KEYS: Dict[str] = {
+CONSUMABLE_KEYS = {
     "FlowCell": {
         "SerialNumber": "Flow Cell ID",
         "LotNumber": "Flow Cell Lot Number",
