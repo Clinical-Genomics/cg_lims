@@ -62,39 +62,34 @@ def get_flow_cell_id(process: Process) -> str:
 def get_run_info(process: Process) -> str:
     """"""
     flow_cell_id = get_flow_cell_id(process=process)
-    return f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunInfo.xml"
+    return max(
+        glob.glob(f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunInfo.xml"),
+        key=os.path.getctime,
+    )
 
 
 def get_run_parameters(process: Process) -> str:
     """"""
     flow_cell_id = get_flow_cell_id(process=process)
-    return f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunParameters.xml"
+    return max(
+        glob.glob(
+            f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunParameters.xml"
+        ),
+        key=os.path.getctime,
+    )
 
 
 def attach_result_files(process: Process, lims: Lims) -> None:
     """"""
-    flow_cell_id = get_flow_cell_id(process=process)
     for outart in process.all_outputs():
         if outart.type == "ResultFile" and outart.name == "Run Info":
             try:
-                lims.upload_new_file(
-                    outart,
-                    max(
-                        glob.glob(get_run_info(process=process)),
-                        key=os.path.getctime,
-                    ),
-                )
+                lims.upload_new_file(outart, get_run_info(process=process))
             except:
                 raise (RuntimeError("No RunInfo.xml Found!"))
         elif outart.type == "ResultFile" and outart.name == "Run Parameters":
             try:
-                lims.upload_new_file(
-                    outart,
-                    max(
-                        glob.glob(get_run_parameters(process=process)),
-                        key=os.path.getctime,
-                    ),
-                )
+                lims.upload_new_file(outart, get_run_parameters(process=process))
             except:
                 raise (RuntimeError("No RunParameters.xml Found!"))
 
