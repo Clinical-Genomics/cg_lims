@@ -359,8 +359,8 @@ def udf_values(
     help: str = "Possible UDF values",
 ) -> click.option:
     return click.option(
-        "-v",
-        "--values",
+        "-uv",
+        "--udf-values",
         required=False,
         multiple=True,
         help=help,
