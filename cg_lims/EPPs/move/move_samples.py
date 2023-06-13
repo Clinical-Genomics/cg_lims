@@ -2,7 +2,7 @@
 
 import logging
 import sys
-from typing import Optional
+from typing import Optional, List
 
 import click
 
@@ -18,15 +18,23 @@ LOG = logging.getLogger(__name__)
 @options.workflow_id(help="Destination workflow id.")
 @options.stage_id(help="Destination stage id.")
 @options.udf(help="UDF that will tell which artifacts to move.")
+@options.udf_values(help="UDF values that will be filtered on.")
 @options.input(
     help="Use this flag if you want to queue the input artifacts of the current process. Default is to queue the "
     "output artifacts (analytes) of the process. "
 )
 @click.pass_context
-def move_samples(ctx, workflow_id: str, stage_id: str, udf: Optional[str], input: bool):
-    """Script to move aritfats to another stage.
+def move_samples(
+    ctx,
+    workflow_id: str,
+    stage_id: str,
+    udf: Optional[str],
+    udf_values: Optional[List[str]],
+    input: bool,
+):
+    """Script to move artifacts to another stage.
 
-    Queueing artifacts from the current process with <udf>==True, to stage with <stage-id>
+    Queueing artifacts from the current process with <udf> values equals any in <udf-values>, to stage with <stage-id>
     in workflow with <workflow-id>. Raising error if queuing fails.
 
     If udf is None all artifacts from the current step will be queued."""
@@ -35,7 +43,12 @@ def move_samples(ctx, workflow_id: str, stage_id: str, udf: Optional[str], input
     lims = ctx.obj["lims"]
 
     artifacts = get_artifacts(process=process, input=input)
-    filtered_artifacts = filter_artifacts(artifacts, udf, True)
+    if udf_values:
+        filtered_artifacts = []
+        for udf_value in udf_values:
+            filtered_artifacts.extend(filter_artifacts(artifacts, udf, udf_value))
+    else:
+        filtered_artifacts = filter_artifacts(artifacts, udf, True)
 
     if not filtered_artifacts:
         LOG.info("No artifacts to queue.")

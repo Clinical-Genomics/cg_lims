@@ -326,8 +326,8 @@ def ignore_fail(
         is_flag=True,
         help=help,
     )
-  
-  
+
+
 def sample_volume_limit(help: str = "Set sample volume limit") -> click.option:
     return click.option("-svl", "--sample-volume-limit", required=False, help=help, type=float)
 
@@ -343,11 +343,25 @@ def keep_failed_flags(
     )
 
 
-def container_type( help: str = "Specific container type, Tube or Plate.", ) -> click.option:
+def container_type(
+    help: str = "Specific container type, Tube or Plate.",
+) -> click.option:
     return click.option(
         "-ct",
         "--container-type",
         required=False,
         multiple=False,
+        help=help,
+    )
+
+
+def udf_values(
+    help: str = "Possible UDF values",
+) -> click.option:
+    return click.option(
+        "-uv",
+        "--udf-values",
+        required=False,
+        multiple=True,
         help=help,
     )
