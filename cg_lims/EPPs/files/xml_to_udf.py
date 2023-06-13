@@ -7,19 +7,17 @@ from pathlib import Path
 from xml.etree import ElementTree
 
 import click
-from genologics.entities import Artifact, Process
+from genologics.entities import Process
 from genologics.lims import Lims
 
 from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingArtifactError, MissingFileError
-from cg_lims.get.artifacts import get_artifact_by_name
-from cg_lims.get.files import get_file_path
+from cg_lims.exceptions import LimsError, MissingFileError
 
 LOG = logging.getLogger(__name__)
 
-RUN_PARAMETERS_KEYS = {"RunId": "Run ID", "OutputFolder": "Output Folder"}
+RUN_PARAMETERS_KEYS: Dict[str] = {"RunId": "Run ID", "OutputFolder": "Output Folder"}
 
-CONSUMABLE_KEYS = {
+CONSUMABLE_KEYS: Dict[str] = {
     "FlowCell": {
         "SerialNumber": "Flow Cell ID",
         "LotNumber": "Flow Cell Lot Number",
@@ -55,13 +53,13 @@ CONSUMABLE_KEYS = {
 
 
 def get_flow_cell_id(process: Process) -> str:
-    """"""
+    """Return flow cell ID from container name."""
     return process.parent_processes()[0].output_containers()[0].name
 
 
 def get_run_info(process: Process) -> str:
-    """"""
-    flow_cell_id = get_flow_cell_id(process=process)
+    """Return RunInfo-file from location on the server."""
+    flow_cell_id: str = get_flow_cell_id(process=process)
     return max(
         glob.glob(f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunInfo.xml"),
         key=os.path.getctime,
@@ -69,8 +67,8 @@ def get_run_info(process: Process) -> str:
 
 
 def get_run_parameters(process: Process) -> str:
-    """"""
-    flow_cell_id = get_flow_cell_id(process=process)
+    """Return RunParameters-file from location on the server."""
+    flow_cell_id: str = get_flow_cell_id(process=process)
     return max(
         glob.glob(
             f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunParameters.xml"
@@ -80,7 +78,7 @@ def get_run_parameters(process: Process) -> str:
 
 
 def attach_result_files(process: Process, lims: Lims) -> None:
-    """"""
+    """Attach sequencing result files to process in LIMS."""
     for outart in process.all_outputs():
         if outart.type == "ResultFile" and outart.name == "Run Info":
             try:
@@ -130,16 +128,16 @@ def parse_run_parameters(ctx, local_file: str):
     attach_result_files(process=process, lims=lims)
 
     if local_file:
-        file_path = local_file
+        file_path: str = local_file
     else:
-        file_path = get_run_parameters(process=process)
+        file_path: str = get_run_parameters(process=process)
 
     try:
         if not Path(file_path).is_file():
             message = f"No such file: {file_path}"
             LOG.error(message)
             raise MissingFileError(message)
-        xml = parse_xml_file(file_path=Path(file_path))
+        xml: ElementTree = parse_xml_file(file_path=Path(file_path))
         set_process_udfs(xml=xml, process=process)
         click.echo("The UDFs were successfully set.")
     except LimsError as e:
