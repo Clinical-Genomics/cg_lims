@@ -46,7 +46,7 @@ def move_samples(
     if udf_values:
         filtered_artifacts = []
         for udf_value in udf_values:
-            filtered_artifacts.append(filter_artifacts(artifacts, udf, udf_value))
+            filtered_artifacts.extend(filter_artifacts(artifacts, udf, udf_value))
     else:
         filtered_artifacts = filter_artifacts(artifacts, udf, True)
 
