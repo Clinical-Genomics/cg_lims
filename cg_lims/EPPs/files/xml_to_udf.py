@@ -59,6 +59,18 @@ def get_flow_cell_id(process: Process) -> str:
     return process.parent_processes()[0].output_containers()[0].name
 
 
+def get_run_info(process: Process) -> str:
+    """"""
+    flow_cell_id = get_flow_cell_id(process=process)
+    return f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunInfo.xml"
+
+
+def get_run_parameters(process: Process) -> str:
+    """"""
+    flow_cell_id = get_flow_cell_id(process=process)
+    return f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunParameters.xml"
+
+
 def attach_result_files(process: Process, lims: Lims) -> None:
     """"""
     flow_cell_id = get_flow_cell_id(process=process)
@@ -68,9 +80,7 @@ def attach_result_files(process: Process, lims: Lims) -> None:
                 lims.upload_new_file(
                     outart,
                     max(
-                        glob.glob(
-                            f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunInfo.xml"
-                        ),
+                        glob.glob(get_run_info(process=process)),
                         key=os.path.getctime,
                     ),
                 )
@@ -81,9 +91,7 @@ def attach_result_files(process: Process, lims: Lims) -> None:
                 lims.upload_new_file(
                     outart,
                     max(
-                        glob.glob(
-                            f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunParameters.xml"
-                        ),
+                        glob.glob(get_run_parameters(process=process)),
                         key=os.path.getctime,
                     ),
                 )
@@ -129,8 +137,7 @@ def parse_run_parameters(ctx, local_file: str):
     if local_file:
         file_path = local_file
     else:
-        file_art = get_artifact_by_name(process=process, name="Run Parameters")
-        file_path = get_file_path(file_art)
+        file_path = get_run_parameters(process=process)
 
     try:
         if not Path(file_path).is_file():
