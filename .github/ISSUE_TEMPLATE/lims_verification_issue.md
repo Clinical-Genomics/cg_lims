@@ -22,7 +22,7 @@ _Describe/list actions to perform in order to complete the verification_
 _In the table below, you can add the name of the new protocol(s) and write date and sign when it was created and tested in stage or production_
 | Protocol | Created in Stage | Tested in Stage | Created in Production  | Tested in Production  |
 |---|---|---|---|---|
-| | | | |
+| _Protocol name_ | _Date and sign or N/A_  | _Date and sign or N/A_  |_Date and sign or N/A_  | _Date and sign or N/A_ 
 
 
 ### **Testing setup:**
