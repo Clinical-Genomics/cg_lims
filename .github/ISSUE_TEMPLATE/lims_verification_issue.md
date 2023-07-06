@@ -1,4 +1,10 @@
-Lims verification Issue
+---
+name: Lims verification 
+about: Must be used for all LIMS verifications, according to Atlas instructions Validations and verifications
+title: "LIMS verification - [Purpose]"
+labels: 'LIMS verification'
+assignees: 'annaengstrom'
+---
 ---------------
 
 
