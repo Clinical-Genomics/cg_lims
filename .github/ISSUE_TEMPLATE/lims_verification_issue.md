@@ -27,14 +27,14 @@ _In the table below, you can add the name of the new protocol(s) and write date 
 
 ### **Testing setup:**
 
-_If doing more extensive testing, the setup and specification and results can be documented in the table below. 
+_If doing more extensive testing, the setup and specification and results can be documented in the table below._
 
 | Protocol | Step | Test specification | Comments/Results  | P/F  | Sign | 
 |---|---|---|---|---|---| 
 | _Protocol name_  | _Step name_  | _The criteria for passing the test for this step_ | _Comments or results from testing_  | _P (Pass) or F (Fail) based on the criteria in the Test specification_  | _Date and Sign_
 
 #### **Project resources:**
-Don't forget to write where you document screenshots etc, if you keep them in a folder on Google Drive for example._
+_Don't forget to write where you document screenshots etc, if you keep them in a folder on Google Drive for example._
 
 ## **Conclusions:**
 
