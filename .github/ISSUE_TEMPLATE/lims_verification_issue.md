@@ -5,7 +5,6 @@ title: "LIMS verification - [Purpose]"
 labels: 'LIMS verification'
 assignees: 'annaengstrom'
 ---
----------------
 
 
 **Work Flow:** _Write the name of the workflow here_
