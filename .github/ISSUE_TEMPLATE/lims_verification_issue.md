@@ -29,16 +29,24 @@ _If doing more extensive testing, the setup and specification and results can be
 |  |  |  |   |   | 
 
 
-### **Further actions to complete before closing the verification:**
-_Consider if you need to update documentation, inform staff or other things before completing the verification._
-
 ## **Conclusions:**
 
-Comment: 
+_Summarize conclusions here._
+
+## **Sign off**
 
 | Head of Unit Lab | Date |
 |----------------- |------|
-|                  |      |
+|                              |          |
 
-- [ ] Verification completed
+## **Implementation**
+
+| What is needed to implement changes |  Item        |  Date signature    |
+|--------------------------------------- |---------- |--------------------|
+|  *Information to staff*             |          |                    |
+|  *Documentation*                    |          |                    |
+|  *Other*                            |          |                    |
+|  *Other*                            |          |                    |
+
+- [ ] Verification completed and implemented
 
