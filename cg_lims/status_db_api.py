@@ -7,7 +7,7 @@ from cg_lims.exceptions import LimsError
 from cg_lims.models.api.sequencing_metrics import SequencingMetrics
 
 
-class StatusDBAPI(object):
+class StatusDBAPI:
     def __init__(self, url):
         self.base_url = url
 
