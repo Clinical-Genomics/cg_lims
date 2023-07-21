@@ -1,5 +1,6 @@
 import sys
 
+from cg_lims.models.api.sequencing_metrics import SequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
 
 
@@ -80,29 +81,31 @@ class SequencingQualityChecker:
 
     def quality_control_samples(self):
         for metrics in self.sequencing_metrics:
-            sample_lims_id: str = metrics.sample_internal_id
-
-            if sample_lims_id not in self.sample_artifacts:
-                continue
-
-            lane = str(metrics.flow_cell_lane_number)
-            sample_artifact = self.sample_artifacts[sample_lims_id].get(lane)
+            sample_artifact = self.get_sample_artifact(metrics)
 
             if not sample_artifact:
                 continue
 
-            sample_artifact.udf["# Reads"] = metrics.sample_total_reads_in_lane
-            sample_artifact.udf["% Bases >=Q30"] = metrics.sample_base_fraction_passing_q30
+            self.update_sample_artifact(sample_artifact, metrics)
 
-            qc_flag = self.get_quality_control_flag(
-                metrics.sample_base_fraction_passing_q30,
-                metrics.sample_total_reads_in_lane,
-            )
-            sample_artifact.qc_flag = qc_flag
-
-            sample_artifact.put()
             self.updated_artifacts_count += 1
             self.not_updated_artifacts -= 1
+
+    def get_sample_artifact(self, metrics):
+        sample_lims_id: str = metrics.sample_internal_id
+        lane = str(metrics.flow_cell_lane_number)
+        return self.sample_artifacts.get(sample_lims_id, {}).get(lane)
+
+    def update_sample_artifact(self, sample_artifact, metrics: SequencingMetrics):
+        sample_artifact.udf["# Reads"] = metrics.sample_total_reads_in_lane
+        sample_artifact.udf["% Bases >=Q30"] = metrics.sample_base_fraction_passing_q30
+
+        qc_flag = self.get_quality_control_flag(
+            q30=metrics.sample_base_fraction_passing_q30,
+            reads=metrics.sample_total_reads_in_lane,
+        )
+        sample_artifact.qc_flag = qc_flag
+        sample_artifact.put()
 
     def samples_failed_quality_control(self):
         return self.failed_artifacts_count or self.not_updated_artifacts
