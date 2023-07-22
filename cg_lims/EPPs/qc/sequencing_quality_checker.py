@@ -136,4 +136,4 @@ class SequencingQualityChecker:
         return quality_summary
 
     def samples_failed_quality_control(self):
-        return bool(self.samples_failed_quality_control)
+        return self.samples_not_passing_qc_count > 0
