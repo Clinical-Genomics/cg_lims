@@ -1,6 +1,69 @@
 import sys
+from typing import Optional
 from cg_lims.models.api.sequencing_metrics import SequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
+from genologics.entities import Process, Artifact
+
+
+class ArtifactManager:
+    def __init__(self, process: Process):
+        self.process = process
+        self.sample_artifacts = {}
+        self.flow_cell_name = ""
+
+        self.set_sample_artifacts()
+        self.set_flow_cell_name()
+
+    def set_sample_artifacts(self):
+        for input_output in self.process.input_output_maps:
+            input_map = input_output[0]
+            output_map = input_output[1]
+            if self.is_output_per_reagent_label(output_map):
+                self.store_sample_artifact(input_map, output_map)
+
+    def is_output_per_reagent_label(self, output_map):
+        return output_map["output-generation-type"] == "PerReagentLabel"
+
+    def store_sample_artifact(self, input_map, output_map):
+        artifact, lane = self.extract_artifact_and_lane(input_map, output_map)
+        sample_name = artifact.samples[0].id
+        if sample_name not in self.sample_artifacts:
+            self.sample_artifacts[sample_name] = {lane: artifact}
+        else:
+            self.sample_artifacts[sample_name][lane] = artifact
+
+    def extract_artifact_and_lane(self, input_map, output_map):
+        artifact = output_map["uri"]
+        lane = input_map["uri"].location[1][0]
+        return artifact, int(lane)
+
+    def set_flow_cell_name(self):
+        try:
+            container_artifact = self.process.all_inputs()[0].container
+            self.flow_cell_name = container_artifact.name
+        except Exception as e:
+            raise Exception("Could not find flow cell name.") from e
+
+    def get_sample_artifact(self, sample_id: str, lane: int) -> Artifact:
+        try:
+            return self.sample_artifacts[sample_id][lane]
+        except KeyError:
+            raise ValueError(f"No artifact found for sample {sample_id} in lane {lane}")
+
+    def get_flow_cell_name(self):
+        return self.flow_cell_name
+
+    def set_sample_reads(self, sample_lims_id: str, lane: int, reads: int):
+        sample: Artifact = self.get_sample_artifact(sample_id=sample_lims_id, lane=lane)
+        sample.udf["# Reads"] = reads
+
+    def set_sample_q30(self, sample_lims_id: str, lane: int, q30: float):
+        sample: Artifact = self.get_sample_artifact(sample_id=sample_lims_id, lane=lane)
+        sample.udf["% Bases >=Q30"] = q30
+
+    def set_sample_quality_flag(self, sample_lims_id: str, lane: int, passed: bool):
+        sample: Artifact = self.get_sample_artifact(sample_id=sample_lims_id, lane=lane)
+        sample.qc_flag = "PASSED" if passed else "FAILED"
 
 
 class SequencingQualityChecker:
