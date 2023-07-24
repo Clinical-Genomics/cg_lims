@@ -12,7 +12,6 @@ from cg_lims.EPPs.move.rerun_samples import rerun_samples
 @click.pass_context
 def move(ctx):
     """Main entry point of move commands"""
-    pass
 
 
 move.add_command(rerun_samples)

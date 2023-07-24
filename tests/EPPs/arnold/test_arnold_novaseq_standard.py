@@ -1,4 +1,4 @@
-from genologics.entities import Process, Processtype
+from genologics.entities import Process
 
 from cg_lims.EPPs.arnold.sequencing import build_step_documents
 from cg_lims.models.arnold.base_step import BaseStep

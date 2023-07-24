@@ -12,7 +12,6 @@ from cg_lims.EPPs.udf.check import check
 @click.pass_context
 def udf(ctx):
     """Main entry point of udf commands"""
-    pass
 
 
 udf.add_command(copy)

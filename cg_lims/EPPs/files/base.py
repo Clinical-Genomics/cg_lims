@@ -16,7 +16,6 @@ from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import create_sample_sh
 @click.pass_context
 def files(ctx):
     """Main entry point of file commands"""
-    pass
 
 
 files.add_command(csv_well_to_udf)

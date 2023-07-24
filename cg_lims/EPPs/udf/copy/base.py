@@ -19,7 +19,6 @@ from cg_lims.EPPs.udf.copy.measurement_to_analyte import measurement_to_analyte
 @click.pass_context
 def copy(ctx):
     """Main entry point of copy commands"""
-    pass
 
 
 copy.add_command(artifact_to_sample)

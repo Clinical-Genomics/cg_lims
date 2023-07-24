@@ -11,7 +11,6 @@ from cg_lims.EPPs.udf.set.novaseq_x_denaturation import novaseq_x_denaturation
 @click.pass_context
 def set(context: click.Context):
     """Main entry point of set commands"""
-    pass
 
 
 set.add_command(set_reads_missing_on_new_samples)

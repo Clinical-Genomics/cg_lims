@@ -12,7 +12,6 @@ from cg_lims.EPPs.arnold.flow_cell import flow_cell
 @click.pass_context
 def arnold_upload(ctx):
     """Main load commands."""
-    pass
 
 
 arnold_upload.add_command(flow_cell)

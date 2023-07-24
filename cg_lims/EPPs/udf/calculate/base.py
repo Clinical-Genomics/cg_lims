@@ -38,7 +38,6 @@ from cg_lims.EPPs.udf.calculate.twist_qc_amount import twist_qc_amount
 @click.pass_context
 def calculate(ctx):
     """Main entry point of calculate commands"""
-    pass
 
 
 calculate.add_command(twist_pool)

@@ -11,7 +11,6 @@ from cg_lims.EPPs.files.hamilton.buffer_exchange_twist_file import buffer_exchan
 @click.pass_context
 def hamilton(ctx):
     """Main entry point of hamilton file commands"""
-    pass
 
 
 hamilton.add_command(make_kapa_csv)

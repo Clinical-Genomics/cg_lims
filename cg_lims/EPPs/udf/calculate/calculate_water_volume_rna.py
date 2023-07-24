@@ -8,7 +8,7 @@ from typing import List
 import click
 from genologics.entities import Artifact
 
-from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
+from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)

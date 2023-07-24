@@ -3,7 +3,6 @@ import logging
 
 import pytest
 from genologics.entities import Artifact
-from genologics.lims import Lims
 from pydantic import ValidationError
 
 from cg_lims.EPPs.udf.calculate.maf_calculate_volume import (
