@@ -10,9 +10,16 @@ from cg_lims.status_db_api import StatusDBAPI
 LOG = logging.getLogger(__name__)
 
 PER_REAGENT_LABEL = "PerReagentLabel"
-Q30_THRESHOLD_SETTING = "Threshold for % bases >= Q30"
+
+Q30_THRESHOLD_FIELD = "Threshold for % bases >= Q30"
+READS_FIELD = "# Reads"
+Q30_FIELD = "% Bases >=Q30"
+
 URI_KEY = "uri"
 OUTPUT_TYPE_KEY = "output-generation-type"
+
+QUALITY_CHECK_PASSED = "PASSED"
+QUALITY_CHECK_FAILED = "FAILED"
 
 
 class SequencingArtifactManager:
@@ -87,7 +94,7 @@ class SequencingArtifactManager:
 
     def _set_q30_threshold(self) -> None:
         try:
-            self.q30_threshold = self.process.udf[Q30_THRESHOLD_SETTING]
+            self.q30_threshold = self.process.udf[Q30_THRESHOLD_FIELD]
         except (AttributeError, KeyError) as e:
             sys.exit(f"Failed to find q30 threshold: {e}")
 
@@ -117,9 +124,11 @@ class SequencingArtifactManager:
             sample_artifact: Artifact = self._get_sample_artifact(
                 sample_lims_id=sample_lims_id, lane=lane
             )
-            sample_artifact.udf["# Reads"] = reads
-            sample_artifact.udf["% Bases >=Q30"] = q30_score
-            sample_artifact.qc_flag = "PASSED" if passed_qc else "FAILED"
+            sample_artifact.udf[READS_FIELD] = reads
+            sample_artifact.udf[Q30_FIELD] = q30_score
+            sample_artifact.qc_flag = (
+                QUALITY_CHECK_PASSED if passed_qc else QUALITY_CHECK_FAILED
+            )
         except ValueError as error:
             LOG.warning(
                 f"Failed to update sample {sample_lims_id} in lane {lane}: {error}"
