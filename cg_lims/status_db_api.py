@@ -8,7 +8,7 @@ from cg_lims.models.api.sequencing_metrics import SequencingMetrics
 
 
 class StatusDBAPI:
-    def __init__(self, url):
+    def __init__(self, url=None):
         self.base_url = url
 
     def apptag(self, tag_name, key=None, entry_point="/applications"):
