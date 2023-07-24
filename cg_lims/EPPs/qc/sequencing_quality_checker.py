@@ -17,10 +17,10 @@ OUTPUT_TYPE_KEY = "output-generation-type"
 
 class SequencingArtifactManager:
     def __init__(self, process: Process):
-        self.process = process
-        self.sample_artifacts = {}
-        self.flow_cell_name = ""
-        self.q30_threshold = 0
+        self.process: Process = process
+        self.sample_artifacts: Dict[str, Dict[int, Artifact]] = {}
+        self.flow_cell_name: str = ""
+        self.q30_threshold: int = 0
 
         self._set_sample_artifacts()
         self._set_flow_cell_name()
@@ -28,13 +28,16 @@ class SequencingArtifactManager:
 
     def _set_sample_artifacts(self) -> None:
         for input_map, output_map in self.process.input_output_maps:
-            if self._is_output_per_reagent_label(output_map):
-                try:
-                    sample: Artifact = self._extract_sample_artifact(output_map)
-                    lane: int = self._extract_lane(input_map)
-                    self._store_sample_artifact(sample=sample, lane=lane)
-                except ValueError as error:
-                    LOG.warning(f"Failed to parse sample artifact: {error}")
+            self._process_artifact(input_map=input_map, output_map=output_map)
+
+    def _process_artifact(self, input_map: Dict, output_map: Dict) -> None:
+        if self._is_output_per_reagent_label(output_map):
+            try:
+                sample: Artifact = self._extract_sample_artifact(output_map)
+                lane: int = self._extract_lane(input_map)
+                self._store_sample_artifact(sample=sample, lane=lane)
+            except ValueError as error:
+                LOG.warning(f"Failed to parse sample artifact: {error}")
 
     def _is_output_per_reagent_label(self, output_map: Dict) -> bool:
         return output_map.get(OUTPUT_TYPE_KEY) == PER_REAGENT_LABEL
@@ -82,7 +85,7 @@ class SequencingArtifactManager:
         except (AttributeError, IndexError, TypeError, ValueError) as e:
             sys.exit(f"Failed to find flow cell name: {e}")
 
-    def _set_q30_threshold(self):
+    def _set_q30_threshold(self) -> None:
         try:
             self.q30_threshold = self.process.udf[Q30_THRESHOLD_SETTING]
         except (AttributeError, KeyError) as e:
@@ -99,7 +102,7 @@ class SequencingArtifactManager:
     def get_flow_cell_name(self) -> str:
         return self.flow_cell_name
 
-    def get_q30_threshold(self):
+    def get_q30_threshold(self) -> int:
         return self.q30_threshold
 
     def update_sample_artifact(
