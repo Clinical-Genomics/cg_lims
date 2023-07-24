@@ -142,37 +142,35 @@ class SequencingQualityChecker:
     def validate_sequencing_quality(self) -> str:
         LOG.info(f"Validating sequencing quality for flow cell {self.flow_cell_name}") 
 
-        sequencing_metrics: List[
-            SequencingMetrics
-        ] = self.status_db_api.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
+        sequencing_metrics: List[SequencingMetrics] = self.status_db_api.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
 
         for metrics in sequencing_metrics:
-            sample_lims_id: str = metrics.sample_internal_id
-            lane: int = metrics.flow_cell_lane_number
-            reads: int = metrics.sample_total_reads_in_lane
-            q30_score: float = metrics.sample_base_fraction_passing_q30
-
-            passed_quality_control: bool = self._is_valid_sequencing_quality(
-                reads=reads,
-                q30_score=q30_score,
-            )
-
-            self.sample_artifact_manager.update_sample(
-                sample_lims_id=sample_lims_id,
-                lane=lane,
-                reads=reads,
-                q30_score=q30_score,
-                passed_quality_control=passed_quality_control,
-            )
-
-            if not passed_quality_control:
-                LOG.warning(f"Sample {sample_lims_id} failed QC check in lane {lane}")
-                self.samples_not_passing_qc_count += 1
+            self._validate_sequencing_metrics(metrics)
 
         return self._get_quality_summary()
 
-    def _validate_sequencing_metrics(self):
-        pass
+    def _validate_sequencing_metrics(self, metrics: SequencingMetrics) -> None:
+        sample_lims_id: str = metrics.sample_internal_id
+        lane: int = metrics.flow_cell_lane_number
+        reads: int = metrics.sample_total_reads_in_lane
+        q30_score: float = metrics.sample_base_fraction_passing_q30
+
+        passed_quality_control: bool = self._is_valid_sequencing_quality(
+            reads=reads,
+            q30_score=q30_score,
+        )
+
+        self.sample_artifact_manager.update_sample(
+            sample_lims_id=sample_lims_id,
+            lane=lane,
+            reads=reads,
+            q30_score=q30_score,
+            passed_quality_control=passed_quality_control,
+        )
+
+        if not passed_quality_control:
+            LOG.warning(f"Sample {sample_lims_id} failed QC check in lane {lane}")
+            self.samples_not_passing_qc_count += 1
 
     def _is_valid_sequencing_quality(self, q30_score: float, reads: int):
         passes_q30_threshold: bool = q30_score * 100 >= self.q30_threshold
