@@ -30,8 +30,8 @@ class SequencingArtifactManager:
         for input_map, output_map in self.process.input_output_maps:
             if self._is_output_per_reagent_label(output_map):
                 try:
-                    sample: Artifact = self._extract_sample_from_output_map(output_map)
-                    lane: int = self._extract_lane_from_input_map(input_map)
+                    sample: Artifact = self._extract_sample_artifact(output_map)
+                    lane: int = self._extract_lane(input_map)
                     self._store_sample_artifact(sample=sample, lane=lane)
                 except ValueError as error:
                     LOG.warning(f"Failed to parse sample artifact: {error}")
@@ -39,14 +39,14 @@ class SequencingArtifactManager:
     def _is_output_per_reagent_label(self, output_map: Dict) -> bool:
         return output_map.get(OUTPUT_TYPE_KEY) == PER_REAGENT_LABEL
 
-    def _extract_lane_from_input_map(self, input_map: Dict) -> int:
+    def _extract_lane(self, input_map: Dict) -> int:
         try:
             lane: str = input_map["uri"].location[1][0]
             return int(lane)
         except (AttributeError, IndexError, KeyError, ValueError) as e:
             raise ValueError(f"Could not extract lane from input map {input_map}: {e}")
 
-    def _extract_sample_from_output_map(self, output_map: Dict) -> Artifact:
+    def _extract_sample_artifact(self, output_map: Dict) -> Artifact:
         try:
             return output_map["uri"]
         except KeyError as e:
@@ -56,10 +56,10 @@ class SequencingArtifactManager:
 
     def _extract_sample_lims_id(self, sample: Artifact) -> str:
         try:
-            sample_id = sample.samples[0].id
-            if sample_id is None:
+            sample_lims_id = sample.samples[0].id
+            if sample_lims_id is None:
                 raise ValueError("Sample id is None")
-            return sample_id
+            return sample_lims_id
         except (AttributeError, IndexError) as e:
             raise ValueError(f"Could not extract sample id: {e}")
 
@@ -88,11 +88,13 @@ class SequencingArtifactManager:
         except (AttributeError, KeyError) as e:
             sys.exit(f"Failed to find q30 threshold: {e}")
 
-    def _get_sample(self, sample_id: str, lane: int) -> Artifact:
+    def _get_sample_artifact(self, sample_lims_id: str, lane: int) -> Artifact:
         try:
-            return self.sample_artifacts[sample_id][lane]
+            return self.sample_artifacts[sample_lims_id][lane]
         except KeyError:
-            raise ValueError(f"No artifact found for sample {sample_id} in lane {lane}")
+            raise ValueError(
+                f"No artifact found for sample {sample_lims_id} in lane {lane}"
+            )
 
     def get_flow_cell_name(self) -> str:
         return self.flow_cell_name
@@ -101,15 +103,24 @@ class SequencingArtifactManager:
         return self.q30_threshold
 
     def update_sample_artifact(
-        self, sample_id: str, lane: int, reads: int, q30: float, passed_qc: bool
+        self,
+        sample_lims_id: str,
+        lane: int,
+        reads: int,
+        q30_score: float,
+        passed_qc: bool,
     ) -> None:
         try:
-            sample: Artifact = self._get_sample(sample_id=sample_id, lane=lane)
-            sample.udf["# Reads"] = reads
-            sample.udf["% Bases >=Q30"] = q30
-            sample.qc_flag = "PASSED" if passed_qc else "FAILED"
+            sample_artifact: Artifact = self._get_sample_artifact(
+                sample_lims_id=sample_lims_id, lane=lane
+            )
+            sample_artifact.udf["# Reads"] = reads
+            sample_artifact.udf["% Bases >=Q30"] = q30_score
+            sample_artifact.qc_flag = "PASSED" if passed_qc else "FAILED"
         except ValueError as error:
-            LOG.warning(f"Failed to update sample {sample_id} in lane {lane}: {error}")
+            LOG.warning(
+                f"Failed to update sample {sample_lims_id} in lane {lane}: {error}"
+            )
 
 
 class SequencingQualityChecker:
@@ -139,10 +150,10 @@ class SequencingQualityChecker:
             )
 
             self.sample_artifact_manager.update_sample_artifact(
-                sample_id=metrics.sample_internal_id,
+                sample_lims_id=metrics.sample_internal_id,
                 lane=metrics.flow_cell_lane_number,
                 reads=metrics.sample_total_reads_in_lane,
-                q30=q30_score,
+                q30_score=q30_score,
                 passed_qc=passed_qc,
             )
 
