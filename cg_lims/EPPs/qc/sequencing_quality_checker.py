@@ -1,6 +1,6 @@
 import logging
 import sys
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from genologics.entities import Artifact, Process
 
@@ -60,9 +60,7 @@ class SequencingArtifactManager:
         try:
             return output_map["uri"]
         except KeyError as e:
-            raise ValueError(
-                f"Could not extract sample artifact from output map {output_map}: {e}"
-            )
+            raise ValueError(f"Could not extract sample artifact from output map {output_map}: {e}")
 
     def _extract_sample_lims_id(self, sample: Artifact) -> str:
         try:
@@ -96,15 +94,13 @@ class SequencingArtifactManager:
         try:
             self.q30_threshold = self.process.udf[Q30_THRESHOLD_FIELD]
         except (AttributeError, KeyError) as e:
-            sys.exit(f"Failed to find q30 threshold: {e}")
+            raise Exception(f"Failed to find Q30 threshold: {e}")
 
-    def _get_sample_artifact(self, sample_lims_id: str, lane: int) -> Artifact:
-        try:
-            return self.sample_artifacts[sample_lims_id][lane]
-        except KeyError:
-            raise ValueError(
-                f"No artifact found for sample {sample_lims_id} in lane {lane}"
-            )
+    def _get_sample_artifact(self, sample_lims_id: str, lane: int) -> Optional[Artifact]:
+        return self.sample_artifacts.get(sample_lims_id, {}).get(lane)
+
+    def _get_quality_flag(self, passed_qc: bool) -> str:
+        return QUALITY_CHECK_PASSED if passed_qc else QUALITY_CHECK_FAILED
 
     def get_flow_cell_name(self) -> str:
         return self.flow_cell_name
@@ -112,67 +108,71 @@ class SequencingArtifactManager:
     def get_q30_threshold(self) -> int:
         return self.q30_threshold
 
-    def update_sample_artifact(
+    def update_sample(
         self,
         sample_lims_id: str,
         lane: int,
         reads: int,
         q30_score: float,
-        passed_qc: bool,
+        passed_quality_control: bool,
     ) -> None:
-        try:
-            sample_artifact: Artifact = self._get_sample_artifact(
-                sample_lims_id=sample_lims_id, lane=lane
-            )
-            sample_artifact.udf[READS_FIELD] = reads
-            sample_artifact.udf[Q30_FIELD] = q30_score
-            sample_artifact.qc_flag = (
-                QUALITY_CHECK_PASSED if passed_qc else QUALITY_CHECK_FAILED
-            )
-        except ValueError as error:
-            LOG.warning(
-                f"Failed to update sample {sample_lims_id} in lane {lane}: {error}"
-            )
+        sample: Optional[Artifact] = self._get_sample_artifact(sample_lims_id=sample_lims_id, lane=lane)
+
+        if not sample:
+            LOG.warning(f"Failed to update sample {sample_lims_id} in lane {lane}")
+            return
+
+        sample.udf[READS_FIELD] = reads
+        sample.udf[Q30_FIELD] = q30_score
+        sample.qc_flag = self._get_quality_flag(passed_quality_control)
+        sample.put()
 
 
 class SequencingQualityChecker:
     READS_MIN_THRESHOLD = 1000
 
     def __init__(self, process: Process, status_db_api: StatusDBAPI) -> None:
-        self.sample_artifact_manager = SequencingArtifactManager(process)
-        self.status_db_api = status_db_api
+        self.sample_artifact_manager: SequencingArtifactManager = SequencingArtifactManager(process)
+        self.status_db_api: StatusDBAPI = status_db_api
 
-        self.q30_threshold = self.sample_artifact_manager.get_q30_threshold()
-        self.flow_cell_name = self.sample_artifact_manager.get_flow_cell_name()
-        self.samples_not_passing_qc_count = 0
+        self.q30_threshold: int = self.sample_artifact_manager.get_q30_threshold()
+        self.flow_cell_name: str = self.sample_artifact_manager.get_flow_cell_name()
+        self.samples_not_passing_qc_count: int = 0
 
     def validate_sequencing_quality(self) -> str:
-        flow_cell_name: str = self.sample_artifact_manager.get_flow_cell_name()
+        LOG.info(f"Validating sequencing quality for flow cell {self.flow_cell_name}") 
+
         sequencing_metrics: List[
             SequencingMetrics
-        ] = self.status_db_api.get_sequencing_metrics_for_flow_cell(flow_cell_name)
+        ] = self.status_db_api.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
 
         for metrics in sequencing_metrics:
+            sample_lims_id: str = metrics.sample_internal_id
+            lane: int = metrics.flow_cell_lane_number
             reads: int = metrics.sample_total_reads_in_lane
             q30_score: float = metrics.sample_base_fraction_passing_q30
 
-            passed_qc: bool = self._is_valid_sequencing_quality(
+            passed_quality_control: bool = self._is_valid_sequencing_quality(
                 reads=reads,
                 q30_score=q30_score,
             )
 
-            self.sample_artifact_manager.update_sample_artifact(
-                sample_lims_id=metrics.sample_internal_id,
-                lane=metrics.flow_cell_lane_number,
-                reads=metrics.sample_total_reads_in_lane,
+            self.sample_artifact_manager.update_sample(
+                sample_lims_id=sample_lims_id,
+                lane=lane,
+                reads=reads,
                 q30_score=q30_score,
-                passed_qc=passed_qc,
+                passed_quality_control=passed_quality_control,
             )
 
-            if not passed_qc:
+            if not passed_quality_control:
+                LOG.warning(f"Sample {sample_lims_id} failed QC check in lane {lane}")
                 self.samples_not_passing_qc_count += 1
 
         return self._get_quality_summary()
+
+    def _validate_sequencing_metrics(self):
+        pass
 
     def _is_valid_sequencing_quality(self, q30_score: float, reads: int):
         passes_q30_threshold: bool = q30_score * 100 >= self.q30_threshold
