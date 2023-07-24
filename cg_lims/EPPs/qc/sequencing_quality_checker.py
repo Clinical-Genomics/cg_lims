@@ -1,11 +1,16 @@
+import logging
 import sys
 from typing import Dict, List
+
+from genologics.entities import Artifact, Process
+
 from cg_lims.models.api.sequencing_metrics import SequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
-from genologics.entities import Process, Artifact
 
+LOG = logging.getLogger(__name__)
 
 PER_REAGENT_LABEL = "PerReagentLabel"
+Q30_THRESHOLD_SETTING = "Threshold for % bases >= Q30"
 URI_KEY = "uri"
 OUTPUT_TYPE_KEY = "output-generation-type"
 
@@ -17,81 +22,94 @@ class SequencingArtifactManager:
         self.flow_cell_name = ""
         self.q30_threshold = 0
 
-        self.extract_and_store_sample_artifacts()
+        self.set_sample_artifacts()
         self.set_flow_cell_name()
         self.set_q30_threshold()
 
-    def extract_and_store_sample_artifacts(self) -> None:
+    def set_sample_artifacts(self) -> None:
         for input_map, output_map in self.process.input_output_maps:
             if self.is_output_per_reagent_label(output_map):
-                self.store_sample_artifact(input_map=input_map, output_map=output_map)
+                try:
+                    sample: Artifact = self.extract_sample(output_map)
+                    lane: int = self.extract_lane(input_map)
+                    self.store_sample_artifact(sample=sample, lane=lane)
+                except ValueError as error:
+                    LOG.error(f"Failed to parse sample artifact: {error}")
 
     def is_output_per_reagent_label(self, output_map: Dict) -> bool:
         return output_map.get(OUTPUT_TYPE_KEY) == PER_REAGENT_LABEL
 
-    def store_sample_artifact(self, input_map: Dict, output_map: Dict) -> None:
-        try:
-            sample: Artifact = self.extract_sample_artifact_from_output_map(output_map)
-            lane: int = self.extract_lane_from_input_map(input_map)
-            self.add_sample_artifact_to_dict(sample, lane)
-        except ValueError as e:
-            # Log error
-            return
-
-    def extract_lane_from_input_map(self, input_map: Dict) -> int:
+    def extract_lane(self, input_map: Dict) -> int:
         try:
             lane: str = input_map["uri"].location[1][0]
             return int(lane)
-        except (KeyError, IndexError, ValueError, AttributeError) as e:
-            raise ValueError(f"Could not extract lane: {e}")
+        except (AttributeError, IndexError, KeyError, ValueError) as e:
+            raise ValueError(f"Could not extract lane from input map {input_map}: {e}")
 
-    def extract_sample_artifact_from_output_map(self, output_map: Dict) -> Artifact:
+    def extract_sample(self, output_map: Dict) -> Artifact:
         try:
             return output_map["uri"]
         except KeyError as e:
-            raise ValueError(f"Could not extract sample artifact: {e}")
+            raise ValueError(
+                f"Could not extract sample artifact from output map {output_map}: {e}"
+            )
 
-    def add_sample_artifact_to_dict(self, sample_artifact: Artifact, lane: int) -> None:
-        sample_name: str = sample_artifact.samples[0].id
-        if sample_name not in self.sample_artifacts:
-            self.sample_artifacts[sample_name] = {lane: sample_artifact}
-        else:
-            self.sample_artifacts[sample_name][lane] = sample_artifact
-
-    def set_flow_cell_name(self):
-        container_artifact = self.process.all_inputs()[0].container
-
-        if not container_artifact or not container_artifact.name:
-            sys.exit("Flow cell name not found")
-
-        self.flow_cell_name = container_artifact.name
-
-    def get_sample_artifact(self, sample_id: str, lane: int) -> Artifact:
+    def extract_sample_lims_id(self, sample: Artifact) -> str:
         try:
-            return self.sample_artifacts[sample_id][lane]
-        except KeyError:
-            raise ValueError(f"No artifact found for sample {sample_id} in lane {lane}")
+            sample_id = sample.samples[0].id
+            if sample_id is None:
+                raise ValueError("Sample id is None")
+            return sample_id
+        except (AttributeError, IndexError) as e:
+            raise ValueError(f"Could not extract sample id: {e}")
 
-    def get_flow_cell_name(self):
+    def store_sample_artifact(self, sample: Artifact, lane: int) -> None:
+        sample_lims_id: str = self.extract_sample_lims_id(sample)
+        if sample_lims_id not in self.sample_artifacts:
+            self.sample_artifacts[sample_lims_id] = {lane: sample}
+        else:
+            self.sample_artifacts[sample_lims_id][lane] = sample
+
+    def set_flow_cell_name(self) -> None:
+        try:
+            container = self.process.all_inputs()[0].container
+            if container is None:
+                raise ValueError("Container is None")
+            flow_cell_name = container.name
+            if flow_cell_name is None:
+                raise ValueError("Flow cell name is None")
+            self.flow_cell_name = flow_cell_name
+        except (AttributeError, IndexError, TypeError, ValueError) as e:
+            sys.exit(f"Failed to find flow cell name: {e}")
+
+    def set_q30_threshold(self):
+        try:
+            self.q30_threshold = self.process.udf[Q30_THRESHOLD_SETTING]
+        except (AttributeError, KeyError) as e:
+            sys.exit(f"Failed to find q30 threshold: {e}")
+
+    def get_flow_cell_name(self) -> str:
         return self.flow_cell_name
 
     def get_q30_threshold(self):
         return self.q30_threshold
 
-    def set_q30_threshold(self):
-        q30_threshold_setting: str = "Threshold for % bases >= Q30"
-        if not q30_threshold_setting in self.process.udf:
-            sys.exit(f"{q30_threshold_setting} has not ben set.")
-        self.q30_threshold = self.process.udf.get(q30_threshold_setting)
+    def get_sample(self, sample_id: str, lane: int) -> Artifact:
+        try:
+            return self.sample_artifacts[sample_id][lane]
+        except KeyError:
+            raise ValueError(f"No artifact found for sample {sample_id} in lane {lane}")
 
     def update_sample_artifact(
         self, sample_id: str, lane: int, reads: int, q30: float, passed_qc: bool
     ) -> None:
-        """Update the UDFs of a sample artifact."""
-        sample: Artifact = self.get_sample_artifact(sample_id, lane)
-        sample.udf["# Reads"] = reads
-        sample.udf["% Bases >=Q30"] = q30
-        sample.qc_flag = "PASSED" if passed_qc else "FAILED"
+        try:
+            sample: Artifact = self.get_sample(sample_id=sample_id, lane=lane)
+            sample.udf["# Reads"] = reads
+            sample.udf["% Bases >=Q30"] = q30
+            sample.qc_flag = "PASSED" if passed_qc else "FAILED"
+        except ValueError as error:
+            LOG.warning(f"Failed to update sample {sample_id} in lane {lane}: {error}")
 
 
 class SequencingQualityChecker:
