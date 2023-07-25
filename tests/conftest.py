@@ -5,7 +5,7 @@ from typing import Dict, List
 
 import pytest
 from click.testing import CliRunner
-from genologics.entities import Artifact, Sample
+from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
 from limsmock.server import run_server
 from mock import Mock
@@ -198,3 +198,9 @@ def mock_sequencing_metrics_get_response(sequencing_metrics_json) -> Mock:
     mock_response.json.return_value = sequencing_metrics_json
     mock_response.raise_for_status.return_value = None
     return mock_response
+
+
+@pytest.fixture
+def lims_process_with_novaseq_data(lims) -> Process:
+    server("novaseq_standard")
+    return Process(lims=lims, id="24-308986")
