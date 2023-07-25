@@ -3,6 +3,7 @@ import sys
 from typing import Dict, List, Optional
 
 from genologics.entities import Artifact, Process
+from cg_lims.exceptions import LimsError
 
 from cg_lims.models.api.sequencing_metrics import SequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
@@ -142,7 +143,12 @@ class SequencingQualityChecker:
     def validate_sequencing_quality(self) -> str:
         LOG.info(f"Validating sequencing quality for flow cell {self.flow_cell_name}") 
 
-        sequencing_metrics: List[SequencingMetrics] = self.status_db_api.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
+        try:
+            sequencing_metrics: List[SequencingMetrics] = self.status_db_api.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
+        except LimsError as e:
+            error_message: str = f"Could not retrieve sequencing metrics for {self.flow_cell_name}: {e}"
+            LOG.error(error_message)
+            sys.exit(error_message)
 
         for metrics in sequencing_metrics:
             self._validate_sequencing_metrics(metrics)
