@@ -6,13 +6,13 @@ import click
 from genologics.entities import Process
 
 from cg_lims import options
-from cg_lims.EPPs.files import files
+from cg_lims.external_program_plugins.files import files
 
 # commands
-from cg_lims.EPPs.move import move
-from cg_lims.EPPs.udf import udf
-from cg_lims.EPPs.qc import qc
-from cg_lims.EPPs.arnold import arnold_upload
+from cg_lims.external_program_plugins.move import move
+from cg_lims.external_program_plugins.udf import udf
+from cg_lims.external_program_plugins.qc import qc
+from cg_lims.external_program_plugins.arnold import arnold_upload
 from cg_lims.get.files import get_log_content
 
 

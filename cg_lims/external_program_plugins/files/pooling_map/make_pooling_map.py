@@ -7,13 +7,13 @@ from genologics.entities import Artifact, Process
 from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.EPPs.files.pooling_map.hmtl_templates import (
+from cg_lims.external_program_plugins.files.pooling_map.hmtl_templates import (
     PLACEMENT_MAP_HEADER,
     POOL_HEADER,
     SAMPLE_COLUMN_HEADERS,
     SAMPLE_COLUMN_VALUES,
 )
-from cg_lims.EPPs.files.pooling_map.models import (
+from cg_lims.external_program_plugins.files.pooling_map.models import (
     PlacementMapHeader,
     PoolSection,
     SampleTableSection,

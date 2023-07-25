@@ -1,10 +1,10 @@
 import click
 
-from cg_lims.EPPs.udf.set.set_samples_reads_missing import set_reads_missing_on_new_samples
-from cg_lims.EPPs.udf.set.set_sample_date import set_sample_date
-from cg_lims.EPPs.udf.set.set_method import method_document
-from cg_lims.EPPs.udf.set.set_barcode import assign_barcode
-from cg_lims.EPPs.udf.set.novaseq_x_denaturation import novaseq_x_denaturation
+from cg_lims.external_program_plugins.udf.set.set_samples_reads_missing import set_reads_missing_on_new_samples
+from cg_lims.external_program_plugins.udf.set.set_sample_date import set_sample_date
+from cg_lims.external_program_plugins.udf.set.set_method import method_document
+from cg_lims.external_program_plugins.udf.set.set_barcode import assign_barcode
+from cg_lims.external_program_plugins.udf.set.novaseq_x_denaturation import novaseq_x_denaturation
 
 
 @click.group(invoke_without_command=True)

@@ -1,4 +1,4 @@
-"""Unit tests for cg_lims.EPPs.udf.calculate.maf_calculate_volume"""
+"""Unit tests for cg_lims.external_program_plugins.udf.calculate.maf_calculate_volume"""
 import logging
 
 import pytest

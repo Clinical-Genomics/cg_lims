@@ -6,7 +6,7 @@ from genologics.lims import Lims
 from cg_lims import options
 
 # commands
-from cg_lims.EPPs import epps
+from cg_lims.external_program_plugins import epps
 from cg_lims.scripts.base import scripts
 from cg_lims.status_db_api import StatusDBAPI
 

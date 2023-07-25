@@ -8,7 +8,7 @@ import click
 from genologics.lims import Artifact
 
 from cg_lims import options
-from cg_lims.EPPs.files.hamilton.models import CovidPrepFileRow
+from cg_lims.external_program_plugins.files.hamilton.models import CovidPrepFileRow
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import build_csv, sort_csv
 from cg_lims.get.artifacts import get_artifacts

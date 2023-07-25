@@ -9,7 +9,7 @@ from genologics.entities import Artifact, Process, ReagentType
 from cg_lims import options
 from cg_lims.exceptions import LimsError, InvalidValueError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.EPPs.files.sample_sheet.models import (
+from cg_lims.external_program_plugins.files.sample_sheet.models import (
     IndexSetup,
     IndexType,
     SampleSheetHeader,

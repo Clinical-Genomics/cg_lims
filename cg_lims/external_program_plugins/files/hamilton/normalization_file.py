@@ -8,7 +8,7 @@ import click
 from genologics.lims import Artifact
 
 from cg_lims import options
-from cg_lims.EPPs.files.hamilton.models import BarcodeFileRow
+from cg_lims.external_program_plugins.files.hamilton.models import BarcodeFileRow
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import build_csv, sort_csv, sort_csv_plate_and_tube
 from cg_lims.get.artifacts import get_artifacts

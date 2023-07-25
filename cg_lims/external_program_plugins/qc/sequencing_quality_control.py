@@ -2,7 +2,7 @@ import sys
 
 import click
 
-from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
+from cg_lims.external_program_plugins.qc.sequencing_quality_checker import SequencingQualityChecker
 
 
 @click.command()
