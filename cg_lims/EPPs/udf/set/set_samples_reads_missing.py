@@ -9,17 +9,17 @@ from genologics.entities import Sample
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.get.udfs import get_udf
-from cg_lims.status_db_api import StatusDBAPI
+from cg_lims.status_db_api import StatusDBAPIClient
 
 LOG = logging.getLogger(__name__)
 
 
-def get_target_amount(app_tag: str, status_db: StatusDBAPI) -> int:
+def get_target_amount(app_tag: str, status_db: StatusDBAPIClient) -> int:
     """Gets the target amount of reads from clinical-api"""
     return status_db.apptag(tag_name=app_tag, key="target_reads")
 
 
-def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:
+def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPIClient) -> None:
     """Sets the udf "Reads missing (M)" on a sample to the target amount of reads bases on the app tag"""
     app_tag = get_udf(sample, "Sequencing Analysis")
     target_amount = get_target_amount(app_tag, status_db)
@@ -27,7 +27,7 @@ def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:
     sample.put()
 
 
-def set_reads_missing(samples: List[Sample], status_db: StatusDBAPI) -> None:
+def set_reads_missing(samples: List[Sample], status_db: StatusDBAPIClient) -> None:
     """Attempts to set the udf "Reads missing (M)" on all samples"""
     failed_samples_count = 0
     succeeded_samples_count = 0
