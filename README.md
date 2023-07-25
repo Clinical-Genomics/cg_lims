@@ -1,5 +1,5 @@
 # cg_lims [![Coverage Status](https://coveralls.io/repos/github/Clinical-Genomics/cg_lims/badge.svg)](https://coveralls.io/github/Clinical-Genomics/cg_lims)  ![Latest Release](https://img.shields.io/github/v/release/clinical-genomics/cg_lims)
-
+.
 A package for lims interactions. The aim is to replace all other lims interactions at CG with this new package.
 
 ## Database access
