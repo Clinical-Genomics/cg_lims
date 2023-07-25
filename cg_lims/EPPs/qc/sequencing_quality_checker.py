@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 from genologics.entities import Artifact, Process
 
 from cg_lims.models.api.sequencing_metrics import SequencingMetrics
-from cg_lims.status_db_api import StatusDBAPIClient
+from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)
 
@@ -131,9 +131,9 @@ class SequencingArtifactManager:
 class SequencingQualityChecker:
     READS_MIN_THRESHOLD = 1000
 
-    def __init__(self, process: Process, status_db_api: StatusDBAPIClient) -> None:
+    def __init__(self, process: Process, status_db_api: StatusDBAPI) -> None:
         self.sample_artifact_manager: SequencingArtifactManager = SequencingArtifactManager(process)
-        self.status_db_api: StatusDBAPIClient = status_db_api
+        self.status_db_api: StatusDBAPI = status_db_api
 
         self.q30_threshold: int = self.sample_artifact_manager.get_q30_threshold()
         self.flow_cell_name: str = self.sample_artifact_manager.get_flow_cell_name()
