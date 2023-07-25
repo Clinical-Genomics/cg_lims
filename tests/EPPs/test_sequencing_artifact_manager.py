@@ -1,5 +1,5 @@
 from genologics.entities import Artifact, Process
-from cg_lims.EPPs.qc.sequencing_quality_checker import Q30_FIELD, QUALITY_CHECK_PASSED, READS_FIELD, SequencingArtifactManager
+from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
 
 
 def test_get_flow_cell_name(lims_process_with_novaseq_data: Process):
