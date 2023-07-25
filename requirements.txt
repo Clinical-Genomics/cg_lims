@@ -1,7 +1,7 @@
 genologics # requires python < 3.9  - AttributeError: 'xml.etree.ElementTree.Element' object has no attribute 'getchildren'
 click
 PyYAML
-pydantic
+pydantic==1.10
 fastapi
 pandas
 gunicorn
