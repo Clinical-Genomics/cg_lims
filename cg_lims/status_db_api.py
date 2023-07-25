@@ -22,10 +22,10 @@ class StatusDBAPIClient:
             raise LimsError(f"Failed to get data from {url}, {e}")
 
     def apptag(self, tag_name, key=None):
-        app_tag_endpoint = f"/applications/{tag_name}"
+        app_tag_endpoint: str = f"/applications/{tag_name}"
         return self._get(app_tag_endpoint, key)
 
     def get_sequencing_metrics_for_flow_cell(self, flow_cell_name: str) -> List[SequencingMetrics]:
-        metrics_endpoint = f"/flowcells/{flow_cell_name}/sequencing_metrics"
+        metrics_endpoint: str = f"/flowcells/{flow_cell_name}/sequencing_metrics"
         metrics_data = self._get(metrics_endpoint)
         return [SequencingMetrics.model_validate(metric) for metric in metrics_data]
