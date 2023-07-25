@@ -117,16 +117,16 @@ class SequencingArtifactManager:
         q30_score: float,
         passed_quality_control: bool,
     ) -> None:
-        sample: Optional[Artifact] = self._get_sample_artifact(sample_lims_id=sample_lims_id, lane=lane)
+        sample_artifact: Optional[Artifact] = self._get_sample_artifact(sample_lims_id=sample_lims_id, lane=lane)
 
-        if not sample:
+        if not sample_artifact:
             LOG.warning(f"Failed to update sample {sample_lims_id} in lane {lane}")
             return
 
-        sample.udf[READS_FIELD] = reads
-        sample.udf[Q30_FIELD] = q30_score
-        sample.qc_flag = self._get_quality_flag(passed_quality_control)
-        sample.put()
+        sample_artifact.udf[READS_FIELD] = reads
+        sample_artifact.udf[Q30_FIELD] = q30_score
+        sample_artifact.qc_flag = self._get_quality_flag(passed_quality_control)
+        sample_artifact.put()
 
 
 class SequencingQualityChecker:
