@@ -3,7 +3,7 @@ from typing import List
 from urllib.parse import urljoin
 
 from cg_lims.exceptions import LimsError
-from cg_lims.models.api.sequencing_metrics import SequencingMetrics
+from cg_lims.models.sequencing_metrics import SequencingMetrics
 
 class StatusDBAPI:
     def __init__(self, base_url):

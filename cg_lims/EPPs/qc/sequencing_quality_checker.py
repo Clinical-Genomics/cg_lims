@@ -5,7 +5,7 @@ from typing import Dict, List, Optional
 from genologics.entities import Artifact, Process
 from cg_lims.exceptions import LimsError
 
-from cg_lims.models.api.sequencing_metrics import SequencingMetrics
+from cg_lims.models.sequencing_metrics import SequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)
