@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, validator
+from pydantic.v1 import BaseModel, Field, validator
 import datetime as dt
 from typing import Optional
 import logging

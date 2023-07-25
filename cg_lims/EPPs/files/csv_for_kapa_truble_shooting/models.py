@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic.v1 import BaseModel, Field
 
 from cg_lims.models.api.master_steps import HybridizeLibraryTWIST
 
