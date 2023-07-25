@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 
 from genologics.entities import Artifact
-from cg_lims.EPPs.files.hamilton.normalization_file import get_file_data_and_write
+from cg_lims.external_program_plugins.files.hamilton.normalization_file import get_file_data_and_write
 from cg_lims.exceptions import MissingUDFsError
 
 

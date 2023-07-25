@@ -1,5 +1,5 @@
 from genologics.entities import Artifact
-from cg_lims.EPPs.udf.copy.original_well_to_sample import original_well_to_sample
+from cg_lims.external_program_plugins.udf.copy.original_well_to_sample import original_well_to_sample
 from tests.conftest import server
 from cg_lims.exceptions import InvalidValueError
 import pytest

@@ -1,6 +1,6 @@
 import pytest
 from genologics.entities import Artifact
-from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import (
+from cg_lims.external_program_plugins.udf.calculate.calculate_water_volume_rna import (
     calculate_sample_and_water_volumes,
 )
 from cg_lims.exceptions import MissingUDFsError

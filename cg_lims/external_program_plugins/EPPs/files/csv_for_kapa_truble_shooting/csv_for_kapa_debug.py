@@ -8,7 +8,7 @@ import logging
 from genologics.lims import Lims
 
 from cg_lims import options
-from cg_lims.EPPs.files.csv_for_kapa_truble_shooting.models import DebugKapaCSV, HEADERS
+from cg_lims.external_program_plugins.files.csv_for_kapa_truble_shooting.models import DebugKapaCSV, HEADERS
 from cg_lims.models.api.master_steps import (
     HybridizeLibraryTWIST,
     AliquotsamplesforenzymaticfragmentationTWIST,

@@ -8,7 +8,7 @@ from requests import Response
 import json
 
 from cg_lims import options
-from cg_lims.EPPs.arnold import prep, sequencing
+from cg_lims.external_program_plugins.arnold import prep, sequencing
 from cg_lims.models.arnold.base_step import BaseStep
 
 LOG = logging.getLogger(__name__)

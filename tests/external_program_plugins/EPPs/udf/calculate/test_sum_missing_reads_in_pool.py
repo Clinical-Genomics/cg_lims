@@ -1,5 +1,5 @@
 from genologics.entities import Process
-from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import sum_reads_in_pool
+from cg_lims.external_program_plugins.udf.calculate.sum_missing_reads_in_pool import sum_reads_in_pool
 from cg_lims.get.artifacts import get_artifacts
 from tests.conftest import server
 

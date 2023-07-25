@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 import click
 
-from cg_lims.EPPs.move.move_samples import move_samples
-from cg_lims.EPPs.move.place_samples_in_seq_agg import place_samples_in_seq_agg
+from cg_lims.external_program_plugins.move.move_samples import move_samples
+from cg_lims.external_program_plugins.move.place_samples_in_seq_agg import place_samples_in_seq_agg
 
 # commands
-from cg_lims.EPPs.move.rerun_samples import rerun_samples
+from cg_lims.external_program_plugins.move.rerun_samples import rerun_samples
 
 
 @click.group(invoke_without_command=True)

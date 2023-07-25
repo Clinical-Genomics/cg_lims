@@ -1,12 +1,12 @@
 import mock
 import pytest
 
-from cg_lims.EPPs.udf.calculate.calculate_beads import (
+from cg_lims.external_program_plugins.udf.calculate.calculate_beads import (
     calculate_beads_volume,
     calculate_elution_volume,
     calculate_volumes,
 )
-from cg_lims.EPPs.udf.calculate.calculate_water import calculate_water_volume
+from cg_lims.external_program_plugins.udf.calculate.calculate_water import calculate_water_volume
 from cg_lims.exceptions import MissingUDFsError
 from genologics.entities import Artifact
 from genologics.lims import Lims
@@ -61,8 +61,8 @@ def test_calculate_beads_volume():
     assert result == sample_volume * 2
 
 
-@mock.patch("cg_lims.EPPs.udf.calculate.calculate_beads.calculate_elution_volume")
-@mock.patch("cg_lims.EPPs.udf.calculate.calculate_beads.calculate_beads_volume")
+@mock.patch("cg_lims.external_program_plugins.udf.calculate.calculate_beads.calculate_elution_volume")
+@mock.patch("cg_lims.external_program_plugins.udf.calculate.calculate_beads.calculate_beads_volume")
 @pytest.mark.parametrize(
     "sample_volume, elution_volume, beads_volume",
     [(20.0, 40.0, 100.0)],
@@ -106,9 +106,9 @@ def test_calculate_volumes_single_artifact_missing_sample_volume_udf(
     assert f"missing for 1 out of 1 samples" in error_message.value.message
 
 
-@mock.patch("cg_lims.EPPs.udf.calculate.calculate_beads.calculate_elution_volume")
-@mock.patch("cg_lims.EPPs.udf.calculate.calculate_water.calculate_water_volume")
-@mock.patch("cg_lims.EPPs.udf.calculate.calculate_beads.calculate_beads_volume")
+@mock.patch("cg_lims.external_program_plugins.udf.calculate.calculate_beads.calculate_elution_volume")
+@mock.patch("cg_lims.external_program_plugins.udf.calculate.calculate_water.calculate_water_volume")
+@mock.patch("cg_lims.external_program_plugins.udf.calculate.calculate_beads.calculate_beads_volume")
 @pytest.mark.parametrize(
     "sample_volume, elution_volume, water_volume, beads_volume",
     [(20.0, 40.0, 30.0, 100.0)],

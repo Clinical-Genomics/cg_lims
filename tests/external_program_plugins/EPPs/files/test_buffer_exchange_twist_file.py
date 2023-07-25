@@ -5,7 +5,7 @@ from genologics.entities import Artifact
 
 import pytest
 
-from cg_lims.EPPs.files.hamilton.buffer_exchange_twist_file import get_file_data_and_write
+from cg_lims.external_program_plugins.files.hamilton.buffer_exchange_twist_file import get_file_data_and_write
 from cg_lims.exceptions import MissingUDFsError
 
 

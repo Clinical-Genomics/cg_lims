@@ -8,7 +8,7 @@ from requests import Response
 import json
 
 from cg_lims import options
-from cg_lims.EPPs.arnold.flow_cell import build_flow_cell_document
+from cg_lims.external_program_plugins.arnold.flow_cell import build_flow_cell_document
 from cg_lims.get.artifacts import get_output_artifacts
 from cg_lims.models.arnold.flow_cell import FlowCell
 

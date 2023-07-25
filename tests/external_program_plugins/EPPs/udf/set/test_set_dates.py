@@ -1,6 +1,6 @@
 from genologics.entities import Sample, Process
 
-from cg_lims.EPPs.udf.set.set_sample_date import (
+from cg_lims.external_program_plugins.udf.set.set_sample_date import (
     set_prepared,
     set_sequenced,
     set_delivered,

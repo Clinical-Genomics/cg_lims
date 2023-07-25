@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import click
 
-from cg_lims.EPPs.qc.set_qc_fail import set_qc_fail
+from cg_lims.external_program_plugins.qc.set_qc_fail import set_qc_fail
 
 
 @click.group(invoke_without_command=True)

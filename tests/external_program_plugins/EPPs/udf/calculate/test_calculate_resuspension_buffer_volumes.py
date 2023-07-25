@@ -1,7 +1,7 @@
 import pytest
 from genologics.entities import Artifact
 
-from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import (
+from cg_lims.external_program_plugins.udf.calculate.calculate_resuspension_buffer_volumes import (
     calculate_rb_volume,
 )
 from cg_lims.exceptions import InvalidValueError, MissingUDFsError

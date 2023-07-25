@@ -4,7 +4,7 @@ from cg_lims.exceptions import InvalidValueError, MissingValueError
 import pytest
 
 from genologics.entities import Artifact
-from cg_lims.EPPs.files.barcode_tubes import get_data_and_write
+from cg_lims.external_program_plugins.files.barcode_tubes import get_data_and_write
 
 
 def test_with_diff_containers(barcode_tubes_csv, lims):

@@ -2,7 +2,7 @@ import pytest
 
 from genologics.entities import Artifact, Process
 from cg_lims.exceptions import InvalidValueError, MissingValueError
-from cg_lims.EPPs.udf.set.set_barcode import get_barcode_set_udf
+from cg_lims.external_program_plugins.udf.set.set_barcode import get_barcode_set_udf
 from cg_lims.get.fields import get_barcode
 from cg_lims.get.artifacts import get_artifacts
 from tests.conftest import server

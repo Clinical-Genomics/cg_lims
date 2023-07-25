@@ -1,5 +1,5 @@
 from genologics.entities import Process
-from cg_lims.EPPs.udf.copy.reads_to_sequence import find_reads_to_sequence
+from cg_lims.external_program_plugins.udf.copy.reads_to_sequence import find_reads_to_sequence
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.samples import get_process_samples
 from tests.conftest import server

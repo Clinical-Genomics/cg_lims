@@ -1,6 +1,6 @@
 from genologics.entities import Process, Processtype
 
-from cg_lims.EPPs.arnold.sequencing import build_step_documents
+from cg_lims.external_program_plugins.arnold.sequencing import build_step_documents
 from cg_lims.models.arnold.base_step import BaseStep
 
 from tests.conftest import (

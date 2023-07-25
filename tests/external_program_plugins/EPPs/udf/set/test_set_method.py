@@ -1,7 +1,7 @@
 import pytest
 from genologics.entities import Process
 
-from cg_lims.EPPs.udf.set.set_method import get_path
+from cg_lims.external_program_plugins.udf.set.set_method import get_path
 from cg_lims.exceptions import AtlasResponseFailedError
 from tests.conftest import (
     server,

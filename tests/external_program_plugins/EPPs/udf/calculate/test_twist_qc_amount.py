@@ -1,7 +1,7 @@
 from cg_lims.exceptions import FailingQCError, MissingUDFsError
 from genologics.entities import Artifact, Sample
 from genologics.lims import Lims
-from cg_lims.EPPs.udf.calculate.twist_qc_amount import calculate_amount_and_set_qc
+from cg_lims.external_program_plugins.udf.calculate.twist_qc_amount import calculate_amount_and_set_qc
 from tests.conftest import server
 
 import pytest

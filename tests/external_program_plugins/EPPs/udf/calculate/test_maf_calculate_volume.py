@@ -1,4 +1,4 @@
-"""Unit tests for cg_lims.EPPs.udf.calculate.maf_calculate_volume"""
+"""Unit tests for cg_lims.external_program_plugins.udf.calculate.maf_calculate_volume"""
 import logging
 
 import pytest
@@ -6,7 +6,7 @@ from genologics.entities import Artifact
 from genologics.lims import Lims
 from pydantic import ValidationError
 
-from cg_lims.EPPs.udf.calculate.maf_calculate_volume import (
+from cg_lims.external_program_plugins.udf.calculate.maf_calculate_volume import (
     QC_FAILED,
     QC_PASSED,
     MafVolumes,

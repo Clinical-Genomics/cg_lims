@@ -5,7 +5,7 @@ from genologics.entities import Artifact
 
 import pytest
 
-from cg_lims.EPPs.udf.check.check_artifact_udfs import check_udfs
+from cg_lims.external_program_plugins.udf.check.check_artifact_udfs import check_udfs
 from cg_lims.exceptions import MissingUDFsError
 
 

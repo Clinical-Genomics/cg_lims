@@ -3,7 +3,7 @@
 import click
 
 # commands
-from cg_lims.EPPs.udf.check.check_artifact_udfs import check_artifact_udfs
+from cg_lims.external_program_plugins.udf.check.check_artifact_udfs import check_artifact_udfs
 
 
 @click.group(invoke_without_command=True)

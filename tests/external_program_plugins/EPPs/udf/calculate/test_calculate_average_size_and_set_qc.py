@@ -1,7 +1,7 @@
 import pytest
 from genologics.entities import Artifact, Process
 
-from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import calculate_average_size, set_average_and_qc
+from cg_lims.external_program_plugins.udf.calculate.calculate_average_size_and_set_qc import calculate_average_size, set_average_and_qc
 from cg_lims.exceptions import MissingUDFsError, MissingCgFieldError
 from cg_lims.set.udfs import copy_artifact_to_artifact
 from tests.conftest import server

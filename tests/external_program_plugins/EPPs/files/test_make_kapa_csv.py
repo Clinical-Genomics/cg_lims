@@ -6,7 +6,7 @@ from genologics.entities import Sample
 
 import pytest
 
-from cg_lims.EPPs.files.hamilton.make_kapa_csv import get_file_data_and_write
+from cg_lims.external_program_plugins.files.hamilton.make_kapa_csv import get_file_data_and_write
 from cg_lims.exceptions import MissingArtifactError, MissingUDFsError
 
 
