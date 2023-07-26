@@ -11,7 +11,7 @@ from typing import List, Optional
 
 import click
 from genologics.entities import Artifact
-from pydantic import BaseModel, validator
+from pydantic.v1 import BaseModel, validator
 
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts

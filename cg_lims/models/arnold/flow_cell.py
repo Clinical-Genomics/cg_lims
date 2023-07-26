@@ -1,7 +1,7 @@
 from typing import Optional, List
 from datetime import date, datetime
 
-from pydantic import BaseModel, Field, validator
+from pydantic.v1 import BaseModel, Field, validator
 
 
 class Lane(BaseModel):

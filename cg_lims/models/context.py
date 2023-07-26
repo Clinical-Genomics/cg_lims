@@ -1,5 +1,5 @@
 from genologics.lims import Lims
-from pydantic import BaseModel
+from pydantic.v1 import BaseModel
 from cg_lims.status_db_api import StatusDBAPI
 
 
