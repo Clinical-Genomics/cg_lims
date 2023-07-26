@@ -1,7 +1,7 @@
 from typing import Optional
 
 from genologics.lims import Lims
-from pydantic import Field, BaseModel
+from pydantic.v1 import Field, BaseModel
 
 from cg_lims.objects import BaseAnalyte
 

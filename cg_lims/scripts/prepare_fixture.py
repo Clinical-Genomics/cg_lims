@@ -4,7 +4,7 @@ from typing import List
 import click
 from genologics.entities import Entity
 from genologics.lims import Process
-from pydantic import BaseModel
+from pydantic.v1 import BaseModel
 
 
 class ProcessFixure(BaseModel):

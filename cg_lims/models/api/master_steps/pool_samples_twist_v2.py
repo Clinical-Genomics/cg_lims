@@ -1,7 +1,7 @@
 from typing import Optional
 
 from genologics.entities import Artifact, Process
-from pydantic import Field, validator
+from pydantic.v1 import Field, validator
 
 from cg_lims.models.api.master_steps.base_step import get_artifact_udf, get_artifact_name, BaseStep
 from cg_lims.get.artifacts import get_latest_analyte, get_artifacts
