@@ -73,9 +73,7 @@ class MafVolumes(BaseModel):
     def set_final_volume(cls, v, values):
         """Calculates the final volume for a sample"""
         return (
-            values.get("sample_volume")
-            * values.get("sample_concentration")
-            / FINAL_CONCENTRATION
+            values.get("sample_volume") * values.get("sample_concentration") / FINAL_CONCENTRATION
         )
 
     @validator("qc_flag", always=True)
