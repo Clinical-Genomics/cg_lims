@@ -17,9 +17,9 @@ class ProcessUDFS(BaseModel):
     )
     methods: Optional[str] = Field(None, alias="Methods")
     atlas_version: Optional[str] = Field(None, alias="Atlas Version")
-    lot_nr_ethanol: Optional[str] = Field(None, alias= "Lot no: Ethanol")
-    lot_nr_water: Optional[str] = Field(None, alias= "Lot no: Nuclease free water")
-    lot_nr_beads: Optional[str] = Field(None, alias= "Lot no: Beads")
+    lot_nr_ethanol: Optional[str] = Field(None, alias="Lot no: Ethanol")
+    lot_nr_water: Optional[str] = Field(None, alias="Lot no: Nuclease free water")
+    lot_nr_beads: Optional[str] = Field(None, alias="Lot no: Beads")
 
 
 class ArnoldStep(BaseStep):

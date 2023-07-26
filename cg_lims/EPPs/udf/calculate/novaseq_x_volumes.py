@@ -27,7 +27,7 @@ def get_flow_cell_type(process: Process) -> str:
 
 def get_number_of_lanes(process: Process) -> int:
     """Return number of lanes to load from a process."""
-    number_of_lanes: int = process.udf.get("Number of Lanes to Load")
+    number_of_lanes: int = process.udf.get("Lanes to Load")
     if not number_of_lanes or number_of_lanes == 0:
         raise MissingUDFsError(
             "You need to specify a number of lanes to load before volumes can be calculated."

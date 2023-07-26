@@ -66,7 +66,6 @@ def add_file(entity: Entity, entity_dir: Path) -> None:
 
 
 def add_entities(entities: List[Entity], entity_dir: Path):
-
     for entity in entities:
         entity.get()
         add_file(entity=entity, entity_dir=entity_dir)

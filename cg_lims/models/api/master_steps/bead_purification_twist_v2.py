@@ -32,7 +32,6 @@ class BeadPurificationTWIST(BaseStep):
                 artifact = None
         return artifact
 
-
     @validator("size_bp", always=True)
     def get_amount_of_sample(cls, v, values):
         return get_artifact_udf(values.get("artifact"), "Size (bp)")
