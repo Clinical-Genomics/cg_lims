@@ -11,8 +11,9 @@ from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManage
 def sequencing_quality_control(ctx):
     process = ctx.obj["process"]
     status_db_api = ctx.obj["status_db_api"]
+    lims = ctx.obj["lims"]
 
-    artifact_manager = SequencingArtifactManager(process)
+    artifact_manager = SequencingArtifactManager(process=process, lims=lims)
 
     quality_checker = SequencingQualityChecker(
         artifact_manager=artifact_manager,

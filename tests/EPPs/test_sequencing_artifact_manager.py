@@ -5,11 +5,12 @@ from cg_lims.EPPs.qc.sequencing_artifact_manager import (
     READS_FIELD,
     SequencingArtifactManager,
 )
+from genologics.lims import Lims
 
 
-def test_get_flow_cell_name(lims_process_with_novaseq_data: Process):
+def test_get_flow_cell_name(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a sequencing artifact manager
-    artifact_manager = SequencingArtifactManager(lims_process_with_novaseq_data)
+    artifact_manager = SequencingArtifactManager(lims_process_with_novaseq_data, lims)
 
     # WHEN extracting the flow cell name
     flow_cell_name: str = artifact_manager.get_flow_cell_name()
@@ -19,9 +20,11 @@ def test_get_flow_cell_name(lims_process_with_novaseq_data: Process):
     assert flow_cell_name is not ""
 
 
-def test_get_q30_threshold(lims_process_with_novaseq_data: Process):
+def test_get_q30_threshold(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a sequencing artifact manager
-    artifact_manager = SequencingArtifactManager(lims_process_with_novaseq_data)
+    artifact_manager = SequencingArtifactManager(
+        process=lims_process_with_novaseq_data, lims=lims
+    )
 
     # WHEN extracting the q30 threshold
     q30_threshold: int = artifact_manager.get_q30_threshold()
@@ -31,11 +34,15 @@ def test_get_q30_threshold(lims_process_with_novaseq_data: Process):
     assert q30_threshold is not 0
 
 
-def test_sample_artifacts_initialization(lims_process_with_novaseq_data: Process):
+def test_sample_artifacts_initialization(
+    lims_process_with_novaseq_data: Process, lims: Lims
+):
     """Test that the internal data structure holding the sample artifacts is populated."""
     # GIVEN a lims mock process
     # WHEN the manager is instantiated
-    artifact_manager = SequencingArtifactManager(lims_process_with_novaseq_data)
+    artifact_manager = SequencingArtifactManager(
+        process=lims_process_with_novaseq_data, lims=lims
+    )
 
     # THEN the internal dictionary of sample artifacts was populated
     assert artifact_manager.sample_artifacts is not {}
@@ -53,9 +60,11 @@ def test_sample_artifacts_initialization(lims_process_with_novaseq_data: Process
             assert isinstance(artifact, Artifact)
 
 
-def test_updating_samples(lims_process_with_novaseq_data: Process):
+def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a sequencing artifact manager
-    artifact_manager = SequencingArtifactManager(lims_process_with_novaseq_data)
+    artifact_manager = SequencingArtifactManager(
+        process=lims_process_with_novaseq_data, lims=lims
+    )
 
     # GIVEN a list of the sample ids and lanes
     sample_lane_pairs = [

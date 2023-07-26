@@ -1,8 +1,15 @@
 import logging
 import sys
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from genologics.entities import Artifact, Process
+from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_artifact_lane
+
+
+from cg_lims.get.artifacts import get_output_artifacts
+from genologics.lims import Lims
+
+from cg_lims.get.fields import get_artifact_lims_id
 
 LOG = logging.getLogger(__name__)
 
@@ -11,15 +18,15 @@ PER_REAGENT_LABEL = "PerReagentLabel"
 Q30_THRESHOLD_FIELD = "Threshold for % bases >= Q30"
 READS_FIELD = "# Reads"
 Q30_FIELD = "% Bases >=Q30"
-URI_KEY = "uri"
-OUTPUT_TYPE_KEY = "output-generation-type"
 QUALITY_CHECK_PASSED = "PASSED"
 QUALITY_CHECK_FAILED = "FAILED"
 
 
 class SequencingArtifactManager:
-    def __init__(self, process: Process):
+    def __init__(self, process: Process, lims: Lims):
         self.process: Process = process
+        self.lims: Lims = lims
+
         self.sample_artifacts: Dict[str, Dict[int, Artifact]] = {}
         self.flow_cell_name: str = ""
         self.q30_threshold: int = 0
@@ -29,51 +36,19 @@ class SequencingArtifactManager:
         self._set_q30_threshold()
 
     def _set_sample_artifacts(self) -> None:
-        for input_map, output_map in self.process.input_output_maps:
-            self._process_artifact(input_map=input_map, output_map=output_map)
-
-    def _process_artifact(self, input_map: Dict, output_map: Dict) -> None:
-        if self._is_output_per_reagent_label(output_map):
+        sample_artifacts: List[Artifact] = get_output_artifacts(
+            lims=self.lims,
+            process=self.process,
+            output_type="Analyte",
+            output_generation_type=[PER_REAGENT_LABEL],
+        )
+        for sample_artifact in sample_artifacts:
             try:
-                sample: Artifact = self._extract_sample_artifact(output_map)
-                lane: int = self._extract_lane(input_map)
-                self._store_sample_artifact(sample=sample, lane=lane)
+                lane: int = get_artifact_lane(sample_artifact)
+                sample_lims_id: str = get_artifact_lims_id(sample_artifact)
+                self.sample_artifacts[sample_lims_id] = {lane: sample_artifact}
             except ValueError as error:
                 LOG.warning(f"Failed to parse sample artifact: {error}")
-
-    def _is_output_per_reagent_label(self, output_map: Dict) -> bool:
-        return output_map.get(OUTPUT_TYPE_KEY) == PER_REAGENT_LABEL
-
-    def _extract_lane(self, input_map: Dict) -> int:
-        try:
-            lane: str = input_map["uri"].location[1][0]
-            return int(lane)
-        except (AttributeError, IndexError, KeyError, ValueError) as e:
-            raise ValueError(f"Could not extract lane from input map {input_map}: {e}")
-
-    def _extract_sample_artifact(self, output_map: Dict) -> Artifact:
-        try:
-            return output_map["uri"]
-        except KeyError as e:
-            raise ValueError(
-                f"Could not extract sample artifact from output map {output_map}: {e}"
-            )
-
-    def _extract_sample_lims_id(self, sample: Artifact) -> str:
-        try:
-            sample_lims_id = sample.samples[0].id
-            if sample_lims_id is None:
-                raise ValueError("Sample id is None")
-            return sample_lims_id
-        except (AttributeError, IndexError) as e:
-            raise ValueError(f"Could not extract sample id: {e}")
-
-    def _store_sample_artifact(self, sample: Artifact, lane: int) -> None:
-        sample_lims_id: str = self._extract_sample_lims_id(sample)
-        if sample_lims_id not in self.sample_artifacts:
-            self.sample_artifacts[sample_lims_id] = {lane: sample}
-        else:
-            self.sample_artifacts[sample_lims_id][lane] = sample
 
     def _set_flow_cell_name(self) -> None:
         try:

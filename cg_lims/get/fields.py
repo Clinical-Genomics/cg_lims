@@ -109,3 +109,14 @@ def get_barcode(artifact: Artifact):
         )
         return None
     
+def get_artifact_lims_id(sample_artifact: Artifact) -> str:
+    try:
+        sample_lims_id = sample_artifact.samples[0].id
+
+        if sample_lims_id is None:
+            raise ValueError("Sample id is None")
+
+        return sample_lims_id
+
+    except (AttributeError, IndexError) as e:
+        raise ValueError(f"Could not extract sample id: {e}")
