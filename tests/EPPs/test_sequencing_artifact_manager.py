@@ -1,10 +1,8 @@
 from genologics.entities import Artifact, Process
-from cg_lims.EPPs.qc.sequencing_artifact_manager import (
-    SequencingArtifactManager,
-)
 from genologics.lims import Lims
-from cg_lims.set.qc import QualityCheck
 
+from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
+from cg_lims.set.qc import QualityCheck
 from cg_lims.set.udfs import Q30_FIELD, READS_FIELD
 
 
@@ -40,7 +38,7 @@ def test_sample_artifacts_initialization(
     lims_process_with_novaseq_data: Process, lims: Lims
 ):
     """Test that the internal data structure holding the sample artifacts is populated."""
-   # GIVEN a lims mock process
+    # GIVEN a lims mock process
     # WHEN the manager is instantiated
     artifact_manager = SequencingArtifactManager(
         process=lims_process_with_novaseq_data, lims=lims
@@ -60,6 +58,7 @@ def test_sample_artifacts_initialization(
         for lane, artifact in lane_artifact_dict.items():
             assert isinstance(lane, int)
             assert isinstance(artifact, Artifact)
+
 
 def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a sequencing artifact manager

@@ -2,13 +2,11 @@ import logging
 from typing import Dict, List, Optional
 
 from genologics.entities import Artifact, Process
-from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_artifact_lane
-from cg_lims.exceptions import LimsError
-
-
-from cg_lims.get.artifacts import get_sample_artifacts
 from genologics.lims import Lims
 
+from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_artifact_lane
+from cg_lims.exceptions import LimsError
+from cg_lims.get.artifacts import get_sample_artifacts
 from cg_lims.get.fields import get_artifact_lims_id, get_flow_cell_name
 from cg_lims.get.udfs import get_q30_threshold
 from cg_lims.set.qc import set_quality_check_flag
