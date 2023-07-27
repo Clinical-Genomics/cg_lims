@@ -10,7 +10,9 @@ from genologics.lims import Lims
 
 def test_get_flow_cell_name(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a sequencing artifact manager
-    artifact_manager = SequencingArtifactManager(lims_process_with_novaseq_data, lims)
+    artifact_manager = SequencingArtifactManager(
+        process=lims_process_with_novaseq_data, lims=lims
+    )
 
     # WHEN extracting the flow cell name
     flow_cell_name: str = artifact_manager.get_flow_cell_name()
