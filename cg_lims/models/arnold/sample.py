@@ -1,7 +1,7 @@
 import datetime
 from typing import Optional
-from pydantic import Field, validator
-from pydantic.main import BaseModel
+from pydantic.v1 import Field, validator
+from pydantic.v1.main import BaseModel
 from datetime import date, datetime
 
 

@@ -2,8 +2,8 @@ import logging
 from typing import Optional
 
 from genologics.lims import Lims
-from pydantic.main import BaseModel
-from pydantic import Field
+from pydantic.v1.main import BaseModel
+from pydantic.v1 import Field
 
 from cg_lims.models.arnold.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
@@ -15,7 +15,9 @@ class ProcessUDFs(BaseModel):
     lot_nr_beads_library_prep: Optional[str] = Field(None, alias="Lot nr: Beads")
     lot_nr_etoh_library_prep: Optional[str] = Field(None, alias="Lot nr: EtOH")
     lot_nr_h2o_library_prep: Optional[str] = Field(None, alias="Lot nr: H2O")
-    purification_instrument_library_prep: Optional[str] = Field(None, alias="Purification Instrument")
+    purification_instrument_library_prep: Optional[str] = Field(
+        None, alias="Purification Instrument"
+    )
     methods: Optional[str] = Field(None, alias="Methods")
     atlas_version: Optional[str] = Field(None, alias="Atlas Version")
 

@@ -11,7 +11,7 @@ from typing import List, Optional
 
 import click
 from genologics.entities import Artifact
-from pydantic import BaseModel, validator
+from pydantic.v1 import BaseModel, validator
 
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
@@ -73,9 +73,7 @@ class MafVolumes(BaseModel):
     def set_final_volume(cls, v, values):
         """Calculates the final volume for a sample"""
         return (
-            values.get("sample_volume")
-            * values.get("sample_concentration")
-            / FINAL_CONCENTRATION
+            values.get("sample_volume") * values.get("sample_concentration") / FINAL_CONCENTRATION
         )
 
     @validator("qc_flag", always=True)

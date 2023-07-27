@@ -1,6 +1,6 @@
 import logging
 from typing import Optional
-from pydantic import Field, BaseModel, validator
+from pydantic.v1 import Field, BaseModel, validator
 from datetime import date, datetime
 
 LOG = logging.getLogger(__name__)

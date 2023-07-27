@@ -1,7 +1,7 @@
 from typing import Optional
 
 from genologics.entities import Artifact
-from pydantic import BaseModel, Field, validator
+from pydantic.v1 import BaseModel, Field, validator
 
 
 class CovidPrepFileRow(BaseModel):

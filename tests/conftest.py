@@ -9,6 +9,8 @@ from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
 from limsmock.server import run_server
 from mock import Mock
+from pydantic.v1 import BaseModel, Field
+
 
 from cg_lims.status_db_api import StatusDBAPI
 from tests.fixtures.flowcell_document import FLOW_CELL_DOCUMENT

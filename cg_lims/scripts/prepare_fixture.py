@@ -4,7 +4,7 @@ from typing import List
 import click
 from genologics.entities import Entity
 from genologics.lims import Process
-from pydantic import BaseModel
+from pydantic.v1 import BaseModel
 
 
 class ProcessFixure(BaseModel):
@@ -66,7 +66,6 @@ def add_file(entity: Entity, entity_dir: Path) -> None:
 
 
 def add_entities(entities: List[Entity], entity_dir: Path):
-
     for entity in entities:
         entity.get()
         add_file(entity=entity, entity_dir=entity_dir)
