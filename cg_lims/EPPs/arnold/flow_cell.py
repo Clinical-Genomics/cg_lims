@@ -7,7 +7,7 @@ import requests
 from requests import Response
 
 from cg_lims.exceptions import LimsError
-from cg_lims.get.artifacts import get_output_artifacts
+from cg_lims.get.artifacts import OutputGenerationType, OutputType, get_output_artifacts
 
 from cg_lims.models.arnold.flow_cell import FlowCell, Lane
 
@@ -36,9 +36,14 @@ def flow_cell(ctx):
     lims: Lims = ctx.obj["lims"]
     arnold_host: str = ctx.obj["arnold_host"]
     lanes = get_output_artifacts(
-        process=process, output_generation_type=["PerInput"], lims=lims, output_type="ResultFile"
+        process=process,
+        output_generation_types=[OutputGenerationType.PER_INPUT],
+        lims=lims,
+        output_type=OutputType.RESULT_FILE,
     )
-    flow_cell_document: FlowCell = build_flow_cell_document(process=process, lanes=lanes)
+    flow_cell_document: FlowCell = build_flow_cell_document(
+        process=process, lanes=lanes
+    )
     response: Response = requests.post(
         url=f"{arnold_host}/flow_cell",
         headers={"Content-Type": "application/json"},

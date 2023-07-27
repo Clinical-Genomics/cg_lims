@@ -1,7 +1,7 @@
 from genologics.entities import Process
 
 from cg_lims.EPPs.arnold.flow_cell import build_flow_cell_document
-from cg_lims.get.artifacts import get_output_artifacts
+from cg_lims.get.artifacts import OutputGenerationType, OutputType, get_output_artifacts
 from cg_lims.models.arnold.flow_cell import FlowCell
 
 from tests.conftest import server
@@ -14,7 +14,10 @@ def test_load_flowcell(lims, flow_cell_fixture):
 
     process = Process(lims=lims, id="24-314318")
     lanes = get_output_artifacts(
-        process=process, output_generation_type=["PerInput"], lims=lims, output_type="ResultFile"
+        process=process,
+        output_generation_types=[OutputGenerationType.PER_INPUT],
+        lims=lims,
+        output_type=OutputType.RESULT_FILE,
     )
 
     # WHEN running build_flow_cell_document
