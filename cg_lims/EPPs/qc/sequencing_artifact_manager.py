@@ -15,27 +15,43 @@ from cg_lims.set.udfs import set_sample_q30_score, set_sample_reads
 LOG = logging.getLogger(__name__)
 
 
+class SampleArtifacts:
+    def __init__(self):
+        self._sample_artifacts: Dict[str, Dict[int, Artifact]] = {}
+
+    def add(
+        self, artifact: Artifact
+    ) -> None:
+        lane: Optional[int] = get_artifact_lane(artifact)
+        sample_lims_id: Optional[str] = get_artifact_lims_id(artifact)
+
+        if not lane or not sample_lims_id:
+            LOG.warning(f"Failed to parse sample artifact: {artifact}")
+            return
+        
+        if sample_lims_id not in self._sample_artifacts:
+            self._sample_artifacts[sample_lims_id] = {}
+
+        self._sample_artifacts[sample_lims_id][lane] = artifact
+
+    def get(self, sample_lims_id: str, lane: int) -> Optional[Artifact]:
+        return self._sample_artifacts.get(sample_lims_id, {}).get(lane)
+
+
 class SequencingArtifactManager:
     def __init__(self, process: Process, lims: Lims):
         self.process: Process = process
         self.lims: Lims = lims
 
-        self.sample_artifacts: Dict[str, Dict[int, Artifact]] = {}
+        self._sample_artifacts: SampleArtifacts = SampleArtifacts()
         self._set_sample_artifacts()
 
     def _set_sample_artifacts(self) -> None:
         sample_artifacts: List[Artifact] = get_sample_artifacts(
             lims=self.lims, process=self.process
         )
-        for sample_artifact in sample_artifacts:
-            lane: Optional[int] = get_artifact_lane(sample_artifact)
-            sample_lims_id: Optional[str] = get_artifact_lims_id(sample_artifact)
-
-            if not lane or not sample_lims_id:
-                LOG.warning(f"Failed to parse sample artifact: {sample_artifact}")
-                continue
-
-            self.sample_artifacts[sample_lims_id] = {lane: sample_artifact}
+        for artifact in sample_artifacts:
+            self._sample_artifacts.add(artifact)
 
     @property
     def flow_cell_name(self) -> str:
@@ -51,11 +67,6 @@ class SequencingArtifactManager:
             raise LimsError("Q30 threshold not set")
         return q30_threshold
 
-    def _get_sample_artifact(
-        self, sample_lims_id: str, lane: int
-    ) -> Optional[Artifact]:
-        return self.sample_artifacts.get(sample_lims_id, {}).get(lane)
-
     def update_sample(
         self,
         sample_lims_id: str,
@@ -64,7 +75,7 @@ class SequencingArtifactManager:
         q30_score: float,
         passed_quality_control: bool,
     ) -> None:
-        sample_artifact: Optional[Artifact] = self._get_sample_artifact(
+        sample_artifact: Optional[Artifact] = self._sample_artifacts.get(
             sample_lims_id=sample_lims_id, lane=lane
         )
 

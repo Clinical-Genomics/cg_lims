@@ -1,9 +1,36 @@
+from typing import List
 from genologics.entities import Artifact, Process
 from genologics.lims import Lims
+from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_artifact_lane
 
-from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
+from cg_lims.EPPs.qc.sequencing_artifact_manager import SampleArtifacts, SequencingArtifactManager
+from cg_lims.get.artifacts import get_sample_artifacts
+from cg_lims.get.fields import get_artifact_lims_id
 from cg_lims.set.qc import QualityCheck
 from cg_lims.set.udfs import Q30_FIELD, READS_FIELD
+
+
+def test_sample_artifacts_add_and_get(
+    lims_process_with_novaseq_data: Process, lims: Lims
+):
+    # GIVEN all sample artifacts in the process
+    all_artifacts: List[Artifact] = get_sample_artifacts(
+        lims=lims, process=lims_process_with_novaseq_data
+    )
+    assert all_artifacts
+
+    # GIVEN a sample artifacts object
+    sample_artifacts: SampleArtifacts = SampleArtifacts()
+
+    # WHEN populating the sample artifacts object
+    for artifact in all_artifacts:
+        sample_artifacts.add(artifact)
+
+    # THEN all the artifacts should be retrievable
+    for sample in all_artifacts:
+        sample_lims_id = get_artifact_lims_id(sample)
+        lane = get_artifact_lane(sample)
+        assert sample_artifacts.get(sample_lims_id, lane) == sample
 
 
 def test_get_flow_cell_name(lims_process_with_novaseq_data: Process, lims: Lims):
@@ -34,32 +61,6 @@ def test_get_q30_threshold(lims_process_with_novaseq_data: Process, lims: Lims):
     assert q30_threshold is not 0
 
 
-def test_sample_artifacts_initialization(
-    lims_process_with_novaseq_data: Process, lims: Lims
-):
-    """Test that the internal data structure holding the sample artifacts is populated."""
-    # GIVEN a lims mock process
-    # WHEN the manager is instantiated
-    artifact_manager = SequencingArtifactManager(
-        process=lims_process_with_novaseq_data, lims=lims
-    )
-
-    # THEN the internal dictionary of sample artifacts was populated
-    assert artifact_manager.sample_artifacts is not {}
-
-    # THEN each entry is a key value pair of the sample id and a dictionary of a lane and artifact
-    for (
-        sample_id,
-        lane_artifact_dict,
-    ) in artifact_manager.sample_artifacts.items():
-        assert isinstance(sample_id, str)
-        assert isinstance(lane_artifact_dict, dict)
-
-        for lane, artifact in lane_artifact_dict.items():
-            assert isinstance(lane, int)
-            assert isinstance(artifact, Artifact)
-
-
 def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a sequencing artifact manager
     artifact_manager = SequencingArtifactManager(
@@ -69,8 +70,8 @@ def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a list of the sample ids and lanes
     sample_lane_pairs = [
         (sample_id, lane)
-        for sample_id in artifact_manager.sample_artifacts
-        for lane in artifact_manager.sample_artifacts[sample_id]
+        for sample_id in artifact_manager._sample_artifacts
+        for lane in artifact_manager._sample_artifacts[sample_id]
     ]
 
     # WHEN updating the sample artifacts
