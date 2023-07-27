@@ -11,12 +11,12 @@ from enum import Enum
 LOG = logging.getLogger(__name__)
 
 
-class OutputType(Enum):
+class OutputType(str, Enum):
     ANALYTE = "Analyte"
     RESULT_FILE = "ResultFile"
 
 
-class OutputGenerationType(Enum):
+class OutputGenerationType(str, Enum):
     PER_INPUT = "PerInput"
     PER_REAGENT = "PerReagentLabel"
     PER_ALL_INPUTS = "PerAllInputs"
