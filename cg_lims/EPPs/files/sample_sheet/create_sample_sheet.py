@@ -22,9 +22,12 @@ from cg_lims.EPPs.files.sample_sheet.models import (
 LOG = logging.getLogger(__name__)
 
 
-def get_artifact_lane(artifact: Artifact) -> int:
+def get_artifact_lane(artifact: Artifact) -> Optional[int]:
     """Return the lane where an artifact is placed"""
-    return int(artifact.location[1].split(":")[0])
+    location = artifact.location if artifact else None
+    if not (location and location[1] and ":" in location[1]):
+        return None
+    return int(location[1].split(":")[0])
 
 
 def get_non_pooled_artifacts(artifact: Artifact) -> List[Artifact]:
