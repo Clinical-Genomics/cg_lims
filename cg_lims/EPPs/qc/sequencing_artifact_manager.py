@@ -69,15 +69,11 @@ class SequencingArtifactManager:
         )
 
         if not sample_artifact:
-            LOG.warning(
-                f"No metrics found for {sample_lims_id} in lane {lane}. Skipping."
-            )
+            LOG.warning(f"No metrics found for {sample_lims_id} in lane {lane}. Skipping.")
             return
 
         set_sample_reads(sample_artifact=sample_artifact, reads=reads)
         set_sample_q30_score(sample_artifact=sample_artifact, q30_score=q30_score)
-        set_quality_check_flag(
-            artifact=sample_artifact, quality_check_passed=passed_quality_control
-        )
+        set_quality_check_flag(artifact=sample_artifact, quality_check_passed=passed_quality_control)
 
         sample_artifact.put()
