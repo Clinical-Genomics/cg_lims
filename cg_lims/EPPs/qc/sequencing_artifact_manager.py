@@ -41,7 +41,7 @@ class SequencingArtifactManager:
     def flow_cell_name(self) -> str:
         flow_cell_name: Optional[str] = get_flow_cell_name(self.process)
         if not flow_cell_name:
-            raise LimsError("Q30 threshold not set")
+            raise LimsError("Flow cell name not set")
         return flow_cell_name
 
     @property
