@@ -15,7 +15,7 @@ def test_get_flow_cell_name(lims_process_with_novaseq_data: Process, lims: Lims)
     )
 
     # WHEN extracting the flow cell name
-    flow_cell_name: str = artifact_manager.get_flow_cell_name()
+    flow_cell_name: str = artifact_manager.flow_cell_name
 
     # THEN the flow cell name should have been set
     assert isinstance(flow_cell_name, str)
@@ -29,7 +29,7 @@ def test_get_q30_threshold(lims_process_with_novaseq_data: Process, lims: Lims):
     )
 
     # WHEN extracting the q30 threshold
-    q30_threshold: int = artifact_manager.get_q30_threshold()
+    q30_threshold: int = artifact_manager.q30_threshold
 
     # THEN the q30 threshold should have been set
     assert isinstance(q30_threshold, int)
