@@ -9,6 +9,8 @@ import logging
 
 LOG = logging.getLogger(__name__)
 
+PER_REAGENT_LABEL = "PerReagentLabel"
+ANALYTE_TYPE = "Analyte"
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
     """Returning the initial artifact related to a sample.
@@ -23,6 +25,14 @@ def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
         raise MissingArtifactError(message=message)
     return artifact
 
+
+def get_sample_artifacts(lims: Lims, process: Process) -> List[Artifact]:
+    return get_output_artifacts(
+        lims=lims,
+        process=process,
+        output_type=ANALYTE_TYPE,
+        output_generation_type=[PER_REAGENT_LABEL],
+    )
 
 def get_output_artifacts(
     lims: Lims,

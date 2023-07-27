@@ -8,6 +8,8 @@ from cg_lims.exceptions import MissingUDFsError
 
 LOG = logging.getLogger(__name__)
 
+READS_FIELD = "# Reads"
+Q30_FIELD = "% Bases >=Q30"
 
 def copy_artifact_to_artifact(
     destination_artifact: Artifact,
@@ -63,3 +65,10 @@ def copy_udf_process_to_artifact(
         message = f"{artifact_udf} doesn't seem to be a valid artifact udf."
         LOG.error(message)
         raise MissingUDFsError(message=message)
+
+def set_sample_reads(sample_artifact: Artifact, reads: int) -> None:
+    sample_artifact.udf[READS_FIELD] = reads
+
+
+def set_sample_q30_score(sample_artifact: Artifact, q30_score: float) -> None:
+    sample_artifact.udf[Q30_FIELD] = q30_score

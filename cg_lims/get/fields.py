@@ -1,8 +1,8 @@
 import datetime as dt
 import logging
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
 
-from genologics.entities import Artifact, Sample
+from genologics.entities import Artifact, Process, Sample
 from requests.exceptions import HTTPError
 
 LOG = logging.getLogger(__name__)
@@ -120,3 +120,19 @@ def get_artifact_lims_id(sample_artifact: Artifact) -> str:
 
     except (AttributeError, IndexError) as e:
         raise ValueError(f"Could not extract sample id: {e}")
+
+def get_flow_cell_name(process: Process) -> Optional[str]:
+    artifacts: Optional[List[Artifact]] = process.all_inputs()
+
+    if not artifacts:
+        return None
+
+    artifact: Artifact = artifacts[0]
+
+    if not artifact.container:
+        return None
+
+    if not artifact.container.name:
+        return None
+
+    return artifact.container.name

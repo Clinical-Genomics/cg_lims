@@ -1,11 +1,11 @@
 from genologics.entities import Artifact, Process
 from cg_lims.EPPs.qc.sequencing_artifact_manager import (
-    Q30_FIELD,
-    QUALITY_CHECK_FAILED,
-    READS_FIELD,
     SequencingArtifactManager,
 )
 from genologics.lims import Lims
+from cg_lims.set.qc import QUALITY_CHECK_FAILED
+
+from cg_lims.set.udfs import Q30_FIELD, READS_FIELD
 
 
 def test_get_flow_cell_name(lims_process_with_novaseq_data: Process, lims: Lims):
