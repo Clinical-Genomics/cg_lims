@@ -1,15 +1,17 @@
-from typing import List, Tuple, Iterator
+import logging
+from enum import Enum
+from typing import List, Tuple
 
 from genologics.entities import Artifact, Process
-
-import logging
 
 from cg_lims.exceptions import MissingUDFsError
 
 LOG = logging.getLogger(__name__)
 
-READS_FIELD = "# Reads"
-Q30_FIELD = "% Bases >=Q30"
+
+class UserDefinedFields(str, Enum):
+    READS = "# Reads"
+    Q30 = "% Bases >=Q30"
 
 def copy_artifact_to_artifact(
     destination_artifact: Artifact,
@@ -68,8 +70,8 @@ def copy_udf_process_to_artifact(
 
 
 def set_sample_reads(sample_artifact: Artifact, reads: int) -> None:
-    sample_artifact.udf[READS_FIELD] = reads
+    sample_artifact.udf[UserDefinedFields.READS] = reads
 
 
 def set_sample_q30_score(sample_artifact: Artifact, q30_score: float) -> None:
-    sample_artifact.udf[Q30_FIELD] = q30_score
+    sample_artifact.udf[UserDefinedFields.Q30] = q30_score

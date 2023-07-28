@@ -7,7 +7,7 @@ from cg_lims.EPPs.qc.sequencing_artifact_manager import (
 from cg_lims.get.artifacts import get_lane_sample_artifacts
 from cg_lims.get.fields import get_artifact_lims_id
 from cg_lims.set.qc import QualityCheck
-from cg_lims.set.udfs import Q30_FIELD, READS_FIELD
+from cg_lims.set.udfs import UserDefinedFields
 
 
 def test_sample_artifacts_add_and_get(lims_process_with_novaseq_data: Process):
@@ -78,6 +78,6 @@ def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
     # THEN the sample artifacts should have been updated
     for lane, sample in lane_samples:
         assert sample is not None
-        assert sample.udf[Q30_FIELD] == 0
-        assert sample.udf[READS_FIELD] == 0
+        assert sample.udf[UserDefinedFields.Q30] == 0
+        assert sample.udf[UserDefinedFields.READS] == 0
         assert sample.qc_flag == QualityCheck.FAILED
