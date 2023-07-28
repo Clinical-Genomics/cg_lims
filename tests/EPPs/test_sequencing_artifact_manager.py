@@ -13,6 +13,7 @@ from cg_lims.set.udfs import UserDefinedFields
 def test_sample_artifacts_add_and_get(lims_process_with_novaseq_data: Process):
     # GIVEN all sample artifacts mapped to their lanes in the process
     lane_samples = get_lane_sample_artifacts(lims_process_with_novaseq_data)
+    assert lane_samples
 
     # GIVEN a sample artifacts object
     sample_artifacts: SampleArtifacts = SampleArtifacts()
@@ -63,6 +64,7 @@ def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
 
     # GIVEN all sample artifacts mapped to their lanes in the process
     lane_samples = get_lane_sample_artifacts(lims_process_with_novaseq_data)
+    assert lane_samples
 
     # WHEN updating the sample artifacts
     for lane, sample in lane_samples:
