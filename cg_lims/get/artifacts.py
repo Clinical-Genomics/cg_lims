@@ -6,8 +6,20 @@ from genologics.lims import Lims
 from cg_lims.exceptions import FileError, MissingArtifactError
 from datetime import datetime
 import logging
+from enum import Enum
 
 LOG = logging.getLogger(__name__)
+
+
+class OutputType(str, Enum):
+    ANALYTE = "Analyte"
+    RESULT_FILE = "ResultFile"
+
+
+class OutputGenerationType(str, Enum):
+    PER_INPUT = "PerInput"
+    PER_REAGENT = "PerReagentLabel"
+    PER_ALL_INPUTS = "PerAllInputs"
 
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
@@ -27,15 +39,15 @@ def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
 def get_output_artifacts(
     lims: Lims,
     process: Process,
-    output_type: Literal["ResultFile", "Analyte"],
-    output_generation_type: List[Literal["PerInput", "PerReagentLabel", "PerAllInputs"]],
+    output_type: OutputType,
+    output_generation_types: List[OutputGenerationType],
 ) -> List[Artifact]:
     """Get output 'artifacts' based on output_generation_type and output_type"""
 
     artifacts = [
         Artifact(lims, id=output["limsid"])
-        for input, output in process.input_output_maps
-        if output["output-generation-type"] in output_generation_type
+        for _, output in process.input_output_maps
+        if output["output-generation-type"] in output_generation_types
         and output["output-type"] == output_type
     ]
     return list(frozenset(artifacts))
@@ -56,22 +68,25 @@ def get_artifacts(
         return get_output_artifacts(
             lims=process.lims,
             process=process,
-            output_type="ResultFile",
-            output_generation_type=["PerInput"],
+            output_type=OutputType.RESULT_FILE,
+            output_generation_types=[OutputGenerationType.PER_INPUT],
         )
     elif reagent_label:
         return get_output_artifacts(
             lims=process.lims,
             process=process,
-            output_type="ResultFile",
-            output_generation_type=["PerReagentLabel"],
+            output_type=OutputType.RESULT_FILE,
+            output_generation_types=[OutputGenerationType.PER_REAGENT],
         )
     else:
         return get_output_artifacts(
             lims=process.lims,
             process=process,
-            output_type="Analyte",
-            output_generation_type=["PerInput", "PerAllInputs"],
+            output_type=OutputType.ANALYTE,
+            output_generation_types=[
+                OutputGenerationType.PER_INPUT,
+                OutputGenerationType.PER_ALL_INPUTS,
+            ],
         )
 
 
@@ -116,7 +131,10 @@ def get_latest_artifact(lims_artifacts: List[Artifact]) -> Artifact:
 
 
 def get_latest_analyte(
-    lims: Lims, sample_id: str, process_types: Optional[List[str]], sample_artifact: bool = False
+    lims: Lims,
+    sample_id: str,
+    process_types: Optional[List[str]],
+    sample_artifact: bool = False,
 ) -> Artifact:
     """Getting the most recently generated analyte by process_types and sample_id.
 
