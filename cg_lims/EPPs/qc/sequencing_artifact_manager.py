@@ -1,12 +1,11 @@
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 
 from genologics.entities import Artifact, Process
 from genologics.lims import Lims
+from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_lane_artifacts
 
-from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_artifact_lane
 from cg_lims.exceptions import LimsError
-from cg_lims.get.artifacts import get_sample_artifacts
 from cg_lims.get.fields import get_artifact_lims_id, get_flow_cell_name
 from cg_lims.get.udfs import get_q30_threshold
 from cg_lims.set.qc import set_quality_check_flag
@@ -20,9 +19,8 @@ class SampleArtifacts:
         self._sample_artifacts: Dict[str, Dict[int, Artifact]] = {}
 
     def add(
-        self, artifact: Artifact
+        self, artifact: Artifact, lane: int
     ) -> None:
-        lane: Optional[int] = get_artifact_lane(artifact)
         sample_lims_id: Optional[str] = get_artifact_lims_id(artifact)
 
         if not lane or not sample_lims_id:
@@ -47,11 +45,10 @@ class SequencingArtifactManager:
         self._set_sample_artifacts()
 
     def _set_sample_artifacts(self) -> None:
-        sample_artifacts: List[Artifact] = get_sample_artifacts(
-            lims=self.lims, process=self.process
-        )
-        for artifact in sample_artifacts:
-            self._sample_artifacts.add(artifact)
+        lane_samples: Dict[int, Artifact] = get_lane_artifacts(self.process)
+
+        for lane, artifact in lane_samples.items():
+            self._sample_artifacts.add(artifact=artifact, lane=lane)
 
     @property
     def flow_cell_name(self) -> str:

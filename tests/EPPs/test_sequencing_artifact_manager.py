@@ -1,10 +1,10 @@
-from typing import List
+from typing import Dict, List
 from genologics.entities import Artifact, Process
 from genologics.lims import Lims
-from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_artifact_lane
+from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_lane_artifacts
+
 
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SampleArtifacts, SequencingArtifactManager
-from cg_lims.get.artifacts import get_sample_artifacts
 from cg_lims.get.fields import get_artifact_lims_id
 from cg_lims.set.qc import QualityCheck
 from cg_lims.set.udfs import Q30_FIELD, READS_FIELD
@@ -13,24 +13,21 @@ from cg_lims.set.udfs import Q30_FIELD, READS_FIELD
 def test_sample_artifacts_add_and_get(
     lims_process_with_novaseq_data: Process, lims: Lims
 ):
-    # GIVEN all sample artifacts in the process
-    all_artifacts: List[Artifact] = get_sample_artifacts(
-        lims=lims, process=lims_process_with_novaseq_data
-    )
-    assert all_artifacts
+    # GIVEN all sample artifacts mapped to their lanes in the process
+    lane_samples: Dict[int, Artifact] = get_lane_artifacts(lims_process_with_novaseq_data)
+    assert lane_samples
 
     # GIVEN a sample artifacts object
     sample_artifacts: SampleArtifacts = SampleArtifacts()
 
     # WHEN populating the sample artifacts object
-    for artifact in all_artifacts:
-        sample_artifacts.add(artifact)
+    for lane, artifact in lane_samples.items():
+        sample_artifacts.add(artifact=artifact, lane=lane)
 
     # THEN all the artifacts should be retrievable
-    for sample in all_artifacts:
-        sample_lims_id = get_artifact_lims_id(sample)
-        lane = get_artifact_lane(sample)
-        assert sample_artifacts.get(sample_lims_id, lane) == sample
+    for lane, artifact in lane_samples.items():
+        sample_lims_id = get_artifact_lims_id(artifact)
+        assert sample_artifacts.get(sample_lims_id, lane)
 
 
 def test_get_flow_cell_name(lims_process_with_novaseq_data: Process, lims: Lims):
