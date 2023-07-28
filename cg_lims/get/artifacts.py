@@ -44,12 +44,11 @@ def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
 
 
 def is_output_type_per_reagent(output_map: Dict) -> bool:
-    return output_map['output-generation-type'] == OutputGenerationType.PER_REAGENT
+    return output_map["output-generation-type"] == OutputGenerationType.PER_REAGENT
 
 
 def get_artifact_from_map(map: Dict) -> Artifact:
-    """Return the artifact from a map"""
-    return map['uri']
+    return map["uri"]
 
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
