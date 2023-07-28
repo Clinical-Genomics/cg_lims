@@ -1,17 +1,13 @@
 import logging
-from enum import Enum
 from typing import List, Tuple
 
 from genologics.entities import Artifact, Process
 
 from cg_lims.exceptions import MissingUDFsError
+from cg_lims.get.udfs import UserDefinedFields
 
 LOG = logging.getLogger(__name__)
 
-
-class UserDefinedFields(str, Enum):
-    READS = "# Reads"
-    Q30 = "% Bases >=Q30"
 
 def copy_artifact_to_artifact(
     destination_artifact: Artifact,

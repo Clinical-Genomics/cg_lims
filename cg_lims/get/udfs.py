@@ -1,4 +1,5 @@
 from datetime import date
+from enum import Enum
 from typing import Optional
 from genologics.entities import Entity
 from genologics.lims import Lims
@@ -8,7 +9,10 @@ import logging
 
 LOG = logging.getLogger(__name__)
 
-Q30_THRESHOLD_FIELD = "Threshold for % bases >= Q30"
+class UserDefinedFields(str, Enum):
+    READS = "# Reads"
+    Q30 = "% Bases >=Q30"
+    Q30_THRESHOLD = "Threshold for % bases >= Q30"
 
 def get_udf_type(lims: Lims, udf_name: str, attach_to_name: str) -> Optional:
     """Get udf type.
@@ -40,6 +44,6 @@ def get_udf(entity: Entity, udf: str) -> str:
 
 def get_q30_threshold(entity: Entity) -> Optional[int]:
     try:
-        return get_udf(entity, Q30_THRESHOLD_FIELD)
+        return get_udf(entity, UserDefinedFields.Q30_THRESHOLD.value)
     except MissingUDFsError:
         return None
