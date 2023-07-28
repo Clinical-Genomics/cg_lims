@@ -37,9 +37,11 @@ class SequencingArtifactManager:
     def _populate_sample_artifacts(self) -> None:
         for lane, artifact in get_lane_sample_artifacts(self.process):
             sample_id: Optional[str] = get_artifact_lims_id(artifact)
+
             if not sample_id:
                 LOG.warning(f"Failed to parse sample artifact: {artifact}")
                 continue
+
             self._sample_artifacts.add(artifact=artifact, sample_id=sample_id, lane=lane)
 
     @property
