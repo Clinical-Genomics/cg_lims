@@ -64,7 +64,6 @@ def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN all sample artifacts mapped to their lanes in the process
     lane_samples = get_lane_sample_artifacts(lims_process_with_novaseq_data)
 
-
     # WHEN updating the sample artifacts
     for lane, sample in lane_samples:
         sample_id: str = get_artifact_lims_id(sample)

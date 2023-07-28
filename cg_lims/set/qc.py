@@ -3,7 +3,7 @@ from genologics.entities import Artifact
 from enum import Enum
 
 
-class QualityCheck(Enum):
+class QualityCheck(str, Enum):
     PASSED = "PASSED"
     FAILED = "FAILED"
 
@@ -34,4 +34,4 @@ def set_quality_check_flag(quality_check_passed: bool, artifact: Artifact) -> No
 
 
 def _get_quality_check_flag(quality_check_passed: bool) -> str:
-    return QualityCheck.PASSED if quality_check_passed else QualityCheck.FAILED
+    return QualityCheck.PASSED.value if quality_check_passed else QualityCheck.FAILED.value
