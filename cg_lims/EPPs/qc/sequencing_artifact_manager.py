@@ -16,6 +16,10 @@ LOG = logging.getLogger(__name__)
 
 
 class SampleArtifacts:
+    """
+    Responsible for easily storing and retrieving sample artifacts per sample id and lane.
+    """
+
     def __init__(self):
         self._sample_artifacts: Dict[str, Dict[int, Artifact]] = defaultdict(dict)
 
@@ -27,6 +31,11 @@ class SampleArtifacts:
 
 
 class SequencingArtifactManager:
+    """
+    Responsible for providing a high level interface for updating sample artifacts
+    with sequencing metrics and retrieving the flow cell name and q30 threshold.
+    """
+
     def __init__(self, process: Process, lims: Lims):
         self.process: Process = process
         self.lims: Lims = lims
@@ -39,7 +48,7 @@ class SequencingArtifactManager:
             sample_id: Optional[str] = get_artifact_lims_id(artifact)
 
             if not sample_id:
-                LOG.warning(f"Failed to parse sample artifact: {artifact}")
+                LOG.warning(f"Failed to extract sample id from artifact: {artifact}")
                 continue
 
             self._sample_artifacts.add(artifact=artifact, sample_id=sample_id, lane=lane)
