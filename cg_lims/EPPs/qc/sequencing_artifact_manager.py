@@ -1,4 +1,5 @@
 import logging
+from collections import defaultdict
 from typing import Dict, Optional
 
 from genologics.entities import Artifact, Process
@@ -16,7 +17,7 @@ LOG = logging.getLogger(__name__)
 
 class SampleArtifacts:
     def __init__(self):
-        self._sample_artifacts: Dict[str, Dict[int, Artifact]] = {}
+        self._sample_artifacts: Dict[str, Dict[int, Artifact]] = defaultdict(dict)
 
     def add(self, artifact: Artifact, lane: int) -> None:
         sample_lims_id: Optional[str] = get_artifact_lims_id(artifact)
@@ -24,9 +25,6 @@ class SampleArtifacts:
         if not sample_lims_id:
             LOG.warning(f"Failed to parse sample artifact: {artifact}")
             return
-
-        if sample_lims_id not in self._sample_artifacts:
-            self._sample_artifacts[sample_lims_id] = {}
 
         self._sample_artifacts[sample_lims_id][lane] = artifact
 
@@ -68,15 +66,15 @@ class SequencingArtifactManager:
         q30_score: float,
         passed_quality_control: bool,
     ) -> None:
-        sample_artifact: Optional[Artifact] = self._sample_artifacts.get(
+        artifact: Optional[Artifact] = self._sample_artifacts.get(
             sample_lims_id=sample_lims_id, lane=lane
         )
 
-        if not sample_artifact:
+        if not artifact:
             LOG.warning(f"Sample artifact not found for {sample_lims_id} in lane {lane}. Skipping.")
             return
 
-        set_sample_reads(sample_artifact=sample_artifact, reads=reads)
-        set_sample_q30_score(sample_artifact=sample_artifact, q30_score=q30_score)
-        set_quality_control_flag(artifact=sample_artifact, passed=passed_quality_control)
-        sample_artifact.put()
+        set_sample_reads(sample_artifact=artifact, reads=reads)
+        set_sample_q30_score(sample_artifact=artifact, q30_score=q30_score)
+        set_quality_control_flag(artifact=artifact, passed=passed_quality_control)
+        artifact.put()

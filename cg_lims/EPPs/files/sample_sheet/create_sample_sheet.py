@@ -8,7 +8,7 @@ from genologics.lims import Lims
 from genologics.entities import Artifact, Process, ReagentType
 from cg_lims import options
 from cg_lims.exceptions import LimsError, InvalidValueError
-from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.artifacts import get_artifact_lane, get_artifacts
 from cg_lims.EPPs.files.sample_sheet.models import (
     IndexSetup,
     IndexType,
@@ -21,10 +21,6 @@ from cg_lims.EPPs.files.sample_sheet.models import (
 
 LOG = logging.getLogger(__name__)
 
-
-def get_artifact_lane(artifact: Artifact) -> int:
-    """Return the lane where an artifact is placed"""
-    return int(artifact.location[1].split(":")[0])
 
 def get_non_pooled_artifacts(artifact: Artifact) -> List[Artifact]:
     """Return the parent artifact of the sample. Should hold the reagent_label"""
