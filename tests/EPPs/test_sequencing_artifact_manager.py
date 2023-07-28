@@ -20,7 +20,8 @@ def test_sample_artifacts_add_and_get(lims_process_with_novaseq_data: Process):
 
     # WHEN populating the sample artifacts
     for lane, artifact in lane_samples:
-        sample_artifacts.add(artifact=artifact, lane=lane)
+        sample_id: str = get_artifact_lims_id(artifact)
+        sample_artifacts.add(artifact=artifact, lane=lane, sample_id=sample_id)
 
     # THEN all the artifacts should be retrievable
     for lane, artifact in lane_samples:

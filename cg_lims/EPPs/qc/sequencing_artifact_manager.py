@@ -19,17 +19,11 @@ class SampleArtifacts:
     def __init__(self):
         self._sample_artifacts: Dict[str, Dict[int, Artifact]] = defaultdict(dict)
 
-    def add(self, artifact: Artifact, lane: int) -> None:
-        sample_lims_id: Optional[str] = get_artifact_lims_id(artifact)
+    def add(self, artifact: Artifact, sample_id: str, lane: int) -> None:
+        self._sample_artifacts[sample_id][lane] = artifact
 
-        if not sample_lims_id:
-            LOG.warning(f"Failed to parse sample artifact: {artifact}")
-            return
-
-        self._sample_artifacts[sample_lims_id][lane] = artifact
-
-    def get(self, sample_lims_id: str, lane: int) -> Optional[Artifact]:
-        return self._sample_artifacts.get(sample_lims_id, {}).get(lane)
+    def get(self, sample_id: str, lane: int) -> Optional[Artifact]:
+        return self._sample_artifacts.get(sample_id, {}).get(lane)
 
 
 class SequencingArtifactManager:
@@ -42,7 +36,11 @@ class SequencingArtifactManager:
 
     def _populate_sample_artifacts(self) -> None:
         for lane, artifact in get_lane_sample_artifacts(self.process):
-            self._sample_artifacts.add(artifact=artifact, lane=lane)
+            sample_id: Optional[str] = get_artifact_lims_id(artifact)
+            if not sample_id:
+                LOG.warning(f"Failed to parse sample artifact: {artifact}")
+                continue
+            self._sample_artifacts.add(artifact=artifact, sample_id=sample_id, lane=lane)
 
     @property
     def flow_cell_name(self) -> str:
@@ -67,7 +65,7 @@ class SequencingArtifactManager:
         passed_quality_control: bool,
     ) -> None:
         artifact: Optional[Artifact] = self._sample_artifacts.get(
-            sample_lims_id=sample_lims_id, lane=lane
+            sample_id=sample_lims_id, lane=lane
         )
 
         if not artifact:
