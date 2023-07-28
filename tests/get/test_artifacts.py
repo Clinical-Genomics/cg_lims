@@ -1,13 +1,11 @@
-from typing import List
-from genologics.entities import Artifact, Process
+from genologics.entities import Process
 from genologics.lims import Lims
-from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_lane_artifacts
 from tests.conftest import server
 
 import pytest
 
 from cg_lims.exceptions import MissingArtifactError
-from cg_lims.get.artifacts import get_artifacts, get_latest_analyte
+from cg_lims.get.artifacts import get_artifacts, get_lane_sample_artifacts, get_latest_analyte
 
 
 def test_get_latest_artifact(lims: Lims):
@@ -67,8 +65,8 @@ def test_get_artifacts_with_output_artifacts(lims: Lims):
 def test_get_lane_artifacts(lims_process_with_novaseq_data: Process):
     # GIVEN a lims process with novaseq data
 
-    # WHEN retrieving all sample artifacts
-    sample_artifacts = get_lane_artifacts(lims_process_with_novaseq_data)
+    # WHEN retrieving all lane sample artifacts
+    lane_sample_artifacts = get_lane_sample_artifacts(lims_process_with_novaseq_data)
 
-    # THEN a list of artifacts should be returned
-    assert sample_artifacts
+    # THEN artifacts are returned
+    assert lane_sample_artifacts

@@ -12,6 +12,18 @@ LOG = logging.getLogger(__name__)
 PER_REAGENT_LABEL = "PerReagentLabel"
 RESULT_FILE_TYPE = "ResultFile"
 
+def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
+    lane_sample_artifacts = set()
+
+    for input_output in process.input_output_maps:
+        inpt = input_output[0]
+        outpt = input_output[1]
+
+        if outpt['output-generation-type'] == 'PerReagentLabel':
+            artifact = outpt['uri']
+            lane = inpt['uri'].location[1][0]
+            lane_sample_artifacts.add((lane, artifact))
+    return list(lane_sample_artifacts)
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
     """Returning the initial artifact related to a sample.

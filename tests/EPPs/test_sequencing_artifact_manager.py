@@ -1,33 +1,30 @@
-from typing import Dict, List
-from genologics.entities import Artifact, Process
+from genologics.entities import Process
 from genologics.lims import Lims
-from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import get_lane_artifacts
-
-
-from cg_lims.EPPs.qc.sequencing_artifact_manager import SampleArtifacts, SequencingArtifactManager
+from cg_lims.EPPs.qc.sequencing_artifact_manager import (
+    SampleArtifacts,
+    SequencingArtifactManager,
+)
+from cg_lims.get.artifacts import get_lane_sample_artifacts
 from cg_lims.get.fields import get_artifact_lims_id
 from cg_lims.set.qc import QualityCheck
 from cg_lims.set.udfs import Q30_FIELD, READS_FIELD
 
 
-def test_sample_artifacts_add_and_get(
-    lims_process_with_novaseq_data: Process, lims: Lims
-):
+def test_sample_artifacts_add_and_get(lims_process_with_novaseq_data: Process):
     # GIVEN all sample artifacts mapped to their lanes in the process
-    lane_samples: Dict[int, Artifact] = get_lane_artifacts(lims_process_with_novaseq_data)
-    assert lane_samples
+    lane_samples = get_lane_sample_artifacts(lims_process_with_novaseq_data)
 
     # GIVEN a sample artifacts object
     sample_artifacts: SampleArtifacts = SampleArtifacts()
 
-    # WHEN populating the sample artifacts object
-    for lane, artifact in lane_samples.items():
+    # WHEN populating the sample artifacts
+    for lane, artifact in lane_samples:
         sample_artifacts.add(artifact=artifact, lane=lane)
 
     # THEN all the artifacts should be retrievable
-    for lane, artifact in lane_samples.items():
+    for lane, artifact in lane_samples:
         sample_lims_id = get_artifact_lims_id(artifact)
-        assert sample_artifacts.get(sample_lims_id, lane)
+        assert sample_artifacts.get(sample_lims_id, lane) == artifact
 
 
 def test_get_flow_cell_name(lims_process_with_novaseq_data: Process, lims: Lims):
@@ -64,15 +61,13 @@ def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
         process=lims_process_with_novaseq_data, lims=lims
     )
 
-    # GIVEN a list of the sample ids and lanes
-    sample_lane_pairs = [
-        (sample_id, lane)
-        for sample_id in artifact_manager._sample_artifacts
-        for lane in artifact_manager._sample_artifacts[sample_id]
-    ]
+    # GIVEN all sample artifacts mapped to their lanes in the process
+    lane_samples = get_lane_sample_artifacts(lims_process_with_novaseq_data)
+
 
     # WHEN updating the sample artifacts
-    for sample_id, lane in sample_lane_pairs:
+    for lane, sample in lane_samples:
+        sample_id: str = get_artifact_lims_id(sample)
         artifact_manager.update_sample(
             sample_lims_id=sample_id,
             lane=lane,
@@ -82,11 +77,8 @@ def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
         )
 
     # THEN the sample artifacts should have been updated
-    for sample_id, lane in sample_lane_pairs:
-        sample_artifact = artifact_manager._get_sample_artifact(
-            sample_lims_id=sample_id, lane=lane
-        )
-        assert sample_artifact is not None
-        assert sample_artifact.udf[Q30_FIELD] == 0
-        assert sample_artifact.udf[READS_FIELD] == 0
-        assert sample_artifact.qc_flag == QualityCheck.FAILED
+    for lane, sample in lane_samples:
+        assert sample is not None
+        assert sample.udf[Q30_FIELD] == 0
+        assert sample.udf[READS_FIELD] == 0
+        assert sample.qc_flag == QualityCheck.FAILED
