@@ -26,7 +26,7 @@ def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
             lane = get_artifact_lane(input_artifact)
             lane_sample_artifacts.add((lane, output_artifact))
 
-    return lane_sample_artifacts
+    return list(lane_sample_artifacts)
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
     """Returning the initial artifact related to a sample.
