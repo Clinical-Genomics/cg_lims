@@ -7,6 +7,7 @@ from requests.exceptions import ConnectionError
 
 from cg_lims.exceptions import LimsError, MissingCgFieldError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)
 
@@ -40,7 +41,7 @@ def check_control(artifact: Artifact) -> bool:
     return all(sample.udf.get("Control") == "negative" for sample in artifact.samples)
 
 
-def find_reruns(artifacts: list, status_db) -> None:
+def find_reruns(artifacts: list, status_db: StatusDBAPI) -> None:
     """
     Looking for artifacts to rerun.
     Negative control samples are never sent for rerun.
@@ -60,8 +61,8 @@ def find_reruns(artifacts: list, status_db) -> None:
             continue
 
         try:
-            target_amount_reads = status_db.apptag(tag_name=app_tag, key="target_reads")
-            guaranteed_fraction = 0.01 * status_db.apptag(
+            target_amount_reads = status_db.get_application_tag(tag_name=app_tag, key="target_reads")
+            guaranteed_fraction = 0.01 * status_db.get_application_tag(
                 tag_name=app_tag, key="percent_reads_guaranteed"
             )
         except ConnectionError:
