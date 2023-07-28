@@ -2,7 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class SequencingMetrics(BaseModel):
+class SampleLaneSequencingMetrics(BaseModel):
     flow_cell_name: str
     flow_cell_lane_number: int
     sample_internal_id: str
