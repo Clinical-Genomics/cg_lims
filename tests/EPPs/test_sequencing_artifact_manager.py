@@ -71,7 +71,7 @@ def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
     for lane, sample in lane_samples:
         sample_id: str = get_artifact_lims_id(sample)
         artifact_manager.update_sample(
-            sample_lims_id=sample_id,
+            sample_id=sample_id,
             lane=lane,
             reads=0,
             q30_score=0,

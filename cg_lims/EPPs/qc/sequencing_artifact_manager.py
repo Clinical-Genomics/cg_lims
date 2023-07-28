@@ -69,18 +69,18 @@ class SequencingArtifactManager:
 
     def update_sample(
         self,
-        sample_lims_id: str,
+        sample_id: str,
         lane: int,
         reads: int,
         q30_score: float,
         passed_quality_control: bool,
     ) -> None:
         artifact: Optional[Artifact] = self._sample_artifacts.get(
-            sample_id=sample_lims_id, lane=lane
+            sample_id=sample_id, lane=lane
         )
 
         if not artifact:
-            LOG.warning(f"Sample artifact not found for {sample_lims_id} in lane {lane}. Skipping.")
+            LOG.warning(f"Sample artifact not found for {sample_id} in lane {lane}. Skipping.")
             return
 
         set_sample_reads(sample_artifact=artifact, reads=reads)
