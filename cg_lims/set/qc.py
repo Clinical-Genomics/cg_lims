@@ -28,8 +28,8 @@ def set_qc_fail(
         artifact.qc_flag = "FAILED"
 
 
-def set_quality_check_flag(quality_check_passed: bool, artifact: Artifact) -> None:
-    qc_flag: str = _get_quality_check_flag(quality_check_passed)
+def set_quality_control_flag(passed: bool, artifact: Artifact) -> None:
+    qc_flag: str = _get_quality_check_flag(passed)
     artifact.qc_flag = qc_flag
 
 
