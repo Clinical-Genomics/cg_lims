@@ -9,7 +9,7 @@ class StatusDBAPI(object):
     def __init__(self, url=None):
         self.url = url
 
-    def apptag(self, tag_name, key=None, entry_point="/applications"):
+    def get_application_tag(self, tag_name, key=None, entry_point="/applications"):
         try:
             res = requests.get(self.url + entry_point + "/" + tag_name)
             if key:
