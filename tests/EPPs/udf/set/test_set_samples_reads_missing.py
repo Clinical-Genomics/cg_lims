@@ -12,7 +12,7 @@ from tests.conftest import server
 
 
 @mock.patch("cg_lims.get.udfs.get_udf")
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
+@mock.patch("cg_lims.status_db_api.StatusDBAPIClient")
 def test_get_target_amount(mock_status_db, mock_get_udf, sample_1: Sample):
     # GIVEN a sample with a udf "Sequencing Analysis" containing an app
     # tag
@@ -20,19 +20,19 @@ def test_get_target_amount(mock_status_db, mock_get_udf, sample_1: Sample):
     test_app_tag = "TESTAPPTAG"
     sample_1.udf["Sequencing Analysis"] = test_app_tag
 
-    # WHEN getting the target amount of reads via the StatusDBAPI
+    # WHEN getting the target amount of reads via the StatusDBAPIClient
     mock_get_udf.return_value = test_app_tag
     mock_status_db.apptag.return_value = 9_000_000
     result = get_target_amount(test_app_tag, mock_status_db)
 
-    # THEN the target amount of reads should be retrieved via the StatusDBAPI
+    # THEN the target amount of reads should be retrieved via the StatusDBAPIClient
     assert result == 9_000_000
     assert mock_status_db.apptag.mock_calls == [
         mock.call(tag_name=test_app_tag, key="target_reads")
     ]
 
 
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
+@mock.patch("cg_lims.status_db_api.StatusDBAPIClient")
 @mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.get_target_amount")
 @mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.get_udf")
 def test_set_reads_missing_on_sample(
@@ -56,7 +56,7 @@ def test_set_reads_missing_on_sample(
 @mock.patch(
     "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
 )
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
+@mock.patch("cg_lims.status_db_api.StatusDBAPIClient")
 def test_set_reads_missing_one_sample(
     mock_status_db, mock_set_reads_missing_on_sample, sample_1: Sample
 ):
@@ -73,7 +73,7 @@ def test_set_reads_missing_one_sample(
 @mock.patch(
     "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
 )
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
+@mock.patch("cg_lims.status_db_api.StatusDBAPIClient")
 def test_set_reads_missing_multiple_samples(
     mock_status_db, mock_set_reads_missing_on_sample, sample_1: Sample, sample_2: Sample
 ):
@@ -93,7 +93,7 @@ def test_set_reads_missing_multiple_samples(
 @mock.patch(
     "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
 )
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
+@mock.patch("cg_lims.status_db_api.StatusDBAPIClient")
 def test_set_reads_missing_one_sample_exception(
     mock_status_db,
     mock_set_reads_missing_on_sample,
@@ -118,7 +118,7 @@ def test_set_reads_missing_one_sample_exception(
 @mock.patch(
     "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
 )
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
+@mock.patch("cg_lims.status_db_api.StatusDBAPIClient")
 def test_set_reads_missing_multiple_samples_exception_on_first_sample(
     mock_status_db,
     mock_set_reads_missing_on_sample,
@@ -151,7 +151,7 @@ def test_set_reads_missing_multiple_samples_exception_on_first_sample(
 @mock.patch(
     "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
 )
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
+@mock.patch("cg_lims.status_db_api.StatusDBAPIClient")
 def test_set_reads_missing_multiple_samples_exception_on_second_sample(
     mock_status_db,
     mock_set_reads_missing_on_sample,
@@ -186,7 +186,7 @@ def test_set_reads_missing_multiple_samples_exception_on_second_sample(
 @mock.patch(
     "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
 )
-@mock.patch("cg_lims.status_db_api.StatusDBAPI")
+@mock.patch("cg_lims.status_db_api.StatusDBAPIClient")
 def test_set_reads_missing_multiple_samples_exception_on_both_samples(
     mock_status_db,
     mock_set_reads_missing_on_sample,
