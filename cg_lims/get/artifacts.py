@@ -10,19 +10,28 @@ from enum import Enum
 
 LOG = logging.getLogger(__name__)
 
-PER_REAGENT_LABEL = "PerReagentLabel"
-RESULT_FILE_TYPE = "ResultFile"
+class OutputType(str, Enum):
+    ANALYTE = "Analyte"
+    RESULT_FILE = "ResultFile"
+
+
+class OutputGenerationType(str, Enum):
+    PER_INPUT = "PerInput"
+    PER_REAGENT = "PerReagentLabel"
+    PER_ALL_INPUTS = "PerAllInputs"
+
 
 def get_artifact_lane(artifact: Artifact) -> int:
     """Return the lane where an artifact is placed"""
     return int(artifact.location[1].split(":")[0])
+
 
 def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
     lane_sample_artifacts = set()
 
     for input_map, output_map in process.input_output_maps:
         try:
-            if output_map['output-generation-type'] == PER_REAGENT_LABEL:
+            if is_output_type_per_reagent(output_map):
                 output_artifact: Artifact = get_artifact_from_map(output_map)
                 input_artifact: Artifact = get_artifact_from_map(input_map)
                 lane: int = get_artifact_lane(input_artifact)
@@ -33,19 +42,14 @@ def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
 
     return list(lane_sample_artifacts)
 
+
+def is_output_type_per_reagent(output_map: Dict) -> bool:
+ return output_map['output-generation-type'] == OutputGenerationType.PER_REAGENT
+
+
 def get_artifact_from_map(map: Dict) -> Artifact:
     """Return the artifact from a map"""
     return map['uri']
-
-class OutputType(str, Enum):
-    ANALYTE = "Analyte"
-    RESULT_FILE = "ResultFile"
-
-
-class OutputGenerationType(str, Enum):
-    PER_INPUT = "PerInput"
-    PER_REAGENT = "PerReagentLabel"
-    PER_ALL_INPUTS = "PerAllInputs"
 
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
