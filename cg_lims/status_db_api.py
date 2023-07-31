@@ -1,13 +1,14 @@
 import json
-
 import requests
 
+from cg_lims.token_manager import TokenManager
 from cg_lims.exceptions import LimsError
 
 
-class StatusDBAPI(object):
-    def __init__(self, url=None):
-        self.url = url
+class StatusDBAPI:
+    def __init__(self, url: str, token_manager: TokenManager = None):
+        self.url: str = url
+        self._token_manager: TokenManager = token_manager
 
     def apptag(self, tag_name, key=None, entry_point="/applications"):
         try:
