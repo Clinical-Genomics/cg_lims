@@ -18,9 +18,7 @@ from cg_lims.status_db_api import StatusDBAPI
 def cli(ctx, config):
     with open(config) as file:
         config_data = yaml.load(file, Loader=yaml.FullLoader)
-    lims = Lims(
-        config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"]
-    )
+    lims = Lims(config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"])
 
     service_account_email: str = config_data["SERVICE_ACCOUNT_EMAIL"]
     service_account_auth_file: str = config_data["SERVICE_ACCOUNT_AUTH_FILE"]
