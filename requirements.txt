@@ -3,6 +3,7 @@ click
 PyYAML
 pydantic
 fastapi
+google-auth
 pandas
 gunicorn
 uvicorn
