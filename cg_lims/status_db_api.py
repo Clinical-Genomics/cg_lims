@@ -5,7 +5,7 @@ import requests
 from cg_lims.exceptions import LimsError
 
 
-class StatusDBAPIClient(object):
+class CgClient(object):
     def __init__(self, url=None):
         self.url = url
 
