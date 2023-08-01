@@ -22,12 +22,12 @@ def test_get_target_amount(mock_status_db, mock_get_udf, sample_1: Sample):
 
     # WHEN getting the target amount of reads via the StatusDBAPI
     mock_get_udf.return_value = test_app_tag
-    mock_status_db.apptag.return_value = 9_000_000
+    mock_status_db.get_application_tag.return_value = 9_000_000
     result = get_target_amount(test_app_tag, mock_status_db)
 
     # THEN the target amount of reads should be retrieved via the StatusDBAPI
     assert result == 9_000_000
-    assert mock_status_db.apptag.mock_calls == [
+    assert mock_status_db.get_application_tag.mock_calls == [
         mock.call(tag_name=test_app_tag, key="target_reads")
     ]
 
