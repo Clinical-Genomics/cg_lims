@@ -181,6 +181,7 @@ def lims_process_with_novaseq_data(lims) -> Process:
     server("novaseq_standard")
     return Process(lims=lims, id="24-308986")
 
+@pytest.fixture
 def status_db_api_client() -> StatusDBAPI:
     return StatusDBAPI("http://testbaseurl.com")
 
