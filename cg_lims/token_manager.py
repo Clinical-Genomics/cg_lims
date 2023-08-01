@@ -40,9 +40,12 @@ class TokenManager:
         """Return the payload for the JWT token."""
         return {"email": self._service_account_email, "exp": expiration_time}
 
+    def is_token_close_to_expiring(self) -> bool:
+        return time.time() > self._expiration - TOKEN_RENEW_DURATION_IN_SECONDS
+
     @property
     def token(self) -> str:
         """Return a valid JWT token, generating a new one if necessary."""
-        if self._token is None or time.time() > self._expiration - TOKEN_RENEW_DURATION_IN_SECONDS:
+        if self._token is None or self.is_token_close_to_expiring():
             self._generate_token()
         return self._token
