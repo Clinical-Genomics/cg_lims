@@ -1,4 +1,4 @@
-from typing import List, Tuple, Iterator
+from typing import List, Tuple
 
 from genologics.entities import Artifact, Process
 

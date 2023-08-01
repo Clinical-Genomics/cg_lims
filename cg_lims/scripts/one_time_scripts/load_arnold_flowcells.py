@@ -5,7 +5,6 @@ import click
 from genologics.lims import Lims
 import requests
 from requests import Response
-import json
 
 from cg_lims import options
 from cg_lims.EPPs.arnold.flow_cell import build_flow_cell_document

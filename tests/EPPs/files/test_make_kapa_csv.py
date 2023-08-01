@@ -2,7 +2,6 @@ from tests.conftest import server
 from pathlib import Path
 
 from genologics.entities import Artifact
-from genologics.entities import Sample
 
 import pytest
 

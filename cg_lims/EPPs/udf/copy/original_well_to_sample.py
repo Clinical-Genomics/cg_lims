@@ -2,9 +2,6 @@ import logging
 import sys
 import click
 
-from typing import List
-from genologics.entities import Process, Artifact
-from genologics.lims import Lims
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, InvalidValueError

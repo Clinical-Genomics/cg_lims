@@ -1,4 +1,3 @@
-from typing import Optional
 
 from genologics.lims import Lims
 from genologics.entities import Artifact, Sample
@@ -11,7 +10,6 @@ import threading
 import time
 
 from limsmock.server import run_server
-from pydantic.v1 import BaseModel, Field
 
 from tests.fixtures.flowcell_document import FLOW_CELL_DOCUMENT
 
