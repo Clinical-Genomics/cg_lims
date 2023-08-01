@@ -16,7 +16,7 @@ LOG = logging.getLogger(__name__)
 
 def get_target_amount(app_tag: str, status_db: StatusDBAPI) -> int:
     """Gets the target amount of reads from clinical-api"""
-    return status_db.apptag(tag_name=app_tag, key="target_reads")
+    return status_db.get_application_tag(tag_name=app_tag, key="target_reads")
 
 
 def set_reads_missing_on_sample(sample: Sample, status_db: StatusDBAPI) -> None:

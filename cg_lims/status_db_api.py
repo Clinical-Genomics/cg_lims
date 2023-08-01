@@ -20,7 +20,7 @@ class StatusDBAPI:
         except requests.RequestException as e:
             raise LimsError(f"Failed to get data from {url}, {e}")
 
-    def apptag(self, tag_name, key=None, entry_point="/applications"):
+    def get_application_tag(self, tag_name, key=None, entry_point="/applications"):
         try:
             res = requests.get(self.base_url + entry_point + "/" + tag_name)
             if key:
