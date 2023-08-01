@@ -9,6 +9,7 @@ from click.testing import CliRunner
 
 import threading
 import time
+from cg_lims.token_manager import TokenManager
 
 from limsmock.server import run_server
 from pydantic.v1 import BaseModel, Field
@@ -172,3 +173,9 @@ def barcode_tubes_csv() -> str:
     file_path = "tests/fixtures/barcode_tubes_csv.txt"
     file = Path(file_path)
     return file.read_text()
+
+@pytest.fixture
+def token_manager():
+    service_account_email = 'test@email.com'
+    service_account_auth_file = '/path/to/auth/file'
+    return TokenManager(service_account_email, service_account_auth_file)
