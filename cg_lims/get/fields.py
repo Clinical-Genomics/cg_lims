@@ -44,20 +44,6 @@ def get_sample_comment(sample: Sample) -> Optional[str]:
     return get_udf_value(sample, "comment")
 
 
-def get_processing_time(sample: Sample) -> Optional[dt.datetime]:
-    """Get the time it takes to process a sample"""
-
-    received_at = get_received_date(sample)
-    delivery_date = get_delivery_date(sample)
-    if received_at and delivery_date:
-        return delivery_date - received_at
-    LOG.info(
-        "Could not get received date or delivery date to generate the processing time for sample %s."
-        % sample.id
-    )
-    return None
-
-
 def get_artifact_well(artifact: Artifact) -> str:
     """Parsing out the well position from LocationDescriptor"""
 
