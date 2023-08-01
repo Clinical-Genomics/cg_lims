@@ -1,5 +1,5 @@
 import time
-from typing import Dict
+from typing import Dict, Optional
 
 from google.auth import jwt
 from google.auth.crypt import RSASigner
@@ -15,7 +15,7 @@ class TokenManager:
     def __init__(self, service_account_email: str, service_account_auth_file: str) -> None:
         self._service_account_email = service_account_email
         self._service_account_auth_file = service_account_auth_file
-        self._token: str = None
+        self._token: Optional[str] = None
         self._expiration: int = 0
 
     def _generate_token(self) -> None:
