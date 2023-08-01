@@ -1,5 +1,6 @@
+import json
 import requests
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 from urllib.parse import urljoin
 
 from cg_lims.exceptions import LimsError
@@ -19,12 +20,15 @@ class StatusDBAPI:
         except requests.RequestException as e:
             raise LimsError(f"Failed to get data from {url}, {e}")
 
-    def apptag(self, tag_name: str, key: Optional[str] = None):
-        app_tag_endpoint: str = f"/applications/{tag_name}"
-        data: Dict = self._get(app_tag_endpoint)
-        if key:
-            return data.get(key)
-        return data
+    def apptag(self, tag_name, key=None, entry_point="/applications"):
+        try:
+            res = requests.get(self.base_url + entry_point + "/" + tag_name)
+            if key:
+                return json.loads(res.text)[key]
+            else:
+                return json.loads(res.text)
+        except ConnectionError:
+            raise LimsError(message="No connection to clinical-api!")
 
     def get_sequencing_metrics_for_flow_cell(
         self, flow_cell_name: str
