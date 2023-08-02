@@ -1,15 +1,19 @@
-from typing import Optional
+from typing import Dict, List, Optional
 
 from genologics.lims import Lims
 from genologics.entities import Artifact, Sample
 from pathlib import Path
+from mock import Mock
 
 import pytest
 from click.testing import CliRunner
 
 import threading
 import time
+
 from cg_lims.token_manager import TokenManager
+from cg_lims.status_db_api import StatusDBAPI
+
 
 from limsmock.server import run_server
 from pydantic.v1 import BaseModel, Field
@@ -174,8 +178,38 @@ def barcode_tubes_csv() -> str:
     file = Path(file_path)
     return file.read_text()
 
+
 @pytest.fixture
 def token_manager():
     service_account_email = 'test@email.com'
     service_account_auth_file = '/path/to/auth/file'
     return TokenManager(service_account_email, service_account_auth_file)
+
+
+@pytest.fixture
+def status_db_api_client() -> StatusDBAPI:
+    return StatusDBAPI("http://testbaseurl.com")
+
+
+@pytest.fixture
+def sequencing_metrics_json() -> List[Dict]:
+    return [
+        {
+            "flow_cell_name": "test",
+            "flow_cell_lane_number": 1,
+            "sample_internal_id": "test",
+            "sample_total_reads_in_lane": 100,
+            "sample_base_fraction_passing_q30": 0.95,
+            "sample_base_mean_quality_score": 30.0,
+            "created_at": "2022-01-01T00:00:00",
+        }
+    ]
+
+
+@pytest.fixture
+def mock_sequencing_metrics_get_response(sequencing_metrics_json) -> Mock:
+    mock_response = Mock()
+    mock_response.json.return_value = sequencing_metrics_json
+    mock_response.raise_for_status.return_value = None
+    return mock_response
+
