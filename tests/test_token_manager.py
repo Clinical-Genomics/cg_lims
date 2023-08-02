@@ -1,7 +1,7 @@
 import pytest
 from pytest_mock import MockFixture
 import time
-from cg_lims.token_manager import TokenManager
+from cg_lims.token_manager import TOKEN_RENEW_DURATION_IN_SECONDS, TokenManager
 
 
 class TestTokenManager:
@@ -36,6 +36,18 @@ class TestTokenManager:
         # GIVEN an expired token
         token_manager._token = "expired_token"
         token_manager._expiration = time.time() - 1000
+
+        # WHEN the token property is accessed
+        self.mock_encode.return_value = b"new_token"
+        actual_token = token_manager.token
+
+        # THEN a new token should be generated
+        assert actual_token == "new_token"
+
+    def test_token_property_existing_token_close_to_expiry(self, token_manager: TokenManager):
+        # GIVEN an existing token close to expiry
+        token_manager._token = "almost_expired_token"
+        token_manager._expiration = time.time() + TOKEN_RENEW_DURATION_IN_SECONDS - 10
 
         # WHEN the token property is accessed
         self.mock_encode.return_value = b"new_token"
