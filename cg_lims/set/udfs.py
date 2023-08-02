@@ -67,9 +67,9 @@ def copy_udf_process_to_artifact(
         raise MissingUDFsError(message=message)
 
 
-def set_sample_reads(sample_artifact: Artifact, reads: int) -> None:
-    sample_artifact.udf[UserDefinedFields.READS] = reads
+def set_reads_count(artifact: Artifact, reads: int) -> None:
+    artifact.udf[UserDefinedFields.READS] = reads
 
 
-def set_sample_q30_score(sample_artifact: Artifact, q30_score: float) -> None:
-    sample_artifact.udf[UserDefinedFields.Q30] = q30_score
+def set_q30_score(artifact: Artifact, q30_score: float) -> None:
+    artifact.udf[UserDefinedFields.Q30] = q30_score

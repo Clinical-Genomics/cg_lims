@@ -45,7 +45,7 @@ def get_udf(entity: Entity, udf: str) -> str:
         raise MissingUDFsError(message)
 
 
-def get_q30_threshold(entity: Entity) -> Optional[int]:
+def get_q30_threshold(entity: Entity) -> Optional[str]:
     try:
         return get_udf(entity, UserDefinedFields.Q30_THRESHOLD.value)
     except MissingUDFsError:

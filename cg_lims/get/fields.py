@@ -108,9 +108,12 @@ def get_barcode(artifact: Artifact):
         return None
 
 
-def get_artifact_lims_id(sample_artifact: Artifact) -> Optional[str]:
-    samples = sample_artifact.samples if sample_artifact else None
+def get_artifact_sample_id(artifact: Artifact) -> Optional[str]:
+    """Return the sample ID belonging to an artifact if it isn't a pool."""
+    samples = artifact.samples if artifact else None
     if not (samples and samples[0].id):
+        return None
+    if len(samples) > 1:
         return None
     return samples[0].id
 

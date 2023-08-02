@@ -1,11 +1,11 @@
 from genologics.entities import Process
 from genologics.lims import Lims
 from cg_lims.EPPs.qc.sequencing_artifact_manager import (
-    SampleArtifacts,
+    SampleLaneArtifacts,
     SequencingArtifactManager,
 )
 from cg_lims.get.artifacts import get_lane_sample_artifacts
-from cg_lims.get.fields import get_artifact_lims_id
+from cg_lims.get.fields import get_artifact_sample_id
 from cg_lims.set.qc import QualityCheck
 from cg_lims.set.udfs import UserDefinedFields
 
@@ -16,16 +16,16 @@ def test_sample_artifacts_add_and_get(lims_process_with_novaseq_data: Process):
     assert lane_samples
 
     # GIVEN a sample artifacts object
-    sample_artifacts: SampleArtifacts = SampleArtifacts()
+    sample_artifacts: SampleLaneArtifacts = SampleLaneArtifacts()
 
     # WHEN populating the sample artifacts
     for lane, artifact in lane_samples:
-        sample_id: str = get_artifact_lims_id(artifact)
+        sample_id: str = get_artifact_sample_id(artifact)
         sample_artifacts.add(artifact=artifact, lane=lane, sample_id=sample_id)
 
     # THEN all the artifacts should be retrievable
     for lane, artifact in lane_samples:
-        sample_lims_id = get_artifact_lims_id(artifact)
+        sample_lims_id = get_artifact_sample_id(artifact)
         assert sample_artifacts.get(sample_lims_id, lane) == artifact
 
 
@@ -63,7 +63,7 @@ def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
 
     # WHEN updating the sample artifacts
     for lane, sample in lane_samples:
-        sample_id: str = get_artifact_lims_id(sample)
+        sample_id: str = get_artifact_sample_id(sample)
         artifact_manager.update_sample(
             sample_id=sample_id,
             lane=lane,
