@@ -41,9 +41,7 @@ def flow_cell(ctx):
         lims=lims,
         output_type=OutputType.RESULT_FILE,
     )
-    flow_cell_document: FlowCell = build_flow_cell_document(
-        process=process, lanes=lanes
-    )
+    flow_cell_document: FlowCell = build_flow_cell_document(process=process, lanes=lanes)
     response: Response = requests.post(
         url=f"{arnold_host}/flow_cell",
         headers={"Content-Type": "application/json"},

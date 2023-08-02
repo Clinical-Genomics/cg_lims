@@ -181,6 +181,7 @@ def lims_process_with_novaseq_data(lims) -> Process:
     server("novaseq_standard")
     return Process(lims=lims, id="24-308986")
 
+
 @pytest.fixture
 def status_db_api_client() -> StatusDBAPI:
     return StatusDBAPI("http://testbaseurl.com")
@@ -207,4 +208,3 @@ def mock_sequencing_metrics_get_response(sequencing_metrics_json) -> Mock:
     mock_response.json.return_value = sequencing_metrics_json
     mock_response.raise_for_status.return_value = None
     return mock_response
-

@@ -33,8 +33,10 @@ def copy_artifact_to_artifact(
 
     if qc_flag:
         if keep_failed_flags and destination_artifact.qc_flag == "FAILED":
-            message = f"QC for destination artifact {destination_artifact.id} is failed, " \
-                      f"flag not copied over from source artifact {source_artifact.id}"
+            message = (
+                f"QC for destination artifact {destination_artifact.id} is failed, "
+                f"flag not copied over from source artifact {source_artifact.id}"
+            )
             LOG.error(message)
         else:
             destination_artifact.qc_flag = source_artifact.qc_flag

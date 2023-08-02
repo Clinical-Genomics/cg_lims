@@ -45,7 +45,8 @@ def find_reruns(artifacts: list, status_db: StatusDBAPI) -> None:
     """
     Looking for artifacts to rerun.
     Negative control samples are never sent for rerun.
-    A pool with any sample that is not a negative control will be sent for rerun if reads are missing."""
+    A pool with any sample that is not a negative control will be sent for rerun if reads are missing.
+    """
     failed_arts = 0
     for artifact in artifacts:
         if check_control(artifact):
@@ -61,7 +62,9 @@ def find_reruns(artifacts: list, status_db: StatusDBAPI) -> None:
             continue
 
         try:
-            target_amount_reads = status_db.get_application_tag(tag_name=app_tag, key="target_reads")
+            target_amount_reads = status_db.get_application_tag(
+                tag_name=app_tag, key="target_reads"
+            )
             guaranteed_fraction = 0.01 * status_db.get_application_tag(
                 tag_name=app_tag, key="percent_reads_guaranteed"
             )
@@ -81,9 +84,11 @@ def find_reruns(artifacts: list, status_db: StatusDBAPI) -> None:
 @click.command()
 @click.pass_context
 def get_missing_reads(ctx):
-    """Script to calculate missing reads and decide on reruns.
+    """
+    Script to calculate missing reads and decide on reruns.
     Negative control samples are never sent for rerun.
-    A pool with any sample that is not a negative control will be sent for rerun if reads are missing."""
+    A pool with any sample that is not a negative control will be sent for rerun if reads are missing.
+    """
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 

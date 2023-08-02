@@ -86,7 +86,7 @@ def get_index_well(artifact: Artifact):
 
 
 def get_barcode(artifact: Artifact):
-    """Central script for generation of barcode. Looks at container type and 
+    """Central script for generation of barcode. Looks at container type and
     assign barcode according to Atlas document 'Barcodes at Clinical Genomics'"""
 
     artifact_container_type = artifact.container.type.name.lower()
@@ -98,22 +98,22 @@ def get_barcode(artifact: Artifact):
     # Barcode for pool placed in tube.
     elif len(artifact.samples) > 1 and artifact_container_type == "tube":
         return artifact.name
-    
+
     # Barcode for sample in tube.
     elif artifact_container_type == "tube":
         return artifact.samples[0].id[3:]
-    
+
     else:
-        LOG.info(
-            f"Sample {str(artifact.samples[0].id)} could not be assigned a barcode."
-        )
+        LOG.info(f"Sample {str(artifact.samples[0].id)} could not be assigned a barcode.")
         return None
-    
+
+
 def get_artifact_lims_id(sample_artifact: Artifact) -> Optional[str]:
     samples = sample_artifact.samples if sample_artifact else None
     if not (samples and samples[0].id):
         return None
     return samples[0].id
+
 
 def get_flow_cell_name(process: Process) -> Optional[str]:
     artifacts: Optional[List[Artifact]] = process.all_inputs()

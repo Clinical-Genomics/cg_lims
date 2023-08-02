@@ -75,9 +75,7 @@ class SequencingArtifactManager:
         q30_score: float,
         passed_quality_control: bool,
     ) -> None:
-        artifact: Optional[Artifact] = self._sample_artifacts.get(
-            sample_id=sample_id, lane=lane
-        )
+        artifact: Optional[Artifact] = self._sample_artifacts.get(sample_id=sample_id, lane=lane)
 
         if not artifact:
             LOG.warning(f"Sample artifact not found for {sample_id} in lane {lane}. Skipping.")

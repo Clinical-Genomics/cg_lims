@@ -10,6 +10,7 @@ from enum import Enum
 
 LOG = logging.getLogger(__name__)
 
+
 class OutputType(str, Enum):
     ANALYTE = "Analyte"
     RESULT_FILE = "ResultFile"
