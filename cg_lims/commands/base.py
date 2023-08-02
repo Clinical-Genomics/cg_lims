@@ -30,7 +30,7 @@ def cli(ctx, config):
     )
 
     cg_url: str = config_data.get("CG_URL")
-    status_db: StatusDBAPI = StatusDBAPI(url=cg_url, token_manager=token_manager)
+    status_db: StatusDBAPI = StatusDBAPI(base_url=cg_url, token_manager=token_manager)
 
     ctx.ensure_object(dict)
     ctx.obj["lims"] = lims
