@@ -180,8 +180,8 @@ def barcode_tubes_csv() -> str:
 
 @pytest.fixture
 def token_manager():
-    service_account_email = 'test@email.com'
-    service_account_auth_file = '/path/to/auth/file'
+    service_account_email = "test@email.com"
+    service_account_auth_file = "/path/to/auth/file"
     return TokenManager(service_account_email, service_account_auth_file)
 
 
@@ -218,4 +218,3 @@ def mock_sequencing_metrics_get_response(sequencing_metrics_json) -> Mock:
     mock_response.json.return_value = sequencing_metrics_json
     mock_response.raise_for_status.return_value = None
     return mock_response
-

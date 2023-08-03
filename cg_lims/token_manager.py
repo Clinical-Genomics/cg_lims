@@ -13,11 +13,13 @@ LOG = logging.getLogger(__name__)
 TOKEN_VALID_DURATION_IN_SECONDS = 3600
 TOKEN_RENEW_DURATION_IN_SECONDS = 300  # Renew token if less than 5 minutes remain
 
+
 class TokenManager:
     """
     Manages generation and refreshing of JWT tokens.
     Tokens are automatically refreshed if they are close to expiry.
     """
+
     def __init__(self, service_account_email: str, service_account_auth_file: str) -> None:
         self._service_account_email = service_account_email
         self._service_account_auth_file = service_account_auth_file
