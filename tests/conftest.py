@@ -1,3 +1,4 @@
+import datetime as dt
 from typing import Dict, List, Optional
 from genologics.lims import Lims
 from genologics.entities import Artifact, Process, Sample
@@ -9,6 +10,8 @@ from click.testing import CliRunner
 
 import threading
 import time
+from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
+from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
 from cg_lims.status_db_api import StatusDBAPI
 
 from limsmock.server import run_server
@@ -221,41 +224,103 @@ def novaseq_sample_ids() -> List[str]:
 
 
 @pytest.fixture
+def novaseq_metrics_passing_thresholds_json(
+    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str]
+) -> List[Dict]:
+    metrics = []
+    for sample_id in novaseq_sample_ids:
+        for lane in range(1, 3):
+            metric = {
+                "flow_cell_name": novaseq_flow_cell_name,
+                "flow_cell_lane_number": lane,
+                "sample_internal_id": sample_id,
+                "sample_total_reads_in_lane": 10000,
+                "sample_base_fraction_passing_q30": 1,
+                "sample_base_mean_quality_score": 100,
+                "created_at": dt.datetime.now().isoformat(),
+            }
+            metrics.append(metric)
+    return metrics
+
+
+@pytest.fixture
 def novaseq_metrics_failing_q30_threshold_json(
     novaseq_flow_cell_name: str, novaseq_sample_ids: List[str]
 ) -> List[Dict]:
-    return [
-        {
-            "flow_cell_name": novaseq_flow_cell_name,
-            "flow_cell_lane_number": 1,
-            "sample_internal_id": "test",
-            "sample_total_reads_in_lane": 100,
-            "sample_base_fraction_passing_q30": 0.95,
-            "sample_base_mean_quality_score": 30.0,
-            "created_at": "2022-01-01T00:00:00",
-        }
-    ]
+    metrics = []
+    for sample_id in novaseq_sample_ids:
+        for lane in range(1, 3):
+            metric = {
+                "flow_cell_name": novaseq_flow_cell_name,
+                "flow_cell_lane_number": lane,
+                "sample_internal_id": sample_id,
+                "sample_total_reads_in_lane": 10000,
+                "sample_base_fraction_passing_q30": 0,
+                "sample_base_mean_quality_score": 100,
+                "created_at": dt.datetime.now().isoformat(),
+            }
+            metrics.append(metric)
+    return metrics
 
 
 @pytest.fixture
-def novaseq_metrics_failing_q30_threshold(sequencing_metrics_json) -> Mock:
+def novaseq_metrics_failing_reads_threshold_json(
+    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str]
+) -> List[Dict]:
+    metrics = []
+    for sample_id in novaseq_sample_ids:
+        for lane in range(1, 3):
+            metric = {
+                "flow_cell_name": novaseq_flow_cell_name,
+                "flow_cell_lane_number": lane,
+                "sample_internal_id": sample_id,
+                "sample_total_reads_in_lane": 0,
+                "sample_base_fraction_passing_q30": 1,
+                "sample_base_mean_quality_score": 100,
+                "created_at": dt.datetime.now().isoformat(),
+            }
+            metrics.append(metric)
+    return metrics
+
+
+@pytest.fixture
+def novaseq_metrics_failing_q30_threshold_response(
+    novaseq_metrics_failing_q30_threshold_json,
+) -> Mock:
     mock_response = Mock()
-    mock_response.json.return_value = sequencing_metrics_json
+    mock_response.json.return_value = novaseq_metrics_failing_q30_threshold_json
     mock_response.raise_for_status.return_value = None
     return mock_response
 
 
 @pytest.fixture
-def novaseq_metrics_failing_reads_threshold(sequencing_metrics_json) -> Mock:
+def novaseq_metrics_failing_reads_threshold_response(
+    novaseq_metrics_failing_reads_threshold_json,
+) -> Mock:
     mock_response = Mock()
-    mock_response.json.return_value = sequencing_metrics_json
+    mock_response.json.return_value = novaseq_metrics_failing_reads_threshold_json
     mock_response.raise_for_status.return_value = None
     return mock_response
 
 
 @pytest.fixture
-def mock_novaseq_passing_metrics(sequencing_metrics_json) -> Mock:
+def novaseq_passing_metrics_response(novaseq_metrics_passing_thresholds_json) -> Mock:
     mock_response = Mock()
-    mock_response.json.return_value = sequencing_metrics_json
+    mock_response.json.return_value = novaseq_metrics_passing_thresholds_json
     mock_response.raise_for_status.return_value = None
     return mock_response
+
+
+@pytest.fixture
+def sequencing_quality_checker(
+    lims_process_with_novaseq_data: Process,
+    lims: Lims,
+    status_db_api_client: StatusDBAPI,
+) -> SequencingQualityChecker:
+    artifact_manager = SequencingArtifactManager(
+        process=lims_process_with_novaseq_data, lims=lims
+    )
+
+    return SequencingQualityChecker(
+        status_db_api=status_db_api_client, artifact_manager=artifact_manager
+    )
