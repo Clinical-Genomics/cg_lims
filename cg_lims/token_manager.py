@@ -1,8 +1,14 @@
+import logging
 import time
 from typing import Dict, Optional
 
 from google.auth import jwt
 from google.auth.crypt import RSASigner
+
+from cg_lims.exceptions import ServiceAccountFileError
+
+LOG = logging.getLogger(__name__)
+
 
 TOKEN_VALID_DURATION_IN_SECONDS = 3600
 TOKEN_RENEW_DURATION_IN_SECONDS = 300  # Renew token if less than 5 minutes remain
@@ -30,7 +36,12 @@ class TokenManager:
 
     def _get_signer_from_service_account_file(self) -> RSASigner:
         """Return an RSA signer using the service account file."""
-        return RSASigner.from_service_account_file(self._service_account_auth_file)
+        try:
+            return RSASigner.from_service_account_file(self._service_account_auth_file)
+        except FileNotFoundError:
+            error_msg = f"Service account file not found: {self._service_account_auth_file}"
+            logging.error(error_msg)
+            raise ServiceAccountFileError(error_msg)
 
     def _get_expiration_time(self) -> int:
         """Return the expiration time for the token."""
