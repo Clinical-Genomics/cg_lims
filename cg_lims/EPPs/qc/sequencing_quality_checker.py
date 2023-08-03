@@ -45,7 +45,7 @@ class SequencingQualityChecker:
         )
 
         self.artifact_manager.update_sample(
-            sample_lims_id=metrics.sample_internal_id,
+            sample_id=metrics.sample_internal_id,
             lane=metrics.flow_cell_lane_number,
             reads=metrics.sample_total_reads_in_lane,
             q30_score=metrics.sample_base_fraction_passing_q30,
