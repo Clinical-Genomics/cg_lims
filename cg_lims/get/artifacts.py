@@ -21,6 +21,7 @@ class OutputGenerationType(str, Enum):
     PER_REAGENT = "PerReagentLabel"
     PER_ALL_INPUTS = "PerAllInputs"
 
+ARTIFACT_KEY = "uri"
 
 def get_artifact_lane(artifact: Artifact) -> int:
     """Return the lane where an artifact is placed"""
@@ -49,7 +50,7 @@ def is_output_type_per_reagent(output_map: Dict) -> bool:
 
 
 def get_artifact_from_map(map: Dict) -> Artifact:
-    return map["uri"]
+    return map[ARTIFACT_KEY]
 
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
