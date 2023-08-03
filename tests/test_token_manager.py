@@ -16,7 +16,7 @@ class TestTokenManager:
 
     def test_token_property_new_token_needed(self, token_manager: TokenManager):
         # WHEN the token property is accessed
-        actual_token = token_manager.token
+        actual_token = token_manager.get_token()
 
         # THEN a new token should be generated
         assert actual_token == "test_token"
@@ -27,7 +27,7 @@ class TestTokenManager:
         token_manager._expiration = time.time() + 1000
 
         # WHEN the token property is accessed
-        actual_token = token_manager.token
+        actual_token = token_manager.get_token()
 
         # THEN the existing token should be returned
         assert actual_token == "existing_token"
@@ -39,7 +39,7 @@ class TestTokenManager:
 
         # WHEN the token property is accessed
         self.mock_encode.return_value = b"new_token"
-        actual_token = token_manager.token
+        actual_token = token_manager.get_token()
 
         # THEN a new token should be generated
         assert actual_token == "new_token"
@@ -51,7 +51,7 @@ class TestTokenManager:
 
         # WHEN the token property is accessed
         self.mock_encode.return_value = b"new_token"
-        actual_token = token_manager.token
+        actual_token = token_manager.get_token()
 
         # THEN a new token should be generated
         assert actual_token == "new_token"

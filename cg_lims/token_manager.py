@@ -43,9 +43,8 @@ class TokenManager:
     def _is_token_close_to_expiring(self) -> bool:
         return time.time() > self._expiration - TOKEN_RENEW_DURATION_IN_SECONDS
 
-    @property
-    def token(self) -> str:
-        """Return a valid JWT token, generating a new one if necessary."""
+    def get_token(self) -> str:
+        """Get a valid JWT token."""
         if self._token is None or self._is_token_close_to_expiring():
             self._generate_token()
         return self._token
