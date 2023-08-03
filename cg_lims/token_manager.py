@@ -27,7 +27,7 @@ class TokenManager:
     def _generate_token(self) -> None:
         """Generate a new JWT token and update the expiration time."""
         signer: RSASigner = self._get_signer_from_service_account_file()
-        expiration_time: int = self._get_expiration_time()
+        expiration_time: int = self._get_expiration_for_new_token()
         payload: Dict = self._create_payload(expiration_time)
 
         jwt_token: str = jwt.encode(signer=signer, payload=payload).decode("ascii")
@@ -40,11 +40,10 @@ class TokenManager:
             return RSASigner.from_service_account_file(self._service_account_auth_file)
         except FileNotFoundError:
             error_msg = f"Service account file not found: {self._service_account_auth_file}"
-            logging.error(error_msg)
+            LOG.error(error_msg)
             raise ServiceAccountFileError(error_msg)
 
-    def _get_expiration_time(self) -> int:
-        """Return the expiration time for the token."""
+    def _get_expiration_for_new_token(self) -> int:
         return int(time.time()) + TOKEN_VALID_DURATION_IN_SECONDS
 
     def _create_payload(self, expiration_time: int) -> Dict:
