@@ -21,7 +21,7 @@ class TokenManager:
     def __init__(self, service_account_email: str, service_account_auth_file: str) -> None:
         self._service_account_email = service_account_email
         self._service_account_auth_file = service_account_auth_file
-        self._token: Optional[str] = None
+        self._token: str = ""
         self._expiration: int = 0
 
     def _generate_token(self) -> None:
@@ -56,6 +56,6 @@ class TokenManager:
 
     def get_token(self) -> str:
         """Get a valid JWT token."""
-        if self._token is None or self._is_token_close_to_expiring():
+        if not self._token or self._is_token_close_to_expiring():
             self._generate_token()
         return self._token
