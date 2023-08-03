@@ -1,8 +1,8 @@
 import datetime as dt
 import logging
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
 
-from genologics.entities import Artifact, Sample
+from genologics.entities import Artifact, Process, Sample
 from requests.exceptions import HTTPError
 
 LOG = logging.getLogger(__name__)
@@ -86,7 +86,7 @@ def get_index_well(artifact: Artifact):
 
 
 def get_barcode(artifact: Artifact):
-    """Central script for generation of barcode. Looks at container type and 
+    """Central script for generation of barcode. Looks at container type and
     assign barcode according to Atlas document 'Barcodes at Clinical Genomics'"""
 
     artifact_container_type = artifact.container.type.name.lower()
@@ -98,14 +98,33 @@ def get_barcode(artifact: Artifact):
     # Barcode for pool placed in tube.
     elif len(artifact.samples) > 1 and artifact_container_type == "tube":
         return artifact.name
-    
+
     # Barcode for sample in tube.
     elif artifact_container_type == "tube":
         return artifact.samples[0].id[3:]
-    
+
     else:
-        LOG.info(
-            f"Sample {str(artifact.samples[0].id)} could not be assigned a barcode."
-        )
+        LOG.info(f"Sample {str(artifact.samples[0].id)} could not be assigned a barcode.")
         return None
-    
+
+
+def get_artifact_sample_id(artifact: Artifact) -> Optional[str]:
+    """Return the sample ID belonging to an artifact if it isn't a pool."""
+    samples = artifact.samples if artifact else None
+    if not (samples and samples[0].id):
+        return None
+    if len(samples) > 1:
+        return None
+    return samples[0].id
+
+
+def get_flow_cell_name(process: Process) -> Optional[str]:
+    artifacts: Optional[List[Artifact]] = process.all_inputs()
+    if not artifacts:
+        return None
+    artifact: Artifact = artifacts[0]
+    if not artifact.container:
+        return None
+    if not artifact.container.name:
+        return None
+    return artifact.container.name

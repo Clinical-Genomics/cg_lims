@@ -1,7 +1,6 @@
 from typing import Dict, List, Optional
-
 from genologics.lims import Lims
-from genologics.entities import Artifact, Sample
+from genologics.entities import Artifact, Process, Sample
 from pathlib import Path
 from mock import Mock
 
@@ -174,6 +173,13 @@ def barcode_tubes_csv() -> str:
     file_path = "tests/fixtures/barcode_tubes_csv.txt"
     file = Path(file_path)
     return file.read_text()
+
+
+@pytest.fixture
+def lims_process_with_novaseq_data(lims) -> Process:
+    """Return lims process populated with the data in fixtures/novaseq_standard."""
+    server("novaseq_standard")
+    return Process(lims=lims, id="24-308986")
 
 
 @pytest.fixture

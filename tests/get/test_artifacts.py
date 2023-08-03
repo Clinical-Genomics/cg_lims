@@ -5,7 +5,7 @@ from tests.conftest import server
 import pytest
 
 from cg_lims.exceptions import MissingArtifactError
-from cg_lims.get.artifacts import get_artifacts, get_latest_analyte
+from cg_lims.get.artifacts import get_artifacts, get_lane_sample_artifacts, get_latest_analyte
 
 
 def test_get_latest_artifact(lims: Lims):
@@ -60,3 +60,13 @@ def test_get_artifacts_with_output_artifacts(lims: Lims):
 
     # THEN assert output_artifacts are five
     assert len(output_artifacts) == 1
+
+
+def test_get_lane_artifacts(lims_process_with_novaseq_data: Process):
+    # GIVEN a lims process with novaseq data
+
+    # WHEN retrieving all lane sample artifacts
+    lane_sample_artifacts = get_lane_sample_artifacts(lims_process_with_novaseq_data)
+
+    # THEN artifacts are returned
+    assert lane_sample_artifacts
