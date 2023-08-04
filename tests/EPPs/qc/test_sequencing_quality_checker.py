@@ -33,7 +33,7 @@ def test_quality_control_of_flow_cell_with_all_failing_q30(
     # WHEN validating the sequencing quality
     sequencing_quality_checker.validate_sequencing_quality()
 
-    # THEN no samples should fail the quality control
+    # THEN all samples in all lanes should fail the quality control
     expected_fails: int = novaseq_lanes * len(novaseq_sample_ids)
     assert sequencing_quality_checker.samples_not_passing_qc_count == expected_fails
 
@@ -51,6 +51,6 @@ def test_quality_control_of_flow_cell_with_all_failing_reads(
     # WHEN validating the sequencing quality
     sequencing_quality_checker.validate_sequencing_quality()
 
-    # THEN no samples should fail the quality control
+    # THEN all samples in all lanes should fail the quality control
     expected_fails: int = novaseq_lanes * len(novaseq_sample_ids)
     assert sequencing_quality_checker.samples_not_passing_qc_count == expected_fails
