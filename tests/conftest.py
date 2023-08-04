@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Dict, List, Optional
+from typing import Callable, Dict, List, Optional
 from genologics.lims import Lims
 from genologics.entities import Artifact, Process, Sample
 from pathlib import Path
@@ -222,96 +222,106 @@ def novaseq_flow_cell_name() -> str:
 def novaseq_sample_ids() -> List[str]:
     return ["ACC9628A1", "ACC9628A2", "ACC9628A3"]
 
+
 @pytest.fixture
 def novaseq_lanes() -> int:
     return 2
 
+
+# Generic Mock response generator
 @pytest.fixture
-def novaseq_metrics_passing_thresholds_json(
-    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str], novaseq_lanes: int
+def mock_response() -> Callable:
+    def _mock_response(json_return_value):
+        mock_response = Mock()
+        mock_response.json.return_value = json_return_value
+        mock_response.raise_for_status.return_value = None
+        return mock_response
+
+    return _mock_response
+
+
+# JSON metrics generator
+def generate_metrics_json(
+    flow_cell_name: str,
+    sample_ids: List[str],
+    lanes: int,
+    total_reads_in_lane: int,
+    base_fraction_passing_q30: float,
 ) -> List[Dict]:
     metrics = []
-    for sample_id in novaseq_sample_ids:
-        for lane in range(1, novaseq_lanes + 1):
+    for sample_id in sample_ids:
+        for lane in range(1, lanes + 1):
             metric = {
-                "flow_cell_name": novaseq_flow_cell_name,
+                "flow_cell_name": flow_cell_name,
                 "flow_cell_lane_number": lane,
                 "sample_internal_id": sample_id,
-                "sample_total_reads_in_lane": 10000,
-                "sample_base_fraction_passing_q30": 1,
+                "sample_total_reads_in_lane": total_reads_in_lane,
+                "sample_base_fraction_passing_q30": base_fraction_passing_q30,
                 "sample_base_mean_quality_score": 100,
                 "created_at": dt.datetime.now().isoformat(),
             }
             metrics.append(metric)
     return metrics
+
+
+@pytest.fixture
+def novaseq_metrics_passing_thresholds_json(
+    novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
+) -> List[Dict]:
+    return generate_metrics_json(
+        flow_cell_name=novaseq_flow_cell_name,
+        sample_ids=novaseq_sample_ids,
+        lanes=novaseq_lanes,
+        total_reads_in_lane=10000,
+        base_fraction_passing_q30=1,
+    )
 
 
 @pytest.fixture
 def novaseq_metrics_failing_q30_threshold_json(
-    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str], novaseq_lanes: int
+    novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
 ) -> List[Dict]:
-    metrics = []
-    for sample_id in novaseq_sample_ids:
-        for lane in range(1, novaseq_lanes + 1):
-            metric = {
-                "flow_cell_name": novaseq_flow_cell_name,
-                "flow_cell_lane_number": lane,
-                "sample_internal_id": sample_id,
-                "sample_total_reads_in_lane": 10000,
-                "sample_base_fraction_passing_q30": 0,
-                "sample_base_mean_quality_score": 100,
-                "created_at": dt.datetime.now().isoformat(),
-            }
-            metrics.append(metric)
-    return metrics
+    return generate_metrics_json(
+        flow_cell_name=novaseq_flow_cell_name,
+        sample_ids=novaseq_sample_ids,
+        lanes=novaseq_lanes,
+        total_reads_in_lane=10000,
+        base_fraction_passing_q30=0,
+    )
 
 
 @pytest.fixture
 def novaseq_metrics_failing_reads_threshold_json(
-    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str], novaseq_lanes: int
+    novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
 ) -> List[Dict]:
-    metrics = []
-    for sample_id in novaseq_sample_ids:
-        for lane in range(1, novaseq_lanes + 1):
-            metric = {
-                "flow_cell_name": novaseq_flow_cell_name,
-                "flow_cell_lane_number": lane,
-                "sample_internal_id": sample_id,
-                "sample_total_reads_in_lane": 0,
-                "sample_base_fraction_passing_q30": 1,
-                "sample_base_mean_quality_score": 100,
-                "created_at": dt.datetime.now().isoformat(),
-            }
-            metrics.append(metric)
-    return metrics
+    return generate_metrics_json(
+        flow_cell_name=novaseq_flow_cell_name,
+        sample_ids=novaseq_sample_ids,
+        lanes=novaseq_lanes,
+        total_reads_in_lane=0,
+        base_fraction_passing_q30=1,
+    )
 
 
 @pytest.fixture
-def novaseq_metrics_failing_q30_threshold_response(
-    novaseq_metrics_failing_q30_threshold_json,
+def novaseq_passing_metrics_response(
+    novaseq_metrics_passing_thresholds_json, mock_response
 ) -> Mock:
-    mock_response = Mock()
-    mock_response.json.return_value = novaseq_metrics_failing_q30_threshold_json
-    mock_response.raise_for_status.return_value = None
-    return mock_response
+    return mock_response(novaseq_metrics_passing_thresholds_json)
 
 
 @pytest.fixture
-def novaseq_metrics_failing_reads_threshold_response(
-    novaseq_metrics_failing_reads_threshold_json,
+def novaseq_q30_fail_response(
+    novaseq_metrics_failing_q30_threshold_json, mock_response
 ) -> Mock:
-    mock_response = Mock()
-    mock_response.json.return_value = novaseq_metrics_failing_reads_threshold_json
-    mock_response.raise_for_status.return_value = None
-    return mock_response
+    return mock_response(novaseq_metrics_failing_q30_threshold_json)
 
 
 @pytest.fixture
-def novaseq_passing_metrics_response(novaseq_metrics_passing_thresholds_json) -> Mock:
-    mock_response = Mock()
-    mock_response.json.return_value = novaseq_metrics_passing_thresholds_json
-    mock_response.raise_for_status.return_value = None
-    return mock_response
+def novaseq_reads_fail_response(
+    novaseq_metrics_failing_reads_threshold_json, mock_response
+) -> Mock:
+    return mock_response(novaseq_metrics_failing_reads_threshold_json)
 
 
 @pytest.fixture

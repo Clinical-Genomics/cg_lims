@@ -1,9 +1,9 @@
 from typing import List
+
 from mock import Mock
 
-from cg_lims.EPPs.qc.sequencing_quality_checker import (
-    SequencingQualityChecker,
-)
+from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
+
 
 def test_quality_control_of_flow_cell_with_all_passing(
     sequencing_quality_checker: SequencingQualityChecker,
@@ -22,15 +22,13 @@ def test_quality_control_of_flow_cell_with_all_passing(
 
 def test_quality_control_of_flow_cell_with_all_failing_q30(
     sequencing_quality_checker: SequencingQualityChecker,
-    novaseq_metrics_failing_q30_threshold_response: Mock,
+    novaseq_q30_fail_response: Mock,
     novaseq_sample_ids: List[str],
     novaseq_lanes,
     mocker,
 ):
     # GIVEN a flow cell where all samples fail the quality control on Q30
-    mocker.patch(
-        "requests.get", return_value=novaseq_metrics_failing_q30_threshold_response
-    )
+    mocker.patch("requests.get", return_value=novaseq_q30_fail_response)
 
     # WHEN validating the sequencing quality
     sequencing_quality_checker.validate_sequencing_quality()
@@ -42,15 +40,13 @@ def test_quality_control_of_flow_cell_with_all_failing_q30(
 
 def test_quality_control_of_flow_cell_with_all_failing_reads(
     sequencing_quality_checker: SequencingQualityChecker,
-    novaseq_metrics_failing_reads_threshold_response: Mock,
+    novaseq_reads_fail_response: Mock,
     novaseq_sample_ids: List[str],
     novaseq_lanes: int,
     mocker,
 ):
     # GIVEN a flow cell where all samples in all lanes have too few reads
-    mocker.patch(
-        "requests.get", return_value=novaseq_metrics_failing_reads_threshold_response
-    )
+    mocker.patch("requests.get", return_value=novaseq_reads_fail_response)
 
     # WHEN validating the sequencing quality
     sequencing_quality_checker.validate_sequencing_quality()
