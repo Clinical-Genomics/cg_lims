@@ -222,14 +222,17 @@ def novaseq_flow_cell_name() -> str:
 def novaseq_sample_ids() -> List[str]:
     return ["ACC9628A1", "ACC9628A2", "ACC9628A3"]
 
+@pytest.fixture
+def novaseq_lanes() -> int:
+    return 2
 
 @pytest.fixture
 def novaseq_metrics_passing_thresholds_json(
-    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str]
+    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str], novaseq_lanes: int
 ) -> List[Dict]:
     metrics = []
     for sample_id in novaseq_sample_ids:
-        for lane in range(1, 3):
+        for lane in range(1, novaseq_lanes + 1):
             metric = {
                 "flow_cell_name": novaseq_flow_cell_name,
                 "flow_cell_lane_number": lane,
@@ -245,11 +248,11 @@ def novaseq_metrics_passing_thresholds_json(
 
 @pytest.fixture
 def novaseq_metrics_failing_q30_threshold_json(
-    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str]
+    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str], novaseq_lanes: int
 ) -> List[Dict]:
     metrics = []
     for sample_id in novaseq_sample_ids:
-        for lane in range(1, 3):
+        for lane in range(1, novaseq_lanes + 1):
             metric = {
                 "flow_cell_name": novaseq_flow_cell_name,
                 "flow_cell_lane_number": lane,
@@ -265,11 +268,11 @@ def novaseq_metrics_failing_q30_threshold_json(
 
 @pytest.fixture
 def novaseq_metrics_failing_reads_threshold_json(
-    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str]
+    novaseq_flow_cell_name: str, novaseq_sample_ids: List[str], novaseq_lanes: int
 ) -> List[Dict]:
     metrics = []
     for sample_id in novaseq_sample_ids:
-        for lane in range(1, 3):
+        for lane in range(1, novaseq_lanes + 1):
             metric = {
                 "flow_cell_name": novaseq_flow_cell_name,
                 "flow_cell_lane_number": lane,
