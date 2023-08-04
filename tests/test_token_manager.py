@@ -8,6 +8,8 @@ from cg_lims.token_manager import TOKEN_RENEW_DURATION_IN_SECONDS, TokenManager
 
 
 class TestTokenManager:
+    """Tests for the TokenManager class."""
+
     @pytest.fixture(autouse=True)
     def mock_dependencies(self, mocker: MockFixture):
         """Mock dependencies for the TokenManager class."""
