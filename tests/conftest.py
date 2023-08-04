@@ -1,8 +1,9 @@
 from typing import Dict, List, Optional
+from unittest.mock import patch
 from genologics.lims import Lims
 from genologics.entities import Artifact, Process, Sample
 from pathlib import Path
-from mock import Mock
+from mock import MagicMock, Mock
 
 import pytest
 from click.testing import CliRunner
@@ -193,8 +194,15 @@ def lims_process_with_novaseq_data(lims) -> Process:
 
 
 @pytest.fixture
-def status_db_api_client() -> StatusDBAPI:
-    return StatusDBAPI("http://testbaseurl.com")
+def mock_token_manager() -> MagicMock:
+    mock_token_manager = MagicMock()
+    mock_token_manager.get_token.return_value = "mock_token"
+    return mock_token_manager
+
+
+@pytest.fixture
+def status_db_api_client(mock_token_manager: MagicMock) -> StatusDBAPI:
+    return StatusDBAPI(base_url="http://testbaseurl.com", token_manager=mock_token_manager)
 
 
 @pytest.fixture
