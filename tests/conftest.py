@@ -12,6 +12,7 @@ import threading
 import time
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
 from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
+from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
 
 from limsmock.server import run_server
@@ -305,7 +306,7 @@ def novaseq_metrics_failing_reads_json(
 def novaseq_metrics_two_failing(
     novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
 ) -> List[Dict]:
-    metrics =  generate_metrics_json(
+    metrics = generate_metrics_json(
         flow_cell_name=novaseq_flow_cell_name,
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
@@ -316,6 +317,37 @@ def novaseq_metrics_two_failing(
     metrics[0]["sample_base_fraction_passing_q30"] = 0
     metrics[1]["sample_total_reads_in_lane"] = 0
 
+    return metrics
+
+
+@pytest.fixture
+def missing_sample_id(novaseq_sample_ids: List[str]) -> str:
+    return novaseq_sample_ids[0]
+
+
+@pytest.fixture
+def missing_lane():
+    return 0
+
+
+@pytest.fixture
+def novaseq_metrics_missing_for_sample_in_lane(
+    novaseq_flow_cell_name,
+    novaseq_sample_ids,
+    novaseq_lanes,
+    missing_sample_id,
+    missing_lane,
+) -> List[Dict]:
+    metrics: List[SampleLaneSequencingMetrics] = generate_metrics_json(
+        flow_cell_name=novaseq_flow_cell_name,
+        sample_ids=novaseq_sample_ids,
+        lanes=novaseq_lanes,
+        total_reads_in_lane=10000,
+        base_fraction_passing_q30=1,
+    )
+    for metric in metrics:
+        if metric["flow_cell_lane_number"] == missing_lane and metric["sample_internal_id"] == missing_sample_id:
+            metrics.remove(metric)
     return metrics
 
 @pytest.fixture
@@ -344,6 +376,13 @@ def novaseq_two_failing_metrics_response(
     novaseq_metrics_two_failing, mock_response
 ) -> Mock:
     return mock_response(novaseq_metrics_two_failing)
+
+
+@pytest.fixture
+def novaseq_missing_metrics_for_sample_in_lane_response(
+    novaseq_metrics_missing_for_sample_in_lane, mock_response
+) -> Mock:
+    return mock_response(novaseq_metrics_missing_for_sample_in_lane)
 
 
 @pytest.fixture

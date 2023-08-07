@@ -17,6 +17,7 @@ def test_quality_control_of_flow_cell_with_all_passing(
     sequencing_quality_checker.validate_sequencing_quality()
 
     # THEN no samples should fail the quality control
+    assert not sequencing_quality_checker.samples_failed_quality_control()
     assert sequencing_quality_checker.samples_not_passing_qc_count == 0
 
 
@@ -69,3 +70,21 @@ def test_some_samples_fail_quality_control(
 
     # THEN some samples in all lanes should fail the quality control
     assert sequencing_quality_checker.samples_not_passing_qc_count == 2
+
+def test_metrics_missing_for_samples_in_lane(
+    sequencing_quality_checker: SequencingQualityChecker,
+    novaseq_missing_metrics_for_sample_in_lane_response: Mock,
+    missing_sample_id: str,
+    missing_lane: int,
+    mocker,
+):
+    # GIVEN a flow cell where some samples fail the quality control on Q30
+    mocker.patch("requests.get", return_value=novaseq_missing_metrics_for_sample_in_lane_response)
+
+    # WHEN validating the sequencing quality
+    sequencing_quality_checker.validate_sequencing_quality()
+
+    # THEN all samples pass the quality control
+    assert not sequencing_quality_checker.samples_failed_quality_control()
+
+    # THEN the missing sample metrics should be reported

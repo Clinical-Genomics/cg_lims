@@ -24,27 +24,33 @@ class SequencingQualityChecker:
 
         self.samples_not_passing_qc_count: int = 0
 
-    def validate_sequencing_quality(self) -> str:
-        LOG.info(f"Validating sequencing quality for flow cell {self.flow_cell_name}") 
-
+    def _get_sequencing_metrics(self) -> List[SampleLaneSequencingMetrics]:
         try:
-            sequencing_metrics: List[SampleLaneSequencingMetrics] = self.status_db_api.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
+            return self.status_db_api.get_sequencing_metrics_for_flow_cell(
+                self.flow_cell_name
+            )
         except LimsError as e:
-            error_message: str = f"Could not retrieve sequencing metrics for {self.flow_cell_name}: {e}"
+            error_message: str = (
+                f"Could not retrieve sequencing metrics for {self.flow_cell_name}: {e}"
+            )
             LOG.error(error_message)
             sys.exit(error_message)
 
+    def validate_sequencing_quality(self) -> str:
+        LOG.info(f"Validating sequencing quality for flow cell {self.flow_cell_name}")
+
+        sequencing_metrics = self._get_sequencing_metrics()
+
         for metrics in sequencing_metrics:
-            self._validate_sequencing_metrics(metrics)
+            passed_qc: bool = self._validate_sequencing_metrics(metrics)
+            self._update_sample_with_quality_results(metrics, passed_qc)
+            self._log_and_count_failed_samples(metrics, passed_qc)
 
         return self._get_quality_summary()
 
-    def _validate_sequencing_metrics(self, metrics: SampleLaneSequencingMetrics) -> None:
-        passed_quality_control: bool = self._is_valid_sequencing_quality(
-            reads=metrics.sample_total_reads_in_lane,
-            q30_score=metrics.sample_base_fraction_passing_q30,
-        )
-
+    def _update_sample_with_quality_results(
+        self, metrics: SampleLaneSequencingMetrics, passed_quality_control: bool
+    ) -> None:
         self.artifact_manager.update_sample(
             sample_id=metrics.sample_internal_id,
             lane=metrics.flow_cell_lane_number,
@@ -53,10 +59,17 @@ class SequencingQualityChecker:
             passed_quality_control=passed_quality_control,
         )
 
+    def _log_and_count_failed_samples(self, metrics: SampleLaneSequencingMetrics, passed_quality_control: bool) -> None:
+        """Log the failed samples and increment the count."""
         if not passed_quality_control:
             LOG.warning(f"Sample {metrics.sample_internal_id} failed QC check in lane {metrics.flow_cell_lane_number}")
             self.samples_not_passing_qc_count += 1
 
+    def _validate_sequencing_metrics(self, metrics: SampleLaneSequencingMetrics) -> None:
+        return self._is_valid_sequencing_quality(
+            reads=metrics.sample_total_reads_in_lane,
+            q30_score=metrics.sample_base_fraction_passing_q30,
+        )
 
     def _is_valid_sequencing_quality(self, q30_score: float, reads: int):
         passes_q30_threshold: bool = q30_score * 100 >= self.q30_threshold
