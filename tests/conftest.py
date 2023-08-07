@@ -326,6 +326,11 @@ def missing_sample_id(novaseq_sample_ids: List[str]) -> str:
 
 
 @pytest.fixture
+def sample_id_missing_in_lims() -> str:
+    return "sample_id_missing_in_lims"
+
+
+@pytest.fixture
 def missing_lane():
     return 1
 
@@ -349,6 +354,26 @@ def novaseq_metrics_missing_for_sample_in_lane(
         if metric["flow_cell_lane_number"] == missing_lane and metric["sample_internal_id"] == missing_sample_id:
             metrics.remove(metric)
     return metrics
+
+
+@pytest.fixture
+def novaseq_missing_sample(
+    novaseq_flow_cell_name,
+    novaseq_sample_ids: List[str],
+    novaseq_lanes,
+    sample_id_missing_in_lims,
+) -> List[Dict]:
+    novaseq_sample_ids.append(sample_id_missing_in_lims)
+
+    metrics: List[SampleLaneSequencingMetrics] = generate_metrics_json(
+        flow_cell_name=novaseq_flow_cell_name,
+        sample_ids=novaseq_sample_ids,
+        lanes=novaseq_lanes,
+        total_reads_in_lane=10000,
+        base_fraction_passing_q30=1,
+    )
+    return metrics
+
 
 @pytest.fixture
 def novaseq_passing_metrics_response(
@@ -383,6 +408,13 @@ def novaseq_missing_metrics_for_sample_in_lane_response(
     novaseq_metrics_missing_for_sample_in_lane, mock_response
 ) -> Mock:
     return mock_response(novaseq_metrics_missing_for_sample_in_lane)
+
+
+@pytest.fixture
+def novaseq_metrics_with_extra_sample_response(
+    novaseq_missing_sample, mock_response
+) -> Mock:
+    return mock_response(novaseq_missing_sample)
 
 
 @pytest.fixture

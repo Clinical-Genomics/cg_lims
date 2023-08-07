@@ -91,3 +91,23 @@ def test_metrics_missing_for_samples_in_lane(
     # THEN the missing metrics should be reported
     missing_sample = str((missing_sample_id, missing_lane))
     assert missing_sample in summary
+
+
+
+def test_sample_missing_in_lims(
+    sequencing_quality_checker: SequencingQualityChecker,
+    novaseq_metrics_with_extra_sample_response: Mock,
+    sample_id_missing_in_lims: str,
+    mocker,
+):
+    # GIVEN a flow cell where some samples fail the quality control on Q30
+    mocker.patch("requests.get", return_value=novaseq_metrics_with_extra_sample_response)
+
+    # WHEN validating the sequencing quality
+    summary: str = sequencing_quality_checker.validate_sequencing_quality()
+
+    # THEN all samples pass the quality control
+    assert not sequencing_quality_checker.samples_failed_quality_control()
+
+    # THEN the missing metrics should be reported
+    assert sample_id_missing_in_lims in summary
