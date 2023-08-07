@@ -21,6 +21,7 @@ class SequencingQualityChecker:
 
         self.q30_threshold: int = self.artifact_manager.q30_threshold
         self.flow_cell_name: str = self.artifact_manager.flow_cell_name
+
         self.samples_not_passing_qc_count: int = 0
 
     def validate_sequencing_quality(self) -> str:

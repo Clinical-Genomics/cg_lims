@@ -228,7 +228,6 @@ def novaseq_lanes() -> int:
     return 2
 
 
-# Generic Mock response generator
 @pytest.fixture
 def mock_response() -> Callable:
     def _mock_response(json_return_value):
@@ -240,7 +239,6 @@ def mock_response() -> Callable:
     return _mock_response
 
 
-# JSON metrics generator
 def generate_metrics_json(
     flow_cell_name: str,
     sample_ids: List[str],
@@ -291,7 +289,7 @@ def novaseq_metrics_failing_q30_threshold_json(
 
 
 @pytest.fixture
-def novaseq_metrics_failing_reads_threshold_json(
+def novaseq_metrics_failing_reads_json(
     novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
 ) -> List[Dict]:
     return generate_metrics_json(
@@ -302,6 +300,23 @@ def novaseq_metrics_failing_reads_threshold_json(
         base_fraction_passing_q30=1,
     )
 
+
+@pytest.fixture
+def novaseq_metrics_two_failing(
+    novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
+) -> List[Dict]:
+    metrics =  generate_metrics_json(
+        flow_cell_name=novaseq_flow_cell_name,
+        sample_ids=novaseq_sample_ids,
+        lanes=novaseq_lanes,
+        total_reads_in_lane=10000,
+        base_fraction_passing_q30=1,
+    )
+
+    metrics[0]["sample_base_fraction_passing_q30"] = 0
+    metrics[1]["sample_total_reads_in_lane"] = 0
+
+    return metrics
 
 @pytest.fixture
 def novaseq_passing_metrics_response(
@@ -319,9 +334,16 @@ def novaseq_q30_fail_response(
 
 @pytest.fixture
 def novaseq_reads_fail_response(
-    novaseq_metrics_failing_reads_threshold_json, mock_response
+    novaseq_metrics_failing_reads_json, mock_response
 ) -> Mock:
-    return mock_response(novaseq_metrics_failing_reads_threshold_json)
+    return mock_response(novaseq_metrics_failing_reads_json)
+
+
+@pytest.fixture
+def novaseq_two_failing_metrics_response(
+    novaseq_metrics_two_failing, mock_response
+) -> Mock:
+    return mock_response(novaseq_metrics_two_failing)
 
 
 @pytest.fixture
