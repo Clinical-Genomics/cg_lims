@@ -428,5 +428,5 @@ def sequencing_quality_checker(
     )
 
     return SequencingQualityChecker(
-        status_db_api=status_db_api_client, artifact_manager=artifact_manager
+        cg_api_client=status_db_api_client, artifact_manager=artifact_manager
     )

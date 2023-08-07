@@ -14,10 +14,10 @@ class SequencingQualityChecker:
     READS_MIN_THRESHOLD = 1000
 
     def __init__(
-        self, status_db_api: StatusDBAPI, artifact_manager: SequencingArtifactManager
+        self, cg_api_client: StatusDBAPI, artifact_manager: SequencingArtifactManager
     ) -> None:
         self.artifact_manager: SequencingArtifactManager = artifact_manager
-        self.status_db_api: StatusDBAPI = status_db_api
+        self.cg_api_client: StatusDBAPI = cg_api_client
 
         self.q30_threshold = self.artifact_manager.q30_threshold
         self.flow_cell_name = self.artifact_manager.flow_cell_name
@@ -26,19 +26,12 @@ class SequencingQualityChecker:
         self.failed_sample_count = 0
 
 
-
     def _track_sample_lane(self, metrics: SampleLaneSequencingMetrics) -> None:
         sample_lane = (metrics.sample_internal_id, metrics.flow_cell_lane_number)
         self.sample_lanes_in_metrics.add(sample_lane)
 
     def _get_sequencing_metrics(self) -> List[SampleLaneSequencingMetrics]:
-        try:
-            return self.status_db_api.get_sequencing_metrics_for_flow_cell(
-                self.flow_cell_name
-            )
-        except LimsError as e:
-            LOG.error(f"Could not retrieve sequencing metrics for {self.flow_cell_name}: {e}")
-            raise
+        return self.cg_api_client.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
 
     def validate_sequencing_quality(self) -> str:
         LOG.info(f"Validating sequencing quality for flow cell {self.flow_cell_name}")

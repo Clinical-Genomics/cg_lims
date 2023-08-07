@@ -17,7 +17,7 @@ def sequencing_quality_control(ctx):
 
     quality_checker = SequencingQualityChecker(
         artifact_manager=artifact_manager,
-        status_db_api=status_db_api,
+        cg_api_client=status_db_api,
     )
 
     quality_summary: str = quality_checker.validate_sequencing_quality()
