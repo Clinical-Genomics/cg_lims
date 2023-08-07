@@ -5,7 +5,13 @@ from urllib.parse import urljoin
 
 import requests
 
-from cg_lims.exceptions import LimsError
+from cg_lims.exceptions import (
+    CgAPIClientConnectionError,
+    CgAPIClientDecodeError,
+    CgAPIClientError,
+    CgAPIClientTimeoutError,
+    LimsError,
+)
 from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
 
 LOG = logging.getLogger(__name__)
@@ -23,19 +29,19 @@ class StatusDBAPI:
 
         except requests.ConnectionError:
             LOG.error(f"Connection error when accessing {url}")
-            raise LimsError(f"Failed to connect to the server at {url}.")
+            raise CgAPIClientConnectionError(f"Failed to connect to the server at {url}.")
 
         except requests.Timeout:
             LOG.error(f"Timeout error when accessing {url}")
-            raise LimsError(f"Request to {url} timed out.")
+            raise CgAPIClientTimeoutError(f"Request to {url} timed out.")
 
         except requests.RequestException as e:
             LOG.error(f"Error when accessing {url}: {e}")
-            raise LimsError(f"An error occurred while making the request to {url}: {e}.")
+            raise CgAPIClientError(f"An error occurred while making the request to {url}: {e}.")
 
         except json.JSONDecodeError:
             LOG.error(f"Failed to decode JSON from {url}")
-            raise LimsError(f"Received an invalid JSON response from {url}.")
+            raise CgAPIClientDecodeError(f"Received an invalid JSON response from {url}.")
             
 
     def get_application_tag(self, tag_name, key=None, entry_point="/applications"):

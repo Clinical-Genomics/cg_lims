@@ -124,3 +124,20 @@ class HighConcentrationError(LimsError):
     """Raise when a value is invalid"""
 
     pass
+
+
+class CgAPIClientError(Exception):
+    """Base exception for API clients."""
+    pass
+
+class CgAPIClientConnectionError(CgAPIClientError):
+    """Raised when there's a connection error."""
+    pass
+
+class CgAPIClientTimeoutError(CgAPIClientError):
+    """Raised when the request times out."""
+    pass
+
+class CgAPIClientDecodeError(CgAPIClientError):
+    """Raised when there's an error decoding JSON."""
+    pass
