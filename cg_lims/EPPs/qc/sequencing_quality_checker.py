@@ -22,8 +22,10 @@ class SequencingQualityChecker:
         self.q30_threshold = self.artifact_manager.q30_threshold
         self.flow_cell_name = self.artifact_manager.flow_cell_name
 
-        self.failed_samples_count = 0
         self.sample_lanes_in_metrics = set()
+        self.failed_sample_count = 0
+
+
 
     def _track_sample_lane(self, metrics: SampleLaneSequencingMetrics) -> None:
         sample_lane = (metrics.sample_internal_id, metrics.flow_cell_lane_number)
@@ -45,10 +47,12 @@ class SequencingQualityChecker:
         sequencing_metrics = self._get_sequencing_metrics()
 
         for metrics in sequencing_metrics:
-            passed_qc = self._validate_sequencing_metrics(metrics)
-            self._update_sample_with_quality_results(metrics, passed_qc)
-            self._log_and_count_failed_samples(metrics, passed_qc)
             self._track_sample_lane(metrics)
+            passed_qc = self._quality_control(metrics)
+            self._update_sample_with_quality_results(metrics=metrics, passed_quality_control=passed_qc)
+
+            if not passed_qc:
+                self.failed_sample_count += 1
 
         return self._generate_summary()
 
@@ -63,15 +67,7 @@ class SequencingQualityChecker:
             passed_quality_control=passed_quality_control,
         )
 
-    def _log_and_count_failed_samples(
-        self, metrics: SampleLaneSequencingMetrics, passed_quality_control: bool
-    ) -> None:
-        """Log the failed samples and increment the count."""
-        if not passed_quality_control:
-            LOG.warning(f"Sample {metrics.sample_internal_id} failed QC check in lane {metrics.flow_cell_lane_number}")
-            self.failed_samples_count += 1
-
-    def _validate_sequencing_metrics(
+    def _quality_control(
         self, metrics: SampleLaneSequencingMetrics
     ) -> None:
         return self._passes_thresholds(
@@ -93,21 +89,21 @@ class SequencingQualityChecker:
         return list(self.sample_lanes_in_metrics - sample_lanes_in_lims)
 
     def _generate_summary(self) -> str:
-        quality_summary = "Validated samples."
+        messages = ["Validated samples."]
 
         samples_only_in_metrics = self._get_samples_only_in_metrics()
         samples_only_in_lims = self._get_samples_only_in_lims()
 
-        if self.failed_samples_count:
-            quality_summary = f"{quality_summary} {self.failed_samples_count} samples failed the quality control!"
-
+        if self.failed_sample_count:
+            messages.append(f"{self.failed_sample_count} samples failed the quality control!")
+        
         if samples_only_in_metrics:
-            quality_summary = f"{quality_summary} Could not find in lims: {samples_only_in_metrics}."
-
+            messages.append(f"Could not find in lims: {samples_only_in_metrics}.")
+        
         if samples_only_in_lims:
-            quality_summary = f"{quality_summary} Could not find metrics for: {samples_only_in_lims}."
+            messages.append(f"Could not find metrics for: {samples_only_in_lims}.")
 
-        return quality_summary
+        return " ".join(messages)
 
     def samples_failed_quality_control(self):
-        return self.failed_samples_count > 0
+        return self.failed_sample_count > 0
