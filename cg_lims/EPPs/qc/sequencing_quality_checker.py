@@ -37,9 +37,8 @@ class SequencingQualityChecker:
                 self.flow_cell_name
             )
         except LimsError as e:
-            error_message = f"Could not retrieve sequencing metrics for {self.flow_cell_name}: {e}"
-            LOG.error(error_message)
-            sys.exit(error_message)
+            LOG.error(f"Could not retrieve sequencing metrics for {self.flow_cell_name}: {e}")
+            raise
 
     def validate_sequencing_quality(self) -> str:
         LOG.info(f"Validating sequencing quality for flow cell {self.flow_cell_name}")
