@@ -74,7 +74,7 @@ class SequencingArtifactManager:
             raise LimsError("Q30 threshold not set")
         return int(q30_threshold)
 
-    def sample_lane_combinations_in_lims(self) -> set:
+    def sample_lanes_in_lims(self) -> set:
         return self._sample_lane_artifacts.get_sample_lane_combinations()
 
     def update_sample(

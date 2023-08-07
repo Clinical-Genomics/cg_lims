@@ -71,6 +71,7 @@ def test_some_samples_fail_quality_control(
     # THEN some samples in all lanes should fail the quality control
     assert sequencing_quality_checker.samples_not_passing_qc_count == 2
 
+
 def test_metrics_missing_for_samples_in_lane(
     sequencing_quality_checker: SequencingQualityChecker,
     novaseq_missing_metrics_for_sample_in_lane_response: Mock,
@@ -82,9 +83,11 @@ def test_metrics_missing_for_samples_in_lane(
     mocker.patch("requests.get", return_value=novaseq_missing_metrics_for_sample_in_lane_response)
 
     # WHEN validating the sequencing quality
-    sequencing_quality_checker.validate_sequencing_quality()
+    summary: str = sequencing_quality_checker.validate_sequencing_quality()
 
     # THEN all samples pass the quality control
     assert not sequencing_quality_checker.samples_failed_quality_control()
 
-    # THEN the missing sample metrics should be reported
+    # THEN the missing metrics should be reported
+    missing_sample = str((missing_sample_id, missing_lane))
+    assert missing_sample in summary

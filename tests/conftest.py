@@ -327,7 +327,7 @@ def missing_sample_id(novaseq_sample_ids: List[str]) -> str:
 
 @pytest.fixture
 def missing_lane():
-    return 0
+    return 1
 
 
 @pytest.fixture
