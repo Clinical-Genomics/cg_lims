@@ -12,10 +12,10 @@ LOG = logging.getLogger(__name__)
 
 DENATURATION_VOLUMES = {
     "10B": {
-        "Volume of Pool to Denature (ul)": 40,
+        "Volume of Pool to Denature (ul)": 34,
         "PhiX Volume (ul)": 1,
-        "NaOH Volume (ul)": 10,
-        "Pre-load Buffer Volume (ul)": 150,
+        "NaOH Volume (ul)": 8.5,
+        "Pre-load Buffer Volume (ul)": 127.5,
     }
 }
 

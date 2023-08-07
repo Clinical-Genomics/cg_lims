@@ -11,7 +11,7 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 
-FLOW_CELL_LANE_VOLUMES = {"10B": 40}
+FLOW_CELL_LANE_VOLUMES = {"10B": 34}
 FLOW_CELL_SIZE = {"10B": 8}
 
 
