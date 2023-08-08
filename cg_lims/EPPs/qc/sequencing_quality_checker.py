@@ -34,6 +34,7 @@ class SequencingQualityChecker:
         return self.cg_api_client.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
 
     def validate_sequencing_quality(self) -> str:
+        """Validate the sequencing data for each sample on a flow cell based on the number of reads and q30 scores."""
         LOG.info(f"Validating sequencing quality for flow cell {self.flow_cell_name}")
 
         sequencing_metrics = self._get_sequencing_metrics()
