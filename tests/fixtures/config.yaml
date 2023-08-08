@@ -3,3 +3,5 @@ HOST: somehoast.scilifelab.se
 USERNAME: someuser
 PASSWORD: somepassword
 CG_URL: https://something
+SERVICE_ACCOUNT_EMAIL: someemail@mail.com
+SERVICE_ACCOUNT_AUTH_FILE: /path/to/file.json
