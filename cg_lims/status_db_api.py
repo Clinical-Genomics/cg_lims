@@ -1,7 +1,6 @@
 import json
 import requests
 from typing import Any, Dict, List
-from urllib.parse import urljoin
 
 from cg_lims.token_manager import TokenManager
 from cg_lims.exceptions import LimsError
