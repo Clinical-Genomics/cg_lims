@@ -10,7 +10,7 @@ from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManage
 @click.pass_context
 def sequencing_quality_control(ctx):
     process = ctx.obj["process"]
-    status_db_api = ctx.obj["status_db_api"]
+    status_db_api = ctx.obj["status_db"]
     lims = ctx.obj["lims"]
 
     artifact_manager = SequencingArtifactManager(process=process, lims=lims)
