@@ -1,15 +1,13 @@
 import logging
-from typing import List, Set, Tuple
+from typing import List
 
+from cg_lims.EPPs.qc.models import SampleLane, SampleLaneSet
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
-from cg_lims.exceptions import LimsError
 from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)
 
-SampleLane = Tuple[str, int]
-SampleLanesSet = Set[SampleLane]
 
 class SequencingQualityChecker:
     READS_MIN_THRESHOLD = 1000
@@ -23,7 +21,7 @@ class SequencingQualityChecker:
         self.q30_threshold: int = self.artifact_manager.q30_threshold
         self.flow_cell_name: str = self.artifact_manager.flow_cell_name
 
-        self.sample_lanes_in_metrics: SampleLanesSet = set()
+        self.sample_lanes_in_metrics: SampleLaneSet = set()
         self.failed_sample_count: int = 0
 
 
@@ -73,11 +71,11 @@ class SequencingQualityChecker:
         passes_read_threshold = reads >= self.READS_MIN_THRESHOLD
         return passes_q30_threshold and passes_read_threshold
 
-    def _get_samples_only_in_lims(self) -> List[str]:
+    def _get_samples_only_in_lims(self) -> List[SampleLane]:
         sample_lanes_in_lims = self.artifact_manager.get_sample_lanes_in_lims()
         return list(sample_lanes_in_lims - self.sample_lanes_in_metrics)
 
-    def _get_samples_only_in_metrics(self):
+    def _get_samples_only_in_metrics(self) -> List[SampleLane]:
         sample_lanes_in_lims = self.artifact_manager.get_sample_lanes_in_lims()
         return list(self.sample_lanes_in_metrics - sample_lanes_in_lims)
 

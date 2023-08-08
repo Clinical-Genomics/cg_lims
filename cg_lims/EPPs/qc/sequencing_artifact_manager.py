@@ -4,6 +4,7 @@ from typing import Dict, Optional
 
 from genologics.entities import Artifact, Process
 from genologics.lims import Lims
+from cg_lims.EPPs.qc.models import SampleLaneSet
 
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_lane_sample_artifacts
@@ -29,7 +30,7 @@ class SampleLaneArtifacts:
     def get(self, sample_id: str, lane: int) -> Optional[Artifact]:
         return self._sample_lane_artifacts.get(sample_id, {}).get(lane)
 
-    def get_sample_lane_combinations(self) -> set:
+    def get_sample_lane_combinations(self) -> SampleLaneSet:
         return {
             (sample_id, lane)
             for sample_id, lanes in self._sample_lane_artifacts.items()
@@ -74,7 +75,7 @@ class SequencingArtifactManager:
             raise LimsError("Q30 threshold not set")
         return int(q30_threshold)
 
-    def get_sample_lanes_in_lims(self) -> set:
+    def get_sample_lanes_in_lims(self) -> SampleLaneSet:
         return self._sample_lane_artifacts.get_sample_lane_combinations()
 
     def update_sample(
