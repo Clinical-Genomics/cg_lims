@@ -72,11 +72,11 @@ class SequencingQualityChecker:
         return passes_q30_threshold and passes_read_threshold
 
     def _get_samples_only_in_lims(self) -> List[SampleLane]:
-        sample_lanes_in_lims = self.artifact_manager.get_sample_lanes_in_lims()
+        sample_lanes_in_lims: SampleLaneSet = self.artifact_manager.get_sample_lanes_in_lims()
         return list(sample_lanes_in_lims - self.sample_lanes_in_metrics)
 
     def _get_samples_only_in_metrics(self) -> List[SampleLane]:
-        sample_lanes_in_lims = self.artifact_manager.get_sample_lanes_in_lims()
+        sample_lanes_in_lims: SampleLaneSet = self.artifact_manager.get_sample_lanes_in_lims()
         return list(self.sample_lanes_in_metrics - sample_lanes_in_lims)
 
     def _generate_summary(self) -> str:
