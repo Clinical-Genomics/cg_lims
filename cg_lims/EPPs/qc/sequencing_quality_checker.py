@@ -63,12 +63,12 @@ class SequencingQualityChecker:
     def _quality_control(
         self, metrics: SampleLaneSequencingMetrics
     ) -> None:
-        return self._passes_thresholds(
+        return self._passes_quality_thresholds(
             reads=metrics.sample_total_reads_in_lane,
             q30_score=metrics.sample_base_fraction_passing_q30,
         )
 
-    def _passes_thresholds(self, q30_score: float, reads: int) -> bool:
+    def _passes_quality_thresholds(self, q30_score: float, reads: int) -> bool:
         """Check if the provided metrics pass the minimum quality thresholds."""
         passes_q30_threshold = q30_score * 100 >= self.q30_threshold
         passes_read_threshold = reads >= self.READS_MIN_THRESHOLD
