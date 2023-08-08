@@ -3,18 +3,25 @@ import requests
 from typing import Any, Dict, List
 from urllib.parse import urljoin
 
+from cg_lims.token_manager import TokenManager
 from cg_lims.exceptions import LimsError
 from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
 
 
 class StatusDBAPI:
-    def __init__(self, base_url: str) -> None:
-        self.base_url = base_url
+    def __init__(self, base_url: str, token_manager: TokenManager = None) -> None:
+        self.base_url: str = base_url
+        self._token_manager: TokenManager = token_manager
+
+    @property
+    def auth_header(self) -> dict:
+        jwt_token: str = self._token_manager.get_token()
+        return {"Authorization": f"Bearer {jwt_token}"}
 
     def _get(self, endpoint: str) -> Any:
         url = urljoin(self.base_url, endpoint)
         try:
-            response = requests.get(url)
+            response = requests.get(url, headers=self.auth_header)
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:

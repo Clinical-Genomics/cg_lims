@@ -21,7 +21,9 @@ class OutputGenerationType(str, Enum):
     PER_REAGENT = "PerReagentLabel"
     PER_ALL_INPUTS = "PerAllInputs"
 
+
 ARTIFACT_KEY = "uri"
+
 
 def get_artifact_lane(artifact: Artifact) -> int:
     """Return the lane where an artifact is placed"""

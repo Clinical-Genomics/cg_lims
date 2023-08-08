@@ -1,19 +1,24 @@
 import datetime as dt
 from typing import Callable, Dict, List, Optional
+from unittest.mock import patch
 from genologics.lims import Lims
 from genologics.entities import Artifact, Process, Sample
 from pathlib import Path
-from mock import Mock
+from mock import MagicMock, Mock
 
 import pytest
 from click.testing import CliRunner
 
 import threading
 import time
+
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
 from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
 from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
+
+from cg_lims.token_manager import TokenManager
 from cg_lims.status_db_api import StatusDBAPI
+
 
 from limsmock.server import run_server
 from pydantic.v1 import BaseModel, Field
@@ -180,6 +185,13 @@ def barcode_tubes_csv() -> str:
 
 
 @pytest.fixture
+def token_manager():
+    service_account_email = "test@email.com"
+    service_account_auth_file = "/path/to/auth/file"
+    return TokenManager(service_account_email, service_account_auth_file)
+
+
+@pytest.fixture
 def lims_process_with_novaseq_data(lims) -> Process:
     """Return lims process populated with the data in fixtures/novaseq_standard."""
     server("novaseq_standard")
@@ -187,8 +199,15 @@ def lims_process_with_novaseq_data(lims) -> Process:
 
 
 @pytest.fixture
-def status_db_api_client() -> StatusDBAPI:
-    return StatusDBAPI("http://testbaseurl.com")
+def mock_token_manager() -> MagicMock:
+    mock_token_manager = MagicMock()
+    mock_token_manager.get_token.return_value = "mock_token"
+    return mock_token_manager
+
+
+@pytest.fixture
+def status_db_api_client(mock_token_manager: MagicMock) -> StatusDBAPI:
+    return StatusDBAPI(base_url="http://testbaseurl.com", token_manager=mock_token_manager)
 
 
 @pytest.fixture
