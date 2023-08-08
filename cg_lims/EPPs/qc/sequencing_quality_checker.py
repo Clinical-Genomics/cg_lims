@@ -4,7 +4,7 @@ from typing import List
 
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
 from cg_lims.exceptions import LimsError
-from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
+from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)

@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 
 from cg_lims.token_manager import TokenManager
 from cg_lims.exceptions import LimsError
-from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
+from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
 
 
 class StatusDBAPI:
