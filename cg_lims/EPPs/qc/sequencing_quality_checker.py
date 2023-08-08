@@ -1,6 +1,5 @@
 import logging
-import sys
-from typing import List
+from typing import List, Set, Tuple
 
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
 from cg_lims.exceptions import LimsError
@@ -9,6 +8,8 @@ from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)
 
+SampleLane = Tuple[str, int]
+SampleLanesSet = Set[SampleLane]
 
 class SequencingQualityChecker:
     READS_MIN_THRESHOLD = 1000
@@ -19,15 +20,15 @@ class SequencingQualityChecker:
         self.artifact_manager: SequencingArtifactManager = artifact_manager
         self.cg_api_client: StatusDBAPI = cg_api_client
 
-        self.q30_threshold = self.artifact_manager.q30_threshold
-        self.flow_cell_name = self.artifact_manager.flow_cell_name
+        self.q30_threshold: int = self.artifact_manager.q30_threshold
+        self.flow_cell_name: str = self.artifact_manager.flow_cell_name
 
-        self.sample_lanes_in_metrics = set()
-        self.failed_sample_count = 0
+        self.sample_lanes_in_metrics: SampleLanesSet = set()
+        self.failed_sample_count: int = 0
 
 
-    def _track_sample_lane(self, metrics: SampleLaneSequencingMetrics) -> None:
-        sample_lane = (metrics.sample_internal_id, metrics.flow_cell_lane_number)
+    def _add_sample_lane(self, metrics: SampleLaneSequencingMetrics) -> None:
+        sample_lane: SampleLane = (metrics.sample_internal_id, metrics.flow_cell_lane_number)
         self.sample_lanes_in_metrics.add(sample_lane)
 
     def _get_sequencing_metrics(self) -> List[SampleLaneSequencingMetrics]:
@@ -40,8 +41,8 @@ class SequencingQualityChecker:
         sequencing_metrics = self._get_sequencing_metrics()
 
         for metrics in sequencing_metrics:
-            self._track_sample_lane(metrics)
-            passed_qc = self._quality_control(metrics)
+            self._add_sample_lane(metrics)
+            passed_qc: bool = self._quality_control(metrics)
             self._update_sample_with_quality_results(metrics=metrics, passed_quality_control=passed_qc)
 
             if not passed_qc:
@@ -60,9 +61,7 @@ class SequencingQualityChecker:
             passed_quality_control=passed_quality_control,
         )
 
-    def _quality_control(
-        self, metrics: SampleLaneSequencingMetrics
-    ) -> None:
+    def _quality_control(self, metrics: SampleLaneSequencingMetrics) -> bool:
         return self._passes_quality_thresholds(
             reads=metrics.sample_total_reads_in_lane,
             q30_score=metrics.sample_base_fraction_passing_q30,
@@ -99,5 +98,5 @@ class SequencingQualityChecker:
 
         return " ".join(messages)
 
-    def samples_failed_quality_control(self):
+    def samples_failed_quality_control(self) -> bool:
         return self.failed_sample_count > 0
