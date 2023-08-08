@@ -19,7 +19,7 @@ class StatusDBAPI:
         return {"Authorization": f"Bearer {jwt_token}"}
 
     def _get(self, endpoint: str) -> Any:
-        url = urljoin(self.base_url, endpoint)
+        url = self.base_url + endpoint
         try:
             response = requests.get(url, headers=self.auth_header)
             response.raise_for_status()
