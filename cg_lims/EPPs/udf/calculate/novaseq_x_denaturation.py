@@ -37,7 +37,8 @@ def get_number_of_lanes(process: Process) -> int:
     flow_cell_type: str = get_flow_cell_type(process=process)
     if not number_of_lanes:
         LOG.info(
-            f"Missing number of lanes to load from previous step, using default value and assuming a fully loaded flow cell ({FLOW_CELL_SIZE[flow_cell_type]} lanes)."
+            f"Missing number of lanes to load from previous step, "
+            f"using default value and assuming a fully loaded flow cell ({FLOW_CELL_SIZE[flow_cell_type]} lanes)."
         )
         return FLOW_CELL_SIZE[flow_cell_type]
     return number_of_lanes
