@@ -7,19 +7,20 @@ from genologics.entities import Artifact, Process
 
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.EPPs.udf.calculate.constants import FlowCellTypes, FlowCellSize, FlowCellLaneVolumes10B
 
 LOG = logging.getLogger(__name__)
 
 DENATURATION_VOLUMES = {
-    "10B": {
-        "Volume of Pool to Denature (ul)": 34,
-        "PhiX Volume (ul)": 1,
-        "NaOH Volume (ul)": 8.5,
-        "Pre-load Buffer Volume (ul)": 127.5,
+    FlowCellTypes.FLOW_CELL_10B: {
+        "Volume of Pool to Denature (ul)": FlowCellLaneVolumes10B.POOL_VOLUME,
+        "PhiX Volume (ul)": FlowCellLaneVolumes10B.PHIX_VOLUME,
+        "NaOH Volume (ul)": FlowCellLaneVolumes10B.NAOH_VOLUME,
+        "Pre-load Buffer Volume (ul)": FlowCellLaneVolumes10B.BUFFER_VOLUME,
     }
 }
 
-FLOW_CELL_SIZE = {"10B": 8}
+FLOW_CELL_SIZE = {FlowCellTypes.FLOW_CELL_10B: FlowCellSize.FLOW_CELL_10B}
 
 
 def get_flow_cell_type(process: Process) -> str:
