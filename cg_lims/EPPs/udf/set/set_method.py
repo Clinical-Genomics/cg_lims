@@ -2,7 +2,7 @@
 """
 import logging
 import sys
-from typing import List, Optional
+from typing import List
 
 import click
 
@@ -10,7 +10,7 @@ import requests
 from genologics.entities import Process
 
 from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingUDFsError, AtlasResponseFailedError
+from cg_lims.exceptions import LimsError, AtlasResponseFailedError
 
 LOG = logging.getLogger(__name__)
 

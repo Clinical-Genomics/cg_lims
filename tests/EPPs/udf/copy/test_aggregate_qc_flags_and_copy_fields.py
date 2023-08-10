@@ -1,8 +1,7 @@
 import pytest
-from genologics.entities import Artifact, Process
+from genologics.entities import Process
 
-from cg_lims.EPPs.udf.copy.aggregate_qc_flags_and_copy_fields import get_copy_tasks, copy_udfs
-from cg_lims.get.artifacts import get_artifacts
+from cg_lims.EPPs.udf.copy.aggregate_qc_flags_and_copy_fields import get_copy_tasks
 from cg_lims.exceptions import MissingUDFsError
 from tests.conftest import server
 

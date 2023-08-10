@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple, Iterator
+from typing import List, Optional, Tuple
 from genologics.entities import Artifact
 from genologics.lims import Lims
 

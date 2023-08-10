@@ -1,4 +1,5 @@
 import logging
+
 from typing import List, Tuple
 
 from genologics.entities import Artifact, Process
