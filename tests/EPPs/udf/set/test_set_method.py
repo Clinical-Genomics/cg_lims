@@ -9,7 +9,6 @@ from tests.conftest import (
 
 import responses
 import requests
-import logging
 
 
 @pytest.fixture()

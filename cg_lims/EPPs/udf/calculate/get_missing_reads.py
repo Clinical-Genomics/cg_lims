@@ -70,7 +70,8 @@ def find_reruns(artifacts: list, status_db: StatusDBAPI) -> None:
             )
         except ConnectionError:
             raise LimsError(message="Could not communicate with cg server")
-        except:
+        except Exception as e:
+            LOG.error(f"Failed to retrieve application tags: {e}", exc_info=True)
             raise MissingCgFieldError(f"Could not find application tag: {app_tag} in database.")
 
         set_artifact_rerun(target_amount_reads, guaranteed_fraction, reads_total, artifact)

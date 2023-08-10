@@ -2,8 +2,6 @@ import logging
 import sys
 
 import click
-from genologics.entities import Process
-from genologics.lims import Lims
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError

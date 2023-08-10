@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from typing import Dict
 import click
 import yaml
 from genologics.lims import Lims
@@ -7,6 +8,7 @@ from cg_lims import options
 
 # commands
 from cg_lims.EPPs import epps
+from cg_lims.token_manager import TokenManager
 from cg_lims.scripts.base import scripts
 from cg_lims.status_db_api import StatusDBAPI
 
@@ -16,9 +18,19 @@ from cg_lims.status_db_api import StatusDBAPI
 @click.pass_context
 def cli(ctx, config):
     with open(config) as file:
-        config_data = yaml.load(file, Loader=yaml.FullLoader)
+        config_data: Dict = yaml.load(file, Loader=yaml.FullLoader)
     lims = Lims(config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"])
-    status_db = StatusDBAPI(config_data["CG_URL"])
+
+    service_account_email: str = config_data.get("SERVICE_ACCOUNT_EMAIL")
+    service_account_auth_file: str = config_data.get("SERVICE_ACCOUNT_AUTH_FILE")
+
+    token_manager: TokenManager = TokenManager(
+        service_account_email=service_account_email,
+        service_account_auth_file=service_account_auth_file,
+    )
+
+    cg_url: str = config_data.get("CG_URL")
+    status_db: StatusDBAPI = StatusDBAPI(base_url=cg_url, token_manager=token_manager)
 
     ctx.ensure_object(dict)
     ctx.obj["lims"] = lims
