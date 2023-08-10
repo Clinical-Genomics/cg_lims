@@ -3,6 +3,7 @@ import logging
 from typing import Any, Dict, List
 from urllib.parse import urljoin
 import requests
+from requests import Response
 
 from cg_lims.exceptions import (
     CgAPIClientConnectionError,
@@ -29,7 +30,7 @@ class StatusDBAPI:
     def _get(self, endpoint: str) -> Any:
         url = urljoin(self.base_url, endpoint)
         try:
-            response = requests.get(url, headers=self.auth_header)
+            response: Response = requests.get(url, headers=self.auth_header)
             response.raise_for_status()
             return response.json()
 
