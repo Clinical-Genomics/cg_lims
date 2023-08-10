@@ -1,4 +1,4 @@
-from typing import List, Optional, Literal
+from typing import Dict, List, Optional, Literal, Set, Tuple
 
 from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
@@ -20,6 +20,39 @@ class OutputGenerationType(str, Enum):
     PER_INPUT = "PerInput"
     PER_REAGENT = "PerReagentLabel"
     PER_ALL_INPUTS = "PerAllInputs"
+
+
+ARTIFACT_KEY = "uri"
+
+
+def get_artifact_lane(artifact: Artifact) -> int:
+    """Return the lane where an artifact is placed"""
+    return int(artifact.location[1].split(":")[0])
+
+
+def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
+    lane_sample_artifacts = set()
+
+    for input_map, output_map in process.input_output_maps:
+        try:
+            if is_output_type_per_reagent(output_map):
+                output_artifact: Artifact = get_artifact_from_map(output_map)
+                input_artifact: Artifact = get_artifact_from_map(input_map)
+                lane: int = get_artifact_lane(input_artifact)
+
+                lane_sample_artifacts.add((lane, output_artifact))
+        except KeyError:
+            continue
+
+    return list(lane_sample_artifacts)
+
+
+def is_output_type_per_reagent(output_map: Dict) -> bool:
+    return output_map["output-generation-type"] == OutputGenerationType.PER_REAGENT
+
+
+def get_artifact_from_map(map: Dict) -> Artifact:
+    return map[ARTIFACT_KEY]
 
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:

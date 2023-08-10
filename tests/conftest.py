@@ -1,13 +1,20 @@
+from typing import Dict, List
+from unittest.mock import patch
 
 from genologics.lims import Lims
-from genologics.entities import Artifact, Sample
+from genologics.entities import Artifact, Process, Sample
 from pathlib import Path
+from mock import MagicMock, Mock
 
 import pytest
 from click.testing import CliRunner
 
 import threading
 import time
+
+from cg_lims.token_manager import TokenManager
+from cg_lims.status_db_api import StatusDBAPI
+
 
 from limsmock.server import run_server
 
@@ -170,3 +177,52 @@ def barcode_tubes_csv() -> str:
     file_path = "tests/fixtures/barcode_tubes_csv.txt"
     file = Path(file_path)
     return file.read_text()
+
+
+@pytest.fixture
+def token_manager():
+    service_account_email = "test@email.com"
+    service_account_auth_file = "/path/to/auth/file"
+    return TokenManager(service_account_email, service_account_auth_file)
+
+
+@pytest.fixture
+def lims_process_with_novaseq_data(lims) -> Process:
+    """Return lims process populated with the data in fixtures/novaseq_standard."""
+    server("novaseq_standard")
+    return Process(lims=lims, id="24-308986")
+
+
+@pytest.fixture
+def mock_token_manager() -> MagicMock:
+    mock_token_manager = MagicMock()
+    mock_token_manager.get_token.return_value = "mock_token"
+    return mock_token_manager
+
+
+@pytest.fixture
+def status_db_api_client(mock_token_manager: MagicMock) -> StatusDBAPI:
+    return StatusDBAPI(base_url="http://testbaseurl.com", token_manager=mock_token_manager)
+
+
+@pytest.fixture
+def sequencing_metrics_json() -> List[Dict]:
+    return [
+        {
+            "flow_cell_name": "test",
+            "flow_cell_lane_number": 1,
+            "sample_internal_id": "test",
+            "sample_total_reads_in_lane": 100,
+            "sample_base_fraction_passing_q30": 0.95,
+            "sample_base_mean_quality_score": 30.0,
+            "created_at": "2022-01-01T00:00:00",
+        }
+    ]
+
+
+@pytest.fixture
+def mock_sequencing_metrics_get_response(sequencing_metrics_json) -> Mock:
+    mock_response = Mock()
+    mock_response.json.return_value = sequencing_metrics_json
+    mock_response.raise_for_status.return_value = None
+    return mock_response

@@ -22,12 +22,12 @@ def test_get_target_amount(mock_status_db, mock_get_udf, sample_1: Sample):
 
     # WHEN getting the target amount of reads via the StatusDBAPI
     mock_get_udf.return_value = test_app_tag
-    mock_status_db.apptag.return_value = 9_000_000
+    mock_status_db.get_application_tag.return_value = 9_000_000
     result = get_target_amount(test_app_tag, mock_status_db)
 
     # THEN the target amount of reads should be retrieved via the StatusDBAPI
     assert result == 9_000_000
-    assert mock_status_db.apptag.mock_calls == [
+    assert mock_status_db.get_application_tag.mock_calls == [
         mock.call(tag_name=test_app_tag, key="target_reads")
     ]
 
@@ -53,9 +53,7 @@ def test_set_reads_missing_on_sample(
     assert sample.udf["Reads missing (M)"] == 9
 
 
-@mock.patch(
-    "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
-)
+@mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample")
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")
 def test_set_reads_missing_one_sample(
     mock_status_db, mock_set_reads_missing_on_sample, sample_1: Sample
@@ -70,9 +68,7 @@ def test_set_reads_missing_one_sample(
     mock_set_reads_missing_on_sample.assert_called_with(sample_1, mock_status_db)
 
 
-@mock.patch(
-    "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
-)
+@mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample")
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")
 def test_set_reads_missing_multiple_samples(
     mock_status_db, mock_set_reads_missing_on_sample, sample_1: Sample, sample_2: Sample
@@ -90,9 +86,7 @@ def test_set_reads_missing_multiple_samples(
     ]
 
 
-@mock.patch(
-    "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
-)
+@mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample")
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")
 def test_set_reads_missing_one_sample_exception(
     mock_status_db,
@@ -109,15 +103,10 @@ def test_set_reads_missing_one_sample_exception(
 
     # AND one failed sample should be counted, and it's id should be returned
     mock_set_reads_missing_on_sample.assert_called_with(sample_1, mock_status_db)
-    assert (
-        error.value.message
-        == "Reads Missing (M) set on 0 sample(s), 1 sample(s) failed"
-    )
+    assert error.value.message == "Reads Missing (M) set on 0 sample(s), 1 sample(s) failed"
 
 
-@mock.patch(
-    "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
-)
+@mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample")
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")
 def test_set_reads_missing_multiple_samples_exception_on_first_sample(
     mock_status_db,
@@ -142,15 +131,10 @@ def test_set_reads_missing_multiple_samples_exception_on_first_sample(
         mock.call(sample_2, mock_status_db),
     ]
     # AND one failed sample should be counted, and it's id should be returned
-    assert (
-        error.value.message
-        == "Reads Missing (M) set on 1 sample(s), 1 sample(s) failed"
-    )
+    assert error.value.message == "Reads Missing (M) set on 1 sample(s), 1 sample(s) failed"
 
 
-@mock.patch(
-    "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
-)
+@mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample")
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")
 def test_set_reads_missing_multiple_samples_exception_on_second_sample(
     mock_status_db,
@@ -177,15 +161,10 @@ def test_set_reads_missing_multiple_samples_exception_on_second_sample(
         mock.call(sample_2, mock_status_db),
     ]
     # AND one failed sample should be counted
-    assert (
-        error.value.message
-        == "Reads Missing (M) set on 1 sample(s), 1 sample(s) failed"
-    )
+    assert error.value.message == "Reads Missing (M) set on 1 sample(s), 1 sample(s) failed"
 
 
-@mock.patch(
-    "cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample"
-)
+@mock.patch("cg_lims.EPPs.udf.set.set_samples_reads_missing.set_reads_missing_on_sample")
 @mock.patch("cg_lims.status_db_api.StatusDBAPI")
 def test_set_reads_missing_multiple_samples_exception_on_both_samples(
     mock_status_db,
@@ -211,7 +190,4 @@ def test_set_reads_missing_multiple_samples_exception_on_both_samples(
         mock.call(sample_2, mock_status_db),
     ]
     # AND two failed sample should be counted, and their id's should be returned
-    assert (
-        error.value.message
-        == "Reads Missing (M) set on 0 sample(s), 2 sample(s) failed"
-    )
+    assert error.value.message == "Reads Missing (M) set on 0 sample(s), 2 sample(s) failed"

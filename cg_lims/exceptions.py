@@ -124,3 +124,12 @@ class HighConcentrationError(LimsError):
     """Raise when a value is invalid"""
 
     pass
+
+
+class ServiceAccountFileError(Exception):
+    """
+    Raise when there is an issue with the service account file used
+    to generate tokens for accessing the cg API.
+    """
+
+    pass

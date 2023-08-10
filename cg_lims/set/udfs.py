@@ -1,10 +1,11 @@
+import logging
+
 from typing import List, Tuple
 
 from genologics.entities import Artifact, Process
 
-import logging
-
 from cg_lims.exceptions import MissingUDFsError
+from cg_lims.get.udfs import UserDefinedFields
 
 LOG = logging.getLogger(__name__)
 
@@ -33,8 +34,10 @@ def copy_artifact_to_artifact(
 
     if qc_flag:
         if keep_failed_flags and destination_artifact.qc_flag == "FAILED":
-            message = f"QC for destination artifact {destination_artifact.id} is failed, " \
-                      f"flag not copied over from source artifact {source_artifact.id}"
+            message = (
+                f"QC for destination artifact {destination_artifact.id} is failed, "
+                f"flag not copied over from source artifact {source_artifact.id}"
+            )
             LOG.error(message)
         else:
             destination_artifact.qc_flag = source_artifact.qc_flag
@@ -63,3 +66,11 @@ def copy_udf_process_to_artifact(
         message = f"{artifact_udf} doesn't seem to be a valid artifact udf."
         LOG.error(message)
         raise MissingUDFsError(message=message)
+
+
+def set_reads_count(artifact: Artifact, reads: int) -> None:
+    artifact.udf[UserDefinedFields.READS] = reads
+
+
+def set_q30_score(artifact: Artifact, q30_score: float) -> None:
+    artifact.udf[UserDefinedFields.Q30] = q30_score

@@ -1,4 +1,5 @@
 from datetime import date
+from enum import Enum
 from typing import Optional
 from genologics.entities import Entity
 from genologics.lims import Lims
@@ -7,6 +8,12 @@ from cg_lims.exceptions import MissingUDFsError
 import logging
 
 LOG = logging.getLogger(__name__)
+
+
+class UserDefinedFields(str, Enum):
+    READS = "# Reads"
+    Q30 = "% Bases >=Q30"
+    Q30_THRESHOLD = "Threshold for % bases >= Q30"
 
 
 def get_udf_type(lims: Lims, udf_name: str, attach_to_name: str) -> Optional:
@@ -36,3 +43,10 @@ def get_udf(entity: Entity, udf: str) -> str:
         message = f"UDF {udf} not found on {entity._TAG} {entity.id}!"
         LOG.error(message)
         raise MissingUDFsError(message)
+
+
+def get_q30_threshold(entity: Entity) -> Optional[str]:
+    try:
+        return get_udf(entity, UserDefinedFields.Q30_THRESHOLD.value)
+    except MissingUDFsError:
+        return None

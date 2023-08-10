@@ -1,19 +1,9 @@
 from genologics.lims import Process
 from typing import Optional
 import logging
-from enum import Enum
+from cg_lims.enums import StrEnum, IntEnum
 
 LOG = logging.getLogger(__name__)
-
-
-class StrEnum(str, Enum):
-    def __str__(self) -> str:
-        return str.__str__(self)
-
-
-class IntEnum(int, Enum):
-    def __int__(self) -> int:
-        return int.__int__(self)
 
 
 class IndexSetup(IntEnum):

@@ -7,6 +7,7 @@ from requests.exceptions import ConnectionError
 
 from cg_lims.exceptions import LimsError, MissingCgFieldError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.status_db_api import StatusDBAPI
 
 LOG = logging.getLogger(__name__)
 
@@ -40,11 +41,12 @@ def check_control(artifact: Artifact) -> bool:
     return all(sample.udf.get("Control") == "negative" for sample in artifact.samples)
 
 
-def find_reruns(artifacts: list, status_db) -> None:
+def find_reruns(artifacts: list, status_db: StatusDBAPI) -> None:
     """
     Looking for artifacts to rerun.
     Negative control samples are never sent for rerun.
-    A pool with any sample that is not a negative control will be sent for rerun if reads are missing."""
+    A pool with any sample that is not a negative control will be sent for rerun if reads are missing.
+    """
     failed_arts = 0
     for artifact in artifacts:
         if check_control(artifact):
@@ -60,13 +62,16 @@ def find_reruns(artifacts: list, status_db) -> None:
             continue
 
         try:
-            target_amount_reads = status_db.apptag(tag_name=app_tag, key="target_reads")
-            guaranteed_fraction = 0.01 * status_db.apptag(
+            target_amount_reads = status_db.get_application_tag(
+                tag_name=app_tag, key="target_reads"
+            )
+            guaranteed_fraction = 0.01 * status_db.get_application_tag(
                 tag_name=app_tag, key="percent_reads_guaranteed"
             )
         except ConnectionError:
             raise LimsError(message="Could not communicate with cg server")
-        except:
+        except Exception as e:
+            LOG.error(f"Failed to retrieve application tags: {e}", exc_info=True)
             raise MissingCgFieldError(f"Could not find application tag: {app_tag} in database.")
 
         set_artifact_rerun(target_amount_reads, guaranteed_fraction, reads_total, artifact)
@@ -80,9 +85,11 @@ def find_reruns(artifacts: list, status_db) -> None:
 @click.command()
 @click.pass_context
 def get_missing_reads(ctx):
-    """Script to calculate missing reads and decide on reruns.
+    """
+    Script to calculate missing reads and decide on reruns.
     Negative control samples are never sent for rerun.
-    A pool with any sample that is not a negative control will be sent for rerun if reads are missing."""
+    A pool with any sample that is not a negative control will be sent for rerun if reads are missing.
+    """
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
