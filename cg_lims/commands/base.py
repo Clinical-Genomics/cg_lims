@@ -23,10 +23,12 @@ def cli(ctx, config):
 
     service_account_email: str = config_data.get("SERVICE_ACCOUNT_EMAIL")
     service_account_auth_file: str = config_data.get("SERVICE_ACCOUNT_AUTH_FILE")
+    audience: str = config_data.get("BASEURI")
 
     token_manager: TokenManager = TokenManager(
         service_account_email=service_account_email,
         service_account_auth_file=service_account_auth_file,
+        audience=audience,
     )
 
     cg_url: str = config_data.get("CG_URL")
