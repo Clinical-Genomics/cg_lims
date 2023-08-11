@@ -291,7 +291,7 @@ def novaseq_metrics_passing_thresholds_json(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=10000,
-        base_fraction_passing_q30=1,
+        base_fraction_passing_q30=100,
     )
 
 
@@ -317,7 +317,7 @@ def novaseq_metrics_failing_reads_json(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=0,
-        base_fraction_passing_q30=1,
+        base_fraction_passing_q30=100,
     )
 
 
@@ -330,7 +330,7 @@ def novaseq_metrics_two_failing(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=10000,
-        base_fraction_passing_q30=1,
+        base_fraction_passing_q30=100,
     )
 
     metrics[0]["sample_base_fraction_passing_q30"] = 0
@@ -367,7 +367,7 @@ def novaseq_metrics_missing_for_sample_in_lane(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=10000,
-        base_fraction_passing_q30=1,
+        base_fraction_passing_q30=100,
     )
     for metric in metrics:
         if metric["flow_cell_lane_number"] == missing_lane and metric["sample_internal_id"] == missing_sample_id:
@@ -389,7 +389,7 @@ def novaseq_missing_sample(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=10000,
-        base_fraction_passing_q30=1,
+        base_fraction_passing_q30=100,
     )
     return metrics
 
