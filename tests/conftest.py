@@ -188,7 +188,8 @@ def barcode_tubes_csv() -> str:
 def token_manager():
     service_account_email = "test@email.com"
     service_account_auth_file = "/path/to/auth/file"
-    return TokenManager(service_account_email, service_account_auth_file)
+    audience = "audience"
+    return TokenManager(service_account_email, service_account_auth_file, audience)
 
 
 @pytest.fixture
@@ -220,7 +221,6 @@ def sequencing_metrics_json() -> List[Dict]:
             "sample_total_reads_in_lane": 100,
             "sample_base_fraction_passing_q30": 0.95,
             "sample_base_mean_quality_score": 30.0,
-            "created_at": "2022-01-01T00:00:00",
         }
     ]
 
