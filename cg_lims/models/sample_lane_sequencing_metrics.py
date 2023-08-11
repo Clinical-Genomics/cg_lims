@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class SampleLaneSequencingMetrics(BaseModel):
@@ -10,3 +10,7 @@ class SampleLaneSequencingMetrics(BaseModel):
     sample_base_fraction_passing_q30: float
     sample_base_mean_quality_score: float
     created_at: datetime
+
+    @validator('created_at', pre=True)
+    def parse_datetime(cls, value: str) -> datetime:
+        return datetime.strptime(value, "%a, %d %b %Y %H:%M:%S %Z")
