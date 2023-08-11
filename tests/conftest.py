@@ -275,7 +275,6 @@ def generate_metrics_json(
                 "sample_internal_id": sample_id,
                 "sample_total_reads_in_lane": total_reads_in_lane,
                 "sample_base_fraction_passing_q30": base_fraction_passing_q30,
-                "sample_base_mean_quality_score": 100,
                 "created_at": dt.datetime.now().isoformat(),
             }
             metrics.append(metric)
