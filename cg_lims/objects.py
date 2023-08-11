@@ -1,6 +1,6 @@
 """Base cg_lims calss definitions
 """
-from typing import Optional, List
+from typing import Optional
 
 from genologics.entities import Artifact, Sample, Process
 from genologics.lims import Lims
@@ -16,7 +16,6 @@ from cg_lims.get.artifacts import (
     get_latest_analyte,
 )
 import logging
-from statistics import mean
 
 LOG = logging.getLogger(__name__)
 
@@ -160,7 +159,6 @@ class BaseAnalyte:
         )
 
     def base_fields(self) -> dict:
-
         return dict(
             well_position=self.get_well(),
             container_name=self.get_container_name(),

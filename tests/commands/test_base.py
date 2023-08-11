@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import pytest
 from click.testing import CliRunner
 
 from cg_lims.commands.base import cli

@@ -1,9 +1,11 @@
 import pytest
-from genologics.entities import Artifact, Process
+from genologics.entities import Process
 
-from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import calculate_average_size, set_average_and_qc
-from cg_lims.exceptions import MissingUDFsError, MissingCgFieldError
-from cg_lims.set.udfs import copy_artifact_to_artifact
+from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import (
+    calculate_average_size,
+    set_average_and_qc,
+)
+from cg_lims.exceptions import MissingUDFsError
 from tests.conftest import server
 
 
@@ -62,7 +64,9 @@ def test_set_average_and_qc(lims):
     all_artifacts[1].qc_flag = "PASSED"
 
     # WHEN running set_average_and_qc
-    set_average_and_qc(average=400, lower_threshold="300", upper_threshold="", all_artifacts=all_artifacts)
+    set_average_and_qc(
+        average=400, lower_threshold="300", upper_threshold="", all_artifacts=all_artifacts
+    )
 
     # THEN the average set is 400 and the QC flags of the artifacts are unchanged if already existing,
     # or set to "PASSED" if previously set to None
@@ -82,7 +86,9 @@ def test_set_average_and_qc_under_lt(lims):
     all_artifacts[1].qc_flag = "PASSED"
 
     # WHEN running set_average_and_qc
-    set_average_and_qc(average=200, lower_threshold="300", upper_threshold="600", all_artifacts=all_artifacts)
+    set_average_and_qc(
+        average=200, lower_threshold="300", upper_threshold="600", all_artifacts=all_artifacts
+    )
 
     # THEN the average set is 200 and the QC flags of the artifacts are all set to "FAILED",
     # no matter what the previous state was
@@ -100,7 +106,9 @@ def test_set_average_and_qc_over_ut(lims):
     all_artifacts[1].qc_flag = "PASSED"
 
     # WHEN running set_average_and_qc
-    set_average_and_qc(average=700, lower_threshold="300", upper_threshold="600", all_artifacts=all_artifacts)
+    set_average_and_qc(
+        average=700, lower_threshold="300", upper_threshold="600", all_artifacts=all_artifacts
+    )
 
     # THEN the average set is 700 and the QC flags of the artifacts are all set to "FAILED",
     # no matter what the previous state was

@@ -1,15 +1,10 @@
 #!/usr/bin/env python
-import logging
 import sys
 
 import click
-from genologics.entities import Process
-from genologics.lims import Lims
 
 from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.samples import get_process_samples
-
 
 
 @click.command()
@@ -38,4 +33,3 @@ def process_to_sample(ctx, sample_udf, process_udf):
         click.echo(f"Udf {sample_udf} have been set on all samples.")
     else:
         sys.exit(f"Could not set udfs on {len(failed_samples)} samples.")
-

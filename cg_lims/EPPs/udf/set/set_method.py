@@ -2,7 +2,7 @@
 """
 import logging
 import sys
-from typing import List, Optional
+from typing import List
 
 import click
 
@@ -10,7 +10,7 @@ import requests
 from genologics.entities import Process
 
 from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingUDFsError, AtlasResponseFailedError
+from cg_lims.exceptions import LimsError, AtlasResponseFailedError
 
 LOG = logging.getLogger(__name__)
 
@@ -20,14 +20,14 @@ def get_path(document_title: str, process: Process, atlas_host: str) -> str:
 
     response = requests.get(f"{atlas_host}/title/{document_title}/path")
     if response.status_code != 200:
-        LOG.error(f"Document \"{document_title}\" does not exist on Atlas.")
+        LOG.error(f'Document "{document_title}" does not exist on Atlas.')
         raise AtlasResponseFailedError(message=f"{response.status_code} : {response.text}")
     return response.json()
 
 
 def get_document_paths(document_udfs: List[str], process: Process, host: str) -> List[str]:
     """Get method document paths from Atlas"""
-    
+
     method_documents = []
     for udf in document_udfs:
         document_title: str = process.udf.get(udf)

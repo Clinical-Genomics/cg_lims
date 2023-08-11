@@ -7,12 +7,13 @@ from genologics.entities import Artifact, Process
 
 from cg_lims.exceptions import LimsError, MissingUDFsError, InvalidValueError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.EPPs.udf.calculate.constants import FlowCellTypes, FlowCellSize, FlowCellLaneVolumes10B
 
 LOG = logging.getLogger(__name__)
 
 
-FLOW_CELL_LANE_VOLUMES = {"10B": 40}
-FLOW_CELL_SIZE = {"10B": 8}
+FLOW_CELL_LANE_VOLUMES = {FlowCellTypes.FLOW_CELL_10B: FlowCellLaneVolumes10B.POOL_VOLUME}
+FLOW_CELL_SIZE = {FlowCellTypes.FLOW_CELL_10B: FlowCellSize.FLOW_CELL_10B}
 
 
 def get_flow_cell_type(process: Process) -> str:

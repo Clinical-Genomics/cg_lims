@@ -10,7 +10,7 @@ from genologics.lims import Artifact
 from cg_lims import options
 from cg_lims.EPPs.files.hamilton.models import BarcodeFileRow
 from cg_lims.exceptions import LimsError, MissingUDFsError
-from cg_lims.files.manage_csv_files import build_csv, sort_csv, sort_csv_plate_and_tube
+from cg_lims.files.manage_csv_files import build_csv, sort_csv_plate_and_tube
 from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
@@ -65,11 +65,13 @@ def get_file_data_and_write(
                 missing_source_barcode.append(source_artifact.id)
 
     build_csv(file=Path(file), rows=file_rows, headers=HEADERS)
-    sort_csv_plate_and_tube(file=Path(file),
-                            plate_columns=["Barcode Source Container", "Source Well"],
-                            tube_columns=["Destination Well"],
-                            plate_well_columns=["Source Well"],
-                            tube_well_columns=["Destination Well"])
+    sort_csv_plate_and_tube(
+        file=Path(file),
+        plate_columns=["Barcode Source Container", "Source Well"],
+        tube_columns=["Destination Well"],
+        plate_well_columns=["Source Well"],
+        tube_well_columns=["Destination Well"],
+    )
 
     if failed_samples:
         raise MissingUDFsError(
@@ -91,12 +93,12 @@ def get_file_data_and_write(
 @options.measurement()
 @click.pass_context
 def barcode_file(
-        ctx: click.Context,
-        file: str,
-        volume_udf: str,
-        buffer_udf: str,
-        pooling_step: bool,
-        measurement: bool = False,
+    ctx: click.Context,
+    file: str,
+    volume_udf: str,
+    buffer_udf: str,
+    pooling_step: bool,
+    measurement: bool = False,
 ):
     """Script to make a hamilton normalization file"""
 

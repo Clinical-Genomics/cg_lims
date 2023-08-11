@@ -28,6 +28,7 @@ from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import (
 )
 from cg_lims.EPPs.udf.calculate.novaseq_x_volumes import novaseq_x_volumes
 from cg_lims.EPPs.udf.calculate.pool_normalization import pool_normalization
+from cg_lims.EPPs.udf.calculate.novaseq_x_denaturation import novaseq_x_denaturation
 
 # commands
 from cg_lims.EPPs.udf.calculate.twist_pool import twist_pool
@@ -59,3 +60,4 @@ calculate.add_command(calculate_microbial_aliquot_volumes)
 calculate.add_command(calculate_average_size_and_set_qc)
 calculate.add_command(novaseq_x_volumes)
 calculate.add_command(pool_normalization)
+calculate.add_command(novaseq_x_denaturation)

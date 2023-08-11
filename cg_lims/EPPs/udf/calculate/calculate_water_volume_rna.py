@@ -8,7 +8,7 @@ from typing import List
 import click
 from genologics.entities import Artifact
 
-from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
+from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
@@ -38,7 +38,6 @@ def calculate_sample_and_water_volumes(artifacts: List[Artifact]):
             f"Could not apply calculation for {missing_udfs} out of {len(artifacts)} sample(s): "
             f"'Concentration' or 'Amount needed (ng)' is missing!"
         )
-
 
 
 @click.command()

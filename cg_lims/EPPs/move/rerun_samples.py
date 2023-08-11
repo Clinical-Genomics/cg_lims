@@ -5,7 +5,7 @@ import sys
 from typing import List
 
 import click
-from genologics.entities import Artifact, Process, Stage
+from genologics.entities import Artifact
 from genologics.lims import Lims
 
 from cg_lims import options

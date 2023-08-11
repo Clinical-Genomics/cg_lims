@@ -1,6 +1,7 @@
 import datetime as dt
 from typing import Callable, Dict, List, Optional
 from unittest.mock import patch
+
 from genologics.lims import Lims
 from genologics.entities import Artifact, Process, Sample
 from pathlib import Path
@@ -21,7 +22,6 @@ from cg_lims.status_db_api import StatusDBAPI
 
 
 from limsmock.server import run_server
-from pydantic.v1 import BaseModel, Field
 
 from tests.fixtures.flowcell_document import FLOW_CELL_DOCUMENT
 

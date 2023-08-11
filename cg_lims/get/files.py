@@ -1,12 +1,9 @@
 import pathlib
-from pathlib import Path
 from typing import Optional
 
 from genologics.config import BASEURI
-from genologics.entities import Artifact, Process
+from genologics.entities import Artifact
 from genologics.lims import Lims
-
-from cg_lims.exceptions import FileError
 
 
 def get_log_content(lims: Lims, file_id: str) -> str:

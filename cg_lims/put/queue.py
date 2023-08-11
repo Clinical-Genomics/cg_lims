@@ -1,9 +1,8 @@
 import logging
-import pathlib
 from typing import List
 
 from genologics.config import BASEURI
-from genologics.entities import Artifact, Process, Sample
+from genologics.entities import Artifact
 from genologics.lims import Lims
 
 from cg_lims.get.ids import unique_list_of_ids
