@@ -126,6 +126,28 @@ class HighConcentrationError(LimsError):
     pass
 
 
+class CgAPIClientError(Exception):
+    """Base exception for API clients."""
+
+    pass
+
+
+class CgAPIClientConnectionError(CgAPIClientError):
+    """Raised when there's a connection error."""
+
+    pass
+
+
+class CgAPIClientTimeoutError(CgAPIClientError):
+    """Raised when the request times out."""
+
+    pass
+
+
+class CgAPIClientDecodeError(CgAPIClientError):
+    """Raised when there's an error decoding JSON."""
+
+
 class ServiceAccountFileError(Exception):
     """
     Raise when there is an issue with the service account file used

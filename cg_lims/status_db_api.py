@@ -1,11 +1,21 @@
 import json
-import requests
+import logging
 from typing import Any, Dict, List
 from urllib.parse import urljoin
+import requests
+from requests import Response
 
+from cg_lims.exceptions import (
+    CgAPIClientConnectionError,
+    CgAPIClientDecodeError,
+    CgAPIClientError,
+    CgAPIClientTimeoutError,
+    LimsError,
+)
 from cg_lims.token_manager import TokenManager
-from cg_lims.exceptions import LimsError
 from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
+
+LOG = logging.getLogger(__name__)
 
 
 class StatusDBAPI:
@@ -21,11 +31,25 @@ class StatusDBAPI:
     def _get(self, endpoint: str) -> Any:
         url = urljoin(self.base_url, endpoint)
         try:
-            response = requests.get(url, headers=self.auth_header)
+            response: Response = requests.get(url, headers=self.auth_header)
             response.raise_for_status()
             return response.json()
+
+        except requests.ConnectionError:
+            LOG.error(f"Connection error when accessing {url}")
+            raise CgAPIClientConnectionError(f"Failed to connect to the server at {url}.")
+
+        except requests.Timeout:
+            LOG.error(f"Timeout error when accessing {url}")
+            raise CgAPIClientTimeoutError(f"Request to {url} timed out.")
+
         except requests.RequestException as e:
-            raise LimsError(f"Failed to get data from {url}, {e}")
+            LOG.error(f"Error when accessing {url}: {e}")
+            raise CgAPIClientError(f"An error occurred while making the request to {url}: {e}.")
+
+        except json.JSONDecodeError:
+            LOG.error(f"Failed to decode JSON from {url}")
+            raise CgAPIClientDecodeError(f"Received an invalid JSON response from {url}.")
 
     def get_application_tag(self, tag_name, key=None, entry_point="/applications"):
         try:
