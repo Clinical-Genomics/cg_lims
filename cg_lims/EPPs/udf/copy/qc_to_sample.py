@@ -9,10 +9,8 @@ from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)
 
-def artifacts_to_sample(
-    artifacts: list, sample_qc_udf: str = None
-) -> None:
 
+def artifacts_to_sample(artifacts: list, sample_qc_udf: str = None) -> None:
     """Function to copy artifact qc flag to sample UDF.
 
     For each artifact in the artifacts list, copying the qc_flagg
@@ -26,41 +24,35 @@ def artifacts_to_sample(
     failed_udfs = 0
     passed_udfs = 0
     for artifact in artifacts:
-        if artifact.qc_flag != 'UNKNOWN' and artifact.qc_flag is not None:
+        if artifact.qc_flag != "UNKNOWN" and artifact.qc_flag is not None:
             for sample in artifact.samples:
                 if artifact.qc_flag == "PASSED":
                     sample.udf[sample_qc_udf] = "True"
-                else :
+                else:
                     sample.udf[sample_qc_udf] = "False"
                 sample.put()
-                passed_udfs += 1  
+                passed_udfs += 1
         else:
-            LOG.error(
-                f"Sample {artifact.id} is missing qc_flag"
-            )
+            LOG.error(f"Sample {artifact.id} is missing qc_flag")
             failed_udfs += 1
-    if failed_udfs:          
+    if failed_udfs:
         raise MissingUDFsError(
             message=f"The qc_flag was is missing for {failed_udfs} artifacts. Udfs were set on {passed_udfs} samples."
         )
-        
+
+
 @click.command()
 @options.sample_qc_udf(help="Name of sample QC udf to set.")
 @options.input(
     help="Use this flag if you want copy udfs from input artifacts. Defaulte is output artifacts."
 )
 @click.pass_context
-def qc_to_sample(ctx, input,sample_qc_udf):
-    LOG.info(
-        f"Running {ctx.command_path} with params: {ctx.params}"
-    )
+def qc_to_sample(ctx, input, sample_qc_udf):
+    LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
     try:
         artifacts = get_artifacts(process=process, input=input)
-        artifacts_to_sample(
-            artifacts=artifacts,
-            sample_qc_udf=sample_qc_udf
-        )
+        artifacts_to_sample(artifacts=artifacts, sample_qc_udf=sample_qc_udf)
         message = "Udfs have been set on all samples."
         LOG.info(message)
         click.echo(message)

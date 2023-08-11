@@ -17,6 +17,7 @@ from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
 
 LOG = logging.getLogger(__name__)
 
+
 class StatusDBAPI:
     def __init__(self, base_url: str, token_manager: TokenManager = None) -> None:
         self.base_url: str = base_url
@@ -49,7 +50,6 @@ class StatusDBAPI:
         except json.JSONDecodeError:
             LOG.error(f"Failed to decode JSON from {url}")
             raise CgAPIClientDecodeError(f"Received an invalid JSON response from {url}.")
-            
 
     def get_application_tag(self, tag_name, key=None, entry_point="/applications"):
         try:

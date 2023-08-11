@@ -40,7 +40,6 @@ def calculate_sample_and_water_volumes(artifacts: List[Artifact]):
         )
 
 
-
 @click.command()
 @click.pass_context
 def calculate_water_volume_rna(context: click.Context):

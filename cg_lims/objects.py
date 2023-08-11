@@ -159,7 +159,6 @@ class BaseAnalyte:
         )
 
     def base_fields(self) -> dict:
-
         return dict(
             well_position=self.get_well(),
             container_name=self.get_container_name(),

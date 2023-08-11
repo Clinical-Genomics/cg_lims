@@ -6,7 +6,6 @@ from genologics.entities import Artifact
 from genologics.lims import Lims
 
 
-
 def get_log_content(lims: Lims, file_id: str) -> str:
     """Searching for a log file Artifact with file_id.
 
