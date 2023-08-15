@@ -1,6 +1,5 @@
 import datetime as dt
-from typing import Callable, Dict, List, Optional
-from unittest.mock import patch
+from typing import Callable, Dict, List
 
 from genologics.lims import Lims
 from genologics.entities import Artifact, Process, Sample
