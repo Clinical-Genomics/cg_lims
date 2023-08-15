@@ -4,7 +4,6 @@ from cg_lims.EPPs.qc.sequencing_quality_control import sequencing_quality_contro
 from cg_lims.EPPs.qc.set_qc_fail import set_qc_fail
 
 
-
 @click.group(invoke_without_command=True)
 @click.pass_context
 def qc(ctx):

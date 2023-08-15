@@ -24,7 +24,6 @@ class SequencingQualityChecker:
         self.sample_lanes_in_metrics: SampleLaneSet = set()
         self.failed_sample_count: int = 0
 
-
     def _add_sample_lane(self, metrics: SampleLaneSequencingMetrics) -> None:
         sample_lane: SampleLane = (metrics.sample_internal_id, metrics.flow_cell_lane_number)
         self.sample_lanes_in_metrics.add(sample_lane)
@@ -41,7 +40,9 @@ class SequencingQualityChecker:
         for metrics in sequencing_metrics:
             self._add_sample_lane(metrics)
             passed_qc: bool = self._quality_control(metrics)
-            self._update_sample_with_quality_results(metrics=metrics, passed_quality_control=passed_qc)
+            self._update_sample_with_quality_results(
+                metrics=metrics, passed_quality_control=passed_qc
+            )
 
             if not passed_qc:
                 self.failed_sample_count += 1
@@ -87,10 +88,10 @@ class SequencingQualityChecker:
 
         if self.failed_sample_count:
             messages.append(f"{self.failed_sample_count} samples failed the quality control!")
-        
+
         if samples_only_in_metrics:
             messages.append(f"Could not find in lims: {samples_only_in_metrics}.")
-        
+
         if samples_only_in_lims:
             messages.append(f"Could not find metrics for: {samples_only_in_lims}.")
 

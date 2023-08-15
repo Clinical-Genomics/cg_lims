@@ -15,7 +15,6 @@ class TokenManager:
         self._service_account_auth_file = service_account_auth_file
         self.audience = audience
 
-
     def get_token(self) -> str:
         """Get a valid JWT token."""
         credentials = service_account.IDTokenCredentials.from_service_account_file(

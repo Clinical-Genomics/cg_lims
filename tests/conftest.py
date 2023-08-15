@@ -369,7 +369,10 @@ def novaseq_metrics_missing_for_sample_in_lane(
         base_fraction_passing_q30=100,
     )
     for metric in metrics:
-        if metric["flow_cell_lane_number"] == missing_lane and metric["sample_internal_id"] == missing_sample_id:
+        if (
+            metric["flow_cell_lane_number"] == missing_lane
+            and metric["sample_internal_id"] == missing_sample_id
+        ):
             metrics.remove(metric)
     return metrics
 
@@ -401,23 +404,17 @@ def novaseq_passing_metrics_response(
 
 
 @pytest.fixture
-def novaseq_q30_fail_response(
-    novaseq_metrics_failing_q30_threshold_json, mock_response
-) -> Mock:
+def novaseq_q30_fail_response(novaseq_metrics_failing_q30_threshold_json, mock_response) -> Mock:
     return mock_response(novaseq_metrics_failing_q30_threshold_json)
 
 
 @pytest.fixture
-def novaseq_reads_fail_response(
-    novaseq_metrics_failing_reads_json, mock_response
-) -> Mock:
+def novaseq_reads_fail_response(novaseq_metrics_failing_reads_json, mock_response) -> Mock:
     return mock_response(novaseq_metrics_failing_reads_json)
 
 
 @pytest.fixture
-def novaseq_two_failing_metrics_response(
-    novaseq_metrics_two_failing, mock_response
-) -> Mock:
+def novaseq_two_failing_metrics_response(novaseq_metrics_two_failing, mock_response) -> Mock:
     return mock_response(novaseq_metrics_two_failing)
 
 
@@ -429,9 +426,7 @@ def novaseq_missing_metrics_for_sample_in_lane_response(
 
 
 @pytest.fixture
-def novaseq_metrics_with_extra_sample_response(
-    novaseq_missing_sample, mock_response
-) -> Mock:
+def novaseq_metrics_with_extra_sample_response(novaseq_missing_sample, mock_response) -> Mock:
     return mock_response(novaseq_missing_sample)
 
 
@@ -441,9 +436,7 @@ def sequencing_quality_checker(
     lims: Lims,
     status_db_api_client: StatusDBAPI,
 ) -> SequencingQualityChecker:
-    artifact_manager = SequencingArtifactManager(
-        process=lims_process_with_novaseq_data, lims=lims
-    )
+    artifact_manager = SequencingArtifactManager(process=lims_process_with_novaseq_data, lims=lims)
 
     return SequencingQualityChecker(
         cg_api_client=status_db_api_client, artifact_manager=artifact_manager
