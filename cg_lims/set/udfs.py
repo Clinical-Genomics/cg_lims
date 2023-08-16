@@ -69,8 +69,8 @@ def copy_udf_process_to_artifact(
 
 
 def set_reads_count(artifact: Artifact, reads: int) -> None:
-    artifact.udf[UserDefinedFields.READS] = reads
+    artifact.udf[UserDefinedFields.READS.value] = reads
 
 
 def set_q30_score(artifact: Artifact, q30_score: float) -> None:
-    artifact.udf[UserDefinedFields.Q30] = q30_score
+    artifact.udf[UserDefinedFields.Q30.value] = q30_score

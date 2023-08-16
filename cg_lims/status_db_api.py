@@ -1,9 +1,9 @@
 import json
 import logging
 from typing import Any, Dict, List
-from urllib.parse import urljoin
 import requests
 from requests import Response
+
 
 from cg_lims.exceptions import (
     CgAPIClientConnectionError,
@@ -13,7 +13,8 @@ from cg_lims.exceptions import (
     LimsError,
 )
 from cg_lims.token_manager import TokenManager
-from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
+from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
+
 
 LOG = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ class StatusDBAPI:
         return {"Authorization": f"Bearer {jwt_token}"}
 
     def _get(self, endpoint: str) -> Any:
-        url = urljoin(self.base_url, endpoint)
+        url = self.base_url + endpoint
         try:
             response: Response = requests.get(url, headers=self.auth_header)
             response.raise_for_status()

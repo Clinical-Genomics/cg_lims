@@ -1,7 +1,7 @@
 from typing import Dict, List
 from mock import Mock
 
-from cg_lims.models.sequencing_metrics import SampleLaneSequencingMetrics
+from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
 
 
