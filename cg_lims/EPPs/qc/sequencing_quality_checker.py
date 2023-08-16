@@ -15,8 +15,7 @@ MISSING_IN_LIMS_MSG = (
 )
 
 MISSING_IN_METRICS_MSG = (
-    "Found artifacts in LIMS for the following sample lane combinations, "
-    "but no corresponding metrics were found:"
+    "No metrics were found for the following sample lane artifacts:"
 )
 
 
@@ -101,7 +100,8 @@ class SequencingQualityChecker:
         return list(in_metrics - in_lims)
 
     def _generate_summary(self) -> str:
-        messages = ["Validated sequencing quality.\n"]
+        sample_lane_count: int = len(self.artifact_manager.get_sample_lanes_in_lims())
+        messages = [f"Validated sequencing quality for flow cell {self.flow_cell_name} with {sample_lane_count} artifacts.\n"]
 
         only_in_metrics = self._get_sample_lanes_only_in_metrics()
         missing_in_metrics = self._get_sample_lanes_not_in_metrics()
