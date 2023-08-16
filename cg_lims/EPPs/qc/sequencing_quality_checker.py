@@ -14,9 +14,7 @@ MISSING_IN_LIMS_MSG = (
     "but they are not present in LIMS:"
 )
 
-MISSING_IN_METRICS_MSG = (
-    "No metrics were found for the following sample lane artifacts:"
-)
+MISSING_IN_METRICS_MSG = "No metrics were found for the following sample lane artifacts:"
 
 
 class SequencingQualityChecker:
@@ -35,7 +33,6 @@ class SequencingQualityChecker:
 
         self.metrics: List[SampleLaneSequencingMetrics] = []
         self.failed_qc_count: int = 0
-
 
     def _get_sequencing_metrics(self) -> List[SampleLaneSequencingMetrics]:
         metrics = self.cg_api_client.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
@@ -56,7 +53,7 @@ class SequencingQualityChecker:
                 self.failed_qc_count += 1
 
         self.failed_qc_count += len(self._get_sample_lanes_not_in_metrics())
-    
+
         return self._generate_summary()
 
     def _update_sample_with_quality_results(
@@ -101,7 +98,9 @@ class SequencingQualityChecker:
 
     def _generate_summary(self) -> str:
         sample_lane_count: int = len(self.artifact_manager.get_sample_lanes_in_lims())
-        messages = [f"Validated sequencing quality for flow cell {self.flow_cell_name} with {sample_lane_count} artifacts.\n"]
+        messages = [
+            f"Validated sequencing quality for flow cell {self.flow_cell_name} with {sample_lane_count} artifacts.\n"
+        ]
 
         only_in_metrics = self._get_sample_lanes_only_in_metrics()
         missing_in_metrics = self._get_sample_lanes_not_in_metrics()
@@ -119,18 +118,22 @@ class SequencingQualityChecker:
             messages.append("All sample lane artifacts in LIMS passed the quality control!")
 
         return "".join(messages)
-    
+
     def get_brief_summary(self) -> str:
         """Return a brief summary of the validation results."""
         messages = []
 
         if self.failed_qc_count:
-            messages.append(f"{self.failed_qc_count} sample lane artifacts failed the quality control!")
+            messages.append(
+                f"{self.failed_qc_count} sample lane artifacts failed the quality control!"
+            )
         else:
             messages.append("All sample lane artifacts in LIMS passed the quality control!")
 
         sample_lane_count: int = len(self.artifact_manager.get_sample_lanes_in_lims())
-        messages.append(f"Validated sequencing quality for flow cell {self.flow_cell_name} with {sample_lane_count} artifacts.")
+        messages.append(
+            f"Validated sequencing quality for flow cell {self.flow_cell_name} with {sample_lane_count} artifacts."
+        )
 
         return " ".join(messages)
 
