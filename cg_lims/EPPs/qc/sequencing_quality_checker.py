@@ -115,6 +115,9 @@ class SequencingQualityChecker:
         if missing_in_metrics:
             messages.append(f"{MISSING_IN_METRICS_MSG} {missing_in_metrics}.")
 
+        if not self.failed_qc_count and not missing_in_metrics:
+            messages.append("All sample lane artifacts in LIMS passed the quality control!")
+
         return "".join(messages)
 
     def samples_failed_quality_control(self) -> bool:
