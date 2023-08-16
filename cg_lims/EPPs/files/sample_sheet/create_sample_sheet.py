@@ -259,7 +259,7 @@ def create_sample_sheet(ctx, file: str):
 
     try:
         sample_sheet_content: str = create_sample_sheet_from_process(process=process)
-        run_name: str = process.udf.get("Experiment Name")
+        run_name: str = process.udf.get("BaseSpace Run Name")
         with open(f"{file}_samplesheet_{run_name}.csv", "w") as file:
             file.write(sample_sheet_content)
         click.echo("The sample sheet was successfully generated.")
