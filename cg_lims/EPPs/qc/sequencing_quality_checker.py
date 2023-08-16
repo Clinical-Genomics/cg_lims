@@ -119,6 +119,20 @@ class SequencingQualityChecker:
             messages.append("All sample lane artifacts in LIMS passed the quality control!")
 
         return "".join(messages)
+    
+    def get_brief_summary(self) -> str:
+        """Return a brief summary of the validation results."""
+        messages = []
+
+        if self.failed_qc_count:
+            messages.append(f"{self.failed_qc_count} sample lane artifacts failed the quality control!")
+        else:
+            messages.append("All sample lane artifacts in LIMS passed the quality control!")
+
+        sample_lane_count: int = len(self.artifact_manager.get_sample_lanes_in_lims())
+        messages.append(f"when validating sequencing quality for flow cell {self.flow_cell_name} with {sample_lane_count} artifacts.")
+
+        return " ".join(messages)
 
     def samples_failed_quality_control(self) -> bool:
         return self.failed_qc_count > 0

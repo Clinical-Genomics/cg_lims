@@ -29,10 +29,11 @@ def sequencing_quality_control(ctx):
     )
 
     quality_summary: str = quality_checker.validate_sequencing_quality()
+    brief_summary: str = quality_checker.get_brief_summary()
 
     if quality_checker.samples_failed_quality_control():
         LOG.error(quality_summary)
-        sys.exit(quality_summary)
+        sys.exit(brief_summary)
 
     LOG.info(quality_summary)
-    click.echo(quality_summary)
+    click.echo(brief_summary)
