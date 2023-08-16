@@ -155,8 +155,8 @@ def calculate_total_sample_volume(artifacts: List[Artifact]) -> float:
     return total_sample_volume
 
 
-def calculate_rsb_volume(artifacts: List[Artifact], adjusted_bulk_volume: float) -> float:
-    """Calculate and return the RSB volume."""
+def calculate_buffer_volume(artifacts: List[Artifact], adjusted_bulk_volume: float) -> float:
+    """Calculate and return the buffer volume."""
     return adjusted_bulk_volume - calculate_total_sample_volume(artifacts=artifacts)
 
 
@@ -176,13 +176,13 @@ def set_volumes_and_total_reads(process: Process) -> None:
         artifacts=artifacts, min_sample_volume=min_sample_volume
     )
     total_sample_volume: float = calculate_total_sample_volume(artifacts=artifacts)
-    rsb_volume = calculate_rsb_volume(
+    buffer_volume = calculate_buffer_volume(
         artifacts=artifacts, adjusted_bulk_volume=adjusted_bulk_volume
     )
 
     process.udf["Adjusted Bulk Pool Volume (ul)"] = adjusted_bulk_volume
     process.udf["Total Sample Volume (ul)"] = round(total_sample_volume, 2)
-    process.udf["RSB Volume (ul)"] = round(rsb_volume, 2)
+    process.udf["EB Buffer Volume (ul)"] = round(buffer_volume, 2)
     process.udf["Total nr of Reads Requested (sum of reads to sequence)"] = total_reads
     process.put()
 

@@ -53,7 +53,7 @@ class NovaSeqXRun:
 
     def __init__(self, process: Process):
         self.process: Process = process
-        self.run_name: str = process.udf.get("Experiment Name")
+        self.run_name: str = process.udf.get("BaseSpace Run Name")
         self.instrument_type: str = "NovaSeqxPlus"
         self.instrument_platform: str = "NovaSeqXSeries"
         self.index_orientation: str = "Forward"
