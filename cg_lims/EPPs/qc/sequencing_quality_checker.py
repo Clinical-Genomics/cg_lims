@@ -130,7 +130,7 @@ class SequencingQualityChecker:
             messages.append("All sample lane artifacts in LIMS passed the quality control!")
 
         sample_lane_count: int = len(self.artifact_manager.get_sample_lanes_in_lims())
-        messages.append(f"when validating sequencing quality for flow cell {self.flow_cell_name} with {sample_lane_count} artifacts.")
+        messages.append(f"Validated sequencing quality for flow cell {self.flow_cell_name} with {sample_lane_count} artifacts.")
 
         return " ".join(messages)
 
