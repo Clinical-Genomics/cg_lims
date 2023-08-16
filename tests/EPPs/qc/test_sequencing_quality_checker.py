@@ -17,7 +17,7 @@ def test_quality_control_of_flow_cell_with_all_passing(
     sequencing_quality_checker.validate_sequencing_quality()
 
     # THEN no samples should fail the quality control
-    assert sequencing_quality_checker.failed_sample_count == 0
+    assert sequencing_quality_checker.failed_qc_count == 0
 
 
 def test_all_samples_fail_q30(
@@ -35,7 +35,7 @@ def test_all_samples_fail_q30(
 
     # THEN all samples in all lanes should fail the quality control
     expected_fails: int = novaseq_lanes * len(novaseq_sample_ids)
-    assert sequencing_quality_checker.failed_sample_count == expected_fails
+    assert sequencing_quality_checker.failed_qc_count == expected_fails
 
 
 def test_all_samples_have_too_few_reads(
@@ -53,7 +53,7 @@ def test_all_samples_have_too_few_reads(
 
     # THEN all samples in all lanes should fail the quality control
     expected_fails: int = novaseq_lanes * len(novaseq_sample_ids)
-    assert sequencing_quality_checker.failed_sample_count == expected_fails
+    assert sequencing_quality_checker.failed_qc_count == expected_fails
 
 
 def test_some_samples_fail_quality_control(
@@ -68,7 +68,7 @@ def test_some_samples_fail_quality_control(
     sequencing_quality_checker.validate_sequencing_quality()
 
     # THEN some samples in all lanes should fail the quality control
-    assert sequencing_quality_checker.failed_sample_count == 2
+    assert sequencing_quality_checker.failed_qc_count == 2
 
 
 def test_metrics_missing_for_samples_in_lane(
@@ -84,8 +84,8 @@ def test_metrics_missing_for_samples_in_lane(
     # WHEN validating the sequencing quality
     summary: str = sequencing_quality_checker.validate_sequencing_quality()
 
-    # THEN all samples pass the quality control
-    assert sequencing_quality_checker.failed_sample_count == 0
+    # THEN the sample with missing metrics should fail qc
+    assert sequencing_quality_checker.failed_qc_count == 1
 
     # THEN the missing metrics should be reported
     missing_sample = str((missing_sample_id, missing_lane))
@@ -105,7 +105,7 @@ def test_sample_missing_in_lims(
     summary: str = sequencing_quality_checker.validate_sequencing_quality()
 
     # THEN all samples pass the quality control
-    assert sequencing_quality_checker.failed_sample_count == 0
+    assert sequencing_quality_checker.failed_qc_count == 0
 
     # THEN the missing sample should be reported
     assert sample_id_missing_in_lims in summary
