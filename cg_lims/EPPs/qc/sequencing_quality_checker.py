@@ -75,7 +75,7 @@ class SequencingQualityChecker:
 
     def _passes_quality_thresholds(self, q30_score: float, reads: int) -> bool:
         """Check if the provided metrics pass the minimum quality thresholds."""
-        passes_q30_threshold = q30_score >= self.q30_threshold
+        passes_q30_threshold = q30_score * 100 >= self.q30_threshold
         passes_read_threshold = reads >= self.READS_MIN_THRESHOLD
         return passes_q30_threshold and passes_read_threshold
 
