@@ -63,7 +63,7 @@ class SequencingQualityChecker:
             sample_id=metrics.sample_internal_id,
             lane=metrics.flow_cell_lane_number,
             reads=metrics.sample_total_reads_in_lane,
-            q30_score=metrics.sample_base_fraction_passing_q30,
+            q30_score=metrics.sample_base_fraction_passing_q30 * 100,
             passed_quality_control=passed_quality_control,
         )
 
@@ -75,7 +75,7 @@ class SequencingQualityChecker:
 
     def _passes_quality_thresholds(self, q30_score: float, reads: int) -> bool:
         """Check if the provided metrics pass the minimum quality thresholds."""
-        passes_q30_threshold = q30_score >= self.q30_threshold
+        passes_q30_threshold = q30_score * 100 >= self.q30_threshold
         passes_read_threshold = reads >= self.READS_MIN_THRESHOLD
         return passes_q30_threshold and passes_read_threshold
 
