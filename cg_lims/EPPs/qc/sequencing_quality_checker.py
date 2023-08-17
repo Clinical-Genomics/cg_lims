@@ -63,7 +63,7 @@ class SequencingQualityChecker:
             sample_id=metrics.sample_internal_id,
             lane=metrics.flow_cell_lane_number,
             reads=metrics.sample_total_reads_in_lane,
-            q30_score=metrics.sample_base_fraction_passing_q30,
+            q30_score=metrics.sample_base_fraction_passing_q30 * 100,
             passed_quality_control=passed_quality_control,
         )
 
