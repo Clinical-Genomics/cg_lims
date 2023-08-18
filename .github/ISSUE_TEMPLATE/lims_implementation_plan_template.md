@@ -7,8 +7,8 @@ assignees: "AnnaLeinfelt"
 ---
 
 <!--
-Unbolded text in italics in this document are instructions only and is to be replaced. For instructions regarding how to perform an
-Implementation see document 1184 Implementation routines.
+Unbolded text in italics in this document are instructions only and is to be replaced. 
+For instructions regarding how to perform an Implementation see document [Implementation routines].
 -->
 
 # Purpose
@@ -87,12 +87,9 @@ This section is to be filled in by the implementation responsible
 
 The validated workflow can be used when all sections in the implementation plan has been addressed and relevant colleagues have been informed.
 
+[Implementation routines](https://atlas.scilifelab.se/validation/implementation_routines/)
 [Function and signature list]: https://drive.google.com/drive/folders/1lDND1Shhf2bVEmLAiZvy7iJKXqy7qM3T
 [GitHub teams]: https://github.com/orgs/Clinical-Genomics/teams
 [Application tag spec]: https://atlas.scilifelab.se/infrastructure/application_tag/specification_and_priority_levels/
 [Creating new application tag]: https://atlas.scilifelab.se/infrastructure/application_tag/creating_new_application_tag/
-[Method instructions]: https://atlas.scilifelab.se/about/Templates/method_template/
-[Method list]: https://atlas.scilifelab.se/infrastructure/method_list/
-[Risk assessment]: https://atlas.scilifelab.se/risk_assessment/
-[weekly schedule]: https://atlas.scilifelab.se/organisation/weekly_planning_production/
 [webpage]: https://github.com/Clinical-Genomics/cgweb
