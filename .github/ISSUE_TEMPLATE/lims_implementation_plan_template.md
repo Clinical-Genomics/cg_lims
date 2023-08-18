@@ -83,9 +83,9 @@ This section is to be filled in by the implementation responsible
 
 \* At least one with deeper knowledge and understanding
 
-## Usage of validated document
+## Usage
 
-The validated document can be used when all sections in the implementation plan has been addressed and relevant colleagues have been informed.
+The validated workflow can be used when all sections in the implementation plan has been addressed and relevant colleagues have been informed.
 
 [Function and signature list]: https://drive.google.com/drive/folders/1lDND1Shhf2bVEmLAiZvy7iJKXqy7qM3T
 [GitHub teams]: https://github.com/orgs/Clinical-Genomics/teams
