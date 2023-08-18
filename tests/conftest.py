@@ -218,7 +218,7 @@ def sequencing_metrics_json() -> List[Dict]:
             "flow_cell_lane_number": 1,
             "sample_internal_id": "test",
             "sample_total_reads_in_lane": 100,
-            "sample_base_fraction_passing_q30": 0.95,
+            "sample_base_percentage_passing_q30": 0.95,
             "sample_base_mean_quality_score": 30.0,
         }
     ]
@@ -273,7 +273,7 @@ def generate_metrics_json(
                 "flow_cell_lane_number": lane,
                 "sample_internal_id": sample_id,
                 "sample_total_reads_in_lane": total_reads_in_lane,
-                "sample_base_fraction_passing_q30": base_fraction_passing_q30,
+                "sample_base_percentage_passing_q30": base_fraction_passing_q30,
                 "created_at": dt.datetime.now().isoformat(),
             }
             metrics.append(metric)
@@ -331,7 +331,7 @@ def novaseq_metrics_two_failing(
         base_fraction_passing_q30=0.95,
     )
 
-    metrics[0]["sample_base_fraction_passing_q30"] = 0
+    metrics[0]["sample_base_percentage_passing_q30"] = 0
     metrics[1]["sample_total_reads_in_lane"] = 0
 
     return metrics
