@@ -68,7 +68,7 @@ def get_kapa_library_preparation_twist(lims: Lims, sample_id: str, prep_id: str)
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="KAPA Library Preparation TWIST v4",
+        process_type="KAPA Library Preparation TWIST v1",
     )
     return ArnoldStep(
         **analyte.base_fields(),
