@@ -28,7 +28,7 @@ def get_capture_and_wash(lims: Lims, sample_id: str, prep_id: str) -> ArnoldStep
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Target enrichment TWIST v1",
+        process_type="Target enrichment TWIST v4",
     )
 
     return ArnoldStep(

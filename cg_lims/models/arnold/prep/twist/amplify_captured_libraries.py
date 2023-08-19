@@ -33,7 +33,7 @@ def get_amplify_captured_library_udfs(lims: Lims, sample_id: str, prep_id: str) 
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Target enrichment TWIST v1",
+        process_type="Target enrichment TWIST v4",
     )
 
     return ArnoldStep(

@@ -33,7 +33,7 @@ def get_normalization_of_samples(lims: Lims, sample_id: str, prep_id: str) -> Op
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Normalization of samples for sequencing (TWIST) v1",
+        process_type="Normalization of samples for sequencing (TWIST) v2",
         optional_step=True,
     )
     if not analyte.artifact:
