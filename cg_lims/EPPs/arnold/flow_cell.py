@@ -6,6 +6,7 @@ from genologics.lims import Process, Lims, Artifact
 import requests
 from requests import Response
 
+from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import OutputGenerationType, OutputType, get_output_artifacts
 
@@ -38,8 +39,9 @@ def build_novaseq_x_document(process: Process, lanes: List[Artifact]) -> NovaSeq
 
 
 @click.command()
+@options.novaseq_x_flow_cell()
 @click.pass_context
-def flow_cell(ctx):
+def flow_cell(ctx, novaseq_x_flow_cell: bool):
     """Creating flow cell documents from a run in the arnold flow_cell collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -52,9 +54,14 @@ def flow_cell(ctx):
         lims=lims,
         output_type=OutputType.RESULT_FILE,
     )
-    flow_cell_document: NovaSeq6000FlowCell = build_novaseq_6000_document(
-        process=process, lanes=lanes
-    )
+    if novaseq_x_flow_cell:
+        flow_cell_document: NovaSeqXFlowCell = build_novaseq_x_document(
+            process=process, lanes=lanes
+        )
+    else:
+        flow_cell_document: NovaSeq6000FlowCell = build_novaseq_6000_document(
+            process=process, lanes=lanes
+        )
     response: Response = requests.post(
         url=f"{arnold_host}/flow_cell",
         headers={"Content-Type": "application/json"},
