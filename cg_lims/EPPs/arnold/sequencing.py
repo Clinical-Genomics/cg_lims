@@ -11,13 +11,13 @@ from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.models.arnold.base_step import BaseStep
-from cg_lims.models.arnold.sequencing import build_novaseq_step_documents
+from cg_lims.models.arnold.sequencing.novaseq_6000 import build_novaseq_6000_step_documents
 
 
 LOG = logging.getLogger(__name__)
 
 sequencing_document_functions = {
-    "novaseq": build_novaseq_step_documents,
+    "novaseq": build_novaseq_6000_step_documents,
 }
 
 
