@@ -27,7 +27,7 @@ def get_pool_samples_twist(lims: Lims, sample_id: str, prep_id: str) -> ArnoldSt
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="pool samples TWIST v4",
+        process_type="pool samples TWIST v2",
     )
 
     return ArnoldStep(

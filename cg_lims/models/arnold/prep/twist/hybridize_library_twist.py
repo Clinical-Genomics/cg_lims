@@ -30,7 +30,7 @@ def get_hybridize_library_twist(lims: Lims, sample_id: str, prep_id: str) -> Arn
     analyte = BaseAnalyte(
         lims=lims,
         sample_id=sample_id,
-        process_type="Target enrichment TWIST v4",
+        process_type="Target enrichment TWIST v1",
     )
 
     return ArnoldStep(

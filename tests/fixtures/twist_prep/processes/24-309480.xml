@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <prc:process xmlns:prc="http://genologics.com/ri/process" xmlns:udf="http://genologics.com/ri/userdefined" uri="http://127.0.0.1:8000/api/v2/processes/24-309480" limsid="24-309480">
-    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1655">Target enrichment TWIST v4</type>
+    <type uri="http://127.0.0.1:8000/api/v2/processtypes/1655">Target enrichment TWIST v1</type>
     <date-run>2022-03-22</date-run>
     <technician uri="http://127.0.0.1:8000/api/v2/researchers/54">
         <first-name>Cecilia</first-name>
