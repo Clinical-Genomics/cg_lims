@@ -41,7 +41,7 @@ def build_novaseq_x_document(process: Process, lanes: List[Artifact]) -> NovaSeq
 @click.command()
 @options.novaseq_x_flow_cell()
 @click.pass_context
-def flow_cell(ctx, novaseq_x_flow_cell: bool):
+def flow_cell(ctx, novaseq_x: bool):
     """Creating flow cell documents from a run in the arnold flow_cell collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -54,7 +54,7 @@ def flow_cell(ctx, novaseq_x_flow_cell: bool):
         lims=lims,
         output_type=OutputType.RESULT_FILE,
     )
-    if novaseq_x_flow_cell:
+    if novaseq_x:
         flow_cell_document: NovaSeqXFlowCell = build_novaseq_x_document(
             process=process, lanes=lanes
         )
