@@ -25,7 +25,7 @@ def test_nova_seq_standard(lims):
 
     # WHEN running build_step_documents for the novaseq sequencing_method
     step_documents = build_step_documents(
-        lims=lims, process=process, sequencing_method="novaseq_6000"
+        lims=lims, process=process, sequencing_method="novaseq-6000"
     )
 
     # THEN assert BaseStep documents are created and all required step types in the covid prep workflow are represented

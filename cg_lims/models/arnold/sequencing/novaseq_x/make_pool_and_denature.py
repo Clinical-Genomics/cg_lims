@@ -12,7 +12,7 @@ class ProcessUDFs(BaseModel):
     """Make Pool and Denature (NovaSeq X)"""
 
     flowcell_type: Optional[str] = Field(None, alias="Flow Cell Type")
-    volume_of_pool: Optional[str] = Field(None, alias="Volume of Pool to Denature (ul")
+    volume_of_pool: Optional[str] = Field(None, alias="Volume of Pool to Denature (ul)")
     lanes_to_load: Optional[str] = Field(None, alias="Lanes to Load")
     buffer_lot_nr: Optional[str] = Field(None, alias="Pre-load Buffer lot nr")
     naoh_lot_nr: Optional[str] = Field(None, alias="NaOH lot nr")
@@ -41,6 +41,6 @@ def get_make_pool_and_denature(lims: Lims, sample_id: str, prep_id: str) -> Arno
         process_udfs=ProcessUDFs(**analyte.process_udfs()),
         sample_id=sample_id,
         prep_id=prep_id,
-        step_type="standard_make_pool_and_denature_x",
+        step_type="make_pool_and_denature_x",
         workflow="NovaSeq X"
     )

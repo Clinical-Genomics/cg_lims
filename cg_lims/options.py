@@ -293,7 +293,7 @@ def sequencing_method(help: str = "Sequencing Method") -> click.option:
         "--sequencing-method",
         required=True,
         help=help,
-        type=click.Choice(["novaseq"]),
+        type=click.Choice(["novaseq-6000", "novaseq-x"]),
     )
 
 

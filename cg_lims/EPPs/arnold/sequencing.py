@@ -18,13 +18,13 @@ from cg_lims.models.arnold.sequencing.novaseq_x import build_novaseq_x_step_docu
 LOG = logging.getLogger(__name__)
 
 sequencing_document_functions = {
-    "novaseq_6000": build_novaseq_6000_step_documents,
-    "novaseq_x": build_novaseq_x_step_documents,
+    "novaseq-6000": build_novaseq_6000_step_documents,
+    "novaseq-x": build_novaseq_x_step_documents,
 }
 
 
 def build_step_documents(
-    sequencing_method: Literal["novaseq_6000", "novaseq_x"], process: Process, lims: Lims
+    sequencing_method: Literal["novaseq-6000", "novaseq-x"], process: Process, lims: Lims
 ) -> List[BaseStep]:
     sequencing_document_function = sequencing_document_functions[sequencing_method]
     samples: List[Sample] = get_process_samples(process=process)
@@ -40,7 +40,7 @@ def build_step_documents(
 @click.command()
 @options.sequencing_method(help="Sequencing Method.")
 @click.pass_context
-def sequencing(ctx, sequencing_method: Literal["novaseq_6000", "novaseq_x"]):
+def sequencing(ctx, sequencing_method: Literal["novaseq-6000", "novaseq-x"]):
     """Creating Step documents from a run in the arnold step collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
