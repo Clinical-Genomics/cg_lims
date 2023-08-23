@@ -11,18 +11,20 @@ from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.models.arnold.base_step import BaseStep
-from cg_lims.models.arnold.sequencing import build_novaseq_step_documents
+from cg_lims.models.arnold.sequencing.novaseq_6000 import build_novaseq_6000_step_documents
+from cg_lims.models.arnold.sequencing.novaseq_x import build_novaseq_x_step_documents
 
 
 LOG = logging.getLogger(__name__)
 
 sequencing_document_functions = {
-    "novaseq": build_novaseq_step_documents,
+    "novaseq-6000": build_novaseq_6000_step_documents,
+    "novaseq-x": build_novaseq_x_step_documents,
 }
 
 
 def build_step_documents(
-    sequencing_method: Literal["novaseq"], process: Process, lims: Lims
+    sequencing_method: Literal["novaseq-6000", "novaseq-x"], process: Process, lims: Lims
 ) -> List[BaseStep]:
     sequencing_document_function = sequencing_document_functions[sequencing_method]
     samples: List[Sample] = get_process_samples(process=process)
@@ -38,7 +40,7 @@ def build_step_documents(
 @click.command()
 @options.sequencing_method(help="Sequencing Method.")
 @click.pass_context
-def sequencing(ctx, sequencing_method: Literal["novaseq"]):
+def sequencing(ctx, sequencing_method: Literal["novaseq-6000", "novaseq-x"]):
     """Creating Step documents from a run in the arnold step collection."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
