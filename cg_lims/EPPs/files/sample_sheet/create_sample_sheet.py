@@ -243,6 +243,7 @@ def create_sample_sheet_from_process(process: Process) -> str:
     return (
         run_settings.create_head_section()
         + run_settings.create_reads_section()
+        + run_settings.create_sequencing_settings_section()
         + create_bcl_settings_section(run_settings=run_settings)
         + create_bcl_data_section(run_settings=run_settings)
     )

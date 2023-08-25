@@ -63,6 +63,7 @@ class NovaSeqXRun:
         self.index_2_cycles: int = process.udf.get("Index Read 2")
         self.bclconvert_software_version: str = process.udf.get("BCLConvert Software Version")
         self.fastq_compression_format: str = process.udf.get("Compression Format")
+        self.library_tube_id: str = process.udf.get("Library Tube Strip ID")
 
     def create_head_section(self) -> str:
         """Return the [Head] section of the sample sheet."""
@@ -83,6 +84,13 @@ class NovaSeqXRun:
             f"Read2Cycles,{self.read_2_cycles}\n"
             f"Index1Cycles,{self.index_1_cycles}\n"
             f"Index2Cycles,{self.index_2_cycles}\n\n"
+        )
+
+    def create_sequencing_settings_section(self) -> str:
+        """Return the [Sequencing_Settings] section of the sample sheet"""
+        return (
+            f"{SampleSheetHeader.SETTINGS_SECTION}\n"
+            f"InputContainerIdentifier,{self.library_tube_id}\n\n"
         )
 
     def get_bcl_data_header_row(self) -> str:
@@ -126,9 +134,7 @@ class LaneSample:
         self.index_1: str = index_1
         if index_2:
             self.index_2: str = index_2
-        # if barcode_mismatch_index_1:
         self.barcode_mismatch_index_1 = barcode_mismatch_index_1
-        # if barcode_mismatch_index_2:
         self.barcode_mismatch_index_2 = barcode_mismatch_index_2
 
     @staticmethod
