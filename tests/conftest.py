@@ -218,7 +218,7 @@ def sequencing_metrics_json() -> List[Dict]:
             "flow_cell_lane_number": 1,
             "sample_internal_id": "test",
             "sample_total_reads_in_lane": 100,
-            "sample_base_fraction_passing_q30": 0.95,
+            "sample_base_percentage_passing_q30": 95,
             "sample_base_mean_quality_score": 30.0,
         }
     ]
@@ -263,7 +263,7 @@ def generate_metrics_json(
     sample_ids: List[str],
     lanes: int,
     total_reads_in_lane: int,
-    base_fraction_passing_q30: float,
+    base_percentage_passing_q30: float,
 ) -> List[Dict]:
     metrics = []
     for sample_id in sample_ids:
@@ -273,7 +273,7 @@ def generate_metrics_json(
                 "flow_cell_lane_number": lane,
                 "sample_internal_id": sample_id,
                 "sample_total_reads_in_lane": total_reads_in_lane,
-                "sample_base_fraction_passing_q30": base_fraction_passing_q30,
+                "sample_base_percentage_passing_q30": base_percentage_passing_q30,
                 "created_at": dt.datetime.now().isoformat(),
             }
             metrics.append(metric)
@@ -289,7 +289,7 @@ def novaseq_metrics_passing_thresholds_json(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=10000,
-        base_fraction_passing_q30=0.95,
+        base_percentage_passing_q30=95,
     )
 
 
@@ -302,7 +302,7 @@ def novaseq_metrics_failing_q30_threshold_json(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=10000,
-        base_fraction_passing_q30=0,
+        base_percentage_passing_q30=0,
     )
 
 
@@ -315,7 +315,7 @@ def novaseq_metrics_failing_reads_json(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=0,
-        base_fraction_passing_q30=0.95,
+        base_percentage_passing_q30=95,
     )
 
 
@@ -328,10 +328,10 @@ def novaseq_metrics_two_failing(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=10000,
-        base_fraction_passing_q30=0.95,
+        base_percentage_passing_q30=95,
     )
 
-    metrics[0]["sample_base_fraction_passing_q30"] = 0
+    metrics[0]["sample_base_percentage_passing_q30"] = 0
     metrics[1]["sample_total_reads_in_lane"] = 0
 
     return metrics
@@ -365,7 +365,7 @@ def novaseq_metrics_missing_for_sample_in_lane(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=10000,
-        base_fraction_passing_q30=0.95,
+        base_percentage_passing_q30=95,
     )
     for metric in metrics:
         if (
@@ -390,7 +390,7 @@ def novaseq_missing_sample(
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
         total_reads_in_lane=10000,
-        base_fraction_passing_q30=0.95,
+        base_percentage_passing_q30=95,
     )
     return metrics
 
