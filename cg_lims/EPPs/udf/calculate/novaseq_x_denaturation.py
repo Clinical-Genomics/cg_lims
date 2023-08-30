@@ -11,13 +11,37 @@ from cg_lims.EPPs.udf.calculate.constants import FlowCellTypes, FlowCellSize, Fl
 
 LOG = logging.getLogger(__name__)
 
+
+class DenaturationReagent:
+    def __init__(self, per_lane_udf: str, total_udf: str, volume: float):
+        self.per_lane_udf: str = per_lane_udf
+        self.total_udf: str = total_udf
+        self.volume: float = volume
+
+
 DENATURATION_VOLUMES = {
-    FlowCellTypes.FLOW_CELL_10B: {
-        "Volume of Pool to Denature (ul)": FlowCellLaneVolumes10B.POOL_VOLUME,
-        "PhiX Volume (ul)": FlowCellLaneVolumes10B.PHIX_VOLUME,
-        "NaOH Volume (ul)": FlowCellLaneVolumes10B.NAOH_VOLUME,
-        "Pre-load Buffer Volume (ul)": FlowCellLaneVolumes10B.BUFFER_VOLUME,
-    }
+    FlowCellTypes.FLOW_CELL_10B: [
+        DenaturationReagent(
+            per_lane_udf="Volume of Pool to Denature (ul) per Lane",
+            total_udf="Total Volume of Pool to Denature (ul)",
+            volume=FlowCellLaneVolumes10B.POOL_VOLUME,
+        ),
+        DenaturationReagent(
+            per_lane_udf="PhiX Volume (ul) per Lane",
+            total_udf="Total PhiX Volume (ul)",
+            volume=FlowCellLaneVolumes10B.PHIX_VOLUME,
+        ),
+        DenaturationReagent(
+            per_lane_udf="NaOH Volume (ul) per Lane",
+            total_udf="Total NaOH Volume (ul)",
+            volume=FlowCellLaneVolumes10B.NAOH_VOLUME,
+        ),
+        DenaturationReagent(
+            per_lane_udf="Pre-load Buffer Volume (ul) per Lane",
+            total_udf="Total Pre-load Buffer Volume (ul)",
+            volume=FlowCellLaneVolumes10B.BUFFER_VOLUME,
+        ),
+    ]
 }
 
 FLOW_CELL_SIZE = {FlowCellTypes.FLOW_CELL_10B: FlowCellSize.FLOW_CELL_10B}
@@ -51,8 +75,9 @@ def set_process_udfs(process: Process, parent_process: Process) -> None:
     number_of_lanes: int = get_number_of_lanes(process=parent_process)
     process.udf["Flow Cell Type"] = flow_cell_type
     process.udf["Lanes to Load"] = number_of_lanes
-    for key, val in DENATURATION_VOLUMES[flow_cell_type].items():
-        process.udf[key] = number_of_lanes * val
+    for reagent in DENATURATION_VOLUMES[flow_cell_type]:
+        process.udf[reagent.total_udf] = number_of_lanes * reagent.volume.value
+        process.udf[reagent.per_lane_udf] = reagent.volume.value
     process.put()
 
 
