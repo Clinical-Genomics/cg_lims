@@ -18,7 +18,6 @@ class ProcessUDFs(BaseModel):
 class ArnoldStep(BaseStep):
     process_udfs: ProcessUDFs
     artifact_udfs: ArtifactUDFs
-    #!!! same as container_name??? https://clinical-lims.scilifelab.se/clarity/work-complete/159432  Optional[str] = Field(None, alias="container_name")
 
     class Config:
         allow_population_by_field_name = True
