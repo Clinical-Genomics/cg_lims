@@ -234,7 +234,7 @@ def create_bcl_data_section(run_settings: NovaSeqXRun) -> str:
                 all_indexes=pool_indexes,
             )
             section = section + lane_sample.get_bclconversion_data_row()
-    return f"{section}"
+    return section
 
 
 def create_sample_sheet_from_process(process: Process) -> str:
