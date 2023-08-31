@@ -220,7 +220,7 @@ def get_lane_sample_object(
 
 def create_bcl_data_section(run_settings: NovaSeqXRun) -> str:
     """Return the BCLConvert_Data section of the sample sheet."""
-    section: str = f"{SampleSheetHeader.BCL_DATA_SECTION}\n"
+    section: str = f"{SampleSheetHeader.BCL_DATA_SECTION}"
     section = section + run_settings.get_bcl_data_header_row()
     lane_artifacts: Dict[int, Artifact] = get_lane_artifacts(process=run_settings.process)
     for lane in lane_artifacts:
@@ -240,13 +240,18 @@ def create_bcl_data_section(run_settings: NovaSeqXRun) -> str:
 def create_sample_sheet_from_process(process: Process) -> str:
     """Return the sample sheet content from a given sequencing run set-up process."""
     run_settings: NovaSeqXRun = NovaSeqXRun(process=process)
-    return (
+    sample_sheet = (
         run_settings.create_head_section()
         + run_settings.create_reads_section()
         + run_settings.create_sequencing_settings_section()
-        + create_bcl_settings_section(run_settings=run_settings)
-        + create_bcl_data_section(run_settings=run_settings)
     )
+    if process.udf["DRAGEN Demultiplex"]:
+        sample_sheet = (
+            sample_sheet
+            + create_bcl_settings_section(run_settings=run_settings)
+            + create_bcl_data_section(run_settings=run_settings)
+        )
+    return sample_sheet
 
 
 @click.command()

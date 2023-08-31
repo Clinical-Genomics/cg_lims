@@ -73,29 +73,29 @@ class NovaSeqXRun:
             f"RunName,{self.run_name}\n"
             f"InstrumentType,{self.instrument_type}\n"
             f"InstrumentPlatform,{self.instrument_platform}\n"
-            f"IndexOrientation,{self.index_orientation}\n\n"
+            f"IndexOrientation,{self.index_orientation}\n"
         )
 
     def create_reads_section(self) -> str:
         """Return the [Reads] section of the sample sheet."""
         return (
-            f"{SampleSheetHeader.READS_SECTION}\n"
+            f"\n{SampleSheetHeader.READS_SECTION}\n"
             f"Read1Cycles,{self.read_1_cycles}\n"
             f"Read2Cycles,{self.read_2_cycles}\n"
             f"Index1Cycles,{self.index_1_cycles}\n"
-            f"Index2Cycles,{self.index_2_cycles}\n\n"
+            f"Index2Cycles,{self.index_2_cycles}\n"
         )
 
     def create_sequencing_settings_section(self) -> str:
         """Return the [Sequencing_Settings] section of the sample sheet"""
         return (
-            f"{SampleSheetHeader.SETTINGS_SECTION}\n"
-            f"InputContainerIdentifier,{self.library_tube_id}\n\n"
+            f"\n{SampleSheetHeader.SETTINGS_SECTION}\n"
+            f"InputContainerIdentifier,{self.library_tube_id}\n"
         )
 
     def get_bcl_data_header_row(self) -> str:
         """Return the .csv-header of the BCLConvert_Data content section."""
-        base_header = "Lane,Sample_ID,Index"
+        base_header = f"\nLane,Sample_ID,Index"
         if self.index_2_cycles:
             base_header = base_header + ",Index2"
         if self.override_cycles:
