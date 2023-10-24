@@ -35,3 +35,4 @@ _Use the verification issue template for the initial testing if needed_
 
 - [ ] Add trending
 - [ ] Inform affected people about changes
+- [ ] ...
