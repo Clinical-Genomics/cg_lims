@@ -27,6 +27,11 @@ Follow document [New workflow in LIMS](https://atlas.scilifelab.se/infrastructur
 
 ### Workflow 
 
+| Protocol name: | Function:  |
+|---|---|
+|_write name here_ | _write function here_ |
+| ... | ... |
+
 _Outline the wishes for the workflow here_
 
 _Use the verification issue template for the initial testing if needed_
