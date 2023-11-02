@@ -19,7 +19,7 @@ def get_qc(source: str, conc: float, amount: float) -> str:
 
     qc = "FAILED"
 
-    if source == "cell-free DNA":
+    if source == "cell-free DNA" or source == "cfDNA":
         if amount >= 10 and conc <= 250 and conc >= 0.2:
             qc = "PASSED"
     else:
