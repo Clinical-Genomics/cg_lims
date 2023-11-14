@@ -26,15 +26,6 @@ class FlowCellLaneVolumes10B(FloatEnum):
     BUFFER_VOLUME: float = 127.5
 
 
-class FlowCellLaneVolumes25B(FloatEnum):
-    """The recommended volume of reagents per 25B flow cell lane. All values are in ul."""
-
-    POOL_VOLUME: float = 56
-    PHIX_VOLUME: float = 1.6
-    NAOH_VOLUME: float = 14
-    BUFFER_VOLUME: float = 210
-
-
 class FlowCellLaneVolumes15B(FloatEnum):
     """The recommended volume of reagents per 1.5B flow cell lane. All values are in ul."""
 
@@ -42,3 +33,12 @@ class FlowCellLaneVolumes15B(FloatEnum):
     PHIX_VOLUME: float = 1
     NAOH_VOLUME: float = 8.5
     BUFFER_VOLUME: float = 127.5
+
+
+class FlowCellLaneVolumes25B(FloatEnum):
+    """The recommended volume of reagents per 25B flow cell lane. All values are in ul."""
+
+    POOL_VOLUME: float = 56
+    PHIX_VOLUME: float = 1.6
+    NAOH_VOLUME: float = 14
+    BUFFER_VOLUME: float = 210

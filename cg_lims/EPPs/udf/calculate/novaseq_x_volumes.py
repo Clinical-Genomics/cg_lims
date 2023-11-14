@@ -7,13 +7,27 @@ from genologics.entities import Artifact, Process
 
 from cg_lims.exceptions import LimsError, MissingUDFsError, InvalidValueError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.EPPs.udf.calculate.constants import FlowCellTypes, FlowCellSize, FlowCellLaneVolumes10B
+from cg_lims.EPPs.udf.calculate.constants import (
+    FlowCellTypes,
+    FlowCellSize,
+    FlowCellLaneVolumes10B,
+    FlowCellLaneVolumes15B,
+    FlowCellLaneVolumes25B,
+)
 
 LOG = logging.getLogger(__name__)
 
 
-FLOW_CELL_LANE_VOLUMES = {FlowCellTypes.FLOW_CELL_10B: FlowCellLaneVolumes10B.POOL_VOLUME}
-FLOW_CELL_SIZE = {FlowCellTypes.FLOW_CELL_10B: FlowCellSize.FLOW_CELL_10B}
+FLOW_CELL_LANE_VOLUMES = {
+    FlowCellTypes.FLOW_CELL_10B: FlowCellLaneVolumes10B.POOL_VOLUME,
+    FlowCellTypes.FLOW_CELL_15B: FlowCellLaneVolumes15B.POOL_VOLUME,
+    FlowCellTypes.FLOW_CELL_25B: FlowCellLaneVolumes25B.POOL_VOLUME,
+}
+FLOW_CELL_SIZE = {
+    FlowCellTypes.FLOW_CELL_10B: FlowCellSize.FLOW_CELL_10B,
+    FlowCellTypes.FLOW_CELL_15B: FlowCellSize.FLOW_CELL_15B,
+    FlowCellTypes.FLOW_CELL_25B: FlowCellSize.FLOW_CELL_25B,
+}
 
 
 def get_flow_cell_type(process: Process) -> str:
