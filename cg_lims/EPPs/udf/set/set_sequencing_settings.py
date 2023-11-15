@@ -43,16 +43,26 @@ def get_flow_cell_type(process: Process) -> str:
     return flow_cell_type
 
 
+def get_flow_cell_name(process: Process) -> str:
+    """Return the flow cell name of the step."""
+    containers = process.output_containers()
+    return containers[0].name
+
+
 def set_process_udfs(process: Process, parent_process: Process) -> None:
     """Set Prepare for Sequencing (NovaSeq X) process UDFs."""
     library_tube_strip: str = get_library_tube_strip(process=parent_process)
     flow_cell_type: str = get_flow_cell_type(process=parent_process)
+    flow_cell_name: str = get_flow_cell_name(process=process)
+    read_length: int = DEFAULT_READ_LENGTHS[flow_cell_type].value
+    index_length: int = DEFAULT_INDEX_LENGTHS[flow_cell_type].value
     process.udf["Library Tube Strip ID"] = library_tube_strip
     process.udf["Run Mode"] = flow_cell_type
-    process.udf["Read 1 Cycles"] = DEFAULT_READ_LENGTHS[flow_cell_type]
-    process.udf["Read 2 Cycles"] = DEFAULT_READ_LENGTHS[flow_cell_type]
-    process.udf["Index Read 1"] = DEFAULT_INDEX_LENGTHS[flow_cell_type]
-    process.udf["Index Read 2"] = DEFAULT_INDEX_LENGTHS[flow_cell_type]
+    process.udf["Read 1 Cycles"] = read_length
+    process.udf["Read 2 Cycles"] = read_length
+    process.udf["Index Read 1"] = index_length
+    process.udf["Index Read 2"] = index_length
+    process.udf["BaseSpace Run Name"] = flow_cell_name
     process.put()
 
 
