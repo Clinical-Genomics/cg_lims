@@ -48,6 +48,7 @@ def set_process_udfs(process: Process, parent_process: Process) -> None:
     library_tube_strip: str = get_library_tube_strip(process=parent_process)
     flow_cell_type: str = get_flow_cell_type(process=parent_process)
     process.udf["Library Tube Strip ID"] = library_tube_strip
+    process.udf["Run Mode"] = flow_cell_type
     process.udf["Read 1 Cycles"] = DEFAULT_READ_LENGTHS[flow_cell_type]
     process.udf["Read 2 Cycles"] = DEFAULT_READ_LENGTHS[flow_cell_type]
     process.udf["Index Read 1"] = DEFAULT_INDEX_LENGTHS[flow_cell_type]
