@@ -4,6 +4,7 @@ import click
 
 # commands
 from cg_lims.EPPs.udf.check.check_artifact_udfs import check_artifact_udfs
+from cg_lims.EPPs.udf.check.check_process_udfs import check_process_udfs
 
 
 @click.group(invoke_without_command=True)
@@ -14,3 +15,4 @@ def check(ctx):
 
 
 check.add_command(check_artifact_udfs)
+check.add_command(check_process_udfs)
