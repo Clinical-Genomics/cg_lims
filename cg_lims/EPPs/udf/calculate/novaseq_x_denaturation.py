@@ -7,7 +7,13 @@ from genologics.entities import Artifact, Process
 
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.EPPs.udf.calculate.constants import FlowCellTypes, FlowCellSize, FlowCellLaneVolumes10B
+from cg_lims.EPPs.udf.calculate.constants import (
+    FlowCellTypes,
+    FlowCellSize,
+    FlowCellLaneVolumes10B,
+    FlowCellLaneVolumes15B,
+    FlowCellLaneVolumes25B,
+)
 
 LOG = logging.getLogger(__name__)
 
@@ -19,32 +25,59 @@ class DenaturationReagent:
         self.volume: float = volume
 
 
-DENATURATION_VOLUMES = {
-    FlowCellTypes.FLOW_CELL_10B: [
-        DenaturationReagent(
+class NovaSeqXDenaturation:
+    def __init__(self, pool: float, phix: float, naoh: float, buffer: float):
+        self.pool: DenaturationReagent = DenaturationReagent(
             per_lane_udf="Volume of Pool to Denature (ul) per Lane",
             total_udf="Total Volume of Pool to Denature (ul)",
-            volume=FlowCellLaneVolumes10B.POOL_VOLUME,
-        ),
-        DenaturationReagent(
+            volume=pool,
+        )
+        self.phix: DenaturationReagent = DenaturationReagent(
             per_lane_udf="PhiX Volume (ul) per Lane",
             total_udf="Total PhiX Volume (ul)",
-            volume=FlowCellLaneVolumes10B.PHIX_VOLUME,
-        ),
-        DenaturationReagent(
+            volume=phix,
+        )
+        self.naoh: DenaturationReagent = DenaturationReagent(
             per_lane_udf="NaOH Volume (ul) per Lane",
             total_udf="Total NaOH Volume (ul)",
-            volume=FlowCellLaneVolumes10B.NAOH_VOLUME,
-        ),
-        DenaturationReagent(
+            volume=naoh,
+        )
+        self.buffer: DenaturationReagent = DenaturationReagent(
             per_lane_udf="Pre-load Buffer Volume (ul) per Lane",
             total_udf="Total Pre-load Buffer Volume (ul)",
-            volume=FlowCellLaneVolumes10B.BUFFER_VOLUME,
-        ),
-    ]
+            volume=buffer,
+        )
+
+    def get_reagent_list(self):
+        return [self.pool, self.phix, self.naoh, self.buffer]
+
+
+DENATURATION_VOLUMES = {
+    FlowCellTypes.FLOW_CELL_10B: NovaSeqXDenaturation(
+        pool=FlowCellLaneVolumes10B.POOL_VOLUME,
+        phix=FlowCellLaneVolumes10B.PHIX_VOLUME,
+        naoh=FlowCellLaneVolumes10B.NAOH_VOLUME,
+        buffer=FlowCellLaneVolumes10B.BUFFER_VOLUME,
+    ),
+    FlowCellTypes.FLOW_CELL_15B: NovaSeqXDenaturation(
+        pool=FlowCellLaneVolumes15B.POOL_VOLUME,
+        phix=FlowCellLaneVolumes15B.PHIX_VOLUME,
+        naoh=FlowCellLaneVolumes15B.NAOH_VOLUME,
+        buffer=FlowCellLaneVolumes15B.BUFFER_VOLUME,
+    ),
+    FlowCellTypes.FLOW_CELL_25B: NovaSeqXDenaturation(
+        pool=FlowCellLaneVolumes25B.POOL_VOLUME,
+        phix=FlowCellLaneVolumes25B.PHIX_VOLUME,
+        naoh=FlowCellLaneVolumes25B.NAOH_VOLUME,
+        buffer=FlowCellLaneVolumes25B.BUFFER_VOLUME,
+    ),
 }
 
-FLOW_CELL_SIZE = {FlowCellTypes.FLOW_CELL_10B: FlowCellSize.FLOW_CELL_10B}
+FLOW_CELL_SIZE = {
+    FlowCellTypes.FLOW_CELL_10B: FlowCellSize.FLOW_CELL_10B,
+    FlowCellTypes.FLOW_CELL_15B: FlowCellSize.FLOW_CELL_15B,
+    FlowCellTypes.FLOW_CELL_25B: FlowCellSize.FLOW_CELL_25B,
+}
 
 
 def get_flow_cell_type(process: Process) -> str:
@@ -75,7 +108,7 @@ def set_process_udfs(process: Process, parent_process: Process) -> None:
     number_of_lanes: int = get_number_of_lanes(process=parent_process)
     process.udf["Flow Cell Type"] = flow_cell_type
     process.udf["Lanes to Load"] = number_of_lanes
-    for reagent in DENATURATION_VOLUMES[flow_cell_type]:
+    for reagent in DENATURATION_VOLUMES[flow_cell_type].get_reagent_list():
         process.udf[reagent.total_udf] = number_of_lanes * reagent.volume.value
         process.udf[reagent.per_lane_udf] = reagent.volume.value
     process.put()
