@@ -11,10 +11,21 @@ from cg_lims.get.samples import get_one_sample_from_artifact
 
 LOG = logging.getLogger(__name__)
 
+MAXIMUM_SAMPLE_AMOUNT = 250
 
-def get_qc(source: str, conc: float, amount: float) -> str:
+
+def get_maximum_amount(artifact: Artifact) -> float:
+    """Return the maximum allowed input amount of an artifact."""
+    sample = get_one_sample_from_artifact(artifact=artifact)
+    maximum_amount = sample.udf.get("Maximum input amount (ng)")
+    if maximum_amount:
+        return maximum_amount
+    return MAXIMUM_SAMPLE_AMOUNT
+
+
+def get_qc(source: str, conc: float, amount: float, max_amount: float) -> str:
     """QC-criteria depends on sample source, total amount and sample concentration. See AMS doc 1117, 1993 and 2125.
-    The volume is subtracted by 3 in the calculations. This is beacause the lab uses 3 ul in the initial qc measurements.
+    The volume is subtracted by 3 in the calculations. This is because the lab uses 3 ul in the initial qc measurements.
     """
 
     qc = "FAILED"
@@ -22,7 +33,7 @@ def get_qc(source: str, conc: float, amount: float) -> str:
         if amount >= 10 and 250 >= conc >= 0.2:
             qc = "PASSED"
     else:
-        if amount >= 250 and 250 >= conc >= 8.33:
+        if amount >= max_amount and 250 >= conc >= 8.33:
             qc = "PASSED"
     return qc
 
@@ -33,7 +44,7 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
     missing_udfs_count = 0
     qc_fail_count = 0
     for artifact in artifacts:
-        sample = get_one_sample_from_artifact(artifact)
+        sample = get_one_sample_from_artifact(artifact=artifact)
         source = sample.udf.get("Source")
         vol = artifact.udf.get("Volume (ul)")
         conc = artifact.udf.get("Concentration")
@@ -43,7 +54,8 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
 
         amount = conc * (vol - 3)
         artifact.udf["Amount (ng)"] = amount
-        qc = get_qc(source, conc, amount)
+        max_amount = get_maximum_amount(artifact=artifact)
+        qc = get_qc(source=source, conc=conc, amount=amount, max_amount=max_amount)
         if qc == "FAILED":
             qc_fail_count += 1
             LOG.info(
