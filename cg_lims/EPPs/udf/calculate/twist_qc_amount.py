@@ -18,14 +18,12 @@ def get_qc(source: str, conc: float, amount: float) -> str:
     """
 
     qc = "FAILED"
-
     if source == "cell-free DNA" or source == "cfDNA":
-        if amount >= 10 and conc <= 250 and conc >= 0.2:
+        if amount >= 10 and 250 >= conc >= 0.2:
             qc = "PASSED"
     else:
-        if amount >= 250 and conc <= 250 and conc >= 8.33:
+        if amount >= 250 and 250 >= conc >= 8.33:
             qc = "PASSED"
-
     return qc
 
 
@@ -70,11 +68,10 @@ def twist_qc_amount(ctx):
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
     process = ctx.obj["process"]
-    lims = ctx.obj["lims"]
 
     try:
         artifacts = get_artifacts(process=process, measurement=True)
-        calculate_amount_and_set_qc(artifacts)
+        calculate_amount_and_set_qc(artifacts=artifacts)
         message = "Amounts have been calculated and qc flags set for all samples."
         LOG.info(message)
         click.echo(message)
