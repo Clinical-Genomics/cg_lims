@@ -8,19 +8,11 @@ from genologics.entities import Artifact
 from cg_lims.exceptions import FailingQCError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
+from cg_lims.get.udfs import get_maximum_amount
 
 LOG = logging.getLogger(__name__)
 
 MAXIMUM_SAMPLE_AMOUNT = 250
-
-
-def get_maximum_amount(artifact: Artifact) -> float:
-    """Return the maximum allowed input amount of an artifact."""
-    sample = get_one_sample_from_artifact(artifact=artifact)
-    maximum_amount = sample.udf.get("Maximum input amount (ng)")
-    if maximum_amount:
-        return maximum_amount
-    return MAXIMUM_SAMPLE_AMOUNT
 
 
 def get_qc(source: str, conc: float, amount: float, max_amount: float) -> str:
@@ -54,7 +46,7 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
 
         amount = conc * (vol - 3)
         artifact.udf["Amount (ng)"] = amount
-        max_amount = get_maximum_amount(artifact=artifact)
+        max_amount = get_maximum_amount(artifact=artifact, default_amount=MAXIMUM_SAMPLE_AMOUNT)
         qc = get_qc(source=source, conc=conc, amount=amount, max_amount=max_amount)
         if qc == "FAILED":
             qc_fail_count += 1

@@ -7,7 +7,7 @@ from genologics.entities import Artifact
 
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.get.samples import get_one_sample_from_artifact
+from cg_lims.get.udfs import get_maximum_amount
 
 LOG = logging.getLogger(__name__)
 
@@ -17,15 +17,6 @@ LOG = logging.getLogger(__name__)
 MAXIMUM_SAMPLE_AMOUNT = 250
 
 
-def get_maximum_amount(artifact: Artifact) -> float:
-    """Return the maximum allowed input amount of an artifact."""
-    sample = get_one_sample_from_artifact(artifact=artifact)
-    maximum_amount = sample.udf.get("Maximum input amount (ng)")
-    if maximum_amount:
-        return maximum_amount
-    return MAXIMUM_SAMPLE_AMOUNT
-
-
 def set_amount_needed(artifacts: List[Artifact]):
     """The maximum amount taken into the prep is MAXIMUM_SAMPLE_AMOUNT.
     Any amount below this can be used in the prep if the total amount is limited."""
@@ -33,7 +24,7 @@ def set_amount_needed(artifacts: List[Artifact]):
     missing_udfs = 0
     for artifact in artifacts:
         amount = artifact.udf.get("Amount (ng)")
-        maximum_amount = get_maximum_amount(artifact=artifact)
+        maximum_amount = get_maximum_amount(artifact=artifact, default_amount=MAXIMUM_SAMPLE_AMOUNT)
         if not amount:
             missing_udfs += 1
             continue

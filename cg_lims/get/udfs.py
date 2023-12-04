@@ -1,7 +1,7 @@
 from datetime import date
 from enum import Enum
 from typing import Optional
-from genologics.entities import Entity
+from genologics.entities import Entity, Artifact
 from genologics.lims import Lims
 
 from cg_lims.exceptions import MissingUDFsError
@@ -50,3 +50,12 @@ def get_q30_threshold(entity: Entity) -> Optional[str]:
         return get_udf(entity, UserDefinedFields.Q30_THRESHOLD.value)
     except MissingUDFsError:
         return None
+
+
+def get_maximum_amount(artifact: Artifact, default_amount: float) -> float:
+    """Return the maximum allowed input amount of an artifact. A default value is returned if no UDF has been set."""
+    sample = artifact.samples[0]
+    maximum_amount = sample.udf.get("Maximum input amount (ng)")
+    if maximum_amount:
+        return maximum_amount
+    return default_amount
