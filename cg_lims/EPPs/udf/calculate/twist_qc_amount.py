@@ -8,24 +8,25 @@ from genologics.entities import Artifact
 from cg_lims.exceptions import FailingQCError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
+from cg_lims.get.udfs import get_maximum_amount
 
 LOG = logging.getLogger(__name__)
 
+MAXIMUM_SAMPLE_AMOUNT = 250
 
-def get_qc(source: str, conc: float, amount: float) -> str:
+
+def get_qc(source: str, conc: float, amount: float, max_amount: float) -> str:
     """QC-criteria depends on sample source, total amount and sample concentration. See AMS doc 1117, 1993 and 2125.
-    The volume is subtracted by 3 in the calculations. This is beacause the lab uses 3 ul in the initial qc measurements.
+    The volume is subtracted by 3 in the calculations. This is because the lab uses 3 ul in the initial qc measurements.
     """
 
     qc = "FAILED"
-
     if source == "cell-free DNA" or source == "cfDNA":
-        if amount >= 10 and conc <= 250 and conc >= 0.2:
+        if amount >= 10 and 250 >= conc >= 0.2:
             qc = "PASSED"
     else:
-        if amount >= 250 and conc <= 250 and conc >= 8.33:
+        if amount >= max_amount and 250 >= conc >= 8.33:
             qc = "PASSED"
-
     return qc
 
 
@@ -35,7 +36,7 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
     missing_udfs_count = 0
     qc_fail_count = 0
     for artifact in artifacts:
-        sample = get_one_sample_from_artifact(artifact)
+        sample = get_one_sample_from_artifact(artifact=artifact)
         source = sample.udf.get("Source")
         vol = artifact.udf.get("Volume (ul)")
         conc = artifact.udf.get("Concentration")
@@ -45,7 +46,8 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
 
         amount = conc * (vol - 3)
         artifact.udf["Amount (ng)"] = amount
-        qc = get_qc(source, conc, amount)
+        max_amount = get_maximum_amount(artifact=artifact, default_amount=MAXIMUM_SAMPLE_AMOUNT)
+        qc = get_qc(source=source, conc=conc, amount=amount, max_amount=max_amount)
         if qc == "FAILED":
             qc_fail_count += 1
             LOG.info(
@@ -70,11 +72,10 @@ def twist_qc_amount(ctx):
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
     process = ctx.obj["process"]
-    lims = ctx.obj["lims"]
 
     try:
         artifacts = get_artifacts(process=process, measurement=True)
-        calculate_amount_and_set_qc(artifacts)
+        calculate_amount_and_set_qc(artifacts=artifacts)
         message = "Amounts have been calculated and qc flags set for all samples."
         LOG.info(message)
         click.echo(message)
