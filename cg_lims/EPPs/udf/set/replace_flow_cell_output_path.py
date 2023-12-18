@@ -20,13 +20,13 @@ def get_output_path(process: Process) -> str:
 def convert_output_path(path: str) -> str:
     """Return a corrected output path if needed. Can currently convert paths of the types:
     - \\<some novaseq windows network path>\clinicaldata\Runs\<run folder>
-    - X:\<run folder>\
+    - <windows hard drive>:\<run folder>\
     - //cg-nas.scilifelab.se/cg_data/seqdata/20230824_LH00217_0004_A225CW7LT3
 
     They are replaced with: \\130.237.80.51\Runs\<run folder>
     """
     new_path = path
-    if "X:\\" in path:
+    if ":\\" in path:
         new_path = "\\\\130.237.80.51\\Runs" + path.split(":")[1]
     elif "\\clinicaldata\\Runs\\" in path:
         new_path = "\\\\130.237.80.51\\Runs" + path.split("Runs")[1]
