@@ -54,11 +54,11 @@ def calculate_sample_volume(
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
         error_message: str = (
-            f"The final concentration ({final_concentration} nM) can't be"
-            f" higher than the original one ({sample_concentration} nM)."
+            f"The final concentration ({final_concentration} nM) is"
+            f" higher than the original one ({sample_concentration} nM). No dilution needed."
         )
-        LOG.error(error_message)
-        raise InvalidValueError(error_message)
+        LOG.warning(error_message)
+        return total_volume
     return (final_concentration * total_volume) / sample_concentration
 
 
