@@ -57,7 +57,7 @@ def calculate_sample_volume(
             f"The final concentration ({final_concentration} nM) is"
             f" higher than the original one ({sample_concentration} nM). No dilution needed."
         )
-        LOG.warning(error_message)
+        LOG.error(error_message)
         return total_volume
     return (final_concentration * total_volume) / sample_concentration
 
