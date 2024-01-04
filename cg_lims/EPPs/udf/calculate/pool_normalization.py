@@ -49,7 +49,7 @@ def get_total_volume(artifact: Artifact, total_volume_udf: str) -> float:
 
 
 def calculate_sample_volume(
-    final_concentration: float, artifact: Artifact
+    final_concentration: float, artifact: Artifact, total_volume_udf: str
 ) -> float:
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     sample_concentration: float = get_artifact_concentration(
@@ -88,14 +88,10 @@ def set_artifact_volumes(
 ) -> None:
     """Set volume UDFs on artifact level, given a list of artifacts, final concentration, and UDF names."""
     for artifact in artifacts:
-        concentration: float = get_artifact_concentration(
-            artifact=artifact, concentration_udf=concentration_udf
-        )
-        total_volume: float = get_total_volume(artifact=artifact, total_volume_udf=total_volume_udf)
         sample_volume: float = calculate_sample_volume(
             final_concentration=final_concentration,
-            total_volume=total_volume,
-            sample_concentration=concentration,
+            artifact=artifact,
+            total_volume_udf=total_volume_udf,
         )
         buffer_volume: float = calculate_buffer_volume(
             total_volume=total_volume, sample_volume=sample_volume
