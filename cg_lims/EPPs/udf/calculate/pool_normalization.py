@@ -55,12 +55,12 @@ def calculate_sample_volume(
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
         error_message: str = (
-            f"The final concentration ({final_concentration} nM) is"
-            f" higher than the original one ({sample_concentration} nM). No dilution needed."
+            f"The final concentration ({final_concentration} nM) is higher than the original one"
+            f" ({sample_concentration} nM) for sample {artifact.samples[0].id}. No dilution needed."
         )
         LOG.error(error_message)
         global failed_samples
-        failed_samples = failed_samples.append(artifact.samples[0].id)
+        failed_samples.append(artifact.samples[0].id)
         return total_volume
     return (final_concentration * total_volume) / sample_concentration
 
