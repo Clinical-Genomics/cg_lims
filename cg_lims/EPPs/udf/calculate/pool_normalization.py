@@ -12,6 +12,7 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 failed_samples = []
 
+
 def get_final_concentration(process: Process, final_concentration_udf: str) -> float:
     """Return final concentration value from process."""
     final_concentration: Optional[float] = process.udf.get(final_concentration_udf)
@@ -49,13 +50,9 @@ def get_total_volume(artifact: Artifact, total_volume_udf: str) -> float:
 
 
 def calculate_sample_volume(
-    final_concentration: float, artifact: Artifact, total_volume_udf: str, concentration_udf: str
+    final_concentration: float, total_volume: float, sample_concentration: float, artifact: Artifact
 ) -> float:
     """Calculate and return the sample volume needed to reach the desired final concentration."""
-    sample_concentration: float = get_artifact_concentration(
-        artifact=artifact, concentration_udf=concentration_udf
-    )
-    total_volume: float = get_total_volume(artifact=artifact, total_volume_udf=total_volume_udf)
     if final_concentration > sample_concentration:
         error_message: str = (
             f"The final concentration ({final_concentration} nM) is"
@@ -88,11 +85,15 @@ def set_artifact_volumes(
 ) -> None:
     """Set volume UDFs on artifact level, given a list of artifacts, final concentration, and UDF names."""
     for artifact in artifacts:
+        sample_concentration: float = get_artifact_concentration(
+            artifact=artifact, concentration_udf=concentration_udf
+        )
+        total_volume: float = get_total_volume(artifact=artifact, total_volume_udf=total_volume_udf)
         sample_volume: float = calculate_sample_volume(
             final_concentration=final_concentration,
             artifact=artifact,
-            total_volume_udf=total_volume_udf,
-            concentration_udf=concentration_udf,
+            total_volume=total_volume,
+            sample_concentration=sample_concentration,
         )
         buffer_volume: float = calculate_buffer_volume(
             total_volume=total_volume, sample_volume=sample_volume
@@ -123,7 +124,9 @@ def pool_normalization(ctx: click.Context):
             concentration_udf="Concentration (nM)",
         )
         if failed_samples:
-            error_message = f"The following samples had a lower concentration than targeted: {failed_samples}"
+            error_message = (
+                f"The following samples had a lower concentration than targeted: {failed_samples}"
+            )
             LOG.info(error_message)
             raise InvalidValueError(error_message)
         message: str = "Volumes were successfully calculated."
