@@ -60,7 +60,7 @@ def calculate_sample_volume(
         )
         LOG.error(error_message)
         global failed_samples
-        failed_samples.append(artifact.samples[0].id)
+        failed_samples.append(artifact.name)
         return total_volume
     return (final_concentration * total_volume) / sample_concentration
 
@@ -124,9 +124,8 @@ def pool_normalization(ctx: click.Context):
             concentration_udf="Concentration (nM)",
         )
         if failed_samples:
-            error_message = (
-                f"The following samples had a lower concentration than targeted: {failed_samples}"
-            )
+            failed_samples_string = ", ".join(failed_samples)
+            error_message = f"The following artifacts had a lower concentration than targeted: {failed_samples_string}"
             LOG.info(error_message)
             raise InvalidValueError(error_message)
         message: str = "Volumes were successfully calculated."
