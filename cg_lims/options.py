@@ -365,3 +365,15 @@ def udf_values(
         multiple=True,
         help=help,
     )
+
+
+def novaseq_x_flow_cell(
+    help: str = "Flag to set flow cell type to NovaSeq X",
+) -> click.option:
+    return click.option(
+        "-nsx",
+        "--novaseq-x",
+        required=False,
+        is_flag=True,
+        help=help,
+    )

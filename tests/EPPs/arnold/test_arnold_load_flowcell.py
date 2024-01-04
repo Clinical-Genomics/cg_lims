@@ -1,8 +1,8 @@
 from genologics.entities import Process
 
-from cg_lims.EPPs.arnold.flow_cell import build_flow_cell_document
+from cg_lims.EPPs.arnold.flow_cell import build_novaseq_6000_document
 from cg_lims.get.artifacts import OutputGenerationType, OutputType, get_output_artifacts
-from cg_lims.models.arnold.flow_cell import FlowCell
+from cg_lims.models.arnold.flow_cell import NovaSeq6000FlowCell
 
 from tests.conftest import server
 
@@ -21,7 +21,7 @@ def test_load_flowcell(lims, flow_cell_fixture):
     )
 
     # WHEN running build_flow_cell_document
-    flow_cell: FlowCell = build_flow_cell_document(process=process, lanes=lanes)
+    flow_cell: NovaSeq6000FlowCell = build_novaseq_6000_document(process=process, lanes=lanes)
 
     # THEN assert the flow_cell document with its lanes was created.
     flow_cell_dict = flow_cell.dict()

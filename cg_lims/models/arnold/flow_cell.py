@@ -28,7 +28,7 @@ class Lane(BaseModel):
     percent_phasing_r2: Optional[float] = Field(None, alias="% Phasing R2")
 
 
-class FlowCell(BaseModel):
+class NovaSeq6000FlowCell(BaseModel):
     instrument: Optional[str] = Field(None, alias="instrument")
     date: Optional[date]
     done: Optional[bool] = Field(None, alias="Done")
@@ -57,6 +57,52 @@ class FlowCell(BaseModel):
     @validator(
         "sbs_expiration_date",
         "pe_expiration_date",
+        "flow_cell_expiration_date",
+        "buffer_expiration_date",
+        "date",
+        always=True,
+    )
+    def vali_date(cls, v, values) -> Optional[str]:
+        if isinstance(v, date):
+            return datetime(v.year, v.month, v.day).__str__()
+        return None
+
+    class Config:
+        allow_population_by_field_name = True
+
+
+class NovaSeqXFlowCell(BaseModel):
+    flow_cell_id: Optional[str] = Field(None, alias="Flow Cell ID")
+    instrument: Optional[str] = Field(None, alias="instrument")
+    date: Optional[date]
+    done: Optional[bool] = Field(None, alias="Done")
+    buffer_expiration_date: Optional[date] = Field(None, alias="Buffer Expiration Date")
+    buffer_lot_number: Optional[str] = Field(None, alias="Buffer Lot Number")
+    buffer_part_number: Optional[str] = Field(None, alias="Buffer Part Number")
+    buffer_serial_barcode: Optional[str] = Field(None, alias="Buffer Serial Number")
+    flow_cell_expiration_date: Optional[date] = Field(None, alias="Flow Cell Expiration Date")
+    flow_cell_lot_number: Optional[str] = Field(None, alias="Flow Cell Lot Number")
+    flow_cell_mode: Optional[str] = Field(None, alias="Flow Cell Mode")
+    flow_cell_part_number: Optional[str] = Field(None, alias="Flow Cell Part Number")
+    reagent_expiration_date: Optional[date] = Field(None, alias="Reagent Expiration Date")
+    reagent_lot_number: Optional[str] = Field(None, alias="Reagent Lot Number")
+    reagent_part_number: Optional[str] = Field(None, alias="Reagent Part Number")
+    reagent_serial_barcode: Optional[str] = Field(None, alias="Reagent Serial Number")
+    run_id: Optional[str] = Field(None, alias="Run ID")
+    sample_tube_expiration_date: Optional[date] = Field(None, alias="Sample Tube Expiration Date")
+    sample_tube_lot_number: Optional[str] = Field(None, alias="Sample Tube Lot Number")
+    sample_tube_part_number: Optional[str] = Field(None, alias="Sample Tube Part Number")
+    sample_tube_serial_barcode: Optional[str] = Field(None, alias="Sample Tube Serial Number")
+    lyo_expiration_date: Optional[date] = Field(None, alias="Lyo Expiration Date")
+    lyo_lot_number: Optional[str] = Field(None, alias="Lyo Lot Number")
+    lyo_part_number: Optional[str] = Field(None, alias="Lyo Part Number")
+    lyo_serial_barcode: Optional[str] = Field(None, alias="Lyo Serial Number")
+    lanes: Optional[List[Lane]] = []
+
+    @validator(
+        "reagent_expiration_date",
+        "sample_tube_expiration_date",
+        "lyo_expiration_date",
         "flow_cell_expiration_date",
         "buffer_expiration_date",
         "date",
