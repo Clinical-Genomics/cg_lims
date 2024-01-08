@@ -38,8 +38,8 @@ def calculate_volumes(artifacts: List[Artifact], process: Process):
 
 @click.command()
 @click.pass_context
-def twist_aliquot_volume(ctx):
-    """Calculates amount needed for samples."""
+def calculate_aliquot_volume(ctx):
+    """Calculates aliquot volumes needed for samples."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
