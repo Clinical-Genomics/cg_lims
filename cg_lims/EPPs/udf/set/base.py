@@ -6,6 +6,7 @@ from cg_lims.EPPs.udf.set.set_method import method_document
 from cg_lims.EPPs.udf.set.set_barcode import assign_barcode
 from cg_lims.EPPs.udf.set.set_sequencing_settings import set_sequencing_settings
 from cg_lims.EPPs.udf.set.replace_flow_cell_output_path import replace_flow_cell_output_path
+from cg_lims.EPPs.udf.set.updated_sample_volume import updated_sample_volume
 
 
 @click.group(invoke_without_command=True)
@@ -21,3 +22,4 @@ set.add_command(method_document)
 set.add_command(assign_barcode)
 set.add_command(set_sequencing_settings)
 set.add_command(replace_flow_cell_output_path)
+set.add_command(updated_sample_volume)

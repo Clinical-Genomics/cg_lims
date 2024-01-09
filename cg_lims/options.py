@@ -365,3 +365,9 @@ def udf_values(
         multiple=True,
         help=help,
     )
+
+
+def subtract_volume(
+    help: str = "Subtracts volume taken from samples.",
+) -> click.option:
+    return click.option("--subtract-volume", required=False, help=help)
