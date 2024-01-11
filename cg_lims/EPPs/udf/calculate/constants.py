@@ -42,3 +42,7 @@ class FlowCellLaneVolumes25B(FloatEnum):
     PHIX_VOLUME: float = 1.6
     NAOH_VOLUME: float = 14
     BUFFER_VOLUME: float = 210
+
+
+AVERAGE_MOLECULAR_WEIGHT_DS_DNA = 615.96
+AVERAGE_MOLECULAR_WEIGHT_DS_DNA_ENDS = 36.04
