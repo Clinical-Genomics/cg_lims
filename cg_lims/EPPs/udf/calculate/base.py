@@ -21,6 +21,7 @@ from cg_lims.EPPs.udf.calculate.maf_calculate_volume import maf_calculate_volume
 from cg_lims.EPPs.udf.calculate.molar_concentration import molar_concentration
 from cg_lims.EPPs.udf.calculate.novaseq_x_denaturation import novaseq_x_denaturation
 from cg_lims.EPPs.udf.calculate.novaseq_x_volumes import novaseq_x_volumes
+from cg_lims.EPPs.udf.calculate.ont_aliquot_volume import ont_aliquot_volume
 from cg_lims.EPPs.udf.calculate.pool_normalization import pool_normalization
 from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import missing_reads_in_pool
 from cg_lims.EPPs.udf.calculate.twist_aliquot_amount import twist_aliquot_amount
@@ -58,3 +59,4 @@ calculate.add_command(calculate_average_size_and_set_qc)
 calculate.add_command(novaseq_x_volumes)
 calculate.add_command(pool_normalization)
 calculate.add_command(novaseq_x_denaturation)
+calculate.add_command(ont_aliquot_volume)
