@@ -92,7 +92,6 @@ def set_volumes_fmol(
 @click.command()
 @options.process_types()
 @options.concentration_udf_option()
-@options.volume_udf_option()
 @options.size_udf()
 @options.measurement()
 @options.input()
@@ -101,7 +100,6 @@ def ont_aliquot_volume(
     ctx: click.Context,
     process_types: List[str],
     concentration_udf: str,
-    volume_udf: str,
     size_udf: str,
     measurement: bool = False,
     input: bool = False,
