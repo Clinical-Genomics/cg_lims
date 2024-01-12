@@ -1,31 +1,36 @@
-from typing import List, Optional
-from genologics.entities import Artifact
-from genologics.lims import Lims
-
-from cg_lims.get.artifacts import get_latest_analyte
-from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingUDFsError
-from cg_lims.get.artifacts import get_artifacts
-
 import logging
 import sys
+from typing import List, Optional
+
 import click
+from cg_lims import options
+from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.get.artifacts import get_artifacts, get_latest_analyte
+from genologics.entities import Artifact
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 
 
-def get_new_volume(source_artifact: Artifact, subtracted_volume: float) -> float:
+def get_new_volume(
+    source_artifact: Artifact, subtracted_volume: float, added_volume: float
+) -> float:
     """Calculate the updated volume of a sample."""
     original_volume = source_artifact.udf.get("Volume (ul)")
-    return float(original_volume) - float(subtracted_volume)
+    return float(original_volume) - float(subtracted_volume) + float(added_volume)
 
 
 def set_updated_sample_volume(
-    destination_artifact: Artifact, source_artifact: Artifact, subtracted_volume: float
+    destination_artifact: Artifact,
+    source_artifact: Artifact,
+    subtracted_volume: float,
+    added_volume: float,
 ) -> None:
     """"""
     new_volume = get_new_volume(
-        source_artifact=source_artifact, subtracted_volume=subtracted_volume
+        source_artifact=source_artifact,
+        subtracted_volume=subtracted_volume,
+        added_volume=added_volume,
     )
     print(new_volume)
     destination_artifact.udf["Volume (ul)"] = new_volume
@@ -38,6 +43,7 @@ def set_all_updated_sample_volumes(
     lims: Lims,
     sample_artifact: bool = False,
     subtracted_volume: float = 0,
+    added_volume: float = 0,
 ) -> None:
     """Set the updated sample volumes on artifact level."""
     failed_artifacts = 0
@@ -55,6 +61,7 @@ def set_all_updated_sample_volumes(
                 destination_artifact=destination_artifact,
                 source_artifact=source_artifact,
                 subtracted_volume=subtracted_volume,
+                added_volume=added_volume,
             )
         except:
             failed_artifacts += 1
@@ -68,9 +75,14 @@ def set_all_updated_sample_volumes(
 @options.process_types(help="The process type names from where you want to copy the artifact udf.")
 @options.sample_artifact(help="Use this flag if you want to copy udf from original artifact")
 @options.subtract_volume(help="Subtracts volume taken from sample.")
+@options.add_volume(help="Adds volume to the total sample amount.")
 @click.pass_context
 def updated_sample_volume(
-    ctx, process_types: List[str], sample_artifact: bool, subtract_volume: Optional[float]
+    ctx,
+    process_types: List[str],
+    sample_artifact: bool,
+    subtract_volume: Optional[float] = 0,
+    add_volume: Optional[float] = 0,
 ):
     """"""
 
@@ -86,6 +98,7 @@ def updated_sample_volume(
             lims=lims,
             sample_artifact=sample_artifact,
             subtracted_volume=subtract_volume,
+            added_volume=add_volume,
         )
         click.echo("UDFs have been set on all samples.")
     except LimsError as e:
