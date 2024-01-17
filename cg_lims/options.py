@@ -270,7 +270,7 @@ def amount_udf_option(
 def volume_udf_option(
     help: str = "String of UDF used to get volume value",
 ) -> click.option:
-    return click.option("--volume-udf", required=True, help=help)
+    return click.option("--volume-udf", required=False, help=help)
 
 
 def concentration_udf_option(
@@ -377,3 +377,9 @@ def add_volume(
     help: str = "Add volume taken from samples.",
 ) -> click.option:
     return click.option("--add-volume", required=False, default=0, help=help)
+
+
+def preset_volume(
+    help: str = "Give a pre-set volume to use for the calculations. Use only if no volume UDF is given.",
+) -> click.option:
+    return click.option("--preset-volume", required=False, help=help)

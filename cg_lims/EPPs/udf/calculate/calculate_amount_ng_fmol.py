@@ -8,7 +8,7 @@ from cg_lims.EPPs.udf.calculate.constants import (
     AVERAGE_MOLECULAR_WEIGHT_DS_DNA,
     AVERAGE_MOLECULAR_WEIGHT_DS_DNA_ENDS,
 )
-from cg_lims.exceptions import LimsError, MissingArtifactError
+from cg_lims.exceptions import LimsError, MissingArtifactError, MissingValueError
 from cg_lims.get.artifacts import get_artifacts, get_latest_analyte, get_sample_artifact
 from genologics.entities import Artifact, Sample
 from genologics.lims import Lims
@@ -24,10 +24,15 @@ def get_original_fragment_size(sample_id: str, lims: Lims, size_udf: str) -> int
 
 
 def get_latest_fragment_size(
-    sample_id: str, lims: Lims, size_udf: str, process_types: Optional[List[str]]
+    artifact: Artifact, lims: Lims, size_udf: str, process_types: Optional[List[str]]
 ) -> int:
     """Return the most recently measured fragment size of a sample."""
+    if artifact.udf.get(size_udf):
+        return artifact.udf.get(size_udf)
+
+    sample_id = artifact.samples[0].id
     original_size = get_original_fragment_size(sample_id=sample_id, lims=lims, size_udf=size_udf)
+
     if not process_types:
         return original_size
 
@@ -35,11 +40,11 @@ def get_latest_fragment_size(
 
     for process_type in process_types:
         try:
-            artifact = get_latest_analyte(
+            previous_artifact = get_latest_analyte(
                 lims=lims, sample_id=sample_id, process_types=[process_type]
             )
-            if artifact.udf.get(size_udf):
-                size_history.append(artifact.udf.get(size_udf))
+            if previous_artifact.udf.get(size_udf):
+                size_history.append(previous_artifact.udf.get(size_udf))
         except MissingArtifactError:
             LOG.info(
                 f"No artifact found for sample {sample_id} from process type {process_type}. Skipping."
@@ -75,19 +80,28 @@ def set_amounts(
     lims: Lims,
     process_types: List[str],
     concentration_udf: str,
-    volume_udf: str,
+    volume_udf: Optional[str],
+    preset_volume: Optional[float],
     size_udf: str,
 ) -> None:
     """Calculates and sets the sample amounts in ng and fmol."""
     for artifact in artifacts:
         size_bp = get_latest_fragment_size(
-            sample_id=artifact.samples[0].id,
+            artifact=artifact,
             lims=lims,
             size_udf=size_udf,
             process_types=process_types,
         )
         concentration = artifact.udf.get(concentration_udf)
-        volume = artifact.udf.get(volume_udf)
+        if preset_volume:
+            volume = float(preset_volume)
+        elif volume_udf:
+            volume = artifact.udf.get(volume_udf)
+        else:
+            raise MissingValueError(
+                "Either a set volume or a given volume UDF name is required to calculate sample amounts!"
+            )
+
         amount_ng = calculate_amount_ng(concentration=concentration, volume=volume)
         amount_fmol = calculate_amount_fmol(
             concentration=concentration, volume=volume, size_bp=size_bp
@@ -101,6 +115,7 @@ def set_amounts(
 @options.process_types()
 @options.concentration_udf_option()
 @options.volume_udf_option()
+@options.preset_volume()
 @options.size_udf()
 @options.measurement()
 @options.input()
@@ -109,7 +124,8 @@ def calculate_amount_ng_fmol(
     ctx: click.Context,
     process_types: List[str],
     concentration_udf: str,
-    volume_udf: str,
+    volume_udf: Optional[str],
+    preset_volume: Optional[float],
     size_udf: str,
     measurement: bool = False,
     input: bool = False,
@@ -130,6 +146,7 @@ def calculate_amount_ng_fmol(
             process_types=process_types,
             concentration_udf=concentration_udf,
             volume_udf=volume_udf,
+            preset_volume=preset_volume,
             size_udf=size_udf,
         )
 
