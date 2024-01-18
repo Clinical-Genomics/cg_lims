@@ -1,5 +1,3 @@
-from genologics.entities import Process
-from genologics.lims import Lims
 from cg_lims.EPPs.qc.sequencing_artifact_manager import (
     SampleLaneArtifacts,
     SequencingArtifactManager,
@@ -8,6 +6,8 @@ from cg_lims.get.artifacts import get_lane_sample_artifacts
 from cg_lims.get.fields import get_artifact_sample_id
 from cg_lims.set.qc import QualityCheck
 from cg_lims.set.udfs import UserDefinedFields
+from genologics.entities import Process
+from genologics.lims import Lims
 
 
 def test_sample_artifacts_add_and_get(lims_process_with_novaseq_data: Process):

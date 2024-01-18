@@ -1,6 +1,5 @@
 import mock
 import pytest
-
 from cg_lims.EPPs.udf.calculate.calculate_beads import (
     calculate_beads_volume,
     calculate_elution_volume,

@@ -1,15 +1,13 @@
 import logging
 import sys
-import click
-import numpy as np
-
 from typing import List
 
-from genologics.entities import Artifact
-
+import click
+import numpy as np
 from cg_lims import options
-from cg_lims.get.artifacts import get_artifacts
 from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Artifact
 
 LOG = logging.getLogger(__name__)
 

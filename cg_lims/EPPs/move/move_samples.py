@@ -2,10 +2,9 @@
 
 import logging
 import sys
-from typing import Optional, List
+from typing import List, Optional
 
 import click
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import filter_artifacts, get_artifacts

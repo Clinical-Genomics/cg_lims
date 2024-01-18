@@ -5,13 +5,12 @@ import sys
 from typing import List
 
 import click
-from genologics.entities import Artifact
-from genologics.lims import Lims
-
 from cg_lims import options
 from cg_lims.exceptions import DuplicateSampleError, LimsError, MissingArtifactError
 from cg_lims.get.artifacts import filter_artifacts, get_artifacts, get_latest_analyte
 from cg_lims.put.queue import queue_artifacts
+from genologics.entities import Artifact
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

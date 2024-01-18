@@ -1,11 +1,11 @@
+import logging
 from datetime import date
 from enum import Enum
 from typing import Optional
-from genologics.entities import Entity, Artifact
-from genologics.lims import Lims
 
 from cg_lims.exceptions import MissingUDFsError
-import logging
+from genologics.entities import Artifact, Entity
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

@@ -1,9 +1,8 @@
+import logging
 from typing import List
 
-from genologics.entities import Artifact, Process, Sample
-
 from cg_lims.exceptions import MissingSampleError
-import logging
+from genologics.entities import Artifact, Process, Sample
 
 LOG = logging.getLogger(__name__)
 

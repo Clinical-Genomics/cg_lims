@@ -1,10 +1,10 @@
-from tests.conftest import server
 from pathlib import Path
-import pytest
 
-from genologics.entities import Artifact
+import pytest
 from cg_lims.EPPs.files.hamilton.normalization_file import get_file_data_and_write
 from cg_lims.exceptions import MissingUDFsError
+from genologics.entities import Artifact
+from tests.conftest import server
 
 
 def test_make_hamilton_normalization_file(hamilton_normalization_csv, lims):

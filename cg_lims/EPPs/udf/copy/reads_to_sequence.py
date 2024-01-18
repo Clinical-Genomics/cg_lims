@@ -1,15 +1,12 @@
 #!/usr/bin/env python
-from typing import Tuple
-
-from genologics.entities import Process, Artifact
-from genologics.lims import Lims
-
 import logging
 import sys
+from typing import Tuple
 
 import click
-
 from cg_lims.exceptions import LimsError
+from genologics.entities import Artifact, Process
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

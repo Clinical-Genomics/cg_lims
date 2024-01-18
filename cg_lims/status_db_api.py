@@ -1,9 +1,9 @@
 import json
 import logging
 from typing import Any, Dict, List
+
 import requests
 from requests import Response
-
 
 from cg_lims.exceptions import (
     CgAPIClientConnectionError,
@@ -12,9 +12,8 @@ from cg_lims.exceptions import (
     CgAPIClientTimeoutError,
     LimsError,
 )
-from cg_lims.token_manager import TokenManager
 from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
-
+from cg_lims.token_manager import TokenManager
 
 LOG = logging.getLogger(__name__)
 

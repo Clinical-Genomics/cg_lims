@@ -3,12 +3,11 @@ import sys
 from typing import List, Optional
 
 import click
-from genologics.entities import Artifact
-
+from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims import options
 from cg_lims.set.qc import set_qc_fail
+from genologics.entities import Artifact
 
 LOG = logging.getLogger(__name__)
 
@@ -86,7 +85,7 @@ def molar_concentration(
     lower_threshold: Optional[float],
     upper_threshold: Optional[float],
 ) -> None:
-    """Script to calculate molar concentration given the weight concentration and fragment size. """
+    """Script to calculate molar concentration given the weight concentration and fragment size."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 

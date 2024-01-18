@@ -1,14 +1,12 @@
 #!/usr/bin/env python
-from cg_lims.get.udfs import get_udf_type
-
 import logging
 import sys
 
 import click
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.udfs import get_udf_type
 
 LOG = logging.getLogger(__name__)
 

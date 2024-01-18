@@ -3,17 +3,16 @@ import logging
 import pathlib
 
 import click
-from genologics.entities import Process
-
 from cg_lims import options
+from cg_lims.EPPs.arnold import arnold_upload
 from cg_lims.EPPs.files import files
 
 # commands
 from cg_lims.EPPs.move import move
-from cg_lims.EPPs.udf import udf
 from cg_lims.EPPs.qc import qc
-from cg_lims.EPPs.arnold import arnold_upload
+from cg_lims.EPPs.udf import udf
 from cg_lims.get.files import get_log_content
+from genologics.entities import Process
 
 
 @click.group(invoke_without_command=True)

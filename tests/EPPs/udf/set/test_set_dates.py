@@ -1,14 +1,8 @@
-from genologics.entities import Sample, Process
-
-from cg_lims.EPPs.udf.set.set_sample_date import (
-    set_prepared,
-    set_sequenced,
-    set_delivered,
-)
 from datetime import datetime as dt
-from tests.conftest import (
-    server,
-)
+
+from cg_lims.EPPs.udf.set.set_sample_date import set_delivered, set_prepared, set_sequenced
+from genologics.entities import Process, Sample
+from tests.conftest import server
 
 
 def test_set_prepared(lims):

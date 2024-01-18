@@ -1,13 +1,12 @@
 import mock
 import pytest
-from genologics.entities import Sample
-
 from cg_lims.EPPs.udf.set.set_samples_reads_missing import (
     get_target_amount,
     set_reads_missing,
     set_reads_missing_on_sample,
 )
 from cg_lims.exceptions import LimsError, MissingUDFsError
+from genologics.entities import Sample
 from tests.conftest import server
 
 

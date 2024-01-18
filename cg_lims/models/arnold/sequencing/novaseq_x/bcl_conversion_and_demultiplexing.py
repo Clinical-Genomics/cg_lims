@@ -1,12 +1,11 @@
 from statistics import mean
-from typing import Optional, List
-
-from genologics.lims import Lims, Process, Artifact
-from pydantic.v1.main import BaseModel
-from pydantic.v1 import Field
+from typing import List, Optional
 
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.models.arnold.base_step import BaseStep
+from genologics.lims import Artifact, Lims, Process
+from pydantic.v1 import Field
+from pydantic.v1.main import BaseModel
 
 
 class ProcessUDFs(BaseModel):

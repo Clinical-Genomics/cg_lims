@@ -1,8 +1,8 @@
-import click
-from genologics.lims import Lims
-
-from cg_lims import options
 import logging
+
+import click
+from cg_lims import options
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

@@ -1,11 +1,11 @@
-import logging
-import click
-from typing import List, Optional
-from genologics.lims import Lims
-from genologics.entities import Sample
 import datetime
+import logging
+from typing import List, Optional
 
+import click
 from cg_lims import options
+from genologics.entities import Sample
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

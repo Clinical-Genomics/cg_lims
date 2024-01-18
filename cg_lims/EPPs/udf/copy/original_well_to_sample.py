@@ -1,10 +1,9 @@
 import logging
 import sys
+
 import click
-
-
 from cg_lims import options
-from cg_lims.exceptions import LimsError, InvalidValueError
+from cg_lims.exceptions import InvalidValueError, LimsError
 from cg_lims.get.artifacts import get_artifacts
 
 LOG = logging.getLogger(__name__)

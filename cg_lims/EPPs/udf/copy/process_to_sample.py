@@ -2,7 +2,6 @@
 import sys
 
 import click
-
 from cg_lims import options
 from cg_lims.get.samples import get_process_samples
 

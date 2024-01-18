@@ -1,9 +1,8 @@
 import pytest
-from genologics.entities import Artifact
-from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import (
-    calculate_sample_and_water_volumes,
-)
+from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import calculate_sample_and_water_volumes
 from cg_lims.exceptions import MissingUDFsError
+from genologics.entities import Artifact
+
 
 def test_calculate_water_volume_rna_missing_concentration(artifact_1: Artifact):
     # GIVEN a list of artifacts with one artifact missing the udf 'Concentration'
@@ -20,15 +19,14 @@ def test_calculate_water_volume_rna_missing_concentration(artifact_1: Artifact):
         in error_message.value.message
     )
 
+
 @pytest.mark.parametrize(
     "concentration",
     [
         100,
     ],
 )
-def test_calculate_water_volume_rna_amount_needed_missing(
-    concentration, artifact_1: Artifact
-):
+def test_calculate_water_volume_rna_amount_needed_missing(concentration, artifact_1: Artifact):
     # GIVEN a list of artifacts with one artifact having no 'Amount Needed (ng)' udf
     artifact_1.udf["Concentration"] = int(concentration)
     del artifact_1.udf["Amount needed (ng)"]
@@ -43,6 +41,7 @@ def test_calculate_water_volume_rna_amount_needed_missing(
         f"Could not apply calculation for 1 out of 1 sample(s): 'Concentration' or 'Amount needed (ng)' is missing!"
         in error_message.value.message
     )
+
 
 @pytest.mark.parametrize(
     "concentration, amount_needed, expected_water_volume, expected_sample_volume",

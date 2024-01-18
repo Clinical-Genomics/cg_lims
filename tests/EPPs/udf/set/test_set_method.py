@@ -1,14 +1,10 @@
 import pytest
-from genologics.entities import Process
-
+import requests
+import responses
 from cg_lims.EPPs.udf.set.set_method import get_path
 from cg_lims.exceptions import AtlasResponseFailedError
-from tests.conftest import (
-    server,
-)
-
-import responses
-import requests
+from genologics.entities import Process
+from tests.conftest import server
 
 
 @pytest.fixture()

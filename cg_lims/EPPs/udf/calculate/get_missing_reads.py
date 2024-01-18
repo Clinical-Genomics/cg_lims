@@ -2,12 +2,11 @@ import logging
 import sys
 
 import click
-from genologics.entities import Artifact
-from requests.exceptions import ConnectionError
-
 from cg_lims.exceptions import LimsError, MissingCgFieldError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.status_db_api import StatusDBAPI
+from genologics.entities import Artifact
+from requests.exceptions import ConnectionError
 
 LOG = logging.getLogger(__name__)
 

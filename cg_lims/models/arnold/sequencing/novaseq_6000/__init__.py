@@ -1,14 +1,14 @@
 from typing import List
 
+from cg_lims.models.arnold.base_step import BaseStep
 from genologics.lims import Lims
 
+from .bcl_conversion_and_demultiplexing import get_bcl_conversion_and_demultiplexing
 from .define_run_format import get_define_run_format
 from .standard_make_pool_and_denature import get_standard_make_pool_and_denature
 from .standard_prepare_for_sequencing import get_standard_prepare_for_sequencing
 from .xp_denature_and_examp import get_xp_denature_and_examp
 from .xp_load_to_flowcell import get_xp_load_to_flowcell
-from .bcl_conversion_and_demultiplexing import get_bcl_conversion_and_demultiplexing
-from cg_lims.models.arnold.base_step import BaseStep
 
 
 def build_novaseq_6000_step_documents(

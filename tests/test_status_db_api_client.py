@@ -1,8 +1,8 @@
 from typing import Dict, List
-from mock import Mock
 
 from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
+from mock import Mock
 
 
 def test_get_sequencing_metrics_for_flow_cell(

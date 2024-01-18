@@ -1,26 +1,20 @@
 import datetime as dt
-from typing import Callable, Dict, List
-
-from genologics.lims import Lims
-from genologics.entities import Artifact, Process, Sample
-from pathlib import Path
-from mock import MagicMock, Mock
-
-import pytest
-from click.testing import CliRunner
-
 import threading
 import time
+from pathlib import Path
+from typing import Callable, Dict, List
 
+import pytest
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
 from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
 from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
-
-from cg_lims.token_manager import TokenManager
 from cg_lims.status_db_api import StatusDBAPI
-
-
+from cg_lims.token_manager import TokenManager
+from click.testing import CliRunner
+from genologics.entities import Artifact, Process, Sample
+from genologics.lims import Lims
 from limsmock.server import run_server
+from mock import MagicMock, Mock
 
 from tests.fixtures.flowcell_document import FLOW_CELL_DOCUMENT
 

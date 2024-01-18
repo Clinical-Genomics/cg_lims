@@ -1,9 +1,9 @@
 import logging
 import sys
-import click
 
-from genologics.lims import Process
+import click
 from cg_lims.exceptions import LimsError, MissingUDFsError
+from genologics.lims import Process
 
 LOG = logging.getLogger(__name__)
 

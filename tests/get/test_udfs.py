@@ -1,8 +1,7 @@
 import pytest
-from genologics.entities import Sample
-
 from cg_lims.exceptions import MissingUDFsError
 from cg_lims.get.udfs import get_udf
+from genologics.entities import Sample
 from tests.conftest import server
 
 
@@ -29,6 +28,5 @@ def test_get_udf_missing_udf(sample_1: Sample):
 
     # THEN the correct exception should be raised
     assert (
-        f"UDF Sequencing Analysis not found on sample {sample_1.id}"
-        in error_message.value.message
+        f"UDF Sequencing Analysis not found on sample {sample_1.id}" in error_message.value.message
     )

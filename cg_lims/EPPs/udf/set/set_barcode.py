@@ -1,13 +1,13 @@
 import logging
 import sys
-import click
-
 from typing import List
-from genologics.lims import Artifact
+
+import click
 from cg_lims import options
-from cg_lims.exceptions import LimsError, InvalidValueError, MissingValueError
+from cg_lims.exceptions import InvalidValueError, LimsError, MissingValueError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.fields import get_barcode
+from genologics.lims import Artifact
 
 LOG = logging.getLogger(__name__)
 
@@ -18,16 +18,15 @@ def get_barcode_set_udf(
     container_type: str,
     measurement: bool,
 ):
-
     """Assigning barcode to a barcode udf.
-    
+
     - Assigned on container type if selected.
     - Gives warning if no samples assigned.
     - Checks if script failed and what the cause might be.
     - Informs user if sample doesn't have a defined barcode.
 
     """
-    
+
     assigned_artifacts = 0
     failed_samples = []
 
@@ -35,7 +34,7 @@ def get_barcode_set_udf(
         if measurement:
             if len(artifact.samples) > 1:
                 LOG.info(f"Sample {str(artifact.id)} is a pool, and will be excluded")
-            
+
             else:
                 measurement_artifact = artifact
                 artifact = artifact.input_artifact_list()[0]
@@ -65,7 +64,7 @@ def get_barcode_set_udf(
                     measurement_artifact.udf[artifact_udf] = barcode
                     measurement_artifact.put()
                     assigned_artifacts += 1
-                
+
                 else:
                     artifact.udf[artifact_udf] = barcode
                     artifact.put()
@@ -79,9 +78,9 @@ def get_barcode_set_udf(
     if failed_samples:
         failed_message = ", ".join(map(str, failed_samples))
         raise InvalidValueError(
-            f"Samples {failed_message}, are missing udf container or udf \"{artifact_udf}\"."
+            f'Samples {failed_message}, are missing udf container or udf "{artifact_udf}".'
         )
-    
+
     # Notifies that no sample got a barcode.
     elif not assigned_artifacts:
         raise MissingValueError(f"No barcode assigned. Check parameters.")

@@ -2,7 +2,6 @@ import logging
 import sys
 
 import click
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts

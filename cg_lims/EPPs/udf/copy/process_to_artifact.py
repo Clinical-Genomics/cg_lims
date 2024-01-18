@@ -1,16 +1,14 @@
-from typing import List
-from genologics.entities import Artifact
-from genologics.lims import Lims
-
-from cg_lims.get.artifacts import get_latest_analyte
-from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingUDFsError
-from cg_lims.get.artifacts import get_artifacts
-from cg_lims.set.udfs import copy_udf_process_to_artifact
-
 import logging
 import sys
+from typing import List
+
 import click
+from cg_lims import options
+from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.get.artifacts import get_artifacts, get_latest_analyte
+from cg_lims.set.udfs import copy_udf_process_to_artifact
+from genologics.entities import Artifact
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

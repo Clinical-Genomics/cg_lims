@@ -1,11 +1,9 @@
 import pytest
-from genologics.entities import Process
-
-from cg_lims.exceptions import MissingUDFsError
 from cg_lims.EPPs.udf.copy.qc_to_sample import artifacts_to_sample
-from tests.conftest import server
-
+from cg_lims.exceptions import MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Process
+from tests.conftest import server
 
 
 def test_udf_Passed_Initial_QC(lims):

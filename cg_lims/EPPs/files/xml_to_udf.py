@@ -1,17 +1,16 @@
-import logging
-import sys
-import os
 import glob
-from typing import List, Dict
+import logging
+import os
+import sys
 from pathlib import Path
+from typing import Dict, List
 from xml.etree import ElementTree
 
 import click
-from genologics.entities import Process
-from genologics.lims import Lims
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingFileError
+from genologics.entities import Process
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

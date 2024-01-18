@@ -1,7 +1,8 @@
-from genologics.lims import Process
-from typing import Optional
 import logging
-from cg_lims.enums import StrEnum, IntEnum
+from typing import Optional
+
+from cg_lims.enums import IntEnum, StrEnum
+from genologics.lims import Process
 
 LOG = logging.getLogger(__name__)
 
