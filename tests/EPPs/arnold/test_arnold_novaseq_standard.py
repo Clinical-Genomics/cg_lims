@@ -1,12 +1,7 @@
-from genologics.entities import Process
-
 from cg_lims.EPPs.arnold.sequencing import build_step_documents
 from cg_lims.models.arnold.base_step import BaseStep
-
-from tests.conftest import (
-    server,
-)
-
+from genologics.entities import Process
+from tests.conftest import server
 
 NOVA_SEQ_STANDARD_STEP_TYPES = {
     "bcl_conversion_and_demultiplexing",

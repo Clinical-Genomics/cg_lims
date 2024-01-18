@@ -3,12 +3,11 @@ import sys
 from typing import List
 
 import click
-from genologics.entities import Artifact
-
 from cg_lims.exceptions import FailingQCError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
 from cg_lims.get.udfs import get_maximum_amount
+from genologics.entities import Artifact
 
 LOG = logging.getLogger(__name__)
 

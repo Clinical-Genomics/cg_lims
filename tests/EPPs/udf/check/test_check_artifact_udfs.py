@@ -1,12 +1,10 @@
-from tests.conftest import server
 import logging
 
-from genologics.entities import Artifact
-
 import pytest
-
 from cg_lims.EPPs.udf.check.check_artifact_udfs import check_udfs
 from cg_lims.exceptions import MissingUDFsError
+from genologics.entities import Artifact
+from tests.conftest import server
 
 
 def test_check_udfs_missing_udfs(lims):

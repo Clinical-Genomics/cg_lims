@@ -10,11 +10,10 @@ import sys
 from typing import List, Optional
 
 import click
-from genologics.entities import Artifact
-from pydantic.v1 import BaseModel, validator
-
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Artifact
+from pydantic.v1 import BaseModel, validator
 
 LOG = logging.getLogger(__name__)
 

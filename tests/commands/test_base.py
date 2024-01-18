@@ -1,8 +1,7 @@
 from pathlib import Path
 
-from click.testing import CliRunner
-
 from cg_lims.commands.base import cli
+from click.testing import CliRunner
 
 
 def test_cli_existing_log_file(config):

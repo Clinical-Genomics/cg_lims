@@ -1,22 +1,20 @@
+import json
 import logging
 from typing import List, Literal
 
 import click
-from genologics.lims import Lims, Process, Sample
 import requests
-from requests import Response
-import json
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.models.arnold.base_step import BaseStep
 from cg_lims.models.arnold.prep.microbial_prep import build_microbial_step_documents
-from cg_lims.models.arnold.prep.wgs import build_wgs_documents
+from cg_lims.models.arnold.prep.rna import build_rna_documents
 from cg_lims.models.arnold.prep.sars_cov_2_prep import build_sars_cov_2_documents
 from cg_lims.models.arnold.prep.twist import build_twist_documents
-from cg_lims.models.arnold.prep.rna import build_rna_documents
-
+from cg_lims.models.arnold.prep.wgs import build_wgs_documents
+from genologics.lims import Lims, Process, Sample
+from requests import Response
 
 LOG = logging.getLogger(__name__)
 

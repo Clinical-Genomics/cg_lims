@@ -1,12 +1,11 @@
-from typing import Dict, List, Optional, Literal, Set, Tuple
-
-from genologics.entities import Artifact, Process, Sample
-from genologics.lims import Lims
+import logging
+from datetime import datetime
+from enum import Enum
+from typing import Dict, List, Literal, Optional, Set, Tuple
 
 from cg_lims.exceptions import FileError, MissingArtifactError
-from datetime import datetime
-import logging
-from enum import Enum
+from genologics.entities import Artifact, Process, Sample
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

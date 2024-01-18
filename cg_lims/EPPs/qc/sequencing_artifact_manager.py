@@ -2,16 +2,15 @@ import logging
 from collections import defaultdict
 from typing import Dict, Optional
 
-from genologics.entities import Artifact, Process
-from genologics.lims import Lims
 from cg_lims.EPPs.qc.models import SampleLaneSet
-
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_lane_sample_artifacts
 from cg_lims.get.fields import get_artifact_sample_id, get_flow_cell_name
 from cg_lims.get.udfs import get_q30_threshold
 from cg_lims.set.qc import set_quality_control_flag
 from cg_lims.set.udfs import set_q30_score, set_reads_count
+from genologics.entities import Artifact, Process
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

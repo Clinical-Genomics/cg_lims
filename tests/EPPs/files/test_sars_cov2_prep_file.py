@@ -1,10 +1,9 @@
-from genologics.entities import Process
-
-from cg_lims.get.artifacts import get_artifacts
-from tests.conftest import server
 from pathlib import Path
 
 from cg_lims.EPPs.files.hamilton.sars_cov2_prep_file import get_file_data_and_write
+from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Process
+from tests.conftest import server
 
 
 def test_make_hamilton_sars_cov2_pooling_file(hamilton_sars_cov2_pooling_file, lims):

@@ -1,21 +1,18 @@
 """Base cg_lims calss definitions
 """
+import logging
 from typing import Optional
 
-from genologics.entities import Artifact, Sample, Process
+from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
 
 from cg_lims.exceptions import (
-    MissingUDFsError,
-    ZeroReadsError,
     MissingArtifactError,
     MissingProcessError,
+    MissingUDFsError,
+    ZeroReadsError,
 )
-from cg_lims.get.artifacts import (
-    get_sample_artifact,
-    get_latest_analyte,
-)
-import logging
+from cg_lims.get.artifacts import get_latest_analyte, get_sample_artifact
 
 LOG = logging.getLogger(__name__)
 

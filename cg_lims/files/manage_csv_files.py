@@ -2,10 +2,11 @@ import csv
 import string
 from pathlib import Path
 from typing import List
-import pandas as pd
 
+import pandas as pd
 from cg_lims.exceptions import CSVColumnError
-pd.set_option('mode.chained_assignment', None)
+
+pd.set_option("mode.chained_assignment", None)
 
 
 def make_plate_file(
@@ -47,7 +48,9 @@ def build_csv(rows: List[List[str]], file: Path, headers: List[str]) -> Path:
     return file
 
 
-def sort_dataframe(csv_data_frame: pd.DataFrame, columns: List[str], well_columns: List[str] = []) -> pd.DataFrame:
+def sort_dataframe(
+    csv_data_frame: pd.DataFrame, columns: List[str], well_columns: List[str] = []
+) -> pd.DataFrame:
     """This function sorts a csv dataframe object based on a list of given columns."""
 
     temp_sort_columns = []
@@ -94,30 +97,31 @@ def sort_csv(file: Path, columns: List[str], well_columns: List[str] = []):
     """
 
     csv_data_frame = pd.read_csv(file.absolute(), delimiter=",")
-    sorted_data = sort_dataframe(csv_data_frame=csv_data_frame,
-                                 columns=columns,
-                                 well_columns=well_columns)
+    sorted_data = sort_dataframe(
+        csv_data_frame=csv_data_frame, columns=columns, well_columns=well_columns
+    )
 
     sorted_data.to_csv(file.absolute(), index=False)
 
 
-def sort_csv_plate_and_tube(file: Path,
-                            plate_columns: List[str],
-                            tube_columns: List[str],
-                            plate_well_columns: List[str] = [],
-                            tube_well_columns: List[str] = [],
-                            ) -> None:
+def sort_csv_plate_and_tube(
+    file: Path,
+    plate_columns: List[str],
+    tube_columns: List[str],
+    plate_well_columns: List[str] = [],
+    tube_well_columns: List[str] = [],
+) -> None:
     """This function performs csv sorting on files which contain samples from tube and plates."""
 
     csv_data_frame = pd.read_csv(file.absolute(), delimiter=",")
-    plate_csv_data_frame = csv_data_frame.loc[csv_data_frame['Source Labware'] != 'Tube']
-    tube_csv_data_frame = csv_data_frame.loc[csv_data_frame['Source Labware'] == 'Tube']
-    sorted_plate_data_frame = sort_dataframe(csv_data_frame=plate_csv_data_frame,
-                                             columns=plate_columns,
-                                             well_columns=plate_well_columns)
-    sorted_tube_data_frame = sort_dataframe(csv_data_frame=tube_csv_data_frame,
-                                            columns=tube_columns,
-                                            well_columns=tube_well_columns)
+    plate_csv_data_frame = csv_data_frame.loc[csv_data_frame["Source Labware"] != "Tube"]
+    tube_csv_data_frame = csv_data_frame.loc[csv_data_frame["Source Labware"] == "Tube"]
+    sorted_plate_data_frame = sort_dataframe(
+        csv_data_frame=plate_csv_data_frame, columns=plate_columns, well_columns=plate_well_columns
+    )
+    sorted_tube_data_frame = sort_dataframe(
+        csv_data_frame=tube_csv_data_frame, columns=tube_columns, well_columns=tube_well_columns
+    )
 
     sorted_data = pd.concat([sorted_plate_data_frame, sorted_tube_data_frame])
     sorted_data.to_csv(file.absolute(), index=False)

@@ -10,10 +10,9 @@ import sys
 from typing import List
 
 import click
-from genologics.entities import Artifact
-
 from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Artifact
 
 LOG = logging.getLogger(__name__)
 
@@ -33,9 +32,7 @@ def calculate_rb_volume(artifacts: List[Artifact]):
         amount_needed = artifact.udf.get("Amount needed (ng)")
         allowed_amounts = [AMOUNT_NEEDED_LUCIGEN, AMOUNT_NEEDED_TRUSEQ, AMOUNT_NEEDED_TAGMENTATION]
         if concentration is None:
-            LOG.error(
-                f"Sample {artifact.id} is missing udf 'Concentration'."
-            )
+            LOG.error(f"Sample {artifact.id} is missing udf 'Concentration'.")
             missing_udfs += 1
             continue
         if amount_needed not in allowed_amounts:

@@ -1,9 +1,8 @@
 import pytest
-from genologics.entities import Artifact, Process
-
 from cg_lims.EPPs.udf.copy.artifact_to_artifact import copy_udfs_to_all_artifacts
-from cg_lims.get.artifacts import get_artifacts, get_latest_analyte
 from cg_lims.exceptions import MissingUDFsError
+from cg_lims.get.artifacts import get_artifacts, get_latest_analyte
+from genologics.entities import Artifact, Process
 from tests.conftest import server
 
 
@@ -54,10 +53,12 @@ def test_copy_udf_process_type(lims):
     # THEN the correct source UDFs are copied over
     for artifact in artifacts:
         sample_id = artifact.samples[0].id
-        source_artifact = get_latest_analyte(lims,
-                                             sample_id=sample_id,
-                                             process_types=["Aliquot Samples for Covaris"],
-                                             sample_artifact=False)
+        source_artifact = get_latest_analyte(
+            lims,
+            sample_id=sample_id,
+            process_types=["Aliquot Samples for Covaris"],
+            sample_artifact=False,
+        )
         assert artifact.udf["Concentration"] == source_artifact.udf["Concentration"]
 
 
@@ -110,7 +111,7 @@ def test_copy_qc_flag(lims):
     process = Process(lims, id="24-240276")
     artifacts = get_artifacts(process=process, input=True)
     source_artifact = Artifact(lims, id="ACC8454A1PA1")
-    source_artifact.qc_flag = 'FAILED'
+    source_artifact.qc_flag = "FAILED"
     source_artifact.put()
 
     # WHEN running get_copy_tasks with qc_flag set to true
@@ -137,7 +138,7 @@ def test_copy_qc_flag_fail(lims):
     server("wgs_prep")
     process = Process(lims, id="24-240276")
     artifacts = get_artifacts(process=process, input=True)
-    artifacts[0].qc_flag = 'FAILED'
+    artifacts[0].qc_flag = "FAILED"
     artifacts[0].put()
 
     # WHEN running get_copy_tasks
@@ -153,7 +154,7 @@ def test_copy_qc_flag_fail(lims):
     )
 
     # THEN failed qc flags are not overwritten
-    assert artifacts[0].qc_flag == 'FAILED'
+    assert artifacts[0].qc_flag == "FAILED"
     for artifact in artifacts[1:5]:
         sample_id = artifact.samples[0].id
         source_artifact = Artifact(lims, id=f"{sample_id}PA1")

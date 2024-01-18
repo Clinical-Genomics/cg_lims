@@ -1,11 +1,10 @@
 import pytest
-from genologics.entities import Process
-
 from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import (
     calculate_average_size,
     set_average_and_qc,
 )
 from cg_lims.exceptions import MissingUDFsError
+from genologics.entities import Process
 from tests.conftest import server
 
 

@@ -1,15 +1,14 @@
 """Scripts to set the sample date udfs.
 """
 import logging
-from typing import Literal, List
+from datetime import datetime
+from typing import List, Literal
 
 import click
-from genologics.entities import Sample, Process
-
 from cg_lims import options
-from cg_lims.get.samples import get_process_samples
 from cg_lims.exceptions import MissingUDFsError
-from datetime import datetime
+from cg_lims.get.samples import get_process_samples
+from genologics.entities import Process, Sample
 
 LOG = logging.getLogger(__name__)
 

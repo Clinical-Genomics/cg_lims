@@ -9,10 +9,9 @@ import sys
 from typing import List
 
 import click
-from genologics.entities import Artifact
-
 from cg_lims.exceptions import HighConcentrationError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Artifact
 
 FINAL_CONCENTRATION = 2
 LOG = logging.getLogger(__name__)
@@ -29,9 +28,7 @@ def calculate_volumes(artifacts: List[Artifact]) -> None:
     for artifact in artifacts:
         concentration = artifact.udf.get("Concentration")
         if concentration is None:
-            LOG.error(
-                f"Sample {artifact.samples[0].name} is missing udf 'Concentration'."
-            )
+            LOG.error(f"Sample {artifact.samples[0].name} is missing udf 'Concentration'.")
             missing_udfs += 1
             continue
         if artifact.samples[0].name.startswith("NTC-CG"):

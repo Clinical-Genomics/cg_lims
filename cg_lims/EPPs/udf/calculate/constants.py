@@ -1,4 +1,4 @@
-from cg_lims.enums import IntEnum, FloatEnum, StrEnum
+from cg_lims.enums import FloatEnum, IntEnum, StrEnum
 
 
 class FlowCellTypes(StrEnum):

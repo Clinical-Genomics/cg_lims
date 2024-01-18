@@ -1,14 +1,14 @@
+import json
 import logging
 from typing import List
 
 import click
-from genologics.lims import Process, Sample
 import requests
-from requests import Response
-import json
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.models.arnold.sample import ArnoldSample
+from genologics.lims import Process, Sample
+from requests import Response
 
 LOG = logging.getLogger(__name__)
 

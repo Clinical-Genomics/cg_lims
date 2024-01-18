@@ -1,10 +1,7 @@
 import pytest
-from genologics.entities import Artifact
-
-from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import (
-    calculate_rb_volume,
-)
+from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import calculate_rb_volume
 from cg_lims.exceptions import InvalidValueError, MissingUDFsError
+from genologics.entities import Artifact
 
 
 def test_calculate_rb_volume_missing_concentration(artifact_1: Artifact):

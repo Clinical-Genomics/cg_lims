@@ -1,23 +1,22 @@
-import re
 import logging
+import re
 import sys
-import click
+from typing import Dict, List, Optional
 
-from typing import List, Optional, Dict
-from genologics.lims import Lims
-from genologics.entities import Artifact, Process, ReagentType
+import click
 from cg_lims import options
-from cg_lims.exceptions import LimsError, InvalidValueError
-from cg_lims.get.artifacts import get_artifact_lane, get_artifacts
 from cg_lims.EPPs.files.sample_sheet.models import (
+    IlluminaIndex,
     IndexSetup,
     IndexType,
-    SampleSheetHeader,
-    IlluminaIndex,
-    NovaSeqXRun,
     LaneSample,
+    NovaSeqXRun,
+    SampleSheetHeader,
 )
-
+from cg_lims.exceptions import InvalidValueError, LimsError
+from cg_lims.get.artifacts import get_artifact_lane, get_artifacts
+from genologics.entities import Artifact, Process, ReagentType
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

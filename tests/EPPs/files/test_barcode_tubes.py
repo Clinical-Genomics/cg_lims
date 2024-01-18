@@ -1,10 +1,10 @@
-from tests.conftest import server
 from pathlib import Path
-from cg_lims.exceptions import InvalidValueError, MissingValueError
-import pytest
 
-from genologics.entities import Artifact
+import pytest
 from cg_lims.EPPs.files.barcode_tubes import get_data_and_write
+from cg_lims.exceptions import InvalidValueError, MissingValueError
+from genologics.entities import Artifact
+from tests.conftest import server
 
 
 def test_with_diff_containers(barcode_tubes_csv, lims):
@@ -47,10 +47,7 @@ def test_MissingValueError(lims):
         get_data_and_write(artifacts, file=file)
 
     # Then InvalidValueError exception should be raised, and no file created.
-    assert(
-        f"Missing samples with container type \"Tube\"."
-        in error_message.value.message
-    )
+    assert f'Missing samples with container type "Tube".' in error_message.value.message
     assert file.exists() is False
 
 
@@ -68,8 +65,5 @@ def test_InvalidValueError(lims):
         get_data_and_write(artifacts, file=file)
 
     # Then InvalidValueError exception should be raised, and no file created.
-    assert(
-        f"The following samples are missing a container: S1 S1"
-        in error_message.value.message
-    )
+    assert f"The following samples are missing a container: S1 S1" in error_message.value.message
     assert file.exists() is False

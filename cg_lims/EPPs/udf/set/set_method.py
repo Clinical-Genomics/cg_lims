@@ -5,12 +5,10 @@ import sys
 from typing import List
 
 import click
-
 import requests
-from genologics.entities import Process
-
 from cg_lims import options
-from cg_lims.exceptions import LimsError, AtlasResponseFailedError
+from cg_lims.exceptions import AtlasResponseFailedError, LimsError
+from genologics.entities import Process
 
 LOG = logging.getLogger(__name__)
 

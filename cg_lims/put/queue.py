@@ -1,11 +1,10 @@
 import logging
 from typing import List
 
+from cg_lims.get.ids import unique_list_of_ids
 from genologics.config import BASEURI
 from genologics.entities import Artifact
 from genologics.lims import Lims
-
-from cg_lims.get.ids import unique_list_of_ids
 
 LOG = logging.getLogger(__name__)
 

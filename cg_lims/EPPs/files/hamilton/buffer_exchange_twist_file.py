@@ -2,17 +2,16 @@
 
 import logging
 import sys
+from typing import List
 
 import click
-from typing import List
-from genologics.entities import Artifact
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import make_plate_file
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.fields import get_artifact_well
 from cg_lims.get.samples import get_one_sample_from_artifact
+from genologics.entities import Artifact
 
 LOG = logging.getLogger(__name__)
 

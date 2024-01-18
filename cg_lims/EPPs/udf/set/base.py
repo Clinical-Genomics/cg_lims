@@ -1,11 +1,10 @@
 import click
-
-from cg_lims.EPPs.udf.set.set_samples_reads_missing import set_reads_missing_on_new_samples
-from cg_lims.EPPs.udf.set.set_sample_date import set_sample_date
-from cg_lims.EPPs.udf.set.set_method import method_document
-from cg_lims.EPPs.udf.set.set_barcode import assign_barcode
-from cg_lims.EPPs.udf.set.set_sequencing_settings import set_sequencing_settings
 from cg_lims.EPPs.udf.set.replace_flow_cell_output_path import replace_flow_cell_output_path
+from cg_lims.EPPs.udf.set.set_barcode import assign_barcode
+from cg_lims.EPPs.udf.set.set_method import method_document
+from cg_lims.EPPs.udf.set.set_sample_date import set_sample_date
+from cg_lims.EPPs.udf.set.set_samples_reads_missing import set_reads_missing_on_new_samples
+from cg_lims.EPPs.udf.set.set_sequencing_settings import set_sequencing_settings
 
 
 @click.group(invoke_without_command=True)

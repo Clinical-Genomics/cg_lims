@@ -5,14 +5,13 @@ from pathlib import Path
 from typing import List
 
 import click
-from genologics.lims import Artifact
-
 from cg_lims import options
 from cg_lims.EPPs.files.hamilton.models import CovidPrepFileRow
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import build_csv, sort_csv
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.get.fields import get_index_well, get_artifact_well
+from cg_lims.get.fields import get_artifact_well, get_index_well
+from genologics.lims import Artifact
 
 LOG = logging.getLogger(__name__)
 

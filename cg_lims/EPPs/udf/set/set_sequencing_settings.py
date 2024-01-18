@@ -1,14 +1,13 @@
 import logging
 import sys
-import click
-
 from typing import List, Optional
-from genologics.lims import Artifact, Process
+
+import click
+from cg_lims.EPPs.udf.calculate.constants import FlowCellTypes
+from cg_lims.EPPs.udf.set.constants import DefaultIndexLength, DefaultReadLength
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
-
-from cg_lims.EPPs.udf.calculate.constants import FlowCellTypes
-from cg_lims.EPPs.udf.set.constants import DefaultReadLength, DefaultIndexLength
+from genologics.lims import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 

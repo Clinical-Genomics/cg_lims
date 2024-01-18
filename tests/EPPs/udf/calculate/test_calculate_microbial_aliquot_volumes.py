@@ -1,12 +1,9 @@
 """Unit tests for cg_lims.EPPs.udf.calculate.calculate_microbial_aliquot_volumes"""
 
 import pytest
-from genologics.entities import Artifact
-
-from cg_lims.EPPs.udf.calculate.calculate_microbial_aliquot_volumes import (
-    calculate_volumes,
-)
+from cg_lims.EPPs.udf.calculate.calculate_microbial_aliquot_volumes import calculate_volumes
 from cg_lims.exceptions import HighConcentrationError, MissingUDFsError
+from genologics.entities import Artifact
 
 QC_FAILED = "FAILED"
 QC_PASSED = "PASSED"
