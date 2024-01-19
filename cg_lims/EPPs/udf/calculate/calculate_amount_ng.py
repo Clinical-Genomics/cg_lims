@@ -2,7 +2,6 @@ import logging
 import sys
 
 import click
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
@@ -15,6 +14,8 @@ LOG = logging.getLogger(__name__)
 @options.amount_udf_option()
 @options.volume_udf_option()
 @options.subtract_volume_option()
+@options.measurement()
+@options.input()
 @click.pass_context
 def calculate_amount_ng(
     ctx: click.Context,
@@ -22,6 +23,8 @@ def calculate_amount_ng(
     volume_udf: str,
     concentration_udf: str,
     subtract_volume: str,
+    measurement: bool = False,
+    input: bool = False,
 ):
     """Calculates and auto-fills the quantities of DNA in sample from concentration and volume
     measurements. The volume is subtracted by either 0 or 3 in the calculations. This is
@@ -33,7 +36,7 @@ def calculate_amount_ng(
     lims = ctx.obj["lims"]
 
     try:
-        artifacts = get_artifacts(process=process, measurement=True)
+        artifacts = get_artifacts(process=process, measurement=measurement, input=input)
         missing_udfs_count = 0
         artifacts_with_missing_udf = []
         for artifact in artifacts:
