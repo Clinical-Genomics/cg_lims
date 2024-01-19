@@ -8,7 +8,7 @@ from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.udfs import get_udf_type
-from genologics.entities import Artifact, Process
+from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
@@ -35,15 +35,15 @@ def udf_copy_sample_to_artifact(
         sample_udf: sample udf to set
         lims: genologics Lims object connected to the database
         ignore_fail: bool option to mute warnings"""
-    failed_udfs = 0
-    passed_udfs = 0
+    failed_udfs: int = 0
+    passed_udfs: int = 0
     udf_type = get_udf_type(
         lims=lims, udf_name=artifact_udf, attach_to_name=artifacts[0].output_type
     )
     for artifact in artifacts:
         if len(artifact.samples) > 1:
             LOG.info("More than one sample per artifact, picking the first one")
-        sample = artifact.samples[0]
+        sample: Sample = artifact.samples[0]
         udf = sample.udf.get(sample_udf)
         if not isinstance(udf, udf_type):
             try:
