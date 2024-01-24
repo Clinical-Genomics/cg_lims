@@ -2,9 +2,9 @@
 
 import click
 
-from .load_arnold_steps import update_arnold_preps, update_arnold_runs
-from .load_arnold_flowcells import update_arnold_flow_cells
 from .fetch_tga_samples import fetch_tga_samples
+from .load_arnold_flowcells import update_arnold_flow_cells
+from .load_arnold_steps import update_arnold_preps, update_arnold_runs
 
 
 @click.group(invoke_without_command=True)

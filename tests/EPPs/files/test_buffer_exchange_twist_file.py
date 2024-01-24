@@ -1,12 +1,10 @@
-from tests.conftest import server
 from pathlib import Path
 
-from genologics.entities import Artifact
-
 import pytest
-
 from cg_lims.EPPs.files.hamilton.buffer_exchange_twist_file import get_file_data_and_write
 from cg_lims.exceptions import MissingUDFsError
+from genologics.entities import Artifact
+from tests.conftest import server
 
 
 def test_get_file_data_and_write(lims, hamilton_buffer_exchange):

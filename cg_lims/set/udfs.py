@@ -1,11 +1,9 @@
 import logging
-
 from typing import List, Tuple
-
-from genologics.entities import Artifact, Process
 
 from cg_lims.exceptions import MissingUDFsError
 from cg_lims.get.udfs import UserDefinedFields
+from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 

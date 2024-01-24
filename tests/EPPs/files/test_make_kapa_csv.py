@@ -1,12 +1,10 @@
-from tests.conftest import server
 from pathlib import Path
 
-from genologics.entities import Artifact
-
 import pytest
-
 from cg_lims.EPPs.files.hamilton.make_kapa_csv import get_file_data_and_write
 from cg_lims.exceptions import MissingArtifactError, MissingUDFsError
+from genologics.entities import Artifact
+from tests.conftest import server
 
 
 def test_get_file_data_and_write_kapa_library_preparation(kapa_library_preparation_file, lims):

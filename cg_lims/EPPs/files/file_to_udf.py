@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 
+import csv
 import logging
 import sys
-import csv
 from pathlib import Path
 
 import click
-from genologics.entities import Artifact
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingArtifactError, MissingFileError
 from cg_lims.get.artifacts import get_artifact_by_name
 from cg_lims.get.files import get_file_path
+from genologics.entities import Artifact
 
 LOG = logging.getLogger(__name__)
 
@@ -53,7 +52,7 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
                 continue
             art = well_dict[well]
             try:
-            	art.udf[udf] = str(value)
+                art.udf[udf] = str(value)
             except:
                 art.udf[udf] = float(value)
             art.put()
@@ -62,7 +61,7 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
     if passed_arts < len(well_dict.keys()):
         error_msg.append("Some samples in the step were not represented in the file.")
 
-    error_string = ' '.join(list(set(error_msg)))
+    error_string = " ".join(list(set(error_msg)))
     if error_msg:
         raise MissingArtifactError(error_string)
 

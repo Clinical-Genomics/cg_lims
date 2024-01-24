@@ -1,10 +1,9 @@
 from typing import Optional
 
-from genologics.lims import Lims
-from pydantic.v1 import Field, BaseModel
-
-from cg_lims.objects import BaseAnalyte
 from cg_lims.models.arnold.base_step import BaseStep
+from cg_lims.objects import BaseAnalyte
+from genologics.lims import Lims
+from pydantic.v1 import BaseModel, Field
 
 
 class ProcessUdfs(BaseModel):

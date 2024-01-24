@@ -1,10 +1,11 @@
 from typing import List
 
+from cg_lims.models.arnold.base_step import BaseStep
 from genologics.lims import Lims
+
 from .library_preparation import get_library_prep_cov
 from .pooling_and_cleanup import get_pooling_and_cleanup
 from .reception_control import get_sample_artifact_fields
-from cg_lims.models.arnold.base_step import BaseStep
 
 
 def build_sars_cov_2_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:

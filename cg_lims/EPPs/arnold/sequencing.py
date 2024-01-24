@@ -1,19 +1,17 @@
+import json
 import logging
 from typing import List, Literal
 
 import click
-from genologics.lims import Lims, Process, Sample
 import requests
-from requests import Response
-import json
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.models.arnold.base_step import BaseStep
 from cg_lims.models.arnold.sequencing.novaseq_6000 import build_novaseq_6000_step_documents
 from cg_lims.models.arnold.sequencing.novaseq_x import build_novaseq_x_step_documents
-
+from genologics.lims import Lims, Process, Sample
+from requests import Response
 
 LOG = logging.getLogger(__name__)
 

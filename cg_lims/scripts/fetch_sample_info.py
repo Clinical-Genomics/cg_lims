@@ -1,12 +1,12 @@
-import click
 import csv
 import logging
-from genologics.lims import Lims
-from genologics.entities import Sample
+from typing import List
 
+import click
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_sample_artifact
-from typing import List
+from genologics.entities import Sample
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 
@@ -19,7 +19,9 @@ def check_cancelled_status(sample: Sample) -> bool:
         return True
 
 
-def get_samples_from_source(source_types: List[str], skip_cancelled: bool, lims: Lims) -> List[Sample]:
+def get_samples_from_source(
+    source_types: List[str], skip_cancelled: bool, lims: Lims
+) -> List[Sample]:
     samples_from_sources = []
     for source in source_types:
         udf_dict = {"Source": source}
@@ -34,21 +36,22 @@ def get_samples_from_source(source_types: List[str], skip_cancelled: bool, lims:
             samples_from_sources.append(sample)
         message = f"Found {len(found_samples)} sample(s) of source type '{source}'."
         if skip_cancelled:
-            message = message + f" Skipped {cancelled_samples} of them because of cancellation status."
+            message = (
+                message + f" Skipped {cancelled_samples} of them because of cancellation status."
+            )
         LOG.info(message)
         click.echo(message)
     return samples_from_sources
 
 
 def print_fetched_samples(
-        samples: List[Sample],
-        udf_name: str,
-        max_amount: str,
-        min_amount: str,
-        file_path: str,
-        lims: Lims,
+    samples: List[Sample],
+    udf_name: str,
+    max_amount: str,
+    min_amount: str,
+    file_path: str,
+    lims: Lims,
 ) -> None:
-
     sample_rows = []
     missing_udf = 0
     outside_threshold = 0
@@ -74,8 +77,10 @@ def print_fetched_samples(
     else:
         headers = ["Sample ID", udf_name, "Source"]
         if outside_threshold > 0 or missing_udf > 0:
-            message = f"Removed a total of {outside_threshold} sample(s) that did not fulfill threshold requirements" \
-                      f" and {missing_udf} because of missing UDF values."
+            message = (
+                f"Removed a total of {outside_threshold} sample(s) that did not fulfill threshold requirements"
+                f" and {missing_udf} because of missing UDF values."
+            )
             LOG.info(message)
             click.echo(message)
     with open(f"{file_path}.csv", "w", newline="\n") as new_csv:
@@ -109,8 +114,8 @@ def print_fetched_samples(
     "-u",
     required=False,
     help="Fetch samples depending on a specific UDF value. "
-         "Use in conjecture with max and/or min value options. "
-         "At the moment only works on Sample Artifact UDFs.",
+    "Use in conjecture with max and/or min value options. "
+    "At the moment only works on Sample Artifact UDFs.",
 )
 @click.option(
     "--file-name",
@@ -126,13 +131,13 @@ def print_fetched_samples(
 )
 @click.pass_context
 def fetch_sample_info(
-        ctx,
-        source_type: List[str],
-        max_udf_amount: str,
-        min_udf_amount: str,
-        udf_name: str,
-        file_name: str,
-        skip_cancelled: bool = False,
+    ctx,
+    source_type: List[str],
+    max_udf_amount: str,
+    min_udf_amount: str,
+    udf_name: str,
+    file_name: str,
+    skip_cancelled: bool = False,
 ):
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 

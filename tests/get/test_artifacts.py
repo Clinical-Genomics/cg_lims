@@ -1,11 +1,9 @@
+import pytest
+from cg_lims.exceptions import MissingArtifactError
+from cg_lims.get.artifacts import get_artifacts, get_lane_sample_artifacts, get_latest_analyte
 from genologics.entities import Process
 from genologics.lims import Lims
 from tests.conftest import server
-
-import pytest
-
-from cg_lims.exceptions import MissingArtifactError
-from cg_lims.get.artifacts import get_artifacts, get_lane_sample_artifacts, get_latest_analyte
 
 
 def test_get_latest_artifact(lims: Lims):

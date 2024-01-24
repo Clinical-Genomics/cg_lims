@@ -3,9 +3,8 @@ import sys
 from typing import List
 
 import click
-
 from cg_lims import options
-from cg_lims.get.artifacts import get_latest_analyte, get_artifacts
+from cg_lims.get.artifacts import get_artifacts, get_latest_analyte
 
 LOG = logging.getLogger(__name__)
 

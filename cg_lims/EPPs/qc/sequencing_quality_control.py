@@ -1,11 +1,9 @@
+import logging
 import sys
 
 import click
-
-import logging
-
-from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
+from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
 
 LOG = logging.getLogger(__name__)
 

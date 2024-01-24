@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 import logging
 import sys
+from typing import Any, Dict, List, Literal
 
 import click
-from cg_lims.get.processes import get_latest_process
-from genologics.entities import Process, Artifact
-from genologics.lims import Lims
-
+from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims import options
-from typing import List, Dict, Literal, Any
+from cg_lims.get.processes import get_latest_process
+from genologics.entities import Artifact, Process
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 
@@ -41,9 +40,11 @@ def get_copy_tasks(
     return copy_tasks
 
 
-def copy_udfs(input_artifacts: List[Artifact], copy_tasks: dict, lims: Lims, reception_control: List[str]):
+def copy_udfs(
+    input_artifacts: List[Artifact], copy_tasks: dict, lims: Lims, reception_control: List[str]
+):
     """Loop through all artifacts and copy udfs from the correct steps. QC flags are collected from the
-       reception control step if specified and no fitting source processes can be found."""
+    reception control step if specified and no fitting source processes can be found."""
     failed_udfs = []
     process_types = [task["Source Step"] for task_number, task in copy_tasks.items()]
     process_types = list(set(process_types))
@@ -56,9 +57,13 @@ def copy_udfs(input_artifacts: List[Artifact], copy_tasks: dict, lims: Lims, rec
             source_steps = get_correct_steps_for_the_artifact(
                 process_types=reception_control, artifact=artifact, lims=lims
             )
-            current_copy_tasks = {"Copy task 1": {"Source Field": "", "Source Step": reception_control[0]}}
-            message = f"No fitting processes found for artifact {artifact.id}. " \
-                      f"Retrieving QC flags from {reception_control}."
+            current_copy_tasks = {
+                "Copy task 1": {"Source Field": "", "Source Step": reception_control[0]}
+            }
+            message = (
+                f"No fitting processes found for artifact {artifact.id}. "
+                f"Retrieving QC flags from {reception_control}."
+            )
             LOG.info(message)
         else:
             current_copy_tasks = copy_tasks
@@ -113,7 +118,12 @@ def aggregate_qc_and_copy_fields(ctx, process_types: List[str]):
     try:
         copy_tasks = get_copy_tasks(process=process)
         artifacts = get_artifacts(process=process, input=True)
-        copy_udfs(input_artifacts=artifacts, copy_tasks=copy_tasks, lims=lims, reception_control=process_types)
+        copy_udfs(
+            input_artifacts=artifacts,
+            copy_tasks=copy_tasks,
+            lims=lims,
+            reception_control=process_types,
+        )
         click.echo("Udfs have been set on all samples.")
     except LimsError as e:
         sys.exit(e.message)

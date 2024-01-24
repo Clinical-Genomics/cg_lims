@@ -1,12 +1,7 @@
-from genologics.entities import Process
-
 from cg_lims.EPPs.arnold.prep import build_step_documents
 from cg_lims.models.arnold.base_step import BaseStep
-
-from tests.conftest import (
-    server,
-)
-
+from genologics.entities import Process
+from tests.conftest import server
 
 COVID_STEP_TYPES = {"library_prep", "reception_control", "pooling_and_cleanup"}
 

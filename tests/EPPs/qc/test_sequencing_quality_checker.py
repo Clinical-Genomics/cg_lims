@@ -1,8 +1,7 @@
 from typing import List
 
-from mock import Mock
-
 from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
+from mock import Mock
 
 
 def test_quality_control_of_flow_cell_with_all_passing(

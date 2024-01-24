@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 from typing import Dict
+
 import click
 import yaml
-from genologics.lims import Lims
-
 from cg_lims import options
 
 # commands
 from cg_lims.EPPs import epps
-from cg_lims.token_manager import TokenManager
 from cg_lims.scripts.base import scripts
 from cg_lims.status_db_api import StatusDBAPI
+from cg_lims.token_manager import TokenManager
+from genologics.lims import Lims
 
 
 @click.group(invoke_without_command=True)

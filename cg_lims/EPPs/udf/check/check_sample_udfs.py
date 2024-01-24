@@ -1,11 +1,12 @@
 import logging
 import sys
 from typing import List
+
 import click
-from genologics.entities import Process, Sample
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.samples import get_process_samples
+from genologics.entities import Process, Sample
 
 LOG = logging.getLogger(__name__)
 

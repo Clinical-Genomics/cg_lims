@@ -1,10 +1,11 @@
 import logging
 import sys
 from typing import List
+
 import click
-from genologics.entities import Process
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
+from genologics.entities import Process
 
 LOG = logging.getLogger(__name__)
 

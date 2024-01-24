@@ -2,15 +2,14 @@
 import logging
 
 import pytest
-from genologics.entities import Artifact
-from pydantic.v1 import ValidationError
-
 from cg_lims.EPPs.udf.calculate.maf_calculate_volume import (
     QC_FAILED,
     QC_PASSED,
     MafVolumes,
     calculate_volume,
 )
+from genologics.entities import Artifact
+from pydantic.v1 import ValidationError
 from tests.conftest import server
 
 LOG = logging.getLogger(__name__)

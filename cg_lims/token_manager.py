@@ -1,6 +1,7 @@
 import logging
-from google.oauth2 import service_account
+
 import google.auth.transport.requests
+from google.oauth2 import service_account
 
 LOG = logging.getLogger(__name__)
 

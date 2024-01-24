@@ -1,19 +1,18 @@
 import logging
 import sys
+from typing import List
 
 import click
-from typing import List
-from genologics.entities import Artifact, Process
-
-from cg_lims.exceptions import LimsError, MissingUDFsError, InvalidValueError
-from cg_lims.get.artifacts import get_artifacts
 from cg_lims.EPPs.udf.calculate.constants import (
-    FlowCellTypes,
-    FlowCellSize,
     FlowCellLaneVolumes10B,
     FlowCellLaneVolumes15B,
     FlowCellLaneVolumes25B,
+    FlowCellSize,
+    FlowCellTypes,
 )
+from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
+from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 

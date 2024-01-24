@@ -7,9 +7,9 @@ from cg_lims import options
 
 # commands
 from .check_config import check_config
-from .prepare_fixture import make_fixure
-from .one_time_scripts.base import one_time
 from .fetch_sample_info import fetch_sample_info
+from .one_time_scripts.base import one_time
+from .prepare_fixture import make_fixure
 
 
 @click.group(invoke_without_command=True)

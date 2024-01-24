@@ -1,9 +1,8 @@
-from genologics.entities import Process
 from cg_lims.EPPs.udf.copy.reads_to_sequence import find_reads_to_sequence
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.samples import get_process_samples
+from genologics.entities import Process
 from tests.conftest import server
-
 
 
 def test_find_reads_to_sequence(lims):
@@ -27,10 +26,10 @@ def test_find_reads_to_sequence(lims):
     assert passed_artifacts == 5
     assert failed_artifacts == 0
     for artifact in output_artifacts:
-        if artifact.id == '2-1454725':
-            assert artifact.udf['Reads to sequence (M)'] == '190'
+        if artifact.id == "2-1454725":
+            assert artifact.udf["Reads to sequence (M)"] == "190"
         else:
-            assert artifact.udf['Reads to sequence (M)'] == '6'
+            assert artifact.udf["Reads to sequence (M)"] == "6"
 
 
 def test_find_reads_to_sequence_missing_udfs(lims):
@@ -40,7 +39,7 @@ def test_find_reads_to_sequence_missing_udfs(lims):
 
     server("find_reads_to_sequence")
     process = Process(lims, id="24-196211")
-    samples=get_process_samples(process=process)
+    samples = get_process_samples(process=process)
     for sample in samples:
         sample.udf.clear()
         sample.put()

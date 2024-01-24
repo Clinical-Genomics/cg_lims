@@ -1,14 +1,9 @@
 from typing import Optional
 
+from cg_lims.get.artifacts import get_latest_analyte
+from cg_lims.models.api.master_steps.base_step import BaseStep, get_artifact_udf, get_process_udf
 from genologics.entities import Artifact, Process
 from pydantic.v1 import Field, validator
-
-from cg_lims.models.api.master_steps.base_step import (
-    get_artifact_udf,
-    BaseStep,
-    get_process_udf,
-)
-from cg_lims.get.artifacts import get_latest_analyte
 
 
 class KAPALibraryPreparation(BaseStep):

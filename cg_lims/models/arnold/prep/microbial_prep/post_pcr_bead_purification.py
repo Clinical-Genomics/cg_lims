@@ -1,12 +1,11 @@
 import logging
 from typing import Optional
 
-from genologics.lims import Lims
-from pydantic.v1.main import BaseModel
-from pydantic.v1 import Field
-
 from cg_lims.models.arnold.base_step import BaseStep
 from cg_lims.objects import BaseAnalyte
+from genologics.lims import Lims
+from pydantic.v1 import Field
+from pydantic.v1.main import BaseModel
 
 LOG = logging.getLogger(__name__)
 

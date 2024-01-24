@@ -1,14 +1,14 @@
 from typing import List
 
+from cg_lims.models.arnold.base_step import BaseStep
 from genologics.lims import Lims
 
-from .reception_control import get_sample_artifact_fields
-from .microbial_library_prep_nextera import get_library_prep_nextera
-from .normalization_of_microbial_samples import get_normalization_of_mictobial_samples
 from .buffer_exchange import get_buffer_exchange
+from .microbial_library_prep_nextera import get_library_prep_nextera
 from .normailzation_of_microbial_samples_for_sequencing import get_normalization_of_samples
+from .normalization_of_microbial_samples import get_normalization_of_mictobial_samples
 from .post_pcr_bead_purification import get_post_bead_pcr_purification
-from cg_lims.models.arnold.base_step import BaseStep
+from .reception_control import get_sample_artifact_fields
 
 
 def build_microbial_step_documents(sample_id: str, process_id: str, lims: Lims) -> List[BaseStep]:

@@ -2,14 +2,13 @@ import logging
 from typing import List
 
 import click
-from genologics.lims import Lims
 import requests
-from requests import Response
-
 from cg_lims import options
 from cg_lims.EPPs.arnold.flow_cell import build_flow_cell_document
 from cg_lims.get.artifacts import OutputGenerationType, OutputType, get_output_artifacts
 from cg_lims.models.arnold.flow_cell import FlowCell
+from genologics.lims import Lims
+from requests import Response
 
 LOG = logging.getLogger(__name__)
 

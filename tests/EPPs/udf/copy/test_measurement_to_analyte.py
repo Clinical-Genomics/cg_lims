@@ -1,9 +1,8 @@
 import pytest
-from genologics.entities import Process
-
 from cg_lims.EPPs.udf.copy.measurement_to_analyte import copy_udfs_to_all_analytes
-from cg_lims.get.artifacts import get_artifacts
 from cg_lims.exceptions import MissingUDFsError
+from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Process
 from tests.conftest import server
 
 

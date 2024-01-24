@@ -1,6 +1,5 @@
-from pydantic.v1 import BaseModel, Field
-
 from cg_lims.models.api.master_steps import HybridizeLibraryTWIST
+from pydantic.v1 import BaseModel, Field
 
 
 class DebugKapaCSV(BaseModel):

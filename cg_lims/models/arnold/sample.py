@@ -1,8 +1,9 @@
 import datetime
+from datetime import date, datetime
 from typing import Optional
+
 from pydantic.v1 import Field, validator
 from pydantic.v1.main import BaseModel
-from datetime import date, datetime
 
 
 def get_number_of_days(first_date: str, second_date: str) -> Optional[int]:

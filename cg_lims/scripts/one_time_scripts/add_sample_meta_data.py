@@ -8,11 +8,10 @@ import click
 import coloredlogs
 import pandas as pd
 import yaml
-from genologics.entities import Sample
-from genologics.lims import Lims
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingSampleError
+from genologics.entities import Sample
+from genologics.lims import Lims
 
 LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR"]
 LOG = logging.getLogger(__name__)
@@ -136,14 +135,10 @@ def set_sample_meta_data(
     """Script to set Covid meta data on sample udf."""
     with open(config) as file:
         config_data = yaml.load(file, Loader=yaml.FullLoader)
-    lims = Lims(
-        config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"]
-    )
+    lims = Lims(config_data["BASEURI"], config_data["USERNAME"], config_data["PASSWORD"])
     log_path = pathlib.Path(log)
     log_level = getattr(logging, log_level.upper())
-    logging.basicConfig(
-        filename=str(log_path.absolute()), filemode="w", level=log_level
-    )
+    logging.basicConfig(filename=str(log_path.absolute()), filemode="w", level=log_level)
     LOG.info(f"Running {context.command_path} with params: {context.params}")
     coloredlogs.install(level=log_level, fmt=LOG_FORMAT)
     meta_data: pd.DataFrame = pd.read_csv(data_file, sep=";")

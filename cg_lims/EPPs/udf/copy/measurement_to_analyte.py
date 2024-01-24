@@ -1,14 +1,13 @@
+import logging
+import sys
 from typing import List, Tuple
-from genologics.entities import Artifact
 
+import click
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.set.udfs import copy_artifact_to_artifact
-
-import logging
-import sys
-import click
+from genologics.entities import Artifact
 
 LOG = logging.getLogger(__name__)
 
@@ -37,9 +36,7 @@ def copy_udfs_to_all_analytes(
 
 
 @click.command()
-@options.artifact_udfs(
-    help="The name of the udf that you want to set"
-)
+@options.artifact_udfs(help="The name of the udf that you want to set")
 @click.pass_context
 def measurement_to_analyte(
     ctx,

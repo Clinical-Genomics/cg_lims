@@ -1,12 +1,10 @@
 import logging
 import sys
-from typing import List, Tuple
 from datetime import date
+from typing import List, Tuple
+
 import click
-from genologics.entities import Artifact, Process
 from cg_lims import options
-from cg_lims.exceptions import LimsError
-from cg_lims.get.artifacts import get_artifacts
 from cg_lims.EPPs.files.pooling_map.hmtl_templates import (
     PLACEMENT_MAP_HEADER,
     POOL_HEADER,
@@ -18,6 +16,9 @@ from cg_lims.EPPs.files.pooling_map.models import (
     PoolSection,
     SampleTableSection,
 )
+from cg_lims.exceptions import LimsError
+from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Artifact, Process
 from matplotlib import colors
 
 COLORS = list(colors.TABLEAU_COLORS.values())

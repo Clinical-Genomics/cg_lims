@@ -1,9 +1,7 @@
-from genologics.entities import Process
-
 from cg_lims.EPPs.arnold.flow_cell import build_flow_cell_document
 from cg_lims.get.artifacts import OutputGenerationType, OutputType, get_output_artifacts
 from cg_lims.models.arnold.flow_cell import FlowCell
-
+from genologics.entities import Process
 from tests.conftest import server
 
 

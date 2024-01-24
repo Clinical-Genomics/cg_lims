@@ -1,6 +1,7 @@
-from typing import Literal
-from genologics.entities import Artifact
 from enum import Enum
+from typing import Literal
+
+from genologics.entities import Artifact
 
 
 class QualityCheck(str, Enum):

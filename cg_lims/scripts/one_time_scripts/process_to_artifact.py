@@ -1,10 +1,10 @@
 import logging
-import click
 import pathlib
-import yaml
-from genologics.lims import Lims
 
+import click
+import yaml
 from cg_lims import options
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 

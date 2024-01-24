@@ -1,13 +1,14 @@
 import logging
 import sys
-from typing import List, Dict
-import click
 from datetime import date
-from genologics.entities import Artifact, Process
-from genologics.lims import Lims
+from typing import Dict, List
+
+import click
 from cg_lims import options
 from cg_lims.exceptions import LimsError
-from .models import PlacementMapHeader, WellInfo, PlateInfo
+from genologics.entities import Artifact, Process
+from genologics.lims import Lims
+
 from .hmtl_templates import (
     PLACEMENT_MAP_HEADER,
     PLATE_HEADER_SECTION,
@@ -16,6 +17,7 @@ from .hmtl_templates import (
     VISUAL_PLACEMENT_MAP_HEADER,
     VISUAL_PLACEMENT_MAP_WELL,
 )
+from .models import PlacementMapHeader, PlateInfo, WellInfo
 
 LOG = logging.getLogger(__name__)
 
@@ -43,7 +45,11 @@ def get_placement_map_data(
 
 
 def make_source_dest_info(
-    source_artifact: Artifact, dest_artifact: Artifact, original_well: str, input_udfs: List[str], output_udfs: List[str]
+    source_artifact: Artifact,
+    dest_artifact: Artifact,
+    original_well: str,
+    input_udfs: List[str],
+    output_udfs: List[str],
 ) -> WellInfo:
     """Collecting info about a well."""
 
@@ -67,7 +73,9 @@ def make_source_dest_info(
         container_name = source_artifact.location[0].name
         well_source = "Source Well"
         well = source_artifact.location[1]
-    udf_info = more_sample_info(source_artifact, input_udfs) + more_sample_info(dest_artifact, output_udfs)
+    udf_info = more_sample_info(source_artifact, input_udfs) + more_sample_info(
+        dest_artifact, output_udfs
+    )
     return WellInfo(
         project_name=sample.project.name,
         sample_name=sample_name,
@@ -155,7 +163,9 @@ def make_html(placement_map: dict, process: Process, original_well: str) -> str:
 @options.artifact_udfs(help="Output artifact UDFs to show in the placement map.")
 @options.original_well()
 @click.pass_context
-def placement_map(ctx, file: str, sample_udfs: List[str], artifact_udfs: List[str], original_well: str):
+def placement_map(
+    ctx, file: str, sample_udfs: List[str], artifact_udfs: List[str], original_well: str
+):
     """Create a 96 well placement map."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -163,7 +173,9 @@ def placement_map(ctx, file: str, sample_udfs: List[str], artifact_udfs: List[st
     lims = ctx.obj["lims"]
 
     try:
-        placement_map_data = get_placement_map_data(lims, process, sample_udfs, artifact_udfs, original_well)
+        placement_map_data = get_placement_map_data(
+            lims, process, sample_udfs, artifact_udfs, original_well
+        )
         html = make_html(placement_map_data, process, original_well)
         with open(f"{file}.html", "w") as file:
             file.write(html)

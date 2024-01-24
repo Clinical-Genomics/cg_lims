@@ -1,13 +1,11 @@
 import logging
 import sys
-from typing import List
+from typing import List, Optional
 
 import click
-from genologics.entities import Artifact, Process
-from typing import Optional
-
-from cg_lims.exceptions import LimsError, InvalidValueError, MissingUDFsError
+from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 failed_samples = []
