@@ -11,6 +11,7 @@ from cg_lims.EPPs.udf.calculate.constants import (
 from cg_lims.exceptions import LimsError, MissingArtifactError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts, get_latest_analyte, get_sample_artifact
 from cg_lims.get.samples import get_one_sample_from_artifact
+from cg_lims.get.udfs import get_udf
 from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
 
@@ -68,25 +69,16 @@ def fmol_to_ng(amount_fmol: float, size_bp: int) -> float:
     )
 
 
-def set_volumes_ng(
-    artifact: Artifact, process: Process, amount_ng: float, concentration: float
-) -> None:
+def get_sample_volume_ng(max_volume: float, amount_ng: float, concentration: float) -> float:
     """"""
-    max_volume = get_max_volume(process=process)
+    return min(max_volume, amount_ng / float(concentration))
 
-    artifact.udf["Sample Volume (ul)"] = amount_ng / float(concentration)
-    artifact.udf["Volume H2O (ul)"] = max_volume - artifact.udf["Sample Volume (ul)"]
+
+def set_volumes(artifact: Artifact, sample_volume: float, max_volume: float) -> None:
+    """"""
+    artifact.udf["Sample Volume (ul)"] = sample_volume
+    artifact.udf["Volume H2O (ul)"] = max_volume - sample_volume
     artifact.put()
-
-
-def set_volumes_fmol(
-    artifact: Artifact, process: Process, amount_fmol: float, size_bp: int, concentration: float
-) -> None:
-    """"""
-    amount_ng = fmol_to_ng(amount_fmol=amount_fmol, size_bp=size_bp)
-    set_volumes_ng(
-        artifact=artifact, process=process, amount_ng=amount_ng, concentration=concentration
-    )
 
 
 @click.command()
@@ -118,33 +110,35 @@ def ont_aliquot_volume(
         for artifact in artifacts:
             amount_needed_fmol = artifact.udf.get("Amount needed (fmol)")
             amount_needed_ng = artifact.udf.get("Amount needed (ng)")
-            concentration = artifact.udf.get(concentration_udf)
+            if not amount_needed_ng and not amount_needed_fmol:
+                raise MissingUDFsError(
+                    "You need to assign an amount needed (in either ng or fmol) for all samples!"
+                )
+            concentration = float(get_udf(entity=artifact, udf=concentration_udf))
             sample = get_one_sample_from_artifact(artifact=artifact)
             if amount_needed_fmol:
                 size_bp = get_latest_fragment_size(
                     sample_id=sample.id, lims=lims, size_udf=size_udf, process_types=process_types
                 )
-                set_volumes_fmol(
-                    artifact=artifact,
-                    process=process,
-                    amount_fmol=amount_needed_fmol,
-                    size_bp=size_bp,
-                    concentration=concentration,
+                amount_needed_ng = fmol_to_ng(amount_fmol=amount_needed_fmol, size_bp=size_bp)
+
+            max_volume = get_max_volume(process=process)
+            sample_volume = get_sample_volume_ng(
+                max_volume=max_volume, amount_ng=amount_needed_ng, concentration=concentration
+            )
+            if sample_volume == max_volume:
+                message = (
+                    f"Warning: The concentration ({concentration} ng/ul) of sample {sample.id} is too low in order to "
+                    f"reach required amount of {amount_needed_ng} ng in {max_volume} ul. Set Sample Volume (ul) to {max_volume} ul."
                 )
-            elif amount_needed_ng:
-                set_volumes_ng(
-                    artifact=artifact,
-                    process=process,
-                    amount_ng=amount_needed_ng,
-                    concentration=concentration,
-                )
-            else:
+                LOG.info(message)
                 failed_samples.append(sample.id)
+            set_volumes(artifact=artifact, sample_volume=sample_volume, max_volume=max_volume)
 
         if failed_samples:
             raise MissingUDFsError(
-                f"The following {len(failed_samples)} samples is missing a set "
-                f"amount needed in either ng or fmol: {failed_samples}"
+                f"Warning: {len(failed_samples)} sample(s) didn't have a high enough concentration for the amount needed."
+                f" See the log for further details."
             )
         message = "Aliquot volumes have been calculated for all artifacts."
         LOG.info(message)
