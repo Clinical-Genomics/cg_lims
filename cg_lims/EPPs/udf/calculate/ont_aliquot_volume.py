@@ -52,11 +52,11 @@ def get_latest_fragment_size(
     return size_history[-1]
 
 
-def get_max_volume(process: Process) -> float:
+def get_max_volume(process: Process, total_volume_udf: str) -> float:
     """"""
-    max_volume = process.udf.get("Total Volume (ul)")
+    max_volume = process.udf.get(total_volume_udf)
     if not max_volume:
-        raise MissingUDFsError("Process udf missing: Total Volume (ul)")
+        raise MissingUDFsError(f"Process udf missing: {total_volume_udf}")
     return max_volume
 
 
@@ -69,15 +69,25 @@ def fmol_to_ng(amount_fmol: float, size_bp: int) -> float:
     )
 
 
-def get_sample_volume_ng(max_volume: float, amount_ng: float, concentration: float) -> float:
+def get_sample_volume_ng(
+    max_volume: Optional[float], amount_ng: float, concentration: float
+) -> float:
     """"""
+    if not max_volume:
+        return amount_ng / float(concentration)
     return min(max_volume, amount_ng / float(concentration))
 
 
-def set_volumes(artifact: Artifact, sample_volume: float, max_volume: float) -> None:
+def set_volumes(
+    artifact: Artifact,
+    sample_volume_udf: str,
+    buffer_volume_udf: str,
+    sample_volume: float,
+    max_volume: float,
+) -> None:
     """"""
-    artifact.udf["Sample Volume (ul)"] = sample_volume
-    artifact.udf["Volume H2O (ul)"] = max_volume - sample_volume
+    artifact.udf[sample_volume_udf] = sample_volume
+    artifact.udf[buffer_volume_udf] = max_volume - sample_volume
     artifact.put()
 
 
@@ -85,6 +95,15 @@ def set_volumes(artifact: Artifact, sample_volume: float, max_volume: float) -> 
 @options.process_types()
 @options.concentration_udf_option()
 @options.size_udf()
+@options.volume_udf(help="Name of sample volume UDF")
+@options.buffer_udf()
+@options.amount_fmol_udf(
+    help="Use if you want to overwrite the default UDF name 'Amount needed (fmol)'"
+)
+@options.amount_ng_udf(
+    help="Use if you want to overwrite the default UDF name 'Amount needed (ng)'"
+)
+@options.total_volume_udf()
 @options.measurement()
 @options.input()
 @click.pass_context
@@ -93,6 +112,11 @@ def ont_aliquot_volume(
     process_types: List[str],
     concentration_udf: str,
     size_udf: str,
+    volume_udf: str,
+    buffer_udf: str,
+    amount_fmol_udf: str = "Amount needed (fmol)",
+    amount_ng_udf: str = "Amount needed (fmol)",
+    total_volume_udf: Optional[str] = None,
     measurement: bool = False,
     input: bool = False,
 ):
@@ -108,8 +132,8 @@ def ont_aliquot_volume(
         failed_samples = []
 
         for artifact in artifacts:
-            amount_needed_fmol = artifact.udf.get("Amount needed (fmol)")
-            amount_needed_ng = artifact.udf.get("Amount needed (ng)")
+            amount_needed_fmol = artifact.udf.get(amount_fmol_udf)
+            amount_needed_ng = artifact.udf.get(amount_ng_udf)
             if not amount_needed_ng and not amount_needed_fmol:
                 raise MissingUDFsError(
                     "You need to assign an amount needed (in either ng or fmol) for all samples!"
@@ -122,18 +146,24 @@ def ont_aliquot_volume(
                 )
                 amount_needed_ng = fmol_to_ng(amount_fmol=amount_needed_fmol, size_bp=size_bp)
 
-            max_volume = get_max_volume(process=process)
+            max_volume = get_max_volume(process=process, total_volume_udf=total_volume_udf)
             sample_volume = get_sample_volume_ng(
                 max_volume=max_volume, amount_ng=amount_needed_ng, concentration=concentration
             )
             if sample_volume == max_volume:
                 message = (
                     f"Warning: The concentration ({concentration} ng/ul) of sample {sample.id} is too low in order to "
-                    f"reach required amount of {amount_needed_ng} ng in {max_volume} ul. Set Sample Volume (ul) to {max_volume} ul."
+                    f"reach required amount of {amount_needed_ng} ng in {max_volume} ul. Set {volume_udf} to {max_volume} ul."
                 )
                 LOG.info(message)
                 failed_samples.append(sample.id)
-            set_volumes(artifact=artifact, sample_volume=sample_volume, max_volume=max_volume)
+            set_volumes(
+                artifact=artifact,
+                sample_volume_udf=volume_udf,
+                buffer_volume_udf=buffer_udf,
+                sample_volume=sample_volume,
+                max_volume=max_volume,
+            )
 
         if failed_samples:
             raise MissingUDFsError(

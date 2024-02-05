@@ -383,3 +383,23 @@ def preset_volume(
     help: str = "Give a pre-set volume to use for the calculations. Use only if no volume UDF is given.",
 ) -> click.option:
     return click.option("--preset-volume", required=False, help=help)
+
+
+def total_volume_udf(
+    help: str = "String of process UDF used to get the total volume",
+) -> click.option:
+    return click.option("--total-volume-udf", required=False, help=help)
+
+
+def amount_fmol_udf(
+    help: str = "String of UDF used to get amount (fmol)",
+) -> click.option:
+    return click.option(
+        "--amount-fmol-udf", required=False, help=help, default="Amount needed (fmol)"
+    )
+
+
+def amount_ng_udf(
+    help: str = "String of UDF used to get amount (ng)",
+) -> click.option:
+    return click.option("--amount-ng-udf", required=False, help=help, default="Amount needed (ng)")
