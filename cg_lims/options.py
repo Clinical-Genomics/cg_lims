@@ -403,3 +403,9 @@ def amount_ng_udf(
     help: str = "String of UDF used to get amount (ng)",
 ) -> click.option:
     return click.option("--amount-ng-udf", required=False, help=help, default="Amount needed (ng)")
+
+
+def root_path(
+    help: str = "Root path to be used by the script to find files.",
+) -> click.option:
+    return click.option("--root-path", required=True, help=help)
