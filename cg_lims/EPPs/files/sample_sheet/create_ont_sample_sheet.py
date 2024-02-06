@@ -37,7 +37,9 @@ def get_sample_id(artifact: Artifact) -> str:
 
 def get_experiment_name(process: Process) -> str:
     """"""
-    return f"{date.today()}_{process.id}"
+    if not process.udf.get("Experiment Name"):
+        raise MissingUDFsError(f"Sample sheet generation requires an experiment name!")
+    return process.udf.get("Experiment Name")
 
 
 def get_kit(process: Process) -> str:
