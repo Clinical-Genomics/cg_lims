@@ -11,7 +11,7 @@ LOG = logging.getLogger(__name__)
 
 def get_experiment_name(process: Process) -> str:
     """"""
-    return f"{date.today()}_{process.id}"
+    return f"{date.today().strftime('%y%m%d')}_{process.id}"
 
 
 def set_experiment_name(process: Process) -> None:
