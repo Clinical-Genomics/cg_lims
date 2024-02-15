@@ -4,6 +4,7 @@ from datetime import date
 
 import click
 from cg_lims.exceptions import LimsError
+from cg_lims.get.artifacts import get_artifacts
 from genologics.lims import Process
 
 LOG = logging.getLogger(__name__)
@@ -16,8 +17,12 @@ def get_experiment_name(process: Process) -> str:
 
 def set_experiment_name(process: Process) -> None:
     """"""
-    process.udf["Experiment Name"] = get_experiment_name(process=process)
+    experiment_name: str = get_experiment_name(process=process)
+    process.udf["Experiment Name"] = experiment_name
     process.put()
+    for artifact in get_artifacts(process=process):
+        artifact.udf["ONT Experiment Name"] = experiment_name
+        artifact.put()
 
 
 @click.command()
