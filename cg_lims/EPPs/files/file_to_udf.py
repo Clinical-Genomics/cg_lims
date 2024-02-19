@@ -47,9 +47,6 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
             if value is None:
                 error_msg.append("Some samples in the file hade missing values.")
                 continue
-            elif well not in well_dict:
-                error_msg.append("Some samples in the step were not represented in the file.")
-                continue
             art = well_dict[well]
             try:
                 art.udf[udf] = str(value)
