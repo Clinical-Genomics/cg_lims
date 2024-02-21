@@ -45,10 +45,11 @@ def set_udfs(well_field: str, value_field: str, udf: str, well_dict: dict, resul
             well = sample.get(well_field)
             value = sample.get(value_field)
             if value is None:
-                error_msg.append("Some samples in the file hade missing values.")
+                error_msg.append("Some samples in the file had missing values.")
+                LOG.info(f"Missing value for sample {sample} in well {well}. Skipping!")
                 continue
             elif well not in well_dict:
-                error_msg.append("Some samples in the step were not represented in the file.")
+                LOG.info(f"Well {well} was not found in the step. Skipping!")
                 continue
             art = well_dict[well]
             try:
