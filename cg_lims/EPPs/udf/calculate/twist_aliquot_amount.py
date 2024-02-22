@@ -16,6 +16,21 @@ LOG = logging.getLogger(__name__)
 MAXIMUM_SAMPLE_AMOUNT = 250
 
 
+def get_skip_rc_input_amount(artifact: Artifact) -> float:
+    """Return the maximum input amount for a sample which has skipped reception control."""
+    process = artifact.parent_process
+    total_volume = process.udf.get("Total Volume (ul)")
+    concentration = artifact.samples[0].udf.get("Concentration (ng/ul)")
+    return total_volume * concentration
+
+
+def get_maximum_input_for_aliquot(artifact: Artifact) -> float:
+    """Return the maximum allowed input amount for the specified artifact."""
+    if artifact.samples[0].udf.get("Skip Reception Control QC"):
+        return get_skip_rc_input_amount(artifact=artifact)
+    return get_maximum_amount(artifact=artifact, default_amount=MAXIMUM_SAMPLE_AMOUNT)
+
+
 def set_amount_needed(artifacts: List[Artifact]):
     """The maximum amount taken into the prep is MAXIMUM_SAMPLE_AMOUNT.
     Any amount below this can be used in the prep if the total amount is limited."""
@@ -23,7 +38,7 @@ def set_amount_needed(artifacts: List[Artifact]):
     missing_udfs = 0
     for artifact in artifacts:
         amount = artifact.udf.get("Amount (ng)")
-        maximum_amount = get_maximum_amount(artifact=artifact, default_amount=MAXIMUM_SAMPLE_AMOUNT)
+        maximum_amount = get_maximum_input_for_aliquot(artifact=artifact)
         if not amount:
             missing_udfs += 1
             continue
