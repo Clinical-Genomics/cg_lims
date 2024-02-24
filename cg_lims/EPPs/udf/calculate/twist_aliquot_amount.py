@@ -19,9 +19,11 @@ MAXIMUM_SAMPLE_AMOUNT = 250
 def get_skip_rc_input_amount(artifact: Artifact) -> float:
     """Return the maximum input amount for a sample which has skipped reception control."""
     process = artifact.parent_process
+    sample_volume = artifact.udf.get("Volume (ul)")
     total_volume = process.udf.get("Total Volume (ul)")
-    concentration = artifact.samples[0].udf.get("Concentration (ng/ul)")
-    return total_volume * concentration
+    max_volume = min(sample_volume, total_volume)
+    concentration = artifact.udf.get("Concentration")
+    return max_volume * concentration
 
 
 def get_maximum_input_for_aliquot(artifact: Artifact) -> float:
@@ -32,7 +34,10 @@ def get_maximum_input_for_aliquot(artifact: Artifact) -> float:
 
 
 def set_amount_needed(artifacts: List[Artifact]):
-    """The maximum amount taken into the prep is MAXIMUM_SAMPLE_AMOUNT.
+    """For samples that have skipped RC QC:
+    - The maximum amount taken into the prep is decided by calculating <the sample concentration> * <the total volume>.
+    For all other samples:
+    - The maximum amount is decided by MAXIMUM_SAMPLE_AMOUNT.
     Any amount below this can be used in the prep if the total amount is limited."""
 
     missing_udfs = 0
