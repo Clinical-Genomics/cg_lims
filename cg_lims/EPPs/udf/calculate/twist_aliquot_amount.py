@@ -16,8 +16,8 @@ LOG = logging.getLogger(__name__)
 MAXIMUM_SAMPLE_AMOUNT = 250
 
 
-def get_skip_rc_input_amount(artifact: Artifact) -> float:
-    """Return the maximum input amount for a sample which has skipped reception control."""
+def get_possible_input_amount(artifact: Artifact) -> float:
+    """Return the maximum input amount possible for a sample, depending on the total volume required."""
     process = artifact.parent_process
     sample_volume = artifact.udf.get("Volume (ul)")
     total_volume = process.udf.get("Total Volume (ul)")
@@ -28,33 +28,29 @@ def get_skip_rc_input_amount(artifact: Artifact) -> float:
 
 def get_maximum_input_for_aliquot(artifact: Artifact) -> float:
     """Return the maximum allowed input amount for the specified artifact."""
-    if artifact.samples[0].udf.get("Skip Reception Control QC"):
-        return get_skip_rc_input_amount(artifact=artifact)
-    return get_maximum_amount(artifact=artifact, default_amount=MAXIMUM_SAMPLE_AMOUNT)
+    possible_input_amount = get_possible_input_amount(artifact=artifact)
+    max_input_amount = get_maximum_amount(artifact=artifact, default_amount=MAXIMUM_SAMPLE_AMOUNT)
+    return min(possible_input_amount, max_input_amount)
 
 
 def set_amount_needed(artifacts: List[Artifact]):
-    """For samples that have skipped RC QC:
-    - The maximum amount taken into the prep is decided by calculating <the sample concentration> * <the total volume>.
-    For all other samples:
-    - The maximum amount is decided by MAXIMUM_SAMPLE_AMOUNT.
-    Any amount below this can be used in the prep if the total amount is limited."""
+    """The maximum amount taken into the prep is decided by calculating the minimum between MAXIMUM_SAMPLE_AMOUNT and
+    <the sample concentration> * <the total volume>.
+
+    Any amount below this can be used in the prep if the total amount or sample volume is limited.
+    """
 
     missing_udfs = 0
     for artifact in artifacts:
-        amount = artifact.udf.get("Amount (ng)")
-        maximum_amount = get_maximum_input_for_aliquot(artifact=artifact)
-        if not amount:
+        if not artifact.udf.get("Concentration") or not artifact.udf.get("Volume (ul)"):
             missing_udfs += 1
             continue
-        if amount >= maximum_amount:
-            artifact.udf["Amount needed (ng)"] = maximum_amount
-        else:
-            artifact.udf["Amount needed (ng)"] = amount
+        maximum_amount = get_maximum_input_for_aliquot(artifact=artifact)
+        artifact.udf["Amount needed (ng)"] = maximum_amount
         artifact.put()
 
     if missing_udfs:
-        raise MissingUDFsError(f"Udf missing for {missing_udfs} samples")
+        raise MissingUDFsError(f"UDF missing for {missing_udfs} samples")
 
 
 @click.command()
