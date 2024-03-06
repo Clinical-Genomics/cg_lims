@@ -4,7 +4,7 @@ import logging
 import os
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import click
 from cg_lims import options
@@ -54,52 +54,62 @@ def parse_json(file_path: str) -> Dict:
     return data
 
 
-def get_n50(json_dict: Dict) -> Optional[str]:
+def get_n50(json_dict: Dict) -> int:
     """"""
     try:
-        return json_dict["acquisitions"][3]["read_length_histogram"][-2]["plot"]["histogram_data"][
-            0
-        ]["n50"]
+        return int(
+            json_dict["acquisitions"][3]["read_length_histogram"][-2]["plot"]["histogram_data"][0][
+                "n50"
+            ]
+        )
     except KeyError:
-        return None
+        return 0
 
 
-def get_estimated_bases(json_dict: Dict) -> Optional[str]:
+def get_estimated_bases(json_dict: Dict) -> int:
     """"""
     try:
-        return json_dict["acquisitions"][3]["acquisition_run_info"]["yield_summary"][
-            "estimated_selected_bases"
-        ]
+        return int(
+            json_dict["acquisitions"][3]["acquisition_run_info"]["yield_summary"][
+                "estimated_selected_bases"
+            ]
+        )
     except KeyError:
-        return None
+        return 0
 
 
-def get_passed_bases(json_dict: Dict) -> Optional[str]:
+def get_passed_bases(json_dict: Dict) -> int:
     """"""
     try:
-        return json_dict["acquisitions"][3]["acquisition_run_info"]["yield_summary"][
-            "basecalled_pass_bases"
-        ]
+        return int(
+            json_dict["acquisitions"][3]["acquisition_run_info"]["yield_summary"][
+                "basecalled_pass_bases"
+            ]
+        )
     except KeyError:
-        return None
+        return 0
 
 
-def get_failed_bases(json_dict: Dict) -> Optional[str]:
+def get_failed_bases(json_dict: Dict) -> int:
     """"""
     try:
-        return json_dict["acquisitions"][3]["acquisition_run_info"]["yield_summary"][
-            "basecalled_fail_bases"
-        ]
+        return int(
+            json_dict["acquisitions"][3]["acquisition_run_info"]["yield_summary"][
+                "basecalled_fail_bases"
+            ]
+        )
     except KeyError:
-        return None
+        return 0
 
 
-def get_read_count(json_dict: Dict) -> Optional[str]:
+def get_read_count(json_dict: Dict) -> int:
     """"""
     try:
-        return json_dict["acquisitions"][3]["acquisition_run_info"]["yield_summary"]["read_count"]
+        return int(
+            json_dict["acquisitions"][3]["acquisition_run_info"]["yield_summary"]["read_count"]
+        )
     except KeyError:
-        return None
+        return 0
 
 
 def set_sequencing_qc(artifact: Artifact, json_dict: Dict) -> None:
