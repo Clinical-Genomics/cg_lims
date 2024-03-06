@@ -25,7 +25,7 @@ def get_flow_cell_id(artifact: Artifact) -> str:
 def get_experiment_id(artifact: Artifact) -> str:
     """"""
     parent_process = artifact.parent_process
-    if not parent_process.udf.get("Experiment ID"):
+    if not parent_process.udf.get("ONT Experiment Name"):
         raise MissingUDFsError(
             f"Artifact {artifact.name} (from process {parent_process.id}) is missing an experiment ID!"
         )
