@@ -29,7 +29,7 @@ def get_experiment_id(artifact: Artifact) -> str:
         raise MissingUDFsError(
             f"Artifact {artifact.name} (from process {parent_process.id}) is missing an experiment ID!"
         )
-    return parent_process.udf.get("Experiment ID")
+    return parent_process.udf.get("ONT Experiment Name")
 
 
 def get_report_json_path(artifact: Artifact, root_path: str) -> str:
