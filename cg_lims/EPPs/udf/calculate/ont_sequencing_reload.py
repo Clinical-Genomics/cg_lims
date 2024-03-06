@@ -13,6 +13,13 @@ from genologics.lims import Lims
 LOG = logging.getLogger(__name__)
 
 
+def get_concentration_after_prep(lims: Lims, sample_id: str) -> float:
+    """"""
+    return get_analyte_udf(
+        lims=lims, sample_id=sample_id, process_types=["ONT Start Sequencing"], udf="Concentration"
+    )
+
+
 def get_total_amount_after_prep(lims: Lims, sample_id: str) -> float:
     """"""
     return get_analyte_udf(
@@ -40,22 +47,27 @@ def get_reload_amounts(lims: Lims, sample_id: str) -> List[float]:
         if result_file.name == "EPP Log":
             continue
         else:
-            amounts.append(result_file.udf.get("Reload Amount (fmol)"))
+            reload_amount = result_file.udf.get("Reload Amount (fmol)")
+            if not reload_amount:
+                reload_amount = 0
+            amounts.append(reload_amount)
     return amounts
 
 
-def get_available_amount(lims: Lims, artifact: Artifact) -> float:
+def get_available_amount(lims: Lims, sample_id: str) -> float:
     """"""
-    sample_id = get_one_sample_from_artifact(artifact=artifact).id
     original_amount = get_total_amount_after_prep(lims=lims, sample_id=sample_id)
     loading_amount = get_loading_amount(lims=lims, sample_id=sample_id)
     total_reload_amount = sum(get_reload_amounts(lims=lims, sample_id=sample_id))
     return original_amount - loading_amount - total_reload_amount
 
 
-def set_available_amount(lims: Lims, artifact: Artifact) -> None:
+def set_available_amount_and_conc(lims: Lims, artifact: Artifact) -> None:
     """"""
-    available_amount = get_available_amount(lims=lims, artifact=artifact)
+    sample_id = get_one_sample_from_artifact(artifact=artifact).id
+    concentration = get_concentration_after_prep(lims=lims, sample_id=sample_id)
+    available_amount = get_available_amount(lims=lims, sample_id=sample_id)
+    artifact.udf["Concentration"] = concentration
     artifact.udf["Available Amount (fmol)"] = available_amount
     artifact.put()
 
@@ -73,7 +85,7 @@ def ont_available_sequencing_reload(ctx):
     try:
         artifacts = get_artifacts(process=process, measurement=True)
         for artifact in artifacts:
-            set_available_amount(lims=lims, artifact=artifact)
+            set_available_amount_and_conc(lims=lims, artifact=artifact)
         message: str = "Available amounts have been successfully calculated and set."
         LOG.info(message)
         click.echo(message)
