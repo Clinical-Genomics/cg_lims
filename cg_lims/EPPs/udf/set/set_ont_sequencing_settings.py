@@ -5,7 +5,7 @@ from datetime import date
 import click
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
-from genologics.lims import Process
+from genologics.entities import Process
 
 LOG = logging.getLogger(__name__)
 
