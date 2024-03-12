@@ -16,10 +16,11 @@ LOG = logging.getLogger(__name__)
 
 
 def get_flow_cell_id(artifact: Artifact) -> str:
-    """Return flow cell ID from artifact."""
-    if not artifact.udf.get("ONT Flow Cell ID"):
+    """Return the flow cell ID of an artifact from the connected container's name."""
+    container_name: str = artifact.container.name
+    if not container_name:
         raise MissingUDFsError(f"Artifact {artifact.name} is missing a flow cell ID!")
-    return artifact.udf.get("ONT Flow Cell ID")
+    return container_name
 
 
 def get_experiment_id(artifact: Artifact) -> str:
