@@ -64,12 +64,16 @@ def check_same_sample_in_many_rerun_pools(rerun_arts: List[Artifact]) -> None:
     help="The name(s) of the process type(s) before the requeue step. Fetching artifact to requeue from here."
 )
 @options.udf(help="UDF that will tell wich artifacts to move.")
+@options.input(
+    help="Use this flag if you want to queue the input artifacts of the current process. Default is to queue the "
+    "output artifacts (analytes) of the process. "
+)
 @click.pass_context
-def rerun_samples(ctx, workflow_id, stage_id, udf, process_types):
+def rerun_samples(ctx, workflow_id, stage_id, udf, process_type, input: bool):
     """Script to requeue samples for sequencing."""
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
-    artifacts = get_artifacts(process, False)
+    artifacts = get_artifacts(process=process, input=input)
     rerun_arts = filter_artifacts(artifacts, udf, True)
     if rerun_arts:
         try:
