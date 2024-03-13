@@ -69,7 +69,9 @@ def check_same_sample_in_many_rerun_pools(rerun_arts: List[Artifact]) -> None:
     "output artifacts (analytes) of the process. "
 )
 @click.pass_context
-def rerun_samples(ctx, workflow_id, stage_id, udf, process_type, input: bool):
+def rerun_samples(
+    ctx, workflow_id: str, stage_id: str, udf: str, process_types: List[str], input: bool
+):
     """Script to requeue samples for sequencing."""
     process = ctx.obj["process"]
     lims = ctx.obj["lims"]
