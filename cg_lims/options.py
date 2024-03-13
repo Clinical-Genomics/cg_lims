@@ -409,3 +409,11 @@ def root_path(
     help: str = "Root path to be used by the script to find files.",
 ) -> click.option:
     return click.option("--root-path", required=True, help=help)
+
+
+def well_udf(help: str = "UDF name for artifact well.") -> click.option:
+    return click.option("--well-udf", required=False, default=None, help=help)
+
+
+def container_name_udf(help: str = "UDF name for container name.") -> click.option:
+    return click.option("--container-name-udf", required=False, default=None, help=help)
