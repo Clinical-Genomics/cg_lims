@@ -158,11 +158,11 @@ def qpcr_dilution(
 
         if failed_samples:
             error_message = (
-                f"{failed_samples} sample(s) failed the QC! See the logs for further information."
+                f" {failed_samples} sample(s) failed the QC! See the logs for further information."
             )
             raise FailingQCError(error_message)
 
-        message = "Concentrations have been calculated and set for all samples!"
+        message = " Concentrations have been calculated and set for all samples!"
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
