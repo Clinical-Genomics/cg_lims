@@ -160,7 +160,6 @@ def qpcr_dilution(
             error_message = (
                 f"{failed_samples} sample(s) failed the QC! See the logs for further information."
             )
-            LOG.error(error_message)
             raise FailingQCError(error_message)
 
         message = "Concentrations have been calculated and set for all samples!"
