@@ -99,12 +99,16 @@ class WellValues:
         molar_concentration = self.get_concentration(
             cq_threshold=float(replicate_threshold), size_bp=int(size_bp)
         )
-        self.artifact.qc_flag = "FAILED"
+        self.artifact.qc_flag = "PASSED"
         self.artifact.udf["Size (bp)"] = int(size_bp)
         self.artifact.udf["Concentration"] = molar_concentration
         self.artifact.udf["Concentration (nM)"] = molar_concentration * 10**9
-        if self.artifact.udf["Concentration (nM)"] > concentration_threshold:
-            self.artifact.qc_flag = "PASSED"
+        if self.artifact.udf["Concentration (nM)"] < concentration_threshold:
+            self.artifact.qc_flag = "FAILED"
+            LOG.info(
+                f" Concentration of {self.artifact.samples[0].id} is {molar_concentration * 10**9} nM."
+                f" Setting QC flag to failed as this is below the threshold of {concentration_threshold} nM."
+            )
         self.artifact.put()
 
 
@@ -153,7 +157,9 @@ def qpcr_dilution(
                 failed_samples += 1
 
         if failed_samples:
-            error_message = f"{failed_samples} failed the QC! See the logs for further information."
+            error_message = (
+                f"{failed_samples} sample(s) failed the QC! See the logs for further information."
+            )
             LOG.error(error_message)
             raise FailingQCError(error_message)
 
