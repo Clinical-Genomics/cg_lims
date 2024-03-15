@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 from cg_lims import options
 from cg_lims.EPPs.udf.calculate.constants import WELL_TRANSFORMER
-from cg_lims.exceptions import FailingQCError, LimsError, MissingFileError
+from cg_lims.exceptions import FailingQCError, LimsError, MissingFileError, MissingValueError
 from cg_lims.get.artifacts import get_artifact_by_name, get_artifacts
 from cg_lims.get.files import get_file_path
 from genologics.entities import Artifact, Process
@@ -146,6 +146,12 @@ def qpcr_dilution(
         quantification_data = parse_quantification_summary(summary_file=file_path)
         failed_samples = 0
         for artifact in artifacts:
+            artifact_well = artifact.location[1]
+            if artifact_well not in quantification_data.keys():
+                raise MissingValueError(
+                    f"No values found for well {artifact_well} in the result file! "
+                    f"Please double check if sample {artifact.samples[0].id} has been placed correctly."
+                )
             well_results: WellValues = quantification_data[artifact.location[1]]
             well_results.connect_artifact(artifact=artifact)
             well_results.set_artifact_udfs(
