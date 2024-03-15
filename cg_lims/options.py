@@ -365,3 +365,15 @@ def udf_values(
         multiple=True,
         help=help,
     )
+
+
+def replicate_threshold(help: str = "Threshold for replicate difference.") -> click.option:
+    return click.option("--replicate-threshold", required=True, help=help)
+
+
+def concentration_threshold(help: str = "Threshold for concentrations.") -> click.option:
+    return click.option("--concentration-threshold", required=True, help=help)
+
+
+def size_bp(help: str = "Fragment size in base pairs.") -> click.option:
+    return click.option("--size-bp", required=False, help=help)
