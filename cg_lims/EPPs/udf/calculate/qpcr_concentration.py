@@ -118,7 +118,7 @@ def get_max_difference(values: List[float]) -> float:
 @options.concentration_threshold()
 @options.size_bp()
 @click.pass_context
-def qpcr_dilution(
+def qpcr_concentration(
     ctx,
     file: str,
     local_file: str,
