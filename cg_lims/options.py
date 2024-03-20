@@ -376,4 +376,4 @@ def concentration_threshold(help: str = "Threshold for concentrations.") -> clic
 
 
 def size_bp(help: str = "Fragment size in base pairs.") -> click.option:
-    return click.option("--size-bp", required=False, help=help)
+    return click.option("--size-bp", required=True, help=help)
