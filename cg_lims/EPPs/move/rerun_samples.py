@@ -75,8 +75,12 @@ def rerun_samples(
     ctx, workflow_id: str, stage_id: str, process_types: List[str], udf: str, input: bool
 ):
     """Script to requeue samples for sequencing."""
+
+    LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
+
     process: Process = ctx.obj["process"]
     lims: Lims = ctx.obj["lims"]
+
     artifacts: List[Artifact] = get_artifacts(process=process, input=input)
     rerun_artifacts: List[Artifact] = filter_artifacts(artifacts=artifacts, udf=udf, value=True)
     if rerun_artifacts:
