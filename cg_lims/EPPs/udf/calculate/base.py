@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import click
+from cg_lims.EPPs.udf.calculate.aliquot_volume import aliquot_volume
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng import calculate_amount_ng
 from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import (
     calculate_average_size_and_set_qc,
@@ -22,7 +23,6 @@ from cg_lims.EPPs.udf.calculate.novaseq_x_volumes import novaseq_x_volumes
 from cg_lims.EPPs.udf.calculate.pool_normalization import pool_normalization
 from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import missing_reads_in_pool
 from cg_lims.EPPs.udf.calculate.twist_aliquot_amount import twist_aliquot_amount
-from cg_lims.EPPs.udf.calculate.twist_aliquot_volume import twist_aliquot_volume
 from cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer import get_volumes_from_buffer
 
 # commands
@@ -39,7 +39,7 @@ def calculate(ctx):
 
 calculate.add_command(twist_pool)
 calculate.add_command(twist_aliquot_amount)
-calculate.add_command(twist_aliquot_volume)
+calculate.add_command(aliquot_volume)
 calculate.add_command(twist_qc_amount)
 calculate.add_command(get_volumes_from_buffer)
 calculate.add_command(get_missing_reads)
