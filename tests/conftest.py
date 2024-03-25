@@ -7,7 +7,6 @@ from typing import Callable, Dict, List
 import pytest
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
 from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
-from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
 from cg_lims.token_manager import TokenManager
 from click.testing import CliRunner
@@ -354,7 +353,7 @@ def novaseq_metrics_missing_for_sample_in_lane(
     missing_sample_id,
     missing_lane,
 ) -> List[Dict]:
-    metrics: List[SampleLaneSequencingMetrics] = generate_metrics_json(
+    metrics: List[Dict] = generate_metrics_json(
         flow_cell_name=novaseq_flow_cell_name,
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
@@ -379,7 +378,7 @@ def novaseq_missing_sample(
 ) -> List[Dict]:
     novaseq_sample_ids.append(sample_id_missing_in_lims)
 
-    metrics: List[SampleLaneSequencingMetrics] = generate_metrics_json(
+    metrics: List[Dict] = generate_metrics_json(
         flow_cell_name=novaseq_flow_cell_name,
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
