@@ -371,3 +371,9 @@ def root_path(
     help: str = "Root path to be used by the script to find files.",
 ) -> click.option:
     return click.option("--root-path", required=True, help=help)
+
+
+def preset_volume(
+    help: str = "Give a pre-set volume to use for the calculations. Use only if no volume UDF is given.",
+) -> click.option:
+    return click.option("--preset-volume", required=False, help=help)
