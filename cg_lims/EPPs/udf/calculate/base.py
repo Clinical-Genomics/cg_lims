@@ -3,6 +3,7 @@
 import click
 from cg_lims.EPPs.udf.calculate.aliquot_volume import aliquot_volume
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng import calculate_amount_ng
+from cg_lims.EPPs.udf.calculate.calculate_amount_ng_fmol import calculate_amount_ng_fmol
 from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import (
     calculate_average_size_and_set_qc,
 )
@@ -44,6 +45,7 @@ calculate.add_command(twist_qc_amount)
 calculate.add_command(get_volumes_from_buffer)
 calculate.add_command(get_missing_reads)
 calculate.add_command(calculate_amount_ng)
+calculate.add_command(calculate_amount_ng_fmol)
 calculate.add_command(volume_water)
 calculate.add_command(molar_concentration)
 calculate.add_command(calculate_beads)
