@@ -365,3 +365,9 @@ def udf_values(
         multiple=True,
         help=help,
     )
+
+
+def root_path(
+    help: str = "Root path to be used by the script to find files.",
+) -> click.option:
+    return click.option("--root-path", required=True, help=help)
