@@ -46,7 +46,8 @@ def set_average_and_cv(artifact: Artifact) -> None:
     artifact.put()
 
 def validate_udf_values(artifact: Artifact) -> bool:
-    """Write something"""
+    """A function checking whether a concentration in the list of concentrations for each artifact has a negative/no/zero value.
+    Then the function returns the output as 'False' and logs all those sample IDs in the EPP log"""
     udf_names = ["Concentration 1 (ng/ul)", "Concentration 2 (ng/ul)", "Concentration 3 (ng/ul)"]
     output = True
     for name in udf_names:
@@ -60,7 +61,7 @@ def validate_udf_values(artifact: Artifact) -> bool:
 @click.pass_context
 def calculate_saphyr_concentration(ctx) -> None:
     """Calculates and sets the average concentration and coefficient of variance based on three given concentrations.
-    Returns a message if this worked well"""
+    Returns a message if this worked well, and if there were negative/no/zero concentration values, there's an error message for this"""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
