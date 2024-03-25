@@ -32,12 +32,14 @@ def calculate_volumes(artifacts: List[Artifact], process: Process):
         art.put()
 
     if missing_udfs:
-        raise MissingUDFsError(f"Udf missing for {missing_udfs} samples")
+        raise MissingUDFsError(
+            f"UDFs 'Concentration' and/or 'Amount needed (ng)' missing for {missing_udfs} samples"
+        )
 
 
 @click.command()
 @click.pass_context
-def twist_aliquot_volume(ctx):
+def aliquot_volume(ctx):
     """Calculates amount needed for samples."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
