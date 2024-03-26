@@ -279,7 +279,7 @@ def volume_udf_option(
     return click.option("--volume-udf", required=False, help=help)
 
 
-def concentration_udf_option(
+def concentration_udf(
     help: str = "String of UDF used to get concentration value",
 ) -> click.option:
     return click.option("--concentration-udf", required=True, help=help)

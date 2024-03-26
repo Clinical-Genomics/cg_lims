@@ -38,7 +38,15 @@ def test_calculate_volumes(
     artifact_1.put()
 
     # WHEN calculating the aliquot sample and water volumes
-    calculate_volumes(artifacts=[artifact_1], process=process)
+    calculate_volumes(
+        artifacts=[artifact_1],
+        process=process,
+        concentration_udf="Concentration",
+        sample_volume_udf="Sample Volume (ul)",
+        buffer_volume_udf="Volume H2O (ul)",
+        total_volume_udf="Total Volume (ul)",
+        amount_needed_udf="Amount needed (ng)",
+    )
 
     # THEN the correct values are calculated for the artifact UDFs 'Volume H2O (ul)' and 'Sample Volume (ul)'
     assert artifact_1.udf["Sample Volume (ul)"] == sample_vol
@@ -73,7 +81,15 @@ def test_calculate_volumes_missing_artifact_udf(lims: Lims, udf_name: str):
     # WHEN calculating the aliquot sample and water volumes
     # THEN MissingUDFsError is being raised, while also correctly setting the values for artifact_2
     with pytest.raises(MissingUDFsError):
-        calculate_volumes(artifacts=[artifact_1, artifact_2], process=process)
+        calculate_volumes(
+            artifacts=[artifact_1, artifact_2],
+            process=process,
+            concentration_udf="Concentration",
+            sample_volume_udf="Sample Volume (ul)",
+            buffer_volume_udf="Volume H2O (ul)",
+            total_volume_udf="Total Volume (ul)",
+            amount_needed_udf="Amount needed (ng)",
+        )
     assert artifact_2.udf["Sample Volume (ul)"] == 20
     assert artifact_2.udf["Volume H2O (ul)"] == 30
 
@@ -94,4 +110,12 @@ def test_calculate_volumes_missing_process_udf(lims: Lims):
     # WHEN calculating the aliquot sample and water volumes
     # THEN MissingUDFsError is being raised
     with pytest.raises(MissingUDFsError):
-        calculate_volumes(artifacts=[artifact_1], process=process)
+        calculate_volumes(
+            artifacts=[artifact_1],
+            process=process,
+            concentration_udf="Concentration",
+            sample_volume_udf="Sample Volume (ul)",
+            buffer_volume_udf="Volume H2O (ul)",
+            total_volume_udf="Total Volume (ul)",
+            amount_needed_udf="Amount needed (ng)",
+        )

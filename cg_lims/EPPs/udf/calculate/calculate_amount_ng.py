@@ -12,7 +12,7 @@ LOG = logging.getLogger(__name__)
 
 
 @click.command()
-@options.concentration_udf_option()
+@options.concentration_udf()
 @options.amount_udf_option()
 @options.volume_udf()
 @options.subtract_volume_option()

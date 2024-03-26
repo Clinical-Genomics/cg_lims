@@ -112,7 +112,7 @@ def set_amounts(
 
 @click.command()
 @options.process_types()
-@options.concentration_udf_option()
+@options.concentration_udf()
 @options.volume_udf_option()
 @options.preset_volume()
 @options.size_udf()
