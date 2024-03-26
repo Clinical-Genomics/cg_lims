@@ -379,6 +379,18 @@ def preset_volume(
     return click.option("--preset-volume", required=False, help=help)
 
 
+def subtract_volume(
+    help: str = "Subtracts volume taken from samples.",
+) -> click.option:
+    return click.option("--subtract-volume", required=False, default=0, help=help)
+
+
+def add_volume(
+    help: str = "Add volume taken from samples.",
+) -> click.option:
+    return click.option("--add-volume", required=False, default=0, help=help)
+
+  
 def amount_fmol_udf(
     help: str = "String of UDF used to get amount (fmol)",
 ) -> click.option:
