@@ -6,6 +6,7 @@ from cg_lims.EPPs.udf.copy.artifact_to_artifact import artifact_to_artifact
 
 # commands
 from cg_lims.EPPs.udf.copy.artifact_to_sample import artifact_to_sample
+from cg_lims.EPPs.udf.copy.container_to_artifact import container_to_artifact
 from cg_lims.EPPs.udf.copy.measurement_to_analyte import measurement_to_analyte
 from cg_lims.EPPs.udf.copy.original_well_to_sample import original_position_to_sample
 from cg_lims.EPPs.udf.copy.process_to_artifact import process_to_artifact
@@ -32,3 +33,4 @@ copy.add_command(qc_to_sample)
 copy.add_command(original_position_to_sample)
 copy.add_command(aggregate_qc_and_copy_fields)
 copy.add_command(measurement_to_analyte)
+copy.add_command(container_to_artifact)

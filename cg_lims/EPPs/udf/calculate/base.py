@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import click
+from cg_lims.EPPs.udf.calculate.aliquot_volume import aliquot_volume
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng import calculate_amount_ng
+from cg_lims.EPPs.udf.calculate.calculate_amount_ng_fmol import calculate_amount_ng_fmol
 from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import (
     calculate_average_size_and_set_qc,
 )
@@ -20,10 +22,11 @@ from cg_lims.EPPs.udf.calculate.maf_calculate_volume import maf_calculate_volume
 from cg_lims.EPPs.udf.calculate.molar_concentration import molar_concentration
 from cg_lims.EPPs.udf.calculate.novaseq_x_denaturation import novaseq_x_denaturation
 from cg_lims.EPPs.udf.calculate.novaseq_x_volumes import novaseq_x_volumes
+from cg_lims.EPPs.udf.calculate.ont_aliquot_volume import ont_aliquot_volume
+from cg_lims.EPPs.udf.calculate.ont_sequencing_reload import ont_available_sequencing_reload
 from cg_lims.EPPs.udf.calculate.pool_normalization import pool_normalization
 from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import missing_reads_in_pool
 from cg_lims.EPPs.udf.calculate.twist_aliquot_amount import twist_aliquot_amount
-from cg_lims.EPPs.udf.calculate.twist_aliquot_volume import twist_aliquot_volume
 from cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer import get_volumes_from_buffer
 
 # commands
@@ -40,11 +43,12 @@ def calculate(ctx):
 
 calculate.add_command(twist_pool)
 calculate.add_command(twist_aliquot_amount)
-calculate.add_command(twist_aliquot_volume)
+calculate.add_command(aliquot_volume)
 calculate.add_command(twist_qc_amount)
 calculate.add_command(get_volumes_from_buffer)
 calculate.add_command(get_missing_reads)
 calculate.add_command(calculate_amount_ng)
+calculate.add_command(calculate_amount_ng_fmol)
 calculate.add_command(volume_water)
 calculate.add_command(molar_concentration)
 calculate.add_command(calculate_beads)
@@ -58,3 +62,5 @@ calculate.add_command(novaseq_x_volumes)
 calculate.add_command(pool_normalization)
 calculate.add_command(novaseq_x_denaturation)
 calculate.add_command(calculate_saphyr_concentration)
+calculate.add_command(ont_aliquot_volume)
+calculate.add_command(ont_available_sequencing_reload)

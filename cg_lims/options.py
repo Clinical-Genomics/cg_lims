@@ -77,6 +77,12 @@ def process_udf(
     return click.option("-pudf", "--process-udf", required=True, help=help)
 
 
+def process_udf_optional(
+    help: str = "Process UDF name. Not required to specify.",
+) -> click.option:
+    return click.option("-pudf", "--process-udf", required=False, help=help)
+
+
 def file_placeholder(
     help: str = "File.",
 ) -> click.option:
@@ -270,7 +276,7 @@ def amount_udf_option(
 def volume_udf_option(
     help: str = "String of UDF used to get volume value",
 ) -> click.option:
-    return click.option("--volume-udf", required=True, help=help)
+    return click.option("--volume-udf", required=False, help=help)
 
 
 def concentration_udf_option(
@@ -365,3 +371,55 @@ def udf_values(
         multiple=True,
         help=help,
     )
+
+
+def root_path(
+    help: str = "Root path to be used by the script to find files.",
+) -> click.option:
+    return click.option("--root-path", required=True, help=help)
+
+
+def preset_volume(
+    help: str = "Give a pre-set volume to use for the calculations. Use only if no volume UDF is given.",
+) -> click.option:
+    return click.option("--preset-volume", required=False, help=help)
+
+
+def subtract_volume(
+    help: str = "Subtracts volume taken from samples.",
+) -> click.option:
+    return click.option("--subtract-volume", required=False, default=0, help=help)
+
+
+def add_volume(
+    help: str = "Add volume taken from samples.",
+) -> click.option:
+    return click.option("--add-volume", required=False, default=0, help=help)
+
+
+def amount_fmol_udf(
+    help: str = "String of UDF used to get amount (fmol)",
+) -> click.option:
+    return click.option(
+        "--amount-fmol-udf", required=False, help=help, default="Amount needed (fmol)"
+    )
+
+
+def amount_ng_udf(
+    help: str = "String of UDF used to get amount (ng)",
+) -> click.option:
+    return click.option("--amount-ng-udf", required=False, help=help, default="Amount needed (ng)")
+
+
+def total_volume_udf(
+    help: str = "String of process UDF used to get the total volume",
+) -> click.option:
+    return click.option("--total-volume-udf", required=False, help=help)
+
+
+def well_udf(help: str = "UDF name for artifact well.") -> click.option:
+    return click.option("--well-udf", required=False, default=None, help=help)
+
+
+def container_name_udf(help: str = "UDF name for container name.") -> click.option:
+    return click.option("--container-name-udf", required=False, default=None, help=help)

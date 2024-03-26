@@ -178,3 +178,11 @@ class LaneSample:
         if self.run_settings.barcode_mismatches:
             line = line + f",{self.barcode_mismatch_index_1},{self.barcode_mismatch_index_2}"
         return line + "\n"
+
+
+class NanoporeSampleSheetHeader(StrEnum):
+    FLOW_CELL_ID: str = "flow_cell_id"
+    FLOW_CELL_PROD_CODE: str = "flow_cell_product_code"
+    SAMPLE_ID: str = "sample_id"
+    EXPERIMENT_ID: str = "experiment_id"
+    KIT: str = "kit"
