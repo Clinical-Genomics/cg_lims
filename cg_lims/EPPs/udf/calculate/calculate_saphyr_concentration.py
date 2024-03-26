@@ -11,8 +11,9 @@ from genologics.entities import Artifact
 
 LOG = logging.getLogger(__name__)
 
-def get_concentration(artifact: Artifact) -> List[float]: 
-    """Returns a list of all concentration replicates called 
+
+def get_concentration(artifact: Artifact) -> List[float]:
+    """Returns a list of all concentration replicates called
     Concentration 1 (ng/ul), Concentration 2 (ng/ul) and Concentration 3 (ng/ul) of an artifact."""
     udf_names = ["Concentration 1 (ng/ul)", "Concentration 2 (ng/ul)", "Concentration 3 (ng/ul)"]
     concentrations = []
@@ -20,30 +21,35 @@ def get_concentration(artifact: Artifact) -> List[float]:
         concentrations.append(artifact.udf.get(name))
     return concentrations
 
+
 def calculate_average_concentration(concentrations: List) -> float:
     """Returns the average concentration of the list concentrations"""
     return np.mean(concentrations)
 
+
 def calculate_cv(concentrations: List) -> float:
-    """Calculates the coefficient of variance of the concentrations with the average concentration 
+    """Calculates the coefficient of variance of the concentrations with the average concentration
     that was retrieved from calculate_average_concentration"""
-    
+
     average_concentration = np.mean(concentrations)
     std_deviation = np.std(concentrations)
     coefficient_variation = std_deviation / average_concentration
     return coefficient_variation
 
+
 def set_average_and_cv(artifact: Artifact) -> None:
-    """Calls on the previous functions get_concentration, calculate_average_concentration and calculate_cv 
-    and updates the udfs Average concentration (ng/ul) and Coefficient of variation (CV) with the calculated values"""
+    """Calls on the previous functions get_concentration, calculate_average_concentration and calculate_cv
+    and updates the udfs Average concentration (ng/ul) and Coefficient of variation (CV) with the calculated values
+    """
     concentrations = get_concentration(artifact=artifact)
     average_concentration = calculate_average_concentration(concentrations=concentrations)
     coefficient_variation = calculate_cv(concentrations=concentrations)
-    
+
     artifact.udf["Average concentration (ng/ul)"] = average_concentration
     artifact.udf["Coefficient of variation (CV)"] = coefficient_variation
     print(coefficient_variation)
     artifact.put()
+
 
 def validate_udf_values(artifact: Artifact) -> bool:
     """A function checking whether a concentration in the list of concentrations for each artifact has a negative/no/zero value.
@@ -53,7 +59,9 @@ def validate_udf_values(artifact: Artifact) -> bool:
     for name in udf_names:
         if not artifact.udf.get(name) or artifact.udf.get(name) < 0:
             output = False
-            LOG.info(f"Sample {artifact.samples[0].id} has an invalid concentration value for {name}. Skipping.")
+            LOG.info(
+                f"Sample {artifact.samples[0].id} has an invalid concentration value for {name}. Skipping."
+            )
     return output
 
 
@@ -61,7 +69,8 @@ def validate_udf_values(artifact: Artifact) -> bool:
 @click.pass_context
 def calculate_saphyr_concentration(ctx) -> None:
     """Calculates and sets the average concentration and coefficient of variance based on three given concentrations.
-    Returns a message if this worked well, and if there were negative/no/zero concentration values, there's an error message for this"""
+    Returns a message if this worked well, and if there were negative/no/zero concentration values, there's an error message for this
+    """
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
@@ -75,7 +84,9 @@ def calculate_saphyr_concentration(ctx) -> None:
                 continue
             set_average_and_cv(artifact=artifact)
         if failed_samples:
-            raise MissingUDFsError(f"{failed_samples} samples have invalid concentration values (<= 0). See log for more information.")
+            raise MissingUDFsError(
+                f"{failed_samples} samples have invalid concentration values (<= 0). See log for more information."
+            )
         message = "The average concentration and coefficient of variance have been calculated."
         LOG.info(message)
         click.echo(message)

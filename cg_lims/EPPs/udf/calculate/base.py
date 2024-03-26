@@ -12,6 +12,7 @@ from cg_lims.EPPs.udf.calculate.calculate_microbial_aliquot_volumes import (
 from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import (
     calculate_resuspension_buffer_volume,
 )
+from cg_lims.EPPs.udf.calculate.calculate_saphyr_concentration import calculate_saphyr_concentration
 from cg_lims.EPPs.udf.calculate.calculate_water import volume_water
 from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import calculate_water_volume_rna
 from cg_lims.EPPs.udf.calculate.get_missing_reads import get_missing_reads
@@ -24,7 +25,6 @@ from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import missing_reads_i
 from cg_lims.EPPs.udf.calculate.twist_aliquot_amount import twist_aliquot_amount
 from cg_lims.EPPs.udf.calculate.twist_aliquot_volume import twist_aliquot_volume
 from cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer import get_volumes_from_buffer
-from cg_lims.EPPs.udf.calculate.calculate_saphyr_concentration import calculate_saphyr_concentration
 
 # commands
 from cg_lims.EPPs.udf.calculate.twist_pool import twist_pool
