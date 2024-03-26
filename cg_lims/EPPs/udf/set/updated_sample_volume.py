@@ -112,7 +112,7 @@ def set_volumes_from_process(
 @click.command()
 @options.process_types(help="The process type names from where you want to copy the UDF from.")
 @options.sample_artifact(help="Use this flag if you want to copy udf from original artifact")
-@options.process_udf(
+@options.process_udf_optional(
     help="Optionally fetch the volume from a process UDF. Default is otherwise 'Volume (ul)' on the artifact level."
 )
 @options.subtract_volume(help="Subtracts volume taken from sample.")

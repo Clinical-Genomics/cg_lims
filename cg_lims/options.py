@@ -77,6 +77,12 @@ def process_udf(
     return click.option("-pudf", "--process-udf", required=True, help=help)
 
 
+def process_udf_optional(
+    help: str = "Process UDF name. Not required to specify.",
+) -> click.option:
+    return click.option("-pudf", "--process-udf", required=False, help=help)
+
+
 def file_placeholder(
     help: str = "File.",
 ) -> click.option:
