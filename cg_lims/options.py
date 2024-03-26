@@ -77,6 +77,12 @@ def process_udf(
     return click.option("-pudf", "--process-udf", required=True, help=help)
 
 
+def process_udf_optional(
+    help: str = "Process UDF name. Not required to specify.",
+) -> click.option:
+    return click.option("-pudf", "--process-udf", required=False, help=help)
+
+
 def file_placeholder(
     help: str = "File.",
 ) -> click.option:
@@ -270,7 +276,7 @@ def amount_udf_option(
 def volume_udf_option(
     help: str = "String of UDF used to get volume value",
 ) -> click.option:
-    return click.option("--volume-udf", required=True, help=help)
+    return click.option("--volume-udf", required=False, help=help)
 
 
 def concentration_udf_option(
@@ -390,7 +396,7 @@ def add_volume(
 ) -> click.option:
     return click.option("--add-volume", required=False, default=0, help=help)
 
-  
+
 def amount_fmol_udf(
     help: str = "String of UDF used to get amount (fmol)",
 ) -> click.option:
