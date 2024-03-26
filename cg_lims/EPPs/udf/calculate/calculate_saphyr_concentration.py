@@ -4,7 +4,6 @@ from typing import List
 
 import click
 import numpy as np
-from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from genologics.entities import Artifact
@@ -12,7 +11,7 @@ from genologics.entities import Artifact
 LOG = logging.getLogger(__name__)
 
 
-def get_concentration(artifact: Artifact) -> List[float]:
+def get_concentrations(artifact: Artifact) -> List[float]:
     """Returns a list of all concentration replicates called
     Concentration 1 (ng/ul), Concentration 2 (ng/ul) and Concentration 3 (ng/ul) of an artifact."""
     udf_names = ["Concentration 1 (ng/ul)", "Concentration 2 (ng/ul)", "Concentration 3 (ng/ul)"]
@@ -22,15 +21,14 @@ def get_concentration(artifact: Artifact) -> List[float]:
     return concentrations
 
 
-def calculate_average_concentration(concentrations: List) -> float:
+def calculate_average_concentration(concentrations: List[float]) -> float:
     """Returns the average concentration of the list concentrations"""
-    return np.mean(concentrations)
+    return float(np.mean(concentrations))
 
 
-def calculate_cv(concentrations: List) -> float:
+def calculate_cv(concentrations: List[float]) -> float:
     """Calculates the coefficient of variance of the concentrations with the average concentration
     that was retrieved from calculate_average_concentration"""
-
     average_concentration = np.mean(concentrations)
     std_deviation = np.std(concentrations)
     coefficient_variation = std_deviation / average_concentration
@@ -39,15 +37,14 @@ def calculate_cv(concentrations: List) -> float:
 
 def set_average_and_cv(artifact: Artifact) -> None:
     """Calls on the previous functions get_concentration, calculate_average_concentration and calculate_cv
-    and updates the udfs Average concentration (ng/ul) and Coefficient of variation (CV) with the calculated values
+    and updates the UDFs Average concentration (ng/ul) and Coefficient of variation (CV) with the calculated values
     """
-    concentrations = get_concentration(artifact=artifact)
+    concentrations = get_concentrations(artifact=artifact)
     average_concentration = calculate_average_concentration(concentrations=concentrations)
     coefficient_variation = calculate_cv(concentrations=concentrations)
 
     artifact.udf["Average concentration (ng/ul)"] = average_concentration
     artifact.udf["Coefficient of variation (CV)"] = coefficient_variation
-    print(coefficient_variation)
     artifact.put()
 
 
@@ -79,7 +76,7 @@ def calculate_saphyr_concentration(ctx) -> None:
         artifacts: List[Artifact] = get_artifacts(process=process, measurement=True)
         failed_samples = 0
         for artifact in artifacts:
-            if validate_udf_values(artifact=artifact) == False:
+            if not validate_udf_values(artifact=artifact):
                 failed_samples += 1
                 continue
             set_average_and_cv(artifact=artifact)
@@ -87,7 +84,7 @@ def calculate_saphyr_concentration(ctx) -> None:
             raise MissingUDFsError(
                 f"{failed_samples} samples have invalid concentration values (<= 0). See log for more information."
             )
-        message = "The average concentration and coefficient of variance have been calculated."
+        message = "The average concentration and coefficient of variance have been calculated for all samples."
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
