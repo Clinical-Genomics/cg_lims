@@ -389,3 +389,23 @@ def add_volume(
     help: str = "Add volume taken from samples.",
 ) -> click.option:
     return click.option("--add-volume", required=False, default=0, help=help)
+
+  
+def amount_fmol_udf(
+    help: str = "String of UDF used to get amount (fmol)",
+) -> click.option:
+    return click.option(
+        "--amount-fmol-udf", required=False, help=help, default="Amount needed (fmol)"
+    )
+
+
+def amount_ng_udf(
+    help: str = "String of UDF used to get amount (ng)",
+) -> click.option:
+    return click.option("--amount-ng-udf", required=False, help=help, default="Amount needed (ng)")
+
+
+def total_volume_udf(
+    help: str = "String of process UDF used to get the total volume",
+) -> click.option:
+    return click.option("--total-volume-udf", required=False, help=help)
