@@ -14,6 +14,7 @@ from cg_lims.EPPs.udf.calculate.calculate_microbial_aliquot_volumes import (
 from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import (
     calculate_resuspension_buffer_volume,
 )
+from cg_lims.EPPs.udf.calculate.calculate_saphyr_concentration import calculate_saphyr_concentration
 from cg_lims.EPPs.udf.calculate.calculate_water import volume_water
 from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import calculate_water_volume_rna
 from cg_lims.EPPs.udf.calculate.get_missing_reads import get_missing_reads
@@ -60,5 +61,6 @@ calculate.add_command(calculate_average_size_and_set_qc)
 calculate.add_command(novaseq_x_volumes)
 calculate.add_command(pool_normalization)
 calculate.add_command(novaseq_x_denaturation)
+calculate.add_command(calculate_saphyr_concentration)
 calculate.add_command(ont_aliquot_volume)
 calculate.add_command(ont_available_sequencing_reload)
