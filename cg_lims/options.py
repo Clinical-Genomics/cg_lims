@@ -415,3 +415,11 @@ def total_volume_udf(
     help: str = "String of process UDF used to get the total volume",
 ) -> click.option:
     return click.option("--total-volume-udf", required=False, help=help)
+
+
+def well_udf(help: str = "UDF name for artifact well.") -> click.option:
+    return click.option("--well-udf", required=False, default=None, help=help)
+
+
+def container_name_udf(help: str = "UDF name for container name.") -> click.option:
+    return click.option("--container-name-udf", required=False, default=None, help=help)
