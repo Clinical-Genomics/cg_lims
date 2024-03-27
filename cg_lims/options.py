@@ -183,6 +183,16 @@ def artifact_udfs(help: str = "Artifact udfs.") -> click.option:
     )
 
 
+def concentration_replicates(help: str = "Udf name for concentration replicates.") -> click.option:
+    return click.option(
+        "-cr",
+        "--concentration-udf",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
+
 def source_artifact_udfs(help: str = "Artifact udfs.") -> click.option:
     return click.option(
         "-sau",
