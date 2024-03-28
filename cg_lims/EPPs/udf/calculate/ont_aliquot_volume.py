@@ -93,7 +93,7 @@ def set_volumes(
 
 @click.command()
 @options.process_types()
-@options.concentration_udf_option()
+@options.concentration_udf()
 @options.size_udf()
 @options.volume_udf(help="Name of sample volume UDF")
 @options.buffer_udf()
@@ -115,7 +115,7 @@ def ont_aliquot_volume(
     volume_udf: str,
     buffer_udf: str,
     amount_fmol_udf: str = "Amount needed (fmol)",
-    amount_ng_udf: str = "Amount needed (fmol)",
+    amount_ng_udf: str = "Amount needed (ng)",
     total_volume_udf: Optional[str] = None,
     measurement: bool = False,
     input: bool = False,
