@@ -66,7 +66,7 @@ def test_get_index_of_biggest_outlier(values: List[float], biggest_index: int):
     ],
 )
 def test_get_max_difference(values: List[float], difference: float):
-    """"""
+    """Test to verify that the get_max_difference function properly works."""
     # GIVEN a list of values with differing lengths
 
     # WHEN running get_index_of_biggest_outlier
@@ -74,17 +74,3 @@ def test_get_max_difference(values: List[float], difference: float):
 
     # THEN the index of the largest entry is returned
     assert result == difference
-
-
-def test_qpcr_concentration(lims):
-    """"""
-    # GIVEN a process with artifacts placed in wells A:1 and A:2
-    server("flat_tests")
-    ctx = click.Context(
-        obj={"lims": lims, "process": Process(lims=lims, id="24-196211")},
-        command=click.Command(name=""),
-    )
-    process = ctx.obj["process"]
-
-    # WHEN
-    # THEN
