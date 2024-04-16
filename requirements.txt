@@ -10,3 +10,4 @@ uvicorn
 matplotlib
 pymongo
 coloredlogs
+openpyxl
