@@ -152,7 +152,9 @@ def calculate_index_hamming_distance(
             return string_hamming_distance(
                 index_1=index_1.sequence[-len(index_2.sequence) :], index_2=index_2.sequence
             )
-    message: str = f"Non-supported index type identified for indexes {index_1.sequence} and {index_2.sequence}: '{index_1.type}'."
+    message: str = (
+        f"Non-supported index type identified for indexes {index_1.sequence} and {index_2.sequence}: '{index_1.type}'."
+    )
     LOG.error(message)
     raise InvalidValueError(message)
 

@@ -8,6 +8,7 @@ from pydantic.v1 import BaseModel, Field
 
 class ProcessUDFs(BaseModel):
     performance_NA24143: Optional[str] = Field(None, alias="Batch no Prep Performance NA24143")
+    performance_NA24385: Optional[str] = Field(None, alias="Batch no Prep Performance NA24385")
     GMCKsolid_HD827: Optional[str] = Field(None, alias="Batch no GMCKsolid-HD827")
     GMSlymphoid_HD829: Optional[str] = Field(None, alias="Batch no GMSlymphoid-HD829")
     GMSmyeloid_HD829: Optional[str] = Field(None, alias="Batch no GMSmyeloid-HD829")

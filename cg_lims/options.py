@@ -394,7 +394,7 @@ def concentration_threshold(help: str = "Threshold for concentrations.") -> clic
 def size_bp(help: str = "Fragment size in base pairs.") -> click.option:
     return click.option("--size-bp", required=True, help=help)
 
-  
+
 def root_path(
     help: str = "Root path to be used by the script to find files.",
 ) -> click.option:
@@ -445,4 +445,3 @@ def well_udf(help: str = "UDF name for artifact well.") -> click.option:
 
 def container_name_udf(help: str = "UDF name for container name.") -> click.option:
     return click.option("--container-name-udf", required=False, default=None, help=help)
-
