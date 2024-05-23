@@ -40,7 +40,7 @@ def get_loading_amount(lims: Lims, sample_id: str) -> float:
 def get_reload_amounts(lims: Lims, sample_id: str) -> List[float]:
     """Return any potential reloading amounts of the flow cell."""
     result_files = lims.get_artifacts(
-        process_type="ONT Sequencing and Reloading v2", samplelimsid=sample_id, type="ResultFile"
+        process_type="ONT Sequencing and Reloading", samplelimsid=sample_id, type="ResultFile"
     )
     amounts = []
     for result_file in result_files:
