@@ -154,6 +154,7 @@ def qpcr_concentration(
                 missing_samples.append(
                     (get_one_sample_from_artifact(artifact=artifact).id, artifact_well)
                 )
+                continue
             well_results: WellValues = quantification_data[artifact.location[1]]
             well_results.connect_artifact(artifact=artifact)
             well_results.set_artifact_udfs(
