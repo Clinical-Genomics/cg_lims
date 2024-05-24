@@ -2,7 +2,7 @@ import logging
 import sys
 from pathlib import Path
 from statistics import mean
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import click
 import numpy as np
@@ -12,6 +12,7 @@ from cg_lims.EPPs.udf.calculate.constants import WELL_TRANSFORMER
 from cg_lims.exceptions import FailingQCError, LimsError, MissingFileError, MissingValueError
 from cg_lims.get.artifacts import get_artifact_by_name, get_artifacts
 from cg_lims.get.files import get_file_path
+from cg_lims.get.samples import get_one_sample_from_artifact
 from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
@@ -146,12 +147,12 @@ def qpcr_concentration(
             summary_file=file_path
         )
         failed_samples: int = 0
+        missing_samples: List[Tuple[str, str]] = []
         for artifact in artifacts:
             artifact_well: str = artifact.location[1]
             if artifact_well not in quantification_data.keys():
-                raise MissingValueError(
-                    f"No values found for well {artifact_well} in the result file! "
-                    f"Please double check if sample {artifact.samples[0].id} has been placed correctly."
+                missing_samples.append(
+                    (get_one_sample_from_artifact(artifact=artifact).id, artifact_well)
                 )
             well_results: WellValues = quantification_data[artifact.location[1]]
             well_results.connect_artifact(artifact=artifact)
@@ -162,6 +163,12 @@ def qpcr_concentration(
             )
             if well_results.artifact.qc_flag == "FAILED":
                 failed_samples += 1
+
+        if missing_samples:
+            raise MissingValueError(
+                f"No values found for the following samples in the result file! "
+                f"Please double check if the samples {missing_samples} have been placed correctly."
+            )
 
         if failed_samples:
             error_message: str = (
