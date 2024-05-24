@@ -112,6 +112,15 @@ def get_max_difference(values: List[float]) -> float:
     return max(values) - min(values)
 
 
+def set_missing_artifact_values(artifact: Artifact) -> None:
+    """Set UDF values for samples that are missing values from the qPCR files."""
+    artifact.qc_flag = "FAILED"
+    artifact.udf["Size (bp)"] = 0
+    artifact.udf["Concentration"] = 0
+    artifact.udf["Concentration (nM)"] = 0
+    artifact.put()
+
+
 @click.command()
 @options.file_placeholder(help="qPCR result file placeholder name.")
 @options.local_file()
@@ -154,6 +163,7 @@ def qpcr_concentration(
                 missing_samples.append(
                     (get_one_sample_from_artifact(artifact=artifact).id, artifact_well)
                 )
+                set_missing_artifact_values(artifact=artifact)
                 continue
             well_results: WellValues = quantification_data[artifact.location[1]]
             well_results.connect_artifact(artifact=artifact)
