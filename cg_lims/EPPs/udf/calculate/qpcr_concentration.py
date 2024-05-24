@@ -112,10 +112,10 @@ def get_max_difference(values: List[float]) -> float:
     return max(values) - min(values)
 
 
-def set_missing_artifact_values(artifact: Artifact) -> None:
+def set_missing_artifact_values(artifact: Artifact, size_bp: int) -> None:
     """Set UDF values for samples that are missing values from the qPCR files."""
     artifact.qc_flag = "FAILED"
-    artifact.udf["Size (bp)"] = 0
+    artifact.udf["Size (bp)"] = size_bp
     artifact.udf["Concentration"] = 0
     artifact.udf["Concentration (nM)"] = 0
     artifact.put()
@@ -160,10 +160,12 @@ def qpcr_concentration(
         for artifact in artifacts:
             artifact_well: str = artifact.location[1]
             if artifact_well not in quantification_data.keys():
-                missing_samples.append(
-                    (get_one_sample_from_artifact(artifact=artifact).id, artifact_well)
+                sample_id: str = get_one_sample_from_artifact(artifact=artifact).id
+                missing_samples.append((sample_id, artifact_well))
+                set_missing_artifact_values(artifact=artifact, size_bp=int(size_bp))
+                LOG.warning(
+                    f" Sample {sample_id} in well {artifact_well} is missing qPCR values. Setting QC to fail."
                 )
-                set_missing_artifact_values(artifact=artifact)
                 continue
             well_results: WellValues = quantification_data[artifact.location[1]]
             well_results.connect_artifact(artifact=artifact)
@@ -178,7 +180,7 @@ def qpcr_concentration(
         if missing_samples:
             raise MissingValueError(
                 f"No values found for the following samples in the result file! "
-                f"Please double check if the samples {missing_samples} have been placed correctly."
+                f"Please check if the samples {missing_samples} have been placed correctly."
             )
 
         if failed_samples:
