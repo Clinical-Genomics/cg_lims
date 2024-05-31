@@ -2,7 +2,7 @@ import logging
 import sys
 from pathlib import Path
 from statistics import mean
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import click
 import numpy as np
@@ -12,6 +12,7 @@ from cg_lims.EPPs.udf.calculate.constants import WELL_TRANSFORMER
 from cg_lims.exceptions import FailingQCError, LimsError, MissingFileError, MissingValueError
 from cg_lims.get.artifacts import get_artifact_by_name, get_artifacts
 from cg_lims.get.files import get_file_path
+from cg_lims.get.samples import get_one_sample_from_artifact
 from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
@@ -111,6 +112,15 @@ def get_max_difference(values: List[float]) -> float:
     return max(values) - min(values)
 
 
+def set_missing_artifact_values(artifact: Artifact, size_bp: int) -> None:
+    """Set UDF values for samples that are missing values from the qPCR files."""
+    artifact.qc_flag = "FAILED"
+    artifact.udf["Size (bp)"] = size_bp
+    artifact.udf["Concentration"] = 0
+    artifact.udf["Concentration (nM)"] = 0
+    artifact.put()
+
+
 @click.command()
 @options.file_placeholder(help="qPCR result file placeholder name.")
 @options.local_file()
@@ -146,13 +156,17 @@ def qpcr_concentration(
             summary_file=file_path
         )
         failed_samples: int = 0
+        missing_samples: List[Tuple[str, str]] = []
         for artifact in artifacts:
             artifact_well: str = artifact.location[1]
             if artifact_well not in quantification_data.keys():
-                raise MissingValueError(
-                    f"No values found for well {artifact_well} in the result file! "
-                    f"Please double check if sample {artifact.samples[0].id} has been placed correctly."
+                sample_id: str = get_one_sample_from_artifact(artifact=artifact).id
+                missing_samples.append((sample_id, artifact_well))
+                set_missing_artifact_values(artifact=artifact, size_bp=int(size_bp))
+                LOG.warning(
+                    f" Sample {sample_id} in well {artifact_well} is missing qPCR values. Setting QC to fail."
                 )
+                continue
             well_results: WellValues = quantification_data[artifact.location[1]]
             well_results.connect_artifact(artifact=artifact)
             well_results.set_artifact_udfs(
@@ -162,6 +176,12 @@ def qpcr_concentration(
             )
             if well_results.artifact.qc_flag == "FAILED":
                 failed_samples += 1
+
+        if missing_samples:
+            raise MissingValueError(
+                f"No values found for the following samples in the result file! "
+                f"Please check if the samples {missing_samples} have been placed correctly."
+            )
 
         if failed_samples:
             error_message: str = (

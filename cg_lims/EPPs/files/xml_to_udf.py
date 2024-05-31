@@ -69,7 +69,9 @@ def get_run_parameters(process: Process) -> str:
     """Return RunParameters-file from location on the server."""
     flow_cell_id: str = get_flow_cell_id(process=process)
     return max(
-        glob.glob(f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunParameters.xml"),
+        glob.glob(
+            f"/home/gls/hiseq_data/novaseq-clinical-preproc/*{flow_cell_id}/RunParameters.xml"
+        ),
         key=os.path.getctime,
     )
 
