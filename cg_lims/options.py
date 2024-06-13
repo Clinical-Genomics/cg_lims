@@ -423,3 +423,34 @@ def well_udf(help: str = "UDF name for artifact well.") -> click.option:
 
 def container_name_udf(help: str = "UDF name for container name.") -> click.option:
     return click.option("--container-name-udf", required=False, default=None, help=help)
+
+
+def apptag(
+    help: str = "String of UDF Sequencing Analysis, also known as apptag",
+) -> click.option:
+    return click.option(
+        "--apptag",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
+def factor(
+    help: str = "Factor to multiply Reads to sequence (M) with",
+) -> click.option:
+    return click.option(
+        "--factor",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
+def threshold_reads(
+    help: str = "Threshold for determining which factor to adjust Reads to sequence (M) with for WGS topup samples",
+) -> click.option:
+    return click.option(
+        "--threshold-reads",
+        required=False,
+        multiple=True,
+        help=help,
+    )
