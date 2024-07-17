@@ -435,22 +435,212 @@ def apptag(
         help=help,
     )
 
+def apptag_wgs(
+    help: str = "String of UDF Sequencing Analysis, also known as apptag, for WGS samples",
+) -> click.option:
+    return click.option(
+        "--apptag-wgs",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
+def apptag_wgs_tumor(
+    help: str = "String of UDF Sequencing Analysis, also known as apptag, for WGS tumor samples",
+) -> click.option:
+    return click.option(
+        "--apptag-wgs-tumor",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
+def apptag_tga(
+    help: str = "String of UDF Sequencing Analysis, also known as apptag, for TGA samples",
+) -> click.option:
+    return click.option(
+        "--apptag-tga",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
+def apptag_micro(
+    help: str = "String of UDF Sequencing Analysis, also known as apptag, for micro samples",
+) -> click.option:
+    return click.option(
+        "--apptag-micro",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
+def apptag_rml(
+    help: str = "String of UDF Sequencing Analysis, also known as apptag, for RML samples",
+) -> click.option:
+    return click.option(
+        "--apptag-rml",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
+def apptag_virus(
+    help: str = "String of UDF Sequencing Analysis, also known as apptag, for virus samples",
+) -> click.option:
+    return click.option(
+        "--apptag-virus",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
+def apptag_rna(
+    help: str = "String of UDF Sequencing Analysis, also known as apptag, for RNA samples",
+) -> click.option:
+    return click.option(
+        "--apptag-rna",
+        required=True,
+        multiple=True,
+        help=help,
+    )
+
 def factor(
     help: str = "Factor to multiply Reads to sequence (M) with",
 ) -> click.option:
     return click.option(
         "--factor",
         required=True,
-        multiple=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_wgs_tumor(
+    help: str = "Factor to multiply Reads to sequence (M) with for WGS tumor samples",
+) -> click.option:
+    return click.option(
+        "--factor-wgs-tumor",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_tga(
+    help: str = "Factor to multiply Reads to sequence (M) with for TGA samples",
+) -> click.option:
+    return click.option(
+        "--factor-tga",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_micro(
+    help: str = "Factor to multiply Reads to sequence (M) with for micro samples",
+) -> click.option:
+    return click.option(
+        "--factor-micro",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_rml(
+    help: str = "Factor to multiply Reads to sequence (M) with for RML samples",
+) -> click.option:
+    return click.option(
+        "--factor-rml",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_rna(
+    help: str = "Factor to multiply Reads to sequence (M) with for RNA samples",
+) -> click.option:
+    return click.option(
+        "--factor-rna",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_rna_topups(
+        help: str = "Factor to multiply Reads to sequence (M) with for RNA topup samples",
+) -> click.option:
+    return click.option(
+        "--factor-rna-topups",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_rml_topups(
+        help: str = "Factor to multiply Reads to sequence (M) with for RML topup samples",
+) -> click.option:
+    return click.option(
+        "--factor-rml-topups",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_tga_topups(
+        help: str = "Factor to multiply Reads to sequence (M) with for TGA topup samples",
+) -> click.option:
+    return click.option(
+        "--factor-tga-topups",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_wgs_lower(
+    help: str = "Lower factor to multiply Reads to sequence (M) with for WGS samples",
+) -> click.option:
+    return click.option(
+        "--factor-wgs-lower",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def factor_wgs_higher(
+    help: str = "Higher factor to multiply Reads to sequence (M) with for WGS samples",
+) -> click.option:
+    return click.option(
+        "--factor-wgs-higher",
+        required=True,
+        multiple=False,
         help=help,
     )
 
 def threshold_reads(
-    help: str = "Threshold for determining which factor to adjust Reads to sequence (M) with for WGS topup samples",
+    help: str = "Threshold for Reads to sequence (M) during adjustment",
 ) -> click.option:
     return click.option(
         "--threshold-reads",
-        required=False,
-        multiple=True,
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def reset_micro_reads(
+    help: str = "A value to re-set Reads to sequence (M) for microbial samples",
+) -> click.option:
+    return click.option(
+        "--reset-micro-reads",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+def reset_virus_reads(
+    help: str = "A value to re-set Reads to sequence (M) for virus samples",
+) -> click.option:
+    return click.option(
+        "--reset-virus-reads",
+        required=True,
+        multiple=False,
         help=help,
     )

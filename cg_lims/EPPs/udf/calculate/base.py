@@ -28,6 +28,7 @@ from cg_lims.EPPs.udf.calculate.pool_normalization import pool_normalization
 from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import missing_reads_in_pool
 from cg_lims.EPPs.udf.calculate.twist_aliquot_amount import twist_aliquot_amount
 from cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer import get_volumes_from_buffer
+from cg_lims.EPPs.udf.calculate.adjust_missing_reads import adjust_missing_reads
 
 # commands
 from cg_lims.EPPs.udf.calculate.twist_pool import twist_pool
@@ -64,3 +65,4 @@ calculate.add_command(novaseq_x_denaturation)
 calculate.add_command(calculate_saphyr_concentration)
 calculate.add_command(ont_aliquot_volume)
 calculate.add_command(ont_available_sequencing_reload)
+calculate.add_command(adjust_missing_reads)
