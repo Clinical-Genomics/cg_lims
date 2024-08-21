@@ -68,7 +68,7 @@ def validate_udf_values(artifact: Artifact) -> bool:
     Then the function returns the output as 'False' and logs all those sample IDs in the EPP log"""
 
     output = True
-    if not artifact.udf.get("Reads to sequence (M)") or float(artifact.udf["Reads to sequence (M)"]) < 0:
+    if not artifact.udf.get("Reads to sequence (M)") or float(artifact.udf.get("Reads to sequence (M)")) < 0:
         output = False
         LOG.info(
             f"Sample {artifact.samples[0].id} has no or a negative value for Reads to sequence (M). Skipping."
