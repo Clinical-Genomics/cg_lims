@@ -23,20 +23,26 @@ def adjust_wgs_topups(artifact: Artifact, factor_wgs_lower: str, factor_wgs_high
     """A function that calculates adjusted reads to sequence for WGS topups, where the 'topup' factor is determined 
     by a threshold for the reads to sequence. This is specified in the cli"""
     
-    reads = float(artifact.udf.get("Reads to sequence (M)"))
-    if reads < float(threshold_reads):
-        adjusted_reads = round(float(reads)*float(factor_wgs_lower), 1)
-    else:
-        adjusted_reads = round(float(reads)*float(factor_wgs_higher), 1)
-    artifact.udf["Reads to sequence (M)"] = str(adjusted_reads)
-    artifact.put()
+    valid_value = validate_udf_values(artifact=artifact)
+
+    if valid_value:
+        reads = float(artifact.udf.get("Reads to sequence (M)"))
+        if reads < float(threshold_reads):
+            adjusted_reads = round(float(reads)*float(factor_wgs_lower), 1)
+        else:
+            adjusted_reads = round(float(reads)*float(factor_wgs_higher), 1)
+        artifact.udf["Reads to sequence (M)"] = str(adjusted_reads)
+        artifact.put()
 
 def reset_microbial_reads(artifact: Artifact, reset_microbial_reads: str) -> None:
     """A function that resets the reads to sequence for microbial samples, and the threshold_reads specifies what they are
     supposed to be reset to"""
 
-    artifact.udf["Reads to sequence (M)"] = reset_microbial_reads
-    artifact.put()
+    valid_value = validate_udf_values(artifact=artifact)
+
+    if valid_value:
+        artifact.udf["Reads to sequence (M)"] = reset_microbial_reads
+        artifact.put()
 
 def is_topup(artifact: Artifact) -> bool:
     """A function that determines whether an artifact has already been sequenced before or not, and therefore is a topup 
@@ -72,7 +78,9 @@ def validate_udf_values(artifact: Artifact) -> bool:
 def adjust_reads(artifact: Artifact, apptags: tuple, factor: str) -> None:
     """Only artifacts that have passed the validation of acceptable Reads to Sequence (M) values will be adjusted"""
 
-    if validate_udf_values(artifact=artifact):
+    valid_value = validate_udf_values(artifact=artifact)
+
+    if valid_value:
         adjusted_reads = calculate_adjusted_reads(artifact=artifact, factor=factor)
         artifact.udf["Reads to sequence (M)"] = str(adjusted_reads)
         artifact.put()
