@@ -51,7 +51,7 @@ def is_topup(artifact: Artifact) -> bool:
     sample/artifact"""
 
     output = False
-    if artifact.samples[0].udf.get("Total Reads (M)"):
+    if artifact.samples[0].udf.get("Total Reads (M)") and artifact.samples[0].udf.get("Total Reads (M)") != 0:
         output = True
     return output
 
