@@ -3,12 +3,9 @@ import sys
 
 import click
 from cg_lims import options
-from cg_lims.exceptions import LimsError, MissingCgFieldError, MissingUDFsError
+from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.get.samples import get_one_sample_from_artifact
-from cg_lims.status_db_api import StatusDBAPI
 from genologics.entities import Artifact
-from requests.exceptions import ConnectionError
 
 LOG = logging.getLogger(__name__)
 
@@ -17,7 +14,6 @@ def calculate_adjusted_reads(artifact: Artifact, factor: str) -> float:
     """A function to calculate the adjusted reads to sequence for each artifact with the desired apptag"""
 
     reads = artifact.udf.get("Reads to sequence (M)")
-
     return round(float(reads) * float(factor), 1)
 
 
@@ -165,7 +161,6 @@ def adjust_missing_reads(
     specified in the command line"""
 
     process = ctx.obj["process"]
-    lims = ctx.obj["lims"]
 
     try:
         artifacts: List[Artifact] = get_artifacts(process=process)
