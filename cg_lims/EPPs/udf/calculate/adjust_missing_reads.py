@@ -48,7 +48,7 @@ def reset_microbial_reads(artifact: Artifact, reset_microbial_reads: str) -> Non
 
 def is_topup(artifact: Artifact) -> bool:
     """A function that determines whether an artifact has already been sequenced before or not, and therefore is a topup
-    sample/artifact or not"""
+    sample/artifact"""
 
     output = False
     if artifact.samples[0].udf.get("Total Reads (M)"):
