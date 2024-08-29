@@ -435,6 +435,7 @@ def apptag(
         help=help,
     )
 
+
 def apptag_wgs(
     help: str = "String of UDF Sequencing Analysis, also known as apptag, for WGS samples",
 ) -> click.option:
@@ -444,6 +445,7 @@ def apptag_wgs(
         multiple=True,
         help=help,
     )
+
 
 def apptag_wgs_tumor(
     help: str = "String of UDF Sequencing Analysis, also known as apptag, for WGS tumor samples",
@@ -455,6 +457,7 @@ def apptag_wgs_tumor(
         help=help,
     )
 
+
 def apptag_tga(
     help: str = "String of UDF Sequencing Analysis, also known as apptag, for TGA samples",
 ) -> click.option:
@@ -464,6 +467,7 @@ def apptag_tga(
         multiple=True,
         help=help,
     )
+
 
 def apptag_micro(
     help: str = "String of UDF Sequencing Analysis, also known as apptag, for micro samples",
@@ -475,6 +479,7 @@ def apptag_micro(
         help=help,
     )
 
+
 def apptag_rml(
     help: str = "String of UDF Sequencing Analysis, also known as apptag, for RML samples",
 ) -> click.option:
@@ -484,6 +489,7 @@ def apptag_rml(
         multiple=True,
         help=help,
     )
+
 
 def apptag_virus(
     help: str = "String of UDF Sequencing Analysis, also known as apptag, for virus samples",
@@ -495,6 +501,7 @@ def apptag_virus(
         help=help,
     )
 
+
 def apptag_rna(
     help: str = "String of UDF Sequencing Analysis, also known as apptag, for RNA samples",
 ) -> click.option:
@@ -504,6 +511,7 @@ def apptag_rna(
         multiple=True,
         help=help,
     )
+
 
 def factor(
     help: str = "Factor to multiply Reads to sequence (M) with",
@@ -515,6 +523,7 @@ def factor(
         help=help,
     )
 
+
 def factor_wgs_tumor(
     help: str = "Factor to multiply Reads to sequence (M) with for WGS tumor samples",
 ) -> click.option:
@@ -524,6 +533,7 @@ def factor_wgs_tumor(
         multiple=False,
         help=help,
     )
+
 
 def factor_tga(
     help: str = "Factor to multiply Reads to sequence (M) with for TGA samples",
@@ -535,6 +545,7 @@ def factor_tga(
         help=help,
     )
 
+
 def factor_micro(
     help: str = "Factor to multiply Reads to sequence (M) with for micro samples",
 ) -> click.option:
@@ -544,6 +555,7 @@ def factor_micro(
         multiple=False,
         help=help,
     )
+
 
 def factor_rml(
     help: str = "Factor to multiply Reads to sequence (M) with for RML samples",
@@ -555,6 +567,7 @@ def factor_rml(
         help=help,
     )
 
+
 def factor_rna(
     help: str = "Factor to multiply Reads to sequence (M) with for RNA samples",
 ) -> click.option:
@@ -565,8 +578,9 @@ def factor_rna(
         help=help,
     )
 
+
 def factor_rna_topups(
-        help: str = "Factor to multiply Reads to sequence (M) with for RNA topup samples",
+    help: str = "Factor to multiply Reads to sequence (M) with for RNA topup samples",
 ) -> click.option:
     return click.option(
         "--factor-rna-topups",
@@ -575,8 +589,9 @@ def factor_rna_topups(
         help=help,
     )
 
+
 def factor_rml_topups(
-        help: str = "Factor to multiply Reads to sequence (M) with for RML topup samples",
+    help: str = "Factor to multiply Reads to sequence (M) with for RML topup samples",
 ) -> click.option:
     return click.option(
         "--factor-rml-topups",
@@ -585,8 +600,9 @@ def factor_rml_topups(
         help=help,
     )
 
+
 def factor_tga_topups(
-        help: str = "Factor to multiply Reads to sequence (M) with for TGA topup samples",
+    help: str = "Factor to multiply Reads to sequence (M) with for TGA topup samples",
 ) -> click.option:
     return click.option(
         "--factor-tga-topups",
@@ -594,6 +610,7 @@ def factor_tga_topups(
         multiple=False,
         help=help,
     )
+
 
 def factor_wgs_lower(
     help: str = "Lower factor to multiply Reads to sequence (M) with for WGS samples",
@@ -605,6 +622,7 @@ def factor_wgs_lower(
         help=help,
     )
 
+
 def factor_wgs_higher(
     help: str = "Higher factor to multiply Reads to sequence (M) with for WGS samples",
 ) -> click.option:
@@ -614,6 +632,7 @@ def factor_wgs_higher(
         multiple=False,
         help=help,
     )
+
 
 def threshold_reads(
     help: str = "Threshold for Reads to sequence (M) during adjustment",
@@ -625,6 +644,7 @@ def threshold_reads(
         help=help,
     )
 
+
 def reset_micro_reads(
     help: str = "A value to re-set Reads to sequence (M) for microbial samples",
 ) -> click.option:
@@ -634,6 +654,7 @@ def reset_micro_reads(
         multiple=False,
         help=help,
     )
+
 
 def reset_virus_reads(
     help: str = "A value to re-set Reads to sequence (M) for virus samples",

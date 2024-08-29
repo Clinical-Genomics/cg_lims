@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import click
+from cg_lims.EPPs.udf.calculate.adjust_missing_reads import adjust_missing_reads
 from cg_lims.EPPs.udf.calculate.aliquot_volume import aliquot_volume
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng import calculate_amount_ng
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng_fmol import calculate_amount_ng_fmol
@@ -28,7 +29,6 @@ from cg_lims.EPPs.udf.calculate.pool_normalization import pool_normalization
 from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import missing_reads_in_pool
 from cg_lims.EPPs.udf.calculate.twist_aliquot_amount import twist_aliquot_amount
 from cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer import get_volumes_from_buffer
-from cg_lims.EPPs.udf.calculate.adjust_missing_reads import adjust_missing_reads
 
 # commands
 from cg_lims.EPPs.udf.calculate.twist_pool import twist_pool
