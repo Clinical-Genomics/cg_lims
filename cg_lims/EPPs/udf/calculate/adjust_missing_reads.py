@@ -1,11 +1,12 @@
 import logging
 import sys
+from typing import List
 
 import click
 from cg_lims import options
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
-from genologics.entities import Artifact
+from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 
@@ -26,11 +27,11 @@ def adjust_wgs_topups(
     valid_value: bool = validate_udf_values(artifact=artifact)
 
     if valid_value:
-        reads = float(artifact.udf.get("Reads to sequence (M)"))
+        reads: float = float(artifact.udf.get("Reads to sequence (M)"))
         if reads < float(threshold_reads):
-            adjusted_reads = round(float(reads) * float(factor_wgs_lower), 1)
+            adjusted_reads: float = round(float(reads) * float(factor_wgs_lower), 1)
         else:
-            adjusted_reads = round(float(reads) * float(factor_wgs_higher), 1)
+            adjusted_reads: float = round(float(reads) * float(factor_wgs_higher), 1)
         artifact.udf["Reads to sequence (M)"] = str(adjusted_reads)
         artifact.put()
 
@@ -51,7 +52,10 @@ def is_topup(artifact: Artifact) -> bool:
     sample/artifact"""
 
     output: bool = False
-    if artifact.samples[0].udf.get("Total Reads (M)") and artifact.samples[0].udf.get("Total Reads (M)") != 0:
+    if (
+        artifact.samples[0].udf.get("Total Reads (M)")
+        and artifact.samples[0].udf.get("Total Reads (M)") != 0
+    ):
         output = True
     return output
 
@@ -60,7 +64,7 @@ def is_adjusted(artifact: Artifact) -> bool:
     """A function that checks if the process UDF Adjusted Reads to Sequence is set/true. This will
     be updated after the EPP to adjust the reads to sequence has run one time"""
 
-    process = artifact.parent_process
+    process: Process = artifact.parent_process
     output: bool = False
     if process.udf.get("Adjusted Reads to Sequence"):
         output = True
@@ -89,7 +93,7 @@ def adjust_reads(artifact: Artifact, factor: str) -> None:
     valid_value: bool = validate_udf_values(artifact=artifact)
 
     if valid_value:
-        adjusted_reads = calculate_adjusted_reads(artifact=artifact, factor=factor)
+        adjusted_reads: float = calculate_adjusted_reads(artifact=artifact, factor=factor)
         artifact.udf["Reads to sequence (M)"] = str(adjusted_reads)
         artifact.put()
 
@@ -160,7 +164,7 @@ def adjust_missing_reads(
     """Script to calculate the adjusted Reads to sequence (M) with a specific factor for specific apptags,
     specified in the command line"""
 
-    process = ctx.obj["process"]
+    process: Process = ctx.obj["process"]
 
     try:
         artifacts: List[Artifact] = get_artifacts(process=process)
@@ -186,48 +190,34 @@ def adjust_missing_reads(
                                 threshold_reads=threshold_reads,
                             )
                         else:
-                            adjust_reads(
-                                artifact=artifact, factor=factor_wgs_tumor
-                            )
+                            adjust_reads(artifact=artifact, factor=factor_wgs_tumor)
                 for app in apptag_tga:
                     if app in artifact.samples[0].udf.get("Sequencing Analysis"):
                         if is_topup(artifact=artifact):
-                            adjust_reads(
-                                artifact=artifact, factor=factor_tga_topups
-                            )
+                            adjust_reads(artifact=artifact, factor=factor_tga_topups)
                         else:
                             adjust_reads(artifact=artifact, factor=factor_tga)
                 for app in apptag_micro:
                     if app in artifact.samples[0].udf.get("Sequencing Analysis"):
                         if is_topup(artifact=artifact):
-                            reset_microbial_reads(
-                                artifact=artifact, reset_reads=reset_micro_reads
-                            )
+                            reset_microbial_reads(artifact=artifact, reset_reads=reset_micro_reads)
                         else:
-                            adjust_reads(
-                                artifact=artifact, factor=factor_micro
-                            )
+                            adjust_reads(artifact=artifact, factor=factor_micro)
                 for app in apptag_virus:
                     if app in artifact.samples[0].udf.get("Sequencing Analysis") and is_topup(
                         artifact=artifact
                     ):
-                        reset_microbial_reads(
-                            artifact=artifact, reset_reads=reset_virus_reads
-                        )
+                        reset_microbial_reads(artifact=artifact, reset_reads=reset_virus_reads)
                 for app in apptag_rml:
                     if app in artifact.samples[0].udf.get("Sequencing Analysis"):
                         if is_topup(artifact=artifact):
-                            adjust_reads(
-                                artifact=artifact, factor=factor_rml_topups
-                            )
+                            adjust_reads(artifact=artifact, factor=factor_rml_topups)
                         else:
                             adjust_reads(artifact=artifact, factor=factor_rml)
                 for app in apptag_rna:
                     if app in artifact.samples[0].udf.get("Sequencing Analysis"):
                         if is_topup(artifact=artifact):
-                            adjust_reads(
-                                artifact=artifact, factor=factor_rna_topups
-                            )
+                            adjust_reads(artifact=artifact, factor=factor_rna_topups)
                         else:
                             adjust_reads(artifact=artifact, factor=factor_rna)
             if is_adjusted(artifact=artifact):
