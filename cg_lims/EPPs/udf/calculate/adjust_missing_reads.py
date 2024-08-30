@@ -172,10 +172,9 @@ def adjust_missing_reads(
             if is_adjusted(artifact=artifact):
                 LOG.info("Samples have already been adjusted.")
                 continue
+            sample_apptag: str = artifact.samples[0].udf.get("Sequencing Analysis")
             for app in apptag_wgs:
-                if app in artifact.samples[0].udf.get("Sequencing Analysis") and is_topup(
-                    artifact=artifact
-                ):
+                if app in sample_apptag and is_topup(artifact=artifact):
                     adjust_wgs_topups(
                         artifact=artifact,
                         factor_wgs_lower=factor_wgs_lower,
@@ -183,7 +182,7 @@ def adjust_missing_reads(
                         threshold_reads=threshold_reads,
                     )
             for app in apptag_wgs_tumor:
-                if app in artifact.samples[0].udf.get("Sequencing Analysis"):
+                if app in sample_apptag:
                     if is_topup(artifact=artifact):
                         adjust_wgs_topups(
                             artifact=artifact,
@@ -194,30 +193,28 @@ def adjust_missing_reads(
                     else:
                         adjust_reads(artifact=artifact, factor=factor_wgs_tumor)
             for app in apptag_tga:
-                if app in artifact.samples[0].udf.get("Sequencing Analysis"):
+                if app in sample_apptag:
                     if is_topup(artifact=artifact):
                         adjust_reads(artifact=artifact, factor=factor_tga_topups)
                     else:
                         adjust_reads(artifact=artifact, factor=factor_tga)
             for app in apptag_micro:
-                if app in artifact.samples[0].udf.get("Sequencing Analysis"):
+                if app in sample_apptag:
                     if is_topup(artifact=artifact):
                         reset_microbial_reads(artifact=artifact, reset_reads=reset_micro_reads)
                     else:
                         adjust_reads(artifact=artifact, factor=factor_micro)
             for app in apptag_virus:
-                if app in artifact.samples[0].udf.get("Sequencing Analysis") and is_topup(
-                    artifact=artifact
-                ):
+                if app in sample_apptag and is_topup(artifact=artifact):
                     reset_microbial_reads(artifact=artifact, reset_reads=reset_virus_reads)
             for app in apptag_rml:
-                if app in artifact.samples[0].udf.get("Sequencing Analysis"):
+                if app in sample_apptag:
                     if is_topup(artifact=artifact):
                         adjust_reads(artifact=artifact, factor=factor_rml_topups)
                     else:
                         adjust_reads(artifact=artifact, factor=factor_rml)
             for app in apptag_rna:
-                if app in artifact.samples[0].udf.get("Sequencing Analysis"):
+                if app in sample_apptag:
                     if is_topup(artifact=artifact):
                         adjust_reads(artifact=artifact, factor=factor_rna_topups)
                     else:
