@@ -6,6 +6,7 @@ import click
 from cg_lims import options
 from cg_lims.exceptions import InvalidValueError, LimsError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.samples import get_one_sample_from_artifact
 from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
@@ -15,7 +16,11 @@ def calculate_adjusted_reads(artifact: Artifact, factor: str) -> float:
     """A function to calculate the adjusted reads to sequence for each artifact with the desired apptag"""
 
     reads: str = artifact.udf.get("Reads to sequence (M)")
-    return round(float(reads) * float(factor), 1)
+    adjusted_reads: float = round(float(reads) * float(factor), 1)
+    LOG.info(
+        f"Reads adjusted for sample {get_one_sample_from_artifact(artifact=artifact).id}: {reads}M -> {adjusted_reads}M"
+    )
+    return adjusted_reads
 
 
 def adjust_wgs_topups(
@@ -29,9 +34,13 @@ def adjust_wgs_topups(
     if valid_value:
         reads: float = float(artifact.udf.get("Reads to sequence (M)"))
         if reads < float(threshold_reads):
-            adjusted_reads: float = round(float(reads) * float(factor_wgs_lower), 1)
+            adjusted_reads: float = calculate_adjusted_reads(
+                artifact=artifact, factor=factor_wgs_lower
+            )
         else:
-            adjusted_reads: float = round(float(reads) * float(factor_wgs_higher), 1)
+            adjusted_reads: float = calculate_adjusted_reads(
+                artifact=artifact, factor=factor_wgs_higher
+            )
         artifact.udf["Reads to sequence (M)"] = str(adjusted_reads)
         artifact.put()
 
@@ -43,6 +52,9 @@ def reset_microbial_reads(artifact: Artifact, reset_reads: str) -> None:
     valid_value: bool = validate_udf_values(artifact=artifact)
 
     if valid_value:
+        LOG.info(
+            f"Reads reset for sample {get_one_sample_from_artifact(artifact=artifact).id}: {artifact.udf.get('Reads to sequence (M)')}M -> {reset_reads}M"
+        )
         artifact.udf["Reads to sequence (M)"] = reset_reads
         artifact.put()
 
