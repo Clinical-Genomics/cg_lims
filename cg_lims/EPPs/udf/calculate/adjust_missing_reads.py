@@ -4,7 +4,7 @@ from typing import List
 
 import click
 from cg_lims import options
-from cg_lims.exceptions import LimsError
+from cg_lims.exceptions import InvalidValueError, LimsError
 from cg_lims.get.artifacts import get_artifacts
 from genologics.entities import Artifact, Process
 
@@ -60,11 +60,10 @@ def is_topup(artifact: Artifact) -> bool:
     return output
 
 
-def is_adjusted(artifact: Artifact) -> bool:
+def is_adjusted(process: Process) -> bool:
     """A function that checks if the process UDF Adjusted Reads to Sequence is set/true. This will
     be updated after the EPP to adjust the reads to sequence has run one time"""
 
-    process: Process = artifact.parent_process
     output: bool = False
     if process.udf.get("Adjusted Reads to Sequence"):
         output = True
@@ -168,10 +167,11 @@ def adjust_missing_reads(
 
     try:
         artifacts: List[Artifact] = get_artifacts(process=process)
+        if is_adjusted(process=process):
+            warning_message = "Samples have already been adjusted!"
+            LOG.warning(warning_message)
+            raise InvalidValueError(warning_message)
         for artifact in artifacts:
-            if is_adjusted(artifact=artifact):
-                LOG.info("Samples have already been adjusted.")
-                continue
             sample_apptag: str = artifact.samples[0].udf.get("Sequencing Analysis")
             for app in apptag_wgs:
                 if app in sample_apptag and is_topup(artifact=artifact):
@@ -219,8 +219,11 @@ def adjust_missing_reads(
                         adjust_reads(artifact=artifact, factor=factor_rna_topups)
                     else:
                         adjust_reads(artifact=artifact, factor=factor_rna)
-        click.echo("Udfs have been updated on all samples.")
         process.udf["Adjusted Reads to Sequence"] = True
         process.put()
+        success_message = "Udfs have been updated on all samples."
+        LOG.info(success_message)
+        click.echo(success_message)
     except LimsError as e:
+        LOG.error(e.message)
         sys.exit(e.message)
