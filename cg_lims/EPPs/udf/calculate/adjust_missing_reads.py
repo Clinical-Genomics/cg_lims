@@ -1,12 +1,11 @@
 import logging
 import sys
-from typing import List
+from typing import List, Optional
 
 import click
 from cg_lims import options
 from cg_lims.exceptions import InvalidValueError, LimsError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.get.samples import get_one_sample_from_artifact
 from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
@@ -17,9 +16,7 @@ def calculate_adjusted_reads(artifact: Artifact, factor: str) -> float:
 
     reads: str = artifact.udf.get("Reads to sequence (M)")
     adjusted_reads: float = round(float(reads) * float(factor), 1)
-    LOG.info(
-        f"Reads adjusted for sample {get_one_sample_from_artifact(artifact=artifact).id}: {reads}M -> {adjusted_reads}M"
-    )
+    LOG.info(f"Reads adjusted for sample {artifact.samples[0].id}: {reads}M -> {adjusted_reads}M")
     return adjusted_reads
 
 
@@ -53,7 +50,7 @@ def reset_microbial_reads(artifact: Artifact, reset_reads: str) -> None:
 
     if valid_value:
         LOG.info(
-            f"Reads reset for sample {get_one_sample_from_artifact(artifact=artifact).id}: {artifact.udf.get('Reads to sequence (M)')}M -> {reset_reads}M"
+            f"Reads reset for sample {artifact.samples[0].id}: {artifact.udf.get('Reads to sequence (M)')}M -> {reset_reads}M"
         )
         artifact.udf["Reads to sequence (M)"] = reset_reads
         artifact.put()
@@ -107,6 +104,62 @@ def adjust_reads(artifact: Artifact, factor: str) -> None:
         adjusted_reads: float = calculate_adjusted_reads(artifact=artifact, factor=factor)
         artifact.udf["Reads to sequence (M)"] = str(adjusted_reads)
         artifact.put()
+
+
+def adjust_wgs_artifact_reads(
+    artifact: Artifact,
+    reads_threshold: str,
+    lower_topup_factor: str,
+    higher_topup_factor: str,
+    factor: Optional[str] = None,
+) -> None:
+    """A function for adjusting the reads of a WGS sample. The logic goes:
+    - Top-ups with read amounts above the 'reads_threshold' value will be adjusted according to 'higher_topup_factor'
+    - Top-ups with read amount below the 'reads_threshold' value will be adjusted according to 'lower_topup_factor'
+    - Non top-ups will be adjusted according to the optional 'factor' value
+    - Non top-up samples are untouched if no 'factor' value is given"""
+
+    if is_topup(artifact=artifact):
+        adjust_wgs_topups(
+            artifact=artifact,
+            factor_wgs_lower=lower_topup_factor,
+            factor_wgs_higher=higher_topup_factor,
+            threshold_reads=reads_threshold,
+        )
+    elif factor:
+        adjust_reads(artifact=artifact, factor=factor)
+
+
+def adjust_artifact_reads(
+    artifact: Artifact,
+    topup_factor: str,
+    factor: Optional[str] = None,
+) -> None:
+    """A function for adjusting the reads of a sample. The logic goes:
+    - Top-ups will be adjusted according to the 'topup_factor' value
+    - Non top-ups will be adjusted according to the optional 'factor' value
+    - Non top-up samples are untouched if no 'factor' value is given"""
+
+    if is_topup(artifact=artifact):
+        adjust_reads(artifact=artifact, factor=topup_factor)
+    elif factor:
+        adjust_reads(artifact=artifact, factor=factor)
+
+
+def adjust_micro_artifact_reads(
+    artifact: Artifact,
+    reset_amount: str,
+    factor: Optional[str] = None,
+) -> None:
+    """A function for adjusting the reads of a microbial sample. The logic goes:
+    - The reads of a top-up sample gets reset according to the value of 'reset_amount'
+    - Non top-up samples will be adjusted according to the optional 'factor' value
+    - Non top-up samples are untouched if no 'factor' value is given"""
+
+    if is_topup(artifact=artifact):
+        reset_microbial_reads(artifact=artifact, reset_reads=reset_amount)
+    elif factor:
+        adjust_reads(artifact=artifact, factor=factor)
 
 
 @click.command()
@@ -186,51 +239,45 @@ def adjust_missing_reads(
         for artifact in artifacts:
             sample_apptag: str = artifact.samples[0].udf.get("Sequencing Analysis")
             for app in apptag_wgs:
-                if app in sample_apptag and is_topup(artifact=artifact):
-                    adjust_wgs_topups(
+                if app in sample_apptag:
+                    adjust_wgs_artifact_reads(
                         artifact=artifact,
-                        factor_wgs_lower=factor_wgs_lower,
-                        factor_wgs_higher=factor_wgs_higher,
-                        threshold_reads=threshold_reads,
+                        lower_topup_factor=factor_wgs_lower,
+                        higher_topup_factor=factor_wgs_higher,
+                        reads_threshold=threshold_reads,
                     )
             for app in apptag_wgs_tumor:
                 if app in sample_apptag:
-                    if is_topup(artifact=artifact):
-                        adjust_wgs_topups(
-                            artifact=artifact,
-                            factor_wgs_lower=factor_wgs_lower,
-                            factor_wgs_higher=factor_wgs_higher,
-                            threshold_reads=threshold_reads,
-                        )
-                    else:
-                        adjust_reads(artifact=artifact, factor=factor_wgs_tumor)
+                    adjust_wgs_artifact_reads(
+                        artifact=artifact,
+                        lower_topup_factor=factor_wgs_lower,
+                        higher_topup_factor=factor_wgs_higher,
+                        reads_threshold=threshold_reads,
+                        factor=factor_wgs_tumor,
+                    )
             for app in apptag_tga:
                 if app in sample_apptag:
-                    if is_topup(artifact=artifact):
-                        adjust_reads(artifact=artifact, factor=factor_tga_topups)
-                    else:
-                        adjust_reads(artifact=artifact, factor=factor_tga)
-            for app in apptag_micro:
-                if app in sample_apptag:
-                    if is_topup(artifact=artifact):
-                        reset_microbial_reads(artifact=artifact, reset_reads=reset_micro_reads)
-                    else:
-                        adjust_reads(artifact=artifact, factor=factor_micro)
-            for app in apptag_virus:
-                if app in sample_apptag and is_topup(artifact=artifact):
-                    reset_microbial_reads(artifact=artifact, reset_reads=reset_virus_reads)
+                    adjust_artifact_reads(
+                        artifact=artifact, topup_factor=factor_tga_topups, factor=factor_tga
+                    )
             for app in apptag_rml:
                 if app in sample_apptag:
-                    if is_topup(artifact=artifact):
-                        adjust_reads(artifact=artifact, factor=factor_rml_topups)
-                    else:
-                        adjust_reads(artifact=artifact, factor=factor_rml)
+                    adjust_artifact_reads(
+                        artifact=artifact, topup_factor=factor_rml_topups, factor=factor_rml
+                    )
             for app in apptag_rna:
                 if app in sample_apptag:
-                    if is_topup(artifact=artifact):
-                        adjust_reads(artifact=artifact, factor=factor_rna_topups)
-                    else:
-                        adjust_reads(artifact=artifact, factor=factor_rna)
+                    adjust_artifact_reads(
+                        artifact=artifact, topup_factor=factor_rna_topups, factor=factor_rna
+                    )
+            for app in apptag_micro:
+                if app in sample_apptag:
+                    adjust_micro_artifact_reads(
+                        artifact=artifact, reset_amount=reset_micro_reads, factor=factor_micro
+                    )
+            for app in apptag_virus:
+                if app in sample_apptag:
+                    adjust_micro_artifact_reads(artifact=artifact, reset_amount=reset_virus_reads)
         process.udf["Adjusted Reads to Sequence"] = True
         process.put()
         success_message = "Udfs have been updated on all samples."
