@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import click
+from cg_lims.EPPs.udf.calculate.adjust_missing_reads import adjust_missing_reads
 from cg_lims.EPPs.udf.calculate.aliquot_volume import aliquot_volume
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng import calculate_amount_ng
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng_fmol import calculate_amount_ng_fmol
@@ -66,3 +67,4 @@ calculate.add_command(qpcr_concentration)
 calculate.add_command(calculate_saphyr_concentration)
 calculate.add_command(ont_aliquot_volume)
 calculate.add_command(ont_available_sequencing_reload)
+calculate.add_command(adjust_missing_reads)
