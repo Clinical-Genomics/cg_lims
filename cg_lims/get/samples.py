@@ -37,3 +37,11 @@ def get_one_sample_from_artifact(artifact: Artifact) -> Sample:
         raise MissingSampleError(message=more_than_one_message)
 
     return samples[0]
+
+
+def is_negative_control(sample: Sample) -> bool:
+    """Check if a given sample is a negative control."""
+    control: str = sample.udf.get("Control")
+    if control == "negative":
+        return True
+    return False

@@ -3,8 +3,11 @@ from typing import List
 
 from cg_lims.EPPs.qc.models import SampleLane, SampleLaneSet
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
+from cg_lims.get.samples import is_negative_control
 from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
+from genologics.entities import Sample
+from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 
@@ -39,15 +42,17 @@ class SequencingQualityChecker:
         self.metrics = metrics
         return metrics
 
-    def validate_sequencing_quality(self) -> str:
+    def validate_sequencing_quality(self, lims: Lims) -> str:
         """Validate the sequencing data for each sample in all lanes on a flow cell based on the number of reads and q30 scores."""
         LOG.info(f"Validating sequencing quality for flow cell {self.flow_cell_name}")
 
         sequencing_metrics = self._get_sequencing_metrics()
 
         for metrics in sequencing_metrics:
-            passed_qc: bool = self._quality_control(metrics)
-            self._update_sample_with_quality_results(metrics, passed_qc)
+            passed_qc: bool = self._quality_control(metrics=metrics, lims=lims)
+            self._update_sample_with_quality_results(
+                metrics=metrics, passed_quality_control=passed_qc
+            )
 
             if not passed_qc:
                 self.failed_qc_count += 1
@@ -67,14 +72,21 @@ class SequencingQualityChecker:
             passed_quality_control=passed_quality_control,
         )
 
-    def _quality_control(self, metrics: SampleLaneSequencingMetrics) -> bool:
+    def _quality_control(self, metrics: SampleLaneSequencingMetrics, lims: Lims) -> bool:
+        sample: Sample = Sample(lims=lims, id=metrics.sample_internal_id)
+        negative_control: bool = is_negative_control(sample=sample)
         return self._passes_quality_thresholds(
             reads=metrics.sample_total_reads_in_lane,
             q30_score=metrics.sample_base_percentage_passing_q30,
+            negative_control=negative_control,
         )
 
-    def _passes_quality_thresholds(self, q30_score: float, reads: int) -> bool:
-        """Check if the provided metrics pass the minimum quality thresholds."""
+    def _passes_quality_thresholds(
+        self, q30_score: float, reads: int, negative_control: bool
+    ) -> bool:
+        """Check if the provided metrics pass the minimum quality thresholds. Negative controls always pass."""
+        if negative_control:
+            return True
         passes_q30_threshold = q30_score >= self.q30_threshold
         passes_read_threshold = reads >= self.READS_MIN_THRESHOLD
         return passes_q30_threshold and passes_read_threshold
