@@ -3,6 +3,7 @@ from typing import List
 
 from cg_lims.EPPs.qc.models import SampleLane, SampleLaneSet
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
+from cg_lims.exceptions import MissingSampleError
 from cg_lims.get.samples import is_negative_control
 from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
 from cg_lims.status_db_api import StatusDBAPI
@@ -73,13 +74,20 @@ class SequencingQualityChecker:
         )
 
     def _quality_control(self, metrics: SampleLaneSequencingMetrics, lims: Lims) -> bool:
-        sample: Sample = Sample(lims=lims, id=metrics.sample_internal_id)
-        negative_control: bool = is_negative_control(sample=sample)
-        return self._passes_quality_thresholds(
-            reads=metrics.sample_total_reads_in_lane,
-            q30_score=metrics.sample_base_percentage_passing_q30,
-            negative_control=negative_control,
-        )
+        try:
+            sample: Sample = Sample(lims=lims, id=metrics.sample_internal_id)
+            negative_control: bool = is_negative_control(sample=sample)
+            return self._passes_quality_thresholds(
+                reads=metrics.sample_total_reads_in_lane,
+                q30_score=metrics.sample_base_percentage_passing_q30,
+                negative_control=negative_control,
+            )
+        except MissingSampleError:
+            return self._passes_quality_thresholds(
+                reads=metrics.sample_total_reads_in_lane,
+                q30_score=metrics.sample_base_percentage_passing_q30,
+                negative_control=False,
+            )
 
     def _passes_quality_thresholds(
         self, q30_score: float, reads: int, negative_control: bool

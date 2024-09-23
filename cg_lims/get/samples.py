@@ -1,5 +1,6 @@
 import logging
 from typing import List
+from xml.etree.ElementTree import ParseError
 
 from cg_lims.exceptions import MissingSampleError
 from genologics.entities import Artifact, Process, Sample
@@ -41,7 +42,12 @@ def get_one_sample_from_artifact(artifact: Artifact) -> Sample:
 
 def is_negative_control(sample: Sample) -> bool:
     """Check if a given sample is a negative control."""
-    control: str = sample.udf.get("Control")
-    if control == "negative":
-        return True
-    return False
+    try:
+        control: str = sample.udf.get("Control")
+        if control == "negative":
+            return True
+        return False
+    except ParseError:
+        error_message = f"Sample {sample} can't be found in the database."
+        LOG.error(error_message)
+        raise MissingSampleError(error_message)
