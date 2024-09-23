@@ -11,7 +11,7 @@ def test_quality_control_of_flow_cell_with_all_passing(
     mocker,
     lims: Lims,
 ):
-    # GIVEN a flow cell where all samples passes the quality control
+    # GIVEN a flow cell with one negative control where all samples passes the quality control
     mocker.patch("requests.get", return_value=novaseq_passing_metrics_response)
 
     # WHEN validating the sequencing quality
@@ -29,14 +29,14 @@ def test_all_samples_fail_q30(
     mocker,
     lims: Lims,
 ):
-    # GIVEN a flow cell where all samples fail the quality control on Q30
+    # GIVEN a flow cell with one negative control where all samples fail the quality control on Q30
     mocker.patch("requests.get", return_value=novaseq_q30_fail_response)
 
     # WHEN validating the sequencing quality
     sequencing_quality_checker.validate_sequencing_quality(lims=lims)
 
     # THEN all samples in all lanes should fail the quality control
-    expected_fails: int = novaseq_lanes * len(novaseq_sample_ids)
+    expected_fails: int = novaseq_lanes * (len(novaseq_sample_ids) - 1)
     assert sequencing_quality_checker.failed_qc_count == expected_fails
 
 
@@ -48,14 +48,14 @@ def test_all_samples_have_too_few_reads(
     mocker,
     lims: Lims,
 ):
-    # GIVEN a flow cell where all samples in all lanes have too few reads
+    # GIVEN a flow cell with one negative control where all samples in all lanes have too few reads
     mocker.patch("requests.get", return_value=novaseq_reads_fail_response)
 
     # WHEN validating the sequencing quality
     sequencing_quality_checker.validate_sequencing_quality(lims=lims)
 
     # THEN all samples in all lanes should fail the quality control
-    expected_fails: int = novaseq_lanes * len(novaseq_sample_ids)
+    expected_fails: int = novaseq_lanes * (len(novaseq_sample_ids) - 1)
     assert sequencing_quality_checker.failed_qc_count == expected_fails
 
 
@@ -65,7 +65,7 @@ def test_some_samples_fail_quality_control(
     mocker,
     lims: Lims,
 ):
-    # GIVEN a flow cell where some samples fail the quality control
+    # GIVEN a flow cell with one negative control where some samples (not the NTC) fail the quality control
     mocker.patch("requests.get", return_value=novaseq_two_failing_metrics_response)
 
     # WHEN validating the sequencing quality

@@ -31,4 +31,5 @@
     <udf:field type="Numeric" name="Reads missing (M)">0</udf:field>
     <udf:field type="String" name="Index type">NEXTflex® v2 UDI Barcodes 1 - 96</udf:field>
     <udf:field type="String" name="Index number">13</udf:field>
+    <udf:field type="String" name="Control">negative</udf:field>
 </smp:sample>
