@@ -3,6 +3,7 @@ import sys
 from typing import List, Optional
 
 import click
+from cg_lims import options
 from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from genologics.entities import Artifact, Process
@@ -102,8 +103,22 @@ def set_artifact_volumes(
 
 
 @click.command()
+@options.total_volume_udf
+@options.total_volume_process_udf
+@options.sample_udf
+@options.buffer_udf
+@options.concentration_udf
+@options.final_concentration_udf
 @click.pass_context
-def pool_normalization(ctx: click.Context):
+def pool_normalization(
+    ctx: click.Context,
+    total_volume_udf: Optional[str],
+    total_volume_pudf: Optional[str],
+    sample_udf: str,
+    buffer_udf: str,
+    concentration_udf: str,
+    final_concentration_udf: str,
+) -> None:
     """Calculate and set volumes needed for normalization of pool before sequencing."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -111,7 +126,7 @@ def pool_normalization(ctx: click.Context):
     artifacts: List[Artifact] = get_artifacts(process=process)
     try:
         final_concentration: float = get_final_concentration(
-            process=process, final_concentration_udf="Final Concentration (nM)"
+            process=process, final_concentration_udf=final_concentration_udf
         )
         set_artifact_volumes(
             artifacts=artifacts,
