@@ -98,12 +98,16 @@ def set_artifact_volumes(
 
 
 @click.command()
-@options.sample_udf()
-@options.buffer_udf()
-@options.concentration_udf()
-@options.final_concentration_udf()
-@options.total_volume_udf()
-@options.total_volume_process_udf()
+@options.sample_udf(help="Name of sample volume UDF.")
+@options.buffer_udf(help="Name of buffer volume UDF.")
+@options.concentration_udf(help="Name of sample concentration UDF.")
+@options.final_concentration_udf(help="Name of final target concentration UDF.")
+@options.total_volume_udf(
+    help="Name of total volume UDF on sample level. Note: Can't be combined with the process level alternative."
+)
+@options.total_volume_process_udf(
+    help="Name of total volume UDF on process level. Note: Can't be combined with the sample level alternative."
+)
 @click.pass_context
 def library_normalization(
     ctx: click.Context,
