@@ -73,7 +73,7 @@ def set_artifact_volumes(
         sample_concentration: float = get_artifact_concentration(
             artifact=artifact, concentration_udf=concentration_udf
         )
-        if not total_volume and total_volume_udf:
+        if total_volume_udf and not total_volume:
             total_volume: float = get_total_volume(
                 artifact=artifact, total_volume_udf=total_volume_udf
             )
@@ -98,21 +98,21 @@ def set_artifact_volumes(
 
 
 @click.command()
-@options.total_volume_udf
-@options.total_volume_process_udf
 @options.sample_udf
 @options.buffer_udf
 @options.concentration_udf
 @options.final_concentration_udf
+@options.total_volume_udf
+@options.total_volume_process_udf
 @click.pass_context
-def pool_normalization(
+def library_normalization(
     ctx: click.Context,
-    total_volume_udf: Optional[str],
-    total_volume_pudf: Optional[str],
     sample_udf: str,
     buffer_udf: str,
     concentration_udf: str,
     final_concentration_udf: str,
+    total_volume_udf: Optional[str] = None,
+    total_volume_pudf: Optional[str] = None,
 ) -> None:
     """Calculate and set volumes needed for normalization of pool before sequencing."""
 
