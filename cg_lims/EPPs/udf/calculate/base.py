@@ -16,7 +16,7 @@ from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import (
     calculate_resuspension_buffer_volume,
 )
 from cg_lims.EPPs.udf.calculate.calculate_saphyr_concentration import calculate_saphyr_concentration
-from cg_lims.EPPs.udf.calculate.calculate_water import volume_water
+from cg_lims.EPPs.udf.calculate.calculate_buffer import volume_buffer
 from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import calculate_water_volume_rna
 from cg_lims.EPPs.udf.calculate.get_missing_reads import get_missing_reads
 from cg_lims.EPPs.udf.calculate.library_normalization import library_normalization
@@ -51,7 +51,7 @@ calculate.add_command(get_volumes_from_buffer)
 calculate.add_command(get_missing_reads)
 calculate.add_command(calculate_amount_ng)
 calculate.add_command(calculate_amount_ng_fmol)
-calculate.add_command(volume_water)
+calculate.add_command(volume_buffer)
 calculate.add_command(molar_concentration)
 calculate.add_command(calculate_beads)
 calculate.add_command(missing_reads_in_pool)

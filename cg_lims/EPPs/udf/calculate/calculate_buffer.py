@@ -13,30 +13,31 @@ from cg_lims.get.artifacts import get_artifacts
 LOG = logging.getLogger(__name__)
 
 
-def calculate_water_volume(sample_volume: float, sample_volume_limit: float) -> float:
-    """Calculates the H20 volume based on the sample volume"""
+def calculate_buffer_volume(sample_volume: float, sample_volume_limit: float) -> float:
+    """Calculates the buffer volume based on the sample volume"""
     return sample_volume_limit - sample_volume if sample_volume < sample_volume_limit else 0.0
 
 
-def calculate_volumes(artifacts: List[Artifact], sample_volume_limit: float):
-    """Calculates water volume and total volume"""
+def calculate_volumes(artifacts: List[Artifact], total_volume_udf: str, 
+                          volume_udf: str, buffer_udf: str, sample_volume_limit: float):
+    """Calculates buffer volume and total volume"""
 
     missing_udfs = 0
     high_volume_warning = False
     warning_message = ""
     for artifact in artifacts:
-        sample_volume: float = artifact.udf.get("Sample Volume (ul)")
+        sample_volume: float = artifact.udf.get(volume_udf)
         if sample_volume is None:
             missing_udfs += 1
             continue
-        h2o_volume = calculate_water_volume(
+        buffer_volume = calculate_buffer_volume(
             sample_volume=sample_volume, sample_volume_limit=sample_volume_limit
         )
-        total_volume = h2o_volume + sample_volume
+        total_volume = buffer_volume + sample_volume
         if total_volume > 100:
             high_volume_warning = True
-        artifact.udf["Volume H2O (ul)"] = h2o_volume
-        artifact.udf["Total Volume (uL)"] = total_volume
+        artifact.udf[buffer_udf] = buffer_volume
+        artifact.udf[total_volume_udf] = total_volume
         artifact.put()
 
     if missing_udfs:
@@ -50,10 +51,13 @@ def calculate_volumes(artifacts: List[Artifact], sample_volume_limit: float):
 
 
 @click.command()
+@options.total_volume_udf()
+@options.volume_udf()
+@options.buffer_udf()
 @options.sample_volume_limit()
 @click.pass_context
-def volume_water(context: click.Context, sample_volume_limit: float):
-    """Water volume calculation."""
+def volume_buffer(context: click.Context, total_volume_udf: str, volume_udf: str, buffer_udf: str, sample_volume_limit: float):
+    """Buffer volume calculation."""
 
     LOG.info(f"Running {context.command_path} with params: {context.params}")
 
@@ -61,8 +65,9 @@ def volume_water(context: click.Context, sample_volume_limit: float):
 
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
-        calculate_volumes(artifacts=artifacts, sample_volume_limit=sample_volume_limit)
-        message = "Beads volumes have been calculated."
+        calculate_volumes(artifacts=artifacts, total_volume_udf=total_volume_udf, 
+                          volume_udf=volume_udf, buffer_udf=buffer_udf, sample_volume_limit=sample_volume_limit)
+        message = "Volumes have been calculated."
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
