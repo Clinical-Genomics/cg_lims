@@ -106,19 +106,19 @@ def test_calculate_volumes_single_artifact_missing_sample_volume_udf(
 
 
 @mock.patch("cg_lims.EPPs.udf.calculate.calculate_beads.calculate_elution_volume")
-@mock.patch("cg_lims.EPPs.udf.calculate.calculate_buffer.calculate_water_volume")
+@mock.patch("cg_lims.EPPs.udf.calculate.calculate_buffer.calculate_buffer_volume")
 @mock.patch("cg_lims.EPPs.udf.calculate.calculate_beads.calculate_beads_volume")
 @pytest.mark.parametrize(
-    "sample_volume, elution_volume, water_volume, beads_volume",
+    "sample_volume, elution_volume, buffer_volume, beads_volume",
     [(20.0, 40.0, 30.0, 100.0)],
 )
 def test_calculate_volumes_multiple_artifacts_missing_sample_volume_udf(
     mock_beads_volume,
-    mock_water_volume,
+    mock_buffer_volume,
     mock_elution_volume,
     sample_volume: float,
     elution_volume: float,
-    water_volume: float,
+    buffer_volume: float,
     beads_volume: float,
     lims: Lims,
     artifact_1: Artifact,
@@ -132,7 +132,7 @@ def test_calculate_volumes_multiple_artifacts_missing_sample_volume_udf(
     artifacts = [artifact_1, artifact_2]
 
     mock_elution_volume.return_value = elution_volume
-    mock_water_volume.return_value = buffer_volume
+    mock_buffer_volume.return_value = buffer_volume
     mock_beads_volume.return_value = beads_volume
 
     # WHEN calculating the volumes
