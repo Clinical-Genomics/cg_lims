@@ -3,8 +3,10 @@ import sys
 from typing import List, Optional
 
 import click
-from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
+from cg_lims import options
+from cg_lims.exceptions import InvalidValueError, LimsError, MissingValueError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.udfs import get_udf
 from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
@@ -13,38 +15,22 @@ failed_samples = []
 
 def get_final_concentration(process: Process, final_concentration_udf: str) -> float:
     """Return final concentration value from process."""
-    final_concentration: Optional[float] = process.udf.get(final_concentration_udf)
-    if not final_concentration:
-        error_message: str = (
-            f"Process {process.id} is missing a value for UDF '{final_concentration_udf}'."
-        )
-        LOG.error(error_message)
-        raise MissingUDFsError(error_message)
-    return final_concentration
+    return float(get_udf(entity=process, udf=final_concentration_udf))
 
 
 def get_artifact_concentration(artifact: Artifact, concentration_udf: str) -> float:
     """Return concentration value from artifact."""
-    concentration: Optional[float] = artifact.udf.get(concentration_udf)
-    if not concentration:
-        error_message: str = (
-            f"Artifact {artifact.id} is missing a value for UDF '{concentration_udf}'."
-        )
-        LOG.error(error_message)
-        raise MissingUDFsError(error_message)
-    return concentration
+    return float(get_udf(entity=artifact, udf=concentration_udf))
 
 
 def get_total_volume(artifact: Artifact, total_volume_udf: str) -> float:
     """Return total volume value from artifact."""
-    total_volume: Optional[float] = artifact.udf.get(total_volume_udf)
-    if not total_volume:
-        error_message: str = (
-            f"Artifact {artifact.id} is missing a value for UDF '{total_volume_udf}'."
-        )
-        LOG.error(error_message)
-        raise MissingUDFsError(error_message)
-    return total_volume
+    return float(get_udf(entity=artifact, udf=total_volume_udf))
+
+
+def get_process_total_volume(process: Process, total_volume_udf: str) -> Optional[float]:
+    """Return total volume value from process."""
+    return process.udf.get(total_volume_udf)
 
 
 def calculate_sample_volume(
@@ -76,7 +62,8 @@ def calculate_buffer_volume(total_volume: float, sample_volume: float) -> float:
 def set_artifact_volumes(
     artifacts: List[Artifact],
     final_concentration: float,
-    total_volume_udf: str,
+    total_volume: Optional[float],
+    total_volume_udf: Optional[str],
     sample_volume_udf: str,
     buffer_volume_udf: str,
     concentration_udf: str,
@@ -86,7 +73,16 @@ def set_artifact_volumes(
         sample_concentration: float = get_artifact_concentration(
             artifact=artifact, concentration_udf=concentration_udf
         )
-        total_volume: float = get_total_volume(artifact=artifact, total_volume_udf=total_volume_udf)
+        if not total_volume_udf and not total_volume:
+            error_message = (
+                "The calculation needs either a total volume value or UDF name to be given!"
+            )
+            LOG.error(error_message)
+            raise MissingValueError(error_message)
+        elif total_volume_udf and not total_volume:
+            total_volume: float = get_total_volume(
+                artifact=artifact, total_volume_udf=total_volume_udf
+            )
         sample_volume: float = calculate_sample_volume(
             final_concentration=final_concentration,
             artifact=artifact,
@@ -102,8 +98,26 @@ def set_artifact_volumes(
 
 
 @click.command()
+@options.sample_udf(help="Name of sample volume UDF.")
+@options.buffer_udf(help="Name of buffer volume UDF.")
+@options.concentration_udf(help="Name of sample concentration UDF.")
+@options.final_concentration_udf(help="Name of final target concentration UDF.")
+@options.total_volume_udf(
+    help="Name of total volume UDF on sample level. Note: Can't be combined with the process level alternative."
+)
+@options.total_volume_process_udf(
+    help="Name of total volume UDF on process level. Note: Can't be combined with the sample level alternative."
+)
 @click.pass_context
-def pool_normalization(ctx: click.Context):
+def library_normalization(
+    ctx: click.Context,
+    sample_udf: str,
+    buffer_udf: str,
+    concentration_udf: str,
+    final_concentration_udf: str,
+    total_volume_udf: Optional[str] = None,
+    total_volume_pudf: Optional[str] = None,
+) -> None:
     """Calculate and set volumes needed for normalization of pool before sequencing."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -111,15 +125,22 @@ def pool_normalization(ctx: click.Context):
     artifacts: List[Artifact] = get_artifacts(process=process)
     try:
         final_concentration: float = get_final_concentration(
-            process=process, final_concentration_udf="Final Concentration (nM)"
+            process=process, final_concentration_udf=final_concentration_udf
         )
+        if total_volume_pudf:
+            total_volume: Optional[float] = get_process_total_volume(
+                process=process, total_volume_udf=total_volume_pudf
+            )
+        else:
+            total_volume = None
         set_artifact_volumes(
             artifacts=artifacts,
             final_concentration=final_concentration,
-            total_volume_udf="Total Volume (uL)",
-            sample_volume_udf="Sample Volume (ul)",
-            buffer_volume_udf="Volume Buffer (ul)",
-            concentration_udf="Concentration (nM)",
+            total_volume=total_volume,
+            total_volume_udf=total_volume_udf,
+            sample_volume_udf=sample_udf,
+            buffer_volume_udf=buffer_udf,
+            concentration_udf=concentration_udf,
         )
         if failed_samples:
             failed_samples_string = ", ".join(failed_samples)

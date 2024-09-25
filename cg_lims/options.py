@@ -295,6 +295,12 @@ def concentration_udf(
     return click.option("--concentration-udf", required=True, help=help)
 
 
+def final_concentration_udf(
+    help: str = "String of UDF used to get final concentration value",
+) -> click.option:
+    return click.option("--final-concentration-udf", required=True, help=help)
+
+
 def prep(help: str = "Prep type") -> click.option:
     return click.option(
         "--prep-type",
@@ -437,6 +443,12 @@ def total_volume_udf(
     help: str = "String of process UDF used to get the total volume",
 ) -> click.option:
     return click.option("--total-volume-udf", required=False, help=help)
+
+
+def total_volume_process_udf(
+    help: str = "String of process UDF used to get the total volume from a process",
+) -> click.option:
+    return click.option("--total-volume-pudf", required=False, help=help)
 
 
 def well_udf(help: str = "UDF name for artifact well.") -> click.option:
