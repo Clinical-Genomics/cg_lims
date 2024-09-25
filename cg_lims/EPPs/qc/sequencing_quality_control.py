@@ -26,7 +26,7 @@ def sequencing_quality_control(ctx):
         cg_api_client=status_db_api,
     )
 
-    quality_summary: str = quality_checker.validate_sequencing_quality()
+    quality_summary: str = quality_checker.validate_sequencing_quality(lims=lims)
     brief_summary: str = quality_checker.get_brief_summary()
 
     if quality_checker.samples_failed_quality_control():
