@@ -98,12 +98,12 @@ def set_artifact_volumes(
 
 
 @click.command()
-@options.sample_udf
-@options.buffer_udf
-@options.concentration_udf
-@options.final_concentration_udf
-@options.total_volume_udf
-@options.total_volume_process_udf
+@options.sample_udf()
+@options.buffer_udf()
+@options.concentration_udf()
+@options.final_concentration_udf()
+@options.total_volume_udf()
+@options.total_volume_process_udf()
 @click.pass_context
 def library_normalization(
     ctx: click.Context,
