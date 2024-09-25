@@ -73,16 +73,16 @@ def set_artifact_volumes(
         sample_concentration: float = get_artifact_concentration(
             artifact=artifact, concentration_udf=concentration_udf
         )
-        if total_volume_udf and not total_volume:
-            total_volume: float = get_total_volume(
-                artifact=artifact, total_volume_udf=total_volume_udf
-            )
-        else:
+        if not total_volume_udf and not total_volume:
             error_message = (
                 "The calculation needs either a total volume value or UDF name to be given!"
             )
             LOG.error(error_message)
             raise MissingValueError(error_message)
+        elif total_volume_udf and not total_volume:
+            total_volume: float = get_total_volume(
+                artifact=artifact, total_volume_udf=total_volume_udf
+            )
         sample_volume: float = calculate_sample_volume(
             final_concentration=final_concentration,
             artifact=artifact,
