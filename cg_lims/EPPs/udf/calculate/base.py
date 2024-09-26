@@ -9,6 +9,7 @@ from cg_lims.EPPs.udf.calculate.calculate_average_size_and_set_qc import (
     calculate_average_size_and_set_qc,
 )
 from cg_lims.EPPs.udf.calculate.calculate_beads import calculate_beads
+from cg_lims.EPPs.udf.calculate.calculate_buffer import volume_buffer
 from cg_lims.EPPs.udf.calculate.calculate_microbial_aliquot_volumes import (
     calculate_microbial_aliquot_volumes,
 )
@@ -16,7 +17,6 @@ from cg_lims.EPPs.udf.calculate.calculate_resuspension_buffer_volumes import (
     calculate_resuspension_buffer_volume,
 )
 from cg_lims.EPPs.udf.calculate.calculate_saphyr_concentration import calculate_saphyr_concentration
-from cg_lims.EPPs.udf.calculate.calculate_buffer import volume_buffer
 from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import calculate_water_volume_rna
 from cg_lims.EPPs.udf.calculate.get_missing_reads import get_missing_reads
 from cg_lims.EPPs.udf.calculate.library_normalization import library_normalization

@@ -1,14 +1,14 @@
 """CLI module for calculating beads volumes"""
+
 import logging
 import sys
 from typing import List
 
 import click
-from genologics.entities import Artifact
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Artifact
 
 LOG = logging.getLogger(__name__)
 
@@ -18,8 +18,13 @@ def calculate_buffer_volume(sample_volume: float, sample_volume_limit: float) ->
     return sample_volume_limit - sample_volume if sample_volume < sample_volume_limit else 0.0
 
 
-def calculate_volumes(artifacts: List[Artifact], total_volume_udf: str, 
-                          volume_udf: str, buffer_udf: str, sample_volume_limit: float):
+def calculate_volumes(
+    artifacts: List[Artifact],
+    total_volume_udf: str,
+    volume_udf: str,
+    buffer_udf: str,
+    sample_volume_limit: float,
+):
     """Calculates buffer volume and total volume"""
 
     missing_udfs = 0
@@ -56,7 +61,13 @@ def calculate_volumes(artifacts: List[Artifact], total_volume_udf: str,
 @options.buffer_udf()
 @options.sample_volume_limit()
 @click.pass_context
-def volume_buffer(context: click.Context, total_volume_udf: str, volume_udf: str, buffer_udf: str, sample_volume_limit: float):
+def volume_buffer(
+    context: click.Context,
+    total_volume_udf: str,
+    volume_udf: str,
+    buffer_udf: str,
+    sample_volume_limit: float,
+):
     """Buffer volume calculation."""
 
     LOG.info(f"Running {context.command_path} with params: {context.params}")
@@ -65,8 +76,13 @@ def volume_buffer(context: click.Context, total_volume_udf: str, volume_udf: str
 
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, input=False)
-        calculate_volumes(artifacts=artifacts, total_volume_udf=total_volume_udf, 
-                          volume_udf=volume_udf, buffer_udf=buffer_udf, sample_volume_limit=sample_volume_limit)
+        calculate_volumes(
+            artifacts=artifacts,
+            total_volume_udf=total_volume_udf,
+            volume_udf=volume_udf,
+            buffer_udf=buffer_udf,
+            sample_volume_limit=sample_volume_limit,
+        )
         message = "Volumes have been calculated."
         LOG.info(message)
         click.echo(message)
