@@ -13,6 +13,7 @@ class ProcessUDFs(BaseModel):
     GMSlymphoid_HD829: Optional[str] = Field(None, alias="Batch no GMSlymphoid-HD829")
     GMSmyeloid_HD829: Optional[str] = Field(None, alias="Batch no GMSmyeloid-HD829")
     GMSsolid_HD832: Optional[str] = Field(None, alias="Batch no GMSsolid-HD832")
+    hamilton_instrument: Optional[str] = Field(None, alias="Hamilton instrument")
     aliquot_samples_library_preparation_method_2: Optional[str] = Field(
         None, alias="Method document 2"
     )
