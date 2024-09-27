@@ -39,7 +39,7 @@ def calculate_volumes(
             sample_volume=sample_volume, sample_volume_limit=sample_volume_limit
         )
         total_volume = buffer_volume + sample_volume
-        if total_volume > 100:
+        if total_volume > sample_volume_limit:
             high_volume_warning = True
         artifact.udf[buffer_udf] = buffer_volume
         artifact.udf[total_volume_udf] = total_volume
@@ -50,7 +50,7 @@ def calculate_volumes(
             f'Udf "Sample Volume (ul)" missing for {missing_udfs} out of {len(artifacts)} samples '
         )
     if high_volume_warning:
-        warning_message += "Total volume higher than 100 ul for some samples!"
+        warning_message += f"Total volume higher than {sample_volume_limit} ul for some samples!"
     if warning_message:
         raise MissingUDFsError(message=warning_message)
 
