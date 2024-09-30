@@ -84,7 +84,7 @@ def set_amount_needed(
 @options.amount_ng_udf(help="Sample amount (ng) artifact UDF name.")
 @options.maximum_amount(help="The maximum input amount of the prep.")
 @click.pass_context
-def twist_aliquot_amount(
+def aliquot_amount(
     ctx,
     volume_udf: str,
     total_volume_udf: str,
