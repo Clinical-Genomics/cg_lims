@@ -108,7 +108,7 @@ def aliquot_amount(
             amount_udf=amount_udf,
             maximum_sample_amount=maximum_amount,
         )
-        message = "Amount needed has been calculated for all samples."
+        message: str = "Amount needed has been calculated for all samples."
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
