@@ -89,8 +89,8 @@ def aliquot_amount(
     volume_udf: str,
     total_volume_udf: str,
     concentration_udf: str,
-    amount_udf: str,
-    maximum_amount: float,
+    amount_ng_udf: str,
+    max_amount: str,
 ):
     """Calculates amount needed for samples."""
 
@@ -105,8 +105,8 @@ def aliquot_amount(
             sample_volume_udf=volume_udf,
             total_volume_udf=total_volume_udf,
             concentration_udf=concentration_udf,
-            amount_udf=amount_udf,
-            maximum_sample_amount=maximum_amount,
+            amount_udf=amount_ng_udf,
+            maximum_sample_amount=int(max_amount),
         )
         message: str = "Amount needed has been calculated for all samples."
         LOG.info(message)
