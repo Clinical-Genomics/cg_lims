@@ -75,7 +75,8 @@ def get_index_well(artifact: Artifact):
         reagent_label = artifact.reagent_labels[0]
 
         # Getting the index well:
-        index_well_with_zero = reagent_label.split(" ")[0]
+        index_well_with_zero_and_us = reagent_label.split(" ")[0]
+        index_well_with_zero = index_well_with_zero_and_us.split("_")[1]
 
         # Picking out column and removing zeros by int():
         index_well_col = int(index_well_with_zero[1:])
