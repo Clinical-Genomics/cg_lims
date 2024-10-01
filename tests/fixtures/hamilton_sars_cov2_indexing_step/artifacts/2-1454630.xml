@@ -11,6 +11,6 @@
     </location>
     <working-flag>true</working-flag>
     <sample uri="http://127.0.0.1:8000/api/v2/samples/ACC7892A64" limsid="ACC7892A64" />
-    <reagent-label name="A07 UDP0049 (AGTGTTGCAC-CTGGTACACG)" />
+    <reagent-label name="49_A07 UDP0049 (AGTGTTGCAC-CTGGTACACG)" />
     <workflow-stages />
 </art:artifact>

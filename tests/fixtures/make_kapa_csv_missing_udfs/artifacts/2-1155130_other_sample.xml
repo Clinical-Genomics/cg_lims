@@ -10,7 +10,7 @@
 </location>
 <working-flag>true</working-flag>
 <sample uri="http://127.0.0.1:8000/api/v2/samples/dummy_sample2" limsid="dummy_sample2"/>
-<reagent-label name="A01 IDT_10nt_651 (ATGGTTGACT-GCTTGTGCCA)"/>
+<reagent-label name="01_A01 IDT_10nt_651 (ATGGTTGACT-GCTTGTGCCA)"/>
 <udf:field type="Numeric" name="Amount (ng)">1500</udf:field>
 <udf:field type="Numeric" name="Volume of sample (ul)">5</udf:field>
 <udf:field type="Numeric" name="Concentration (nM)">408.310256999</udf:field>
