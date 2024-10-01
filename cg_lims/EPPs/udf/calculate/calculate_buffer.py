@@ -69,7 +69,7 @@ def volume_buffer(
     volume_udf: str,
     buffer_udf: str,
     sample_volume_limit: float,
-    maximum_volume: float,
+    max_volume: float,
 ):
     """Buffer volume calculation."""
 
@@ -85,7 +85,7 @@ def volume_buffer(
             volume_udf=volume_udf,
             buffer_udf=buffer_udf,
             sample_volume_limit=sample_volume_limit,
-            maximum_volume=maximum_volume,
+            maximum_volume=int(max_volume),
         )
         message = "Volumes have been calculated."
         LOG.info(message)
