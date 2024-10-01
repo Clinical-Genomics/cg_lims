@@ -67,19 +67,20 @@ def get_artifact_well(artifact: Artifact) -> str:
 
 def get_index_well(artifact: Artifact):
     """Parsing out the index well position from the reagent label string which
-    typically looks like this: 'A05 IDT_10nt_446 (AGCGTGACCT-CCATCCGAGT)'
+    typically looks like this: '44_A05 IDT_10nt_446 (AGCGTGACCT-CCATCCGAGT)'
     """
 
     if artifact.reagent_labels:
         # Assuming one reagent label per artifact (reagent_labels is a list):
-        reagent_label = artifact.reagent_labels[0]
+        reagent_label: str = artifact.reagent_labels[0]
 
         # Getting the index well:
-        index_well_with_zero = reagent_label.split(" ")[0]
+        index_well_with_zero_and_us: str = reagent_label.split(" ")[0]
+        index_well_with_zero: str = index_well_with_zero_and_us.split("_")[1]
 
         # Picking out column and removing zeros by int():
-        index_well_col = int(index_well_with_zero[1:])
-        index_well_row = index_well_with_zero[0]
+        index_well_col: int = int(index_well_with_zero[1:])
+        index_well_row: str = index_well_with_zero[0]
         return f"{index_well_row}{index_well_col}"
     else:
         return "-"
