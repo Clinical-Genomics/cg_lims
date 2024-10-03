@@ -699,3 +699,15 @@ def reset_virus_reads(
         multiple=False,
         help=help,
     )
+
+
+def maximum_amount(
+    help: str = "Maximum amount",
+) -> click.option:
+    return click.option("--max-amount", required=True, help=help)
+
+
+def maximum_volume(
+    help: str = "Maximum volume",
+) -> click.option:
+    return click.option("--max-volume", required=True, help=help)

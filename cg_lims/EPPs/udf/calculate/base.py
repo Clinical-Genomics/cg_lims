@@ -2,6 +2,7 @@
 
 import click
 from cg_lims.EPPs.udf.calculate.adjust_missing_reads import adjust_missing_reads
+from cg_lims.EPPs.udf.calculate.aliquot_amount import aliquot_amount
 from cg_lims.EPPs.udf.calculate.aliquot_volume import aliquot_volume
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng import calculate_amount_ng
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng_fmol import calculate_amount_ng_fmol
@@ -28,7 +29,6 @@ from cg_lims.EPPs.udf.calculate.ont_aliquot_volume import ont_aliquot_volume
 from cg_lims.EPPs.udf.calculate.ont_sequencing_reload import ont_available_sequencing_reload
 from cg_lims.EPPs.udf.calculate.qpcr_concentration import qpcr_concentration
 from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import missing_reads_in_pool
-from cg_lims.EPPs.udf.calculate.twist_aliquot_amount import twist_aliquot_amount
 from cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer import get_volumes_from_buffer
 
 # commands
@@ -44,7 +44,7 @@ def calculate(ctx):
 
 
 calculate.add_command(twist_pool)
-calculate.add_command(twist_aliquot_amount)
+calculate.add_command(aliquot_amount)
 calculate.add_command(aliquot_volume)
 calculate.add_command(twist_qc_amount)
 calculate.add_command(get_volumes_from_buffer)

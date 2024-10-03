@@ -24,6 +24,7 @@ def calculate_volumes(
     volume_udf: str,
     buffer_udf: str,
     sample_volume_limit: float,
+    maximum_volume: float,
 ):
     """Calculates buffer volume and total volume"""
 
@@ -39,7 +40,7 @@ def calculate_volumes(
             sample_volume=sample_volume, sample_volume_limit=sample_volume_limit
         )
         total_volume = buffer_volume + sample_volume
-        if total_volume > 100:
+        if total_volume > maximum_volume:
             high_volume_warning = True
         artifact.udf[buffer_udf] = buffer_volume
         artifact.udf[total_volume_udf] = total_volume
@@ -50,7 +51,7 @@ def calculate_volumes(
             f'Udf "Sample Volume (ul)" missing for {missing_udfs} out of {len(artifacts)} samples '
         )
     if high_volume_warning:
-        warning_message += "Total volume higher than 100 ul for some samples!"
+        warning_message += f"Total volume higher than {maximum_volume} ul for some samples!"
     if warning_message:
         raise MissingUDFsError(message=warning_message)
 
@@ -60,6 +61,7 @@ def calculate_volumes(
 @options.volume_udf()
 @options.buffer_udf()
 @options.sample_volume_limit()
+@options.maximum_volume()
 @click.pass_context
 def volume_buffer(
     context: click.Context,
@@ -67,6 +69,7 @@ def volume_buffer(
     volume_udf: str,
     buffer_udf: str,
     sample_volume_limit: float,
+    max_volume: float,
 ):
     """Buffer volume calculation."""
 
@@ -82,6 +85,7 @@ def volume_buffer(
             volume_udf=volume_udf,
             buffer_udf=buffer_udf,
             sample_volume_limit=sample_volume_limit,
+            maximum_volume=int(max_volume),
         )
         message = "Volumes have been calculated."
         LOG.info(message)
