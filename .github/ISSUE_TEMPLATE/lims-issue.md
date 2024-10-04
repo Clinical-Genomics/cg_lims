@@ -10,7 +10,7 @@ assignees:
 Lims Issue
 ---------------
 
-For definitions of headings below see [Basic Concepts](https://atlas.scilifelab.se/infrastructure/lims/basic_concepts/).
+For definitions of headings below see [Basic Concepts](https://atlas.scilifelab.se/infrastructure/lims/basic_concepts/basic_concepts/).
 
 **Work Flow:** Full name here please!
 **Protocol:** And here!
