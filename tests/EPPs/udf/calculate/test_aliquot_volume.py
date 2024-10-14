@@ -1,6 +1,6 @@
 import pytest
 from cg_lims.EPPs.udf.calculate.aliquot_volume import calculate_volumes
-from cg_lims.exceptions import MissingUDFsError
+from cg_lims.exceptions import LowVolumeError, MissingUDFsError
 from genologics.entities import Artifact, Process
 from genologics.lims import Lims
 from tests.conftest import server
@@ -122,3 +122,52 @@ def test_calculate_volumes_missing_process_udf(lims: Lims):
             amount_needed_udf="Amount needed (ng)",
             minimum_limit=0,
         )
+
+
+@pytest.mark.parametrize(
+    "total_volume,concentration,amount,sample_vol,water_vol",
+    [
+        (50, 10, 200, 20, 30),
+        (30, 10, 200, 20, 10),
+        (50, 2, 100, 50, 0),
+        (30, 2, 10, 5, 25),
+    ],
+)
+def test_calculate_volumes_below_threshold(
+    lims: Lims,
+    total_volume: float,
+    concentration: float,
+    amount: float,
+    sample_vol: float,
+    water_vol: float,
+):
+    # GIVEN:
+    # - A process with the UDF 'Total Volume (ul)' <total_volume>
+    # - An artifact with values for the UDFs 'Concentration' <concentration> and 'Amount needed (ul)' <amount>
+    server("flat_tests")
+
+    process = Process(lims=lims, id="24-196211")
+    process.udf["Total Volume (ul)"] = total_volume
+    process.put()
+
+    artifact_1 = Artifact(lims=lims, id="1")
+    artifact_1.udf["Concentration"] = concentration
+    artifact_1.udf["Amount needed (ng)"] = amount
+    artifact_1.put()
+
+    # WHEN calculating the aliquot sample and water volumes with a minimum volume threshold above them
+    # THEN MissingUDFsError is being raised and the correct values are calculated
+    with pytest.raises(LowVolumeError):
+        calculate_volumes(
+            artifacts=[artifact_1],
+            process=process,
+            concentration_udf="Concentration",
+            sample_volume_udf="Sample Volume (ul)",
+            buffer_volume_udf="Volume H2O (ul)",
+            total_volume_udf="Total Volume (ul)",
+            amount_needed_udf="Amount needed (ng)",
+            minimum_limit=500,
+        )
+
+    assert artifact_1.udf["Sample Volume (ul)"] == sample_vol
+    assert artifact_1.udf["Volume H2O (ul)"] == water_vol
