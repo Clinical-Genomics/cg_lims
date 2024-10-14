@@ -119,7 +119,7 @@ def calculate_volumes(
 @options.buffer_udf(help="Name of the buffer volume artifact UDF")
 @options.total_volume_udf(help="Name of the total volume process UDF")
 @options.minimum_volume(
-    help="The minimum volume (ul) allowed without sending a warning to the user."
+    help="The minimum volume (ul) allowed without sending a warning to the user. Default is 0."
 )
 @options.amount_ng_udf(
     help="Use if you want to overwrite the default UDF name 'Amount needed (ng)'"
@@ -137,7 +137,7 @@ def aliquot_volume(
     volume_udf: str,
     buffer_udf: str,
     total_volume_udf: str,
-    min_volume: str,
+    min_volume: str = 0,
     amount_ng_udf: str = "Amount needed (ng)",
     measurement: bool = False,
     input: bool = False,
