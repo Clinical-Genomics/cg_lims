@@ -46,6 +46,7 @@ def test_calculate_volumes(
         buffer_volume_udf="Volume H2O (ul)",
         total_volume_udf="Total Volume (ul)",
         amount_needed_udf="Amount needed (ng)",
+        minimum_limit=0,
     )
 
     # THEN the correct values are calculated for the artifact UDFs 'Volume H2O (ul)' and 'Sample Volume (ul)'
@@ -89,6 +90,7 @@ def test_calculate_volumes_missing_artifact_udf(lims: Lims, udf_name: str):
             buffer_volume_udf="Volume H2O (ul)",
             total_volume_udf="Total Volume (ul)",
             amount_needed_udf="Amount needed (ng)",
+            minimum_limit=0,
         )
     assert artifact_2.udf["Sample Volume (ul)"] == 20
     assert artifact_2.udf["Volume H2O (ul)"] == 30
@@ -118,4 +120,5 @@ def test_calculate_volumes_missing_process_udf(lims: Lims):
             buffer_volume_udf="Volume H2O (ul)",
             total_volume_udf="Total Volume (ul)",
             amount_needed_udf="Amount needed (ng)",
+            minimum_limit=0,
         )

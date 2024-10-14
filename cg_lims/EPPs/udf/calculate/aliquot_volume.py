@@ -128,7 +128,7 @@ def calculate_volumes(
     help="UDFs will be calculated and set on measurement artifacts. Use in QC steps."
 )
 @options.input(
-    help="UDFs will be calculated ans set on input artifacts. Use non-output generating steps."
+    help="UDFs will be calculated and set on input artifacts. Use non-output generating steps."
 )
 @click.pass_context
 def aliquot_volume(
