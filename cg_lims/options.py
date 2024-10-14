@@ -716,4 +716,4 @@ def maximum_volume(
 def minimum_volume(
     help: str = "Minimum volume",
 ) -> click.option:
-    return click.option("--min-volume", required=False, help=help)
+    return click.option("--min-volume", required=False, default=0, help=help)
