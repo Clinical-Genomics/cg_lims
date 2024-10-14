@@ -77,6 +77,12 @@ class LowAmountError(LimsError):
     pass
 
 
+class LowVolumeError(LimsError):
+    """Raise when amount is low."""
+
+    pass
+
+
 class FailingQCError(LimsError):
     """Raise when qc fails"""
 
