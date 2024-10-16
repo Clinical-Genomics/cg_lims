@@ -98,6 +98,7 @@ def set_artifact_volumes(
 
 
 @click.command()
+@options.input()
 @options.sample_udf(help="Name of sample volume UDF.")
 @options.buffer_udf(help="Name of buffer volume UDF.")
 @options.concentration_udf(help="Name of sample concentration UDF.")
@@ -111,6 +112,7 @@ def set_artifact_volumes(
 @click.pass_context
 def library_normalization(
     ctx: click.Context,
+    input: bool,
     sample_udf: str,
     buffer_udf: str,
     concentration_udf: str,
@@ -122,7 +124,7 @@ def library_normalization(
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process: Process = ctx.obj["process"]
-    artifacts: List[Artifact] = get_artifacts(process=process)
+    artifacts: List[Artifact] = get_artifacts(process=process, input=input)
     try:
         final_concentration: float = get_final_concentration(
             process=process, final_concentration_udf=final_concentration_udf
