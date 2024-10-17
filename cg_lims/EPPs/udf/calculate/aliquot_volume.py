@@ -57,7 +57,9 @@ def volumes_below_threshold(
     minimum_volume: float, sample_volume: float, buffer_volume: float
 ) -> bool:
     """Check if volume aliquots are below the given threshold."""
-    return sample_volume < minimum_volume or buffer_volume < minimum_volume
+    return (sample_volume != 0 and sample_volume < minimum_volume) or (
+        buffer_volume != 0 and buffer_volume < minimum_volume
+    )
 
 
 def calculate_volumes(
@@ -90,8 +92,13 @@ def calculate_volumes(
             max_volume=max_volume, sample_volume=sample_volume
         )
         if volumes_below_threshold(
-            minimum_volume=minimum_limit, sample_volume=sample_volume, buffer_volume=buffer_volume
+            minimum_volume=minimum_limit,
+            sample_volume=round(sample_volume, 2),
+            buffer_volume=round(buffer_volume, 2),
         ):
+            print(
+                f"sample {get_one_sample_from_artifact(artifact=art).id} has sample vol {round(sample_volume, 2)} and buffer vol {round(buffer_volume, 2)}"
+            )
             samples_below_threshold.append(get_one_sample_from_artifact(artifact=art).id)
 
         set_volumes(
