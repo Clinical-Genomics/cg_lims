@@ -89,6 +89,12 @@ def file_placeholder(
     return click.option("-f", "--file", required=False, help=help)
 
 
+def file_placeholders(
+    help: str = "File placeholder option used when multiple are possible.",
+) -> click.option:
+    return click.option("-f", "--files", required=True, multiple=True, help=help)
+
+
 def samples_file(help: str = "Txt file with sample ids") -> click.option:
     return click.option(
         "--samples-file",
