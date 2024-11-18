@@ -130,8 +130,10 @@ def library_normalization(
             concentration_udf=concentration_udf,
         )
         if failed_samples:
-            failed_samples_string = ", ".join(failed_samples)
-            error_message = f"The following artifacts had a lower concentration than targeted: {failed_samples_string}"
+            failed_samples_string: str = ", ".join(failed_samples)
+            error_message: str = (
+                f"The following artifacts had a lower concentration than targeted: {failed_samples_string}"
+            )
             LOG.info(error_message)
             raise InvalidValueError(error_message)
         message: str = "Volumes were successfully calculated."
