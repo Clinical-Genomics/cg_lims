@@ -6,7 +6,11 @@ import click
 from cg_lims import options
 from cg_lims.exceptions import InvalidValueError, LimsError, MissingValueError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.get.udfs import get_final_concentration, get_artifact_concentration, get_artifact_volume
+from cg_lims.get.udfs import (
+    get_artifact_concentration,
+    get_artifact_volume,
+    get_final_concentration,
+)
 from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
@@ -14,10 +18,10 @@ failed_samples = []
 
 
 def calculate_total_volume(
-        final_concentration: float, 
-        sample_volume: float, 
-        sample_concentration: float, 
-        artifact: Artifact, 
+    final_concentration: float,
+    sample_volume: float,
+    sample_concentration: float,
+    artifact: Artifact,
 ) -> float:
     """Calculate and return the total volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
@@ -32,9 +36,7 @@ def calculate_total_volume(
     return (sample_volume * sample_concentration) / final_concentration
 
 
-def calculate_buffer_volume(
-        total_volume: float, sample_volume
-) -> float:
+def calculate_buffer_volume(total_volume: float, sample_volume) -> float:
     """Calculate and return the buffer volume to dilute the sample with to the desired total volume"""
     return total_volume - sample_volume
 
@@ -53,14 +55,13 @@ def set_artifact_volumes(
             artifact=artifact, concentration_udf=concentration_udf
         )
         sample_volume: float = get_artifact_volume(
-            artifact=artifact,
-            sample_volume_udf=sample_volume_udf
+            artifact=artifact, sample_volume_udf=sample_volume_udf
         )
         total_volume: float = calculate_total_volume(
             final_concentration=final_concentration,
             artifact=artifact,
             sample_volume=sample_volume,
-            sample_concentration=sample_concentration
+            sample_concentration=sample_concentration,
         )
         buffer_volume: float = calculate_buffer_volume(
             total_volume=total_volume, sample_volume=sample_volume
