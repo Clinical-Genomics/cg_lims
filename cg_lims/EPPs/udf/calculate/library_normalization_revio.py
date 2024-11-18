@@ -25,11 +25,11 @@ def calculate_total_volume(
 ) -> float:
     """Calculate and return the total volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
-        error_message: str = (
+        warning_message: str = (
             f"The final concentration ({final_concentration} ng/ul) is higher than the original one"
             f" ({sample_concentration} ng/ul) for sample {artifact.samples[0].id}. No dilution needed."
         )
-        LOG.error(error_message)
+        LOG.warning(warning_message)
         global failed_samples
         failed_samples.append(artifact.name)
         return sample_volume
@@ -110,7 +110,7 @@ def library_normalization_revio(
         if failed_samples:
             failed_samples_string = ", ".join(failed_samples)
             error_message = f"The following artifacts had a lower concentration than targeted: {failed_samples_string}"
-            LOG.info(error_message)
+            LOG.error(error_message)
             raise InvalidValueError(error_message)
         message: str = "Volumes were successfully calculated."
         LOG.info(message)
