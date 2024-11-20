@@ -25,7 +25,7 @@ def get_total_pooling_volume(process: Process, udf_name: str) -> float:
     """Return the total pooling volume from a process."""
     total_volume: float = process.udf.get(udf_name)
     if not total_volume or total_volume == 0:
-        raise MissingUDFsError("You need to specify a final loading concentration value above 0.")
+        raise MissingUDFsError("You need to specify a pool volume above 0 ul.")
     return total_volume
 
 
