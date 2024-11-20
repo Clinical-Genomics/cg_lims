@@ -723,3 +723,15 @@ def minimum_volume(
     help: str = "Minimum volume",
 ) -> click.option:
     return click.option("--min-volume", required=False, default=0, help=help)
+
+
+def target_concentration_udf(
+    help: str = "String of UDF used to get the targeted concentration",
+) -> click.option:
+    return click.option("--target-concentration-udf", required=True, help=help)
+
+
+def target_volume_udf(
+    help: str = "String of UDF used to get the targeted volume",
+) -> click.option:
+    return click.option("--target-volume-udf", required=True, help=help)
