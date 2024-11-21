@@ -21,7 +21,7 @@ from cg_lims.get.artifacts import get_artifacts
 from genologics.entities import Artifact, Process
 from matplotlib import colors
 
-COLORS = list(colors.TABLEAU_COLORS.values())
+COLORS = list(colors.XKCD_COLORS.values())
 LOG = logging.getLogger(__name__)
 
 
