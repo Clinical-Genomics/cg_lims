@@ -1,7 +1,7 @@
 import logging
 import sys
 from datetime import date
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import click
 from cg_lims import options
@@ -25,13 +25,19 @@ COLORS = list(colors.TABLEAU_COLORS.values())
 LOG = logging.getLogger(__name__)
 
 
-def add_pool_info(pool_udfs: List[str], pool: Artifact) -> str:
+def add_pool_info(
+    pool_udfs: List[str],
+    pool: Artifact,
+    round_decimals: Optional[int],
+) -> str:
     """Adding info about the pool"""
 
     html = []
     for udf in pool_udfs:
         value = pool.udf.get(udf)
         if value is not None:
+            if round_decimals and type(value) is float:
+                value = round(value, round_decimals)
             html.append(
                 f'<tr><td class="group-field-label">{udf}: </td><td class="group-field-value">{value}</td></tr>'
             )
@@ -46,12 +52,14 @@ def add_sample_info_headers(udfs_headers: List[str]) -> str:
     return "".join(html)
 
 
-def add_sample_info(artifact: Artifact, udfs: List[str]) -> str:
+def add_sample_info(artifact: Artifact, udfs: List[str], round_decimals: Optional[int]) -> str:
     """Adding info about samples in the pool"""
 
     html = []
     for udf in udfs:
-        value = artifact.udf.get(udf, "")
+        value = artifact.udf.get(udf)
+        if round_decimals and type(value) is float:
+            value = round(value, round_decimals)
         html.append(f'<td class="" style="width: 7%;">{value}</td>')
     return "".join(html)
 
@@ -61,6 +69,7 @@ def make_html(
     process: Process,
     pool_udfs: List[str],
     sample_udfs: List[str],
+    round_decimals: Optional[int],
 ) -> str:
     """Building the html for the pooling map"""
 
@@ -68,6 +77,7 @@ def make_html(
     header_info = PlacementMapHeader(process_type=process.type.name, date=date.today().isoformat())
     html.append(PLACEMENT_MAP_HEADER.format(**header_info.dict()))
 
+    source_containers = {}
     for pool in pools:
         artifacts: List[Tuple[str, Artifact]] = [
             (artifact.location[1], artifact) for artifact in pool.input_artifact_list()
@@ -79,28 +89,31 @@ def make_html(
             nr_samples=len(artifacts),
             pool_name=pool.name,
             pool_id=pool.id,
-            pools_information=add_pool_info(pool_udfs, pool),
+            pools_information=add_pool_info(
+                pool_udfs=pool_udfs, pool=pool, round_decimals=round_decimals
+            ),
         )
         html.append(POOL_HEADER.format(**pool_info.dict()))
         extra_sample_columns: str = add_sample_info_headers(sample_udfs)
         html.append(SAMPLE_COLUMN_HEADERS.format(extra_sample_columns=extra_sample_columns))
         html.append("""</thead><tbody>""")
-        source_containers = []
         for location, artifact in artifacts:
             sample = artifact.samples[0]
             sample_warning_color = "#F08080" if artifact.udf.get("Warning") else "#FFFFFF"
-            if artifact.container.name not in source_containers:
+            if artifact.container.name not in source_containers.keys():
                 source_container_color = COLORS[0]
                 COLORS.pop(0)
-            source_containers.append(artifact.container.name)
+                source_containers[artifact.container.name] = source_container_color
             sample_table_values = SampleTableSection(
                 sample_id=sample.id,
                 sample_warning_color=sample_warning_color,
                 source_well=location,
                 source_container=artifact.container.name,
-                source_container_color=source_container_color,
+                source_container_color=source_containers[artifact.container.name],
                 pool_name=pool.name,
-                extra_sample_values=add_sample_info(artifact, sample_udfs),
+                extra_sample_values=add_sample_info(
+                    artifact=artifact, udfs=sample_udfs, round_decimals=round_decimals
+                ),
             )
             html.append(SAMPLE_COLUMN_VALUES.format(**sample_table_values.dict()))
         html.append("""</tbody></table><br><br></html>""")
@@ -113,20 +126,27 @@ def make_html(
 @options.file_placeholder(help="File placeholder name.")
 @options.pool_udfs(help="Pool UDFs to show in the placement map.")
 @options.sample_udfs(help="Sample UDFs to show in the placement map.")
+@options.round_decimals()
 @click.pass_context
-def pool_map(ctx, file: str, sample_udfs: List[str], pool_udfs: List[str]):
+def pool_map(
+    ctx, file: str, sample_udfs: List[str], pool_udfs: List[str], round_decimals: str = None
+):
     """Create a pool placement map."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
 
     try:
+        if round_decimals:
+            round_decimals = int(round_decimals)
         pools = get_artifacts(process=process, input=False)
+        pools.sort(key=lambda x: x.id)
         html = make_html(
-            pools,
-            process,
-            pool_udfs,
-            sample_udfs,
+            pools=pools,
+            process=process,
+            pool_udfs=pool_udfs,
+            sample_udfs=sample_udfs,
+            round_decimals=round_decimals,
         )
         with open(f"{file}.html", "w") as file:
             file.write(html)
