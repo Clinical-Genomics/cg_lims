@@ -1,7 +1,7 @@
 import logging
 import sys
 from datetime import date
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import click
 from cg_lims import options
@@ -18,10 +18,10 @@ from cg_lims.EPPs.files.pooling_map.models import (
 )
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
-from genologics.entities import Artifact, Process
+from genologics.entities import Artifact, Process, Sample
 from matplotlib import colors
 
-COLORS = list(colors.XKCD_COLORS.values())
+COLORS: List[str] = list(colors.XKCD_COLORS.values())
 LOG = logging.getLogger(__name__)
 
 
@@ -32,7 +32,7 @@ def add_pool_info(
 ) -> str:
     """Adding info about the pool"""
 
-    html = []
+    html: List[str] = []
     for udf in pool_udfs:
         value = pool.udf.get(udf)
         if value is not None:
@@ -47,7 +47,7 @@ def add_pool_info(
 def add_sample_info_headers(udfs_headers: List[str]) -> str:
     """Adding headers for more info about samples in the pool"""
 
-    html = [f'<th style="width: 7%;" class="">{header}</th>' for header in udfs_headers]
+    html: List[str] = [f'<th style="width: 7%;" class="">{header}</th>' for header in udfs_headers]
 
     return "".join(html)
 
@@ -55,7 +55,7 @@ def add_sample_info_headers(udfs_headers: List[str]) -> str:
 def add_sample_info(artifact: Artifact, udfs: List[str], round_decimals: Optional[int]) -> str:
     """Adding info about samples in the pool"""
 
-    html = []
+    html: List[str] = []
     for udf in udfs:
         value = artifact.udf.get(udf)
         if round_decimals and type(value) is float:
@@ -73,11 +73,11 @@ def make_html(
 ) -> str:
     """Building the html for the pooling map"""
 
-    html = []
+    html: List[str] = []
     header_info = PlacementMapHeader(process_type=process.type.name, date=date.today().isoformat())
     html.append(PLACEMENT_MAP_HEADER.format(**header_info.dict()))
 
-    source_containers = {}
+    source_containers: Dict[str, str] = {}
     for pool in pools:
         artifacts: List[Tuple[str, Artifact]] = [
             (artifact.location[1], artifact) for artifact in pool.input_artifact_list()
@@ -98,11 +98,10 @@ def make_html(
         html.append(SAMPLE_COLUMN_HEADERS.format(extra_sample_columns=extra_sample_columns))
         html.append("""</thead><tbody>""")
         for location, artifact in artifacts:
-            sample = artifact.samples[0]
-            sample_warning_color = "#F08080" if artifact.udf.get("Warning") else "#FFFFFF"
+            sample: Sample = artifact.samples[0]
+            sample_warning_color: str = "#F08080" if artifact.udf.get("Warning") else "#FFFFFF"
             if artifact.container.name not in source_containers.keys():
-                source_container_color = COLORS[0]
-                COLORS.pop(0)
+                source_container_color: str = COLORS.pop(0)
                 source_containers[artifact.container.name] = source_container_color
             sample_table_values = SampleTableSection(
                 sample_id=sample.id,
@@ -118,8 +117,7 @@ def make_html(
             html.append(SAMPLE_COLUMN_VALUES.format(**sample_table_values.dict()))
         html.append("""</tbody></table><br><br></html>""")
 
-    html = "".join(html)
-    return html
+    return "".join(html)
 
 
 @click.command()
@@ -139,9 +137,9 @@ def pool_map(
     try:
         if round_decimals:
             round_decimals = int(round_decimals)
-        pools = get_artifacts(process=process, input=False)
+        pools: List[Artifact] = get_artifacts(process=process, input=False)
         pools.sort(key=lambda x: x.id)
-        html = make_html(
+        html: str = make_html(
             pools=pools,
             process=process,
             pool_udfs=pool_udfs,
