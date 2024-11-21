@@ -31,7 +31,6 @@ def add_pool_info(
     round_decimals: Optional[int],
 ) -> str:
     """Adding info about the pool"""
-
     html: List[str] = []
     for udf in pool_udfs:
         value = pool.udf.get(udf)
@@ -46,15 +45,12 @@ def add_pool_info(
 
 def add_sample_info_headers(udfs_headers: List[str]) -> str:
     """Adding headers for more info about samples in the pool"""
-
     html: List[str] = [f'<th style="width: 7%;" class="">{header}</th>' for header in udfs_headers]
-
     return "".join(html)
 
 
 def add_sample_info(artifact: Artifact, udfs: List[str], round_decimals: Optional[int]) -> str:
     """Adding info about samples in the pool"""
-
     html: List[str] = []
     for udf in udfs:
         value = artifact.udf.get(udf)
@@ -72,11 +68,9 @@ def make_html(
     round_decimals: Optional[int],
 ) -> str:
     """Building the html for the pooling map"""
-
     html: List[str] = []
     header_info = PlacementMapHeader(process_type=process.type.name, date=date.today().isoformat())
     html.append(PLACEMENT_MAP_HEADER.format(**header_info.dict()))
-
     source_containers: Dict[str, str] = {}
     for pool in pools:
         artifacts: List[Tuple[str, Artifact]] = [
@@ -116,7 +110,6 @@ def make_html(
             )
             html.append(SAMPLE_COLUMN_VALUES.format(**sample_table_values.dict()))
         html.append("""</tbody></table><br><br></html>""")
-
     return "".join(html)
 
 
