@@ -36,7 +36,7 @@ def add_pool_info(
         value = pool.udf.get(udf)
         if value is not None:
             if round_decimals and type(value) is float:
-                value = round(value, round_decimals)
+                value: float = round(value, round_decimals)
             html.append(
                 f'<tr><td class="group-field-label">{udf}: </td><td class="group-field-value">{value}</td></tr>'
             )
@@ -55,7 +55,7 @@ def add_sample_info(artifact: Artifact, udfs: List[str], round_decimals: Optiona
     for udf in udfs:
         value = artifact.udf.get(udf)
         if round_decimals and type(value) is float:
-            value = round(value, round_decimals)
+            value: float = round(value, round_decimals)
         html.append(f'<td class="" style="width: 7%;">{value}</td>')
     return "".join(html)
 
@@ -125,11 +125,11 @@ def pool_map(
     """Create a pool placement map."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
-    process = ctx.obj["process"]
+    process: Process = ctx.obj["process"]
 
     try:
         if round_decimals:
-            round_decimals = int(round_decimals)
+            round_decimals: int = int(round_decimals)
         pools: List[Artifact] = get_artifacts(process=process, input=False)
         pools.sort(key=lambda x: x.id)
         html: str = make_html(
