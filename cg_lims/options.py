@@ -717,3 +717,9 @@ def minimum_volume(
     help: str = "Minimum volume",
 ) -> click.option:
     return click.option("--min-volume", required=False, default=0, help=help)
+
+
+def round_decimals(
+    help: str = "The number of decimals you want to round to.",
+) -> click.option:
+    return click.option("-r", "--round-decimals", required=False, help=help)
