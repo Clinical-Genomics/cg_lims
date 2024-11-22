@@ -59,7 +59,7 @@ class NovaSeqXDenaturation:
 DENATURATION_VOLUMES = {
     FlowCellTypes.FLOW_CELL_10B: NovaSeqXDenaturation(
         pool=FlowCellLaneVolumes10B.POOL_VOLUME,
-        denaturation=FlowCellLaneVolumes10B.DENATURATION_VOLUME
+        denaturation=FlowCellLaneVolumes10B.DENATURATION_VOLUME,
         phix=FlowCellLaneVolumes10B.PHIX_VOLUME,
         naoh=FlowCellLaneVolumes10B.NAOH_VOLUME,
         buffer=FlowCellLaneVolumes10B.BUFFER_VOLUME,
