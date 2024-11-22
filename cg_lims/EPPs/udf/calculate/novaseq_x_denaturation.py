@@ -27,11 +27,13 @@ class DenaturationReagent:
 class NovaSeqXDenaturation:
     def __init__(self, pool: float, denaturation: float, phix: float, naoh: float, buffer: float):
         self.pool: DenaturationReagent = DenaturationReagent(
+            per_lane_udf="Per Lane Volume Total (ul)",
             total_udf="Total Volume of Pool to Denature (ul)",
             volume=pool,
         )
         self.denaturation: DenaturationReagent = DenaturationReagent(
             per_lane_udf="Volume of Pool to Denature (ul) per Lane",
+            total_udf="Total Volume Denaturation (ul)",
             volume=denaturation,
         )
         self.phix: DenaturationReagent = DenaturationReagent(
