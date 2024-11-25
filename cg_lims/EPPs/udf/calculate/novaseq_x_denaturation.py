@@ -53,7 +53,7 @@ class NovaSeqXDenaturation:
         )
 
     def get_reagent_list(self):
-        return [self.pool, self.phix, self.naoh, self.buffer]
+        return [self.pool, self.denaturation, self.phix, self.naoh, self.buffer]
 
 
 DENATURATION_VOLUMES = {
