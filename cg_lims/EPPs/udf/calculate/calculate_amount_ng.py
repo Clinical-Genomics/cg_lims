@@ -15,7 +15,8 @@ LOG = logging.getLogger(__name__)
 @options.concentration_udf()
 @options.amount_udf_option()
 @options.volume_udf()
-@options.subtract_volume_option()
+@options.subtract_volume()
+@options.preset_volume()
 @options.measurement()
 @options.input()
 @click.pass_context
@@ -25,12 +26,14 @@ def calculate_amount_ng(
     volume_udf: str,
     concentration_udf: str,
     subtract_volume: str,
+    preset_volume: float,
     measurement: bool = False,
     input: bool = False,
 ):
     """Calculates and auto-fills the quantities of DNA in sample from concentration and volume
-    measurements. The volume is subtracted by either 0 or 3 in the calculations. This is
-    because the lab uses 0 or 3 ul in the initial qc measurements."""
+    measurements. The volume can be subtracted by an optional specification in the cli. This is
+    because the lab uses some microliters of the sample in the qc measurements. A pre-set
+    volume can be set in the cli as well."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
@@ -43,13 +46,15 @@ def calculate_amount_ng(
         missing_udfs_count: int = 0
         artifacts_with_missing_udf: List = []
         for artifact in artifacts:
-            vol: float = artifact.udf.get(volume_udf)
+            if preset_volume:
+                vol = float(preset_volume)
+            elif volume_udf:
+                vol = artifact.udf.get(volume_udf)
             conc: float = artifact.udf.get(concentration_udf)
             if None in [conc, vol]:
                 missing_udfs_count += 1
                 artifacts_with_missing_udf.append(artifact.id)
                 continue
-
             artifact.udf[amount_udf] = conc * (vol - int(subtract_volume))
             artifact.put()
         if missing_udfs_count:
