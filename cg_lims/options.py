@@ -735,3 +735,9 @@ def target_volume_udf(
     help: str = "String of UDF used to get the targeted volume",
 ) -> click.option:
     return click.option("--target-volume-udf", required=True, help=help)
+
+
+def round_decimals(
+    help: str = "The number of decimals you want to round to.",
+) -> click.option:
+    return click.option("-r", "--round-decimals", required=False, help=help)

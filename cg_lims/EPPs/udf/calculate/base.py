@@ -21,6 +21,7 @@ from cg_lims.EPPs.udf.calculate.calculate_saphyr_concentration import calculate_
 from cg_lims.EPPs.udf.calculate.calculate_water_volume_rna import calculate_water_volume_rna
 from cg_lims.EPPs.udf.calculate.get_missing_reads import get_missing_reads
 from cg_lims.EPPs.udf.calculate.library_normalization import library_normalization
+from cg_lims.EPPs.udf.calculate.library_normalization_revio import library_normalization_revio
 from cg_lims.EPPs.udf.calculate.maf_calculate_volume import maf_calculate_volume
 from cg_lims.EPPs.udf.calculate.molar_concentration import molar_concentration
 from cg_lims.EPPs.udf.calculate.novaseq_x_denaturation import novaseq_x_denaturation
@@ -63,6 +64,7 @@ calculate.add_command(calculate_microbial_aliquot_volumes)
 calculate.add_command(calculate_average_size_and_set_qc)
 calculate.add_command(novaseq_x_volumes)
 calculate.add_command(library_normalization)
+calculate.add_command(library_normalization_revio)
 calculate.add_command(novaseq_x_denaturation)
 calculate.add_command(qpcr_concentration)
 calculate.add_command(calculate_saphyr_concentration)
