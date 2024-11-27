@@ -244,7 +244,12 @@ class RevioRun:
         for pool in self.pools:
             artifacts: List[Artifact] = get_non_pooled_artifacts(artifact=pool)
             for artifact in artifacts:
-                row = f"\n{artifact.samples[0].id},{_get_smrt_cell_well(pool=pool)},{get_smrtbell_adapter_name(artifact=artifact)},{get_smrtbell_adapter_name(artifact=artifact)}"
+                row = (
+                    f"\n{artifact.samples[0].id},"
+                    f"{_get_smrt_cell_well(pool=pool)},"
+                    f"{get_smrtbell_adapter_name(artifact=artifact)},"
+                    f"{get_smrtbell_adapter_name(artifact=artifact)}"
+                )
                 section += row
         return RunDesignHeader.SAMPLES + "\n" + section + "\n"
 
