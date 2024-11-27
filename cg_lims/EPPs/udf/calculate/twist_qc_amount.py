@@ -30,7 +30,7 @@ def get_qc(source: str, conc: float, amount: float, max_amount: float) -> str:
     return qc
 
 
-def calculate_amount_and_set_qc(artifacts: List[Artifact], subtract_volume: str) -> None:
+def calculate_amount_and_set_qc(artifacts: List[Artifact], subtract_volume: int) -> None:
     """Calculate amount and set qc for twist samples"""
 
     missing_udfs_count = 0
@@ -44,7 +44,7 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact], subtract_volume: str)
             missing_udfs_count += 1
             continue
 
-        amount = conc * (vol - int(subtract_volume))
+        amount = conc * (vol - subtract_volume)
         artifact.udf["Amount (ng)"] = amount
         max_amount = get_maximum_amount(artifact=artifact, default_amount=MAXIMUM_SAMPLE_AMOUNT)
         qc = get_qc(source=source, conc=conc, amount=amount, max_amount=max_amount)
@@ -79,7 +79,7 @@ def twist_qc_amount(
 
     try:
         artifacts = get_artifacts(process=process, measurement=True)
-        calculate_amount_and_set_qc(artifacts=artifacts, subtract_volume=subtract_volume)
+        calculate_amount_and_set_qc(artifacts=artifacts, subtract_volume=int(subtract_volume))
         message = "Amounts have been calculated and qc flags set for all samples."
         LOG.info(message)
         click.echo(message)
