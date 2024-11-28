@@ -3,6 +3,7 @@ import sys
 from typing import List
 
 import click
+from cg_lims import options
 from cg_lims.exceptions import FailingQCError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
@@ -29,7 +30,7 @@ def get_qc(source: str, conc: float, amount: float, max_amount: float) -> str:
     return qc
 
 
-def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
+def calculate_amount_and_set_qc(artifacts: List[Artifact], subtract_volume: int) -> None:
     """Calculate amount and set qc for twist samples"""
 
     missing_udfs_count = 0
@@ -43,7 +44,7 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
             missing_udfs_count += 1
             continue
 
-        amount = conc * (vol - 3)
+        amount = conc * (vol - subtract_volume)
         artifact.udf["Amount (ng)"] = amount
         max_amount = get_maximum_amount(artifact=artifact, default_amount=MAXIMUM_SAMPLE_AMOUNT)
         qc = get_qc(source=source, conc=conc, amount=amount, max_amount=max_amount)
@@ -64,8 +65,12 @@ def calculate_amount_and_set_qc(artifacts: List[Artifact]) -> None:
 
 
 @click.command()
+@options.subtract_volume()
 @click.pass_context
-def twist_qc_amount(ctx):
+def twist_qc_amount(
+    ctx: click.Context,
+    subtract_volume: str,
+):
     """Calculates amount of samples for qc validation."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
@@ -74,7 +79,7 @@ def twist_qc_amount(ctx):
 
     try:
         artifacts = get_artifacts(process=process, measurement=True)
-        calculate_amount_and_set_qc(artifacts=artifacts)
+        calculate_amount_and_set_qc(artifacts=artifacts, subtract_volume=int(subtract_volume))
         message = "Amounts have been calculated and qc flags set for all samples."
         LOG.info(message)
         click.echo(message)
