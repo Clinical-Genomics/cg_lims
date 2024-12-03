@@ -10,7 +10,47 @@ from genologics.lims import Artifact, Container, Process
 
 LOG = logging.getLogger(__name__)
 
-POOLING_CALCULATOR_CSV_HEADER = (
+
+SAMPLE_SETUP_CSV_HEADER: List[str] = [
+    "Sample Name",
+    "Comment",
+    "System Name",
+    "Binding Kit",
+    "Plate",
+    "Well",
+    "Number of Samples",
+    "Application",
+    "Available Starting Sample Volume (uL)",
+    "Starting Sample Concentration (ng/uL)",
+    "Insert Size (bp)",
+    "Control Kit",
+    "Cleanup Anticipated Yield (%)",
+    "On Plate Loading Concentration (pM)",
+    "Cells to Bind (cells)",
+    "Prepare Entire Sample",
+    "Sequencing Primer",
+    "Target Annealing Sample Concentration (nM)",
+    "Target Annealing Primer Concentration (nM)",
+    "Target Binding Concentration (nM)",
+    "Target Polymerase Concentration (X)",
+    "Binding Time (min)",
+    "Cleanup Bead Type",
+    "Cleanup Bead Concentration (X)",
+    "Minimum Pipetting Volume (uL)",
+    "Percent of Annealing Reaction To Use In Binding (%)",
+    "AMPure Diluted Bound Complex Volume (uL)",
+    "AMPure Diluted Bound Complex Concentration (ng/uL)",
+    "AMPure Purified Complex Volume (uL)",
+    "AMPure Purified Complex Concentration (ng/uL)",
+    "ProNex Diluted Bound Complex Volume (uL)",
+    "ProNex Diluted Bound Complex Concentration (ng/uL)",
+    "ProNex Purified Complex Volume (uL)",
+    "ProNex Purified Complex Concentration (ng/uL)",
+    "Requested Cells Alternate (cells)",
+    "Requested OPLC Alternate (pM)",
+]
+
+POOLING_CALCULATOR_CSV_HEADER: str = (
     '"Library Name","Conc. (ng/uL)","Insert size (bp)","Conc. (pM)","Pooling volume (uL)"\n'
 )
 
@@ -33,7 +73,7 @@ class RunDesignHeader(StrEnum):
     SAMPLES: str = "[Samples]"
 
 
-class SampleSetupObject:
+class SampleSetup:
     sample_name: str
     system_name: str
     binding_kit: str
@@ -50,59 +90,59 @@ class SampleSetupObject:
 
     def __init__(self, artifact: Artifact):
         process = artifact.parent_process
-        self.sample_name: str = artifact.samples[0].id
-        self.system_name: str = process.udf.get("Sequencing Instrument")
-        self.binding_kit: str = process.udf.get("Binding Kit")
+        self.sample_name = artifact.samples[0].id
+        self.system_name = process.udf.get("Sequencing Instrument")
+        self.binding_kit = process.udf.get("Binding Kit")
         self.number_of_samples = len(artifact.samples)
-        self.application: str = process.udf.get("Prep Type")
-        self.available_volume: float = artifact.udf.get("Volume (ul)")
-        self.starting_concentration: float = artifact.udf.get("Input Concentration (ng/ul)")
-        self.size: int = artifact.udf.get("Size (bp)")
-        self.loading_conc: float = process.udf.get("Loading Concentration (pM)")
-        self.number_of_cells_to_load: int = artifact.udf.get("SMRT Cells to Load")
-        self.prepare_entire_sample: bool = False
-        self.sequencing_primer: str = process.udf.get("Sequencing Primer")
-        self.minimum_pipetting_volume: float = 1
+        self.application = process.udf.get("Prep Type")
+        self.available_volume = artifact.udf.get("Volume (ul)")
+        self.starting_concentration = artifact.udf.get("Input Concentration (ng/ul)")
+        self.size = artifact.udf.get("Size (bp)")
+        self.loading_conc = process.udf.get("Loading Concentration (pM)")
+        self.number_of_cells_to_load = artifact.udf.get("SMRT Cells to Load")
+        self.prepare_entire_sample = False
+        self.sequencing_primer = process.udf.get("Sequencing Primer")
+        self.minimum_pipetting_volume = 1
 
-    def get_sample_setup_row(self):
-        return (
-            f'"{self.sample_name}",'
-            f'"",'
-            f'"{self.system_name}",'
-            f'"{self.binding_kit}",'
-            f'"",'
-            f'"",'
-            f'"{self.number_of_samples}",'
-            f'"{self.application}",'
-            f'"{self.available_volume}",'
-            f'"{self.starting_concentration}",'
-            f'"{self.size}",'
-            f'"",'
-            f'"",'
-            f'"{self.loading_conc}",'
-            f'"{self.number_of_samples}",'
-            f'"{self.prepare_entire_sample}",'
-            f'"{self.sequencing_primer}",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"{self.minimum_pipetting_volume}",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'"",'
-            f'""'
-        )
+    def get_sample_setup_row(self) -> List[str]:
+        return [
+            self.sample_name,
+            "",
+            self.system_name,
+            self.binding_kit,
+            "",
+            "",
+            self.number_of_samples,
+            self.application,
+            self.available_volume,
+            self.starting_concentration,
+            self.size,
+            "",
+            "",
+            self.loading_conc,
+            self.number_of_samples,
+            self.prepare_entire_sample,
+            self.sequencing_primer,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            self.minimum_pipetting_volume,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+        ]
 
 
 def _build_pooling_sample_row(input_artifact: Artifact):
@@ -124,22 +164,22 @@ class PoolingCalculator:
 
     def __init__(self, pool_artifact: Artifact):
         parent_process: Process = pool_artifact.parent_process
-        self.pool_artifact: Artifact = pool_artifact
-        self.number_of_samples: int = len(pool_artifact.samples)
-        self.pool_volume: str = parent_process.udf.get("Pool Volume (ul)")
-        self.concentration_unit: str = "(pM)"
-        self.target_concentration: str = parent_process.udf.get("Target Pool Concentration (pM)")
+        self.pool_artifact = pool_artifact
+        self.number_of_samples = len(pool_artifact.samples)
+        self.pool_volume = parent_process.udf.get("Pool Volume (ul)")
+        self.concentration_unit = "(pM)"
+        self.target_concentration = parent_process.udf.get("Target Pool Concentration (pM)")
 
-    def _build_sample_section(self):
-        section = ""
+    def _build_sample_section(self) -> str:
+        section: str = ""
         for input_artifact in self.pool_artifact.input_artifact_list():
             section += _build_pooling_sample_row(input_artifact=input_artifact) + "\n"
         return section
 
-    def _build_footer(self):
+    def _build_footer(self) -> str:
         return f'"# n: {self.number_of_samples} volume: {self.pool_volume} units: {self.concentration_unit} conc: {self.target_concentration} buffer:","","","",""'
 
-    def build_csv(self):
+    def build_csv(self) -> str:
         return POOLING_CALCULATOR_CSV_HEADER + self._build_sample_section() + self._build_footer()
 
 
@@ -202,20 +242,18 @@ class RevioRun:
     data_project: int = 1
 
     def __init__(self, process: Process):
-        self.process: Process = process
-        self.plates: Dict[int, Container] = _build_plate_dict(process=process)
-        self.pools: List[Artifact] = get_artifacts(process=process)
-        self.run_name: str = process.udf.get("Run Name")
-        self.instrument_type: str = process.udf.get("Instrument Type")
-        self.run_comments: str = (
-            f"Generated by automation in https://cg-lims-stage.sys.scilifelab.se/clarity/work-details/{process.id.split('-')[1]}"
-        )
-        self.movie_acquisition_time: str = process.udf.get("Movie Acquisition Time (hours)")
-        self.adaptive_loading: bool = process.udf.get("Adaptive Loading")
-        self.base_kinetics: bool = process.udf.get("Include Base Kinetics")
-        self.consensus_mode: bool = process.udf.get("Consensus Mode")
-        self.plate_1_type: str = process.udf.get("Plate 1 Type")
-        self.plate_2_type: str = process.udf.get("Plate 2 Type")
+        self.process = process
+        self.plates = _build_plate_dict(process=process)
+        self.pools = get_artifacts(process=process)
+        self.run_name = process.udf.get("Run Name")
+        self.instrument_type = process.udf.get("Instrument Type")
+        self.run_comments = f"Generated by automation in https://cg-lims-stage.sys.scilifelab.se/clarity/work-details/{process.id.split('-')[1]}"
+        self.movie_acquisition_time = process.udf.get("Movie Acquisition Time (hours)")
+        self.adaptive_loading = process.udf.get("Adaptive Loading")
+        self.base_kinetics = process.udf.get("Include Base Kinetics")
+        self.consensus_mode = process.udf.get("Consensus Mode")
+        self.plate_1_type = process.udf.get("Plate 1 Type")
+        self.plate_2_type = process.udf.get("Plate 2 Type")
 
     def _create_run_settings(self) -> str:
         """Return the [Run Settings] section of the run design."""
