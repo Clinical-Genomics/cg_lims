@@ -94,7 +94,7 @@ class SampleSetup:
         self.system_name = process.udf.get("Sequencing Instrument")
         self.binding_kit = process.udf.get("Binding Kit")
         self.number_of_samples = len(artifact.samples)
-        self.application = process.udf.get("Prep Type")
+        self.application = process.udf.get("Revio Application")
         self.available_volume = artifact.udf.get("Volume (ul)")
         self.starting_concentration = artifact.udf.get("Input Concentration (ng/ul)")
         self.size = artifact.udf.get("Size (bp)")
@@ -305,7 +305,7 @@ class RevioRun:
                 pool.udf.get("Revio Application"),
                 pool.udf.get("Polymerase Kit"),
                 self.movie_acquisition_time,
-                pool.udf.get("Average Size (bp)"),
+                pool.udf.get("Mean Size (bp)"),
                 pool.udf.get("Library Concentration (pM)"),
                 self.adaptive_loading,
                 self.base_kinetics,
