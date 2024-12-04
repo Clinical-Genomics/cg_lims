@@ -25,11 +25,16 @@ class DenaturationReagent:
 
 
 class NovaSeqXDenaturation:
-    def __init__(self, pool: float, phix: float, naoh: float, buffer: float):
+    def __init__(self, pool: float, denaturation: float, phix: float, naoh: float, buffer: float):
         self.pool: DenaturationReagent = DenaturationReagent(
-            per_lane_udf="Volume of Pool to Denature (ul) per Lane",
+            per_lane_udf="Per Lane Volume Total (ul)",
             total_udf="Total Volume of Pool to Denature (ul)",
             volume=pool,
+        )
+        self.denaturation: DenaturationReagent = DenaturationReagent(
+            per_lane_udf="Volume of Pool to Denature (ul) per Lane",
+            total_udf="Total Volume Denaturation (ul)",
+            volume=denaturation,
         )
         self.phix: DenaturationReagent = DenaturationReagent(
             per_lane_udf="PhiX Volume (ul) per Lane",
@@ -48,24 +53,27 @@ class NovaSeqXDenaturation:
         )
 
     def get_reagent_list(self):
-        return [self.pool, self.phix, self.naoh, self.buffer]
+        return [self.pool, self.denaturation, self.phix, self.naoh, self.buffer]
 
 
 DENATURATION_VOLUMES = {
     FlowCellTypes.FLOW_CELL_10B: NovaSeqXDenaturation(
         pool=FlowCellLaneVolumes10B.POOL_VOLUME,
+        denaturation=FlowCellLaneVolumes10B.DENATURATION_VOLUME,
         phix=FlowCellLaneVolumes10B.PHIX_VOLUME,
         naoh=FlowCellLaneVolumes10B.NAOH_VOLUME,
         buffer=FlowCellLaneVolumes10B.BUFFER_VOLUME,
     ),
     FlowCellTypes.FLOW_CELL_15B: NovaSeqXDenaturation(
         pool=FlowCellLaneVolumes15B.POOL_VOLUME,
+        denaturation=FlowCellLaneVolumes15B.DENATURATION_VOLUME,
         phix=FlowCellLaneVolumes15B.PHIX_VOLUME,
         naoh=FlowCellLaneVolumes15B.NAOH_VOLUME,
         buffer=FlowCellLaneVolumes15B.BUFFER_VOLUME,
     ),
     FlowCellTypes.FLOW_CELL_25B: NovaSeqXDenaturation(
         pool=FlowCellLaneVolumes25B.POOL_VOLUME,
+        denaturation=FlowCellLaneVolumes25B.DENATURATION_VOLUME,
         phix=FlowCellLaneVolumes25B.PHIX_VOLUME,
         naoh=FlowCellLaneVolumes25B.NAOH_VOLUME,
         buffer=FlowCellLaneVolumes25B.BUFFER_VOLUME,
