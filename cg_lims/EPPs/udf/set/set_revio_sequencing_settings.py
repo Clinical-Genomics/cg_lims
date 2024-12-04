@@ -51,7 +51,7 @@ def calculate_weighted_average_size(artifact: Artifact) -> float:
     for input_artifact in input_artifacts:
         sizes.append(input_artifact.udf.get("Size (bp)"))
         volumes.append(input_artifact.udf.get("Volume of sample (ul)"))
-    return np.average(sizes, weights=volumes)
+    return round(np.average(sizes, weights=volumes), 0)
 
 
 def get_library_concentration(artifact: Artifact) -> float:
