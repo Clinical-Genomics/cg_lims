@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from cg_lims.enums import StrEnum
@@ -183,17 +183,19 @@ class PoolingCalculator:
         return POOLING_CALCULATOR_CSV_HEADER + self._build_sample_section() + self._build_footer()
 
 
-def _build_plate_dict(process: Process) -> Dict[int, Container]:
+def _build_plate_dict(process: Process) -> Dict[Any, Any]:
     """Create a sequencing plate dict containing plate position (int) and Container object"""
     containers = process.output_containers()
     plate_1 = process.udf.get("Plate 1")
     plate_2 = process.udf.get("Plate 2")
-    plate_dict = {1: "", 2: ""}
+    plate_dict = {}
     for container in containers:
         if container.name == plate_1:
             plate_dict[1] = container.name
+            plate_dict[container.name] = 1
         elif plate_2 and container.name == plate_2:
             plate_dict[2] = container.name
+            plate_dict[container.name] = 2
         else:
             raise MissingUDFsError(f"Error: Container {container.name} is missing from run set up.")
     return plate_dict
@@ -204,16 +206,11 @@ def _convert_well(well: str) -> str:
     return well.replace(":", "0")
 
 
-def _get_smrt_cell_well(pool: Artifact, plate_dict: Dict[int, Container]) -> str:
+def _get_smrt_cell_well(pool: Artifact, plate_dict: Dict[Any, Any]) -> str:
     """Return the SMRT Cell well position of a pool."""
     plate: Container = pool.container
-    for position, plate_object in plate_dict.items():
-        if plate_object == plate.name:
-            plate_position = position
-        elif plate_object:
-            raise MissingValueError(f"Can't find container {plate.name} in the run!")
     well: str = _convert_well(well=pool.location[1])
-    return f"{plate_position}_{well}"
+    return f"{plate_dict[plate.name]}_{well}"
 
 
 def _is_indexed(pool: Artifact) -> bool:
@@ -227,7 +224,7 @@ def _is_indexed(pool: Artifact) -> bool:
 
 class RevioRun:
     process_id: Process
-    plates: Dict[int, Container]
+    plates: Dict[Any, Any]
     pools: List[Artifact]
     run_name: str
     instrument_type: str
