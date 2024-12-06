@@ -58,9 +58,8 @@ PLATE_PART_NUMBERS: Dict[str, str] = {
 }
 
 
-INDEX_SET_UUID: Dict[str, str] = {
-    "SMRTbell adapter indexes": "43f950a9-8bde-3855-6b25-c13368069745"
-}
+class RevioIndexSets(StrEnum):
+    SMRTBELL_INDEX_SET: str = "43f950a9-8bde-3855-6b25-c13368069745"
 
 
 class RunDesignHeader(StrEnum):
@@ -248,9 +247,7 @@ class RevioRun:
         for pool in self.pools:
             well: str = _get_smrt_cell_well(pool=pool, plate_dict=self.plates)
             if _is_indexed(pool=pool):
-                index_set: str = (
-                    "43f950a9-8bde-3855-6b25-c13368069745"  # how do we fetch this one??
-                )
+                index_set: str = RevioIndexSets.SMRTBELL_INDEX_SET
             else:
                 index_set: str = pool.samples[0].id
 
