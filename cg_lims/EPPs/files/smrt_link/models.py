@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from cg_lims.enums import StrEnum
-from cg_lims.exceptions import MissingUDFsError, MissingValueError
+from cg_lims.exceptions import MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts, get_non_pooled_artifacts
 from cg_lims.get.fields import get_smrtbell_adapter_name
 from genologics.lims import Artifact, Container, Process
@@ -49,10 +49,6 @@ SAMPLE_SETUP_CSV_HEADER: List[str] = [
     "Requested Cells Alternate (cells)",
     "Requested OPLC Alternate (pM)",
 ]
-
-POOLING_CALCULATOR_CSV_HEADER: str = (
-    '"Library Name","Conc. (ng/uL)","Insert size (bp)","Conc. (pM)","Pooling volume (uL)"\n'
-)
 
 
 PLATE_PART_NUMBERS: Dict[str, str] = {
@@ -143,44 +139,6 @@ class SampleSetup:
             "",
             "",
         ]
-
-
-def _build_pooling_sample_row(input_artifact: Artifact):
-    return (
-        f'"{input_artifact.samples[0].id}",'
-        f'"{input_artifact.udf.get("Concentration (ng/ul)")}",'
-        f'"{input_artifact.udf.get("Size (bp)")}",'
-        f'"",'
-        f'""'
-    )
-
-
-class PoolingCalculator:
-    pool_artifact: Artifact
-    number_of_samples: int
-    pool_volume: float
-    concentration_unit: str
-    target_concentration: float
-
-    def __init__(self, pool_artifact: Artifact):
-        parent_process: Process = pool_artifact.parent_process
-        self.pool_artifact = pool_artifact
-        self.number_of_samples = len(pool_artifact.samples)
-        self.pool_volume = parent_process.udf.get("Pool Volume (ul)")
-        self.concentration_unit = "(pM)"
-        self.target_concentration = parent_process.udf.get("Target Pool Concentration (pM)")
-
-    def _build_sample_section(self) -> str:
-        section: str = ""
-        for input_artifact in self.pool_artifact.input_artifact_list():
-            section += _build_pooling_sample_row(input_artifact=input_artifact) + "\n"
-        return section
-
-    def _build_footer(self) -> str:
-        return f'"# n: {self.number_of_samples} volume: {self.pool_volume} units: {self.concentration_unit} conc: {self.target_concentration} buffer:","","","",""'
-
-    def build_csv(self) -> str:
-        return POOLING_CALCULATOR_CSV_HEADER + self._build_sample_section() + self._build_footer()
 
 
 def _build_plate_dict(process: Process) -> Dict[Any, Any]:
