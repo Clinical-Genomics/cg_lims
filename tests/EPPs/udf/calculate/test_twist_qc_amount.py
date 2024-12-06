@@ -8,10 +8,21 @@ from tests.conftest import server
 
 @pytest.mark.parametrize(
     "volume,concentration,source,subtract",
-    [(3, 1, "blood",2), (10, 0.1, "cfDNA",2), (50, 300, "blood",2), (300, 2, "blood",2), (10, 10, "blood",2)],
+    [
+        (3, 1, "blood", 2),
+        (10, 0.1, "cfDNA", 2),
+        (50, 300, "blood", 2),
+        (300, 2, "blood", 2),
+        (10, 10, "blood", 2),
+    ],
 )
 def test_calculate_amount_and_set_qc_failing(
-    volume: int, concentration: float, source: int, artifact_1: Artifact, sample_1: Sample, subtract: int
+    volume: int,
+    concentration: float,
+    source: int,
+    artifact_1: Artifact,
+    sample_1: Sample,
+    subtract: int,
 ):
     # GIVEN: A sample with udf Source: <source>,
     # and a related Artifact with udfs: Concentration: <concentration> and  Volume (ul): <volume>
@@ -31,9 +42,16 @@ def test_calculate_amount_and_set_qc_failing(
     assert artifact_1.qc_flag == "FAILED"
 
 
-@pytest.mark.parametrize("volume,concentration,source,subtract", [(35, 10, "cfDNA",2), (50, 50, "blood",2)])
+@pytest.mark.parametrize(
+    "volume,concentration,source,subtract", [(35, 10, "cfDNA", 2), (50, 50, "blood", 2)]
+)
 def test_calculate_amount_and_set_qc_passing(
-    volume: int, concentration: float, source: int, artifact_1: Artifact, sample_1: Sample, subtract: int
+    volume: int,
+    concentration: float,
+    source: int,
+    artifact_1: Artifact,
+    sample_1: Sample,
+    subtract: int,
 ):
     # GIVEN: A sample with udf Source: <source>,
     # and a related Artifact with udfs: Concentration: <concentration> and  Volume (ul): <volume>
