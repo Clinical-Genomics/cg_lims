@@ -149,10 +149,10 @@ class SampleSetup:
 
 def _build_plate_dict(process: Process) -> Dict[Any, Any]:
     """Create a sequencing plate dict containing plate position (int) and Container object"""
-    containers = process.output_containers()
-    plate_1 = process.udf.get("Plate 1")
-    plate_2 = process.udf.get("Plate 2")
-    plate_dict = {}
+    containers: List[Container] = process.output_containers()
+    plate_1: str = process.udf.get("Plate 1")
+    plate_2: str = process.udf.get("Plate 2")
+    plate_dict: Dict[Any, Any] = {}
     for container in containers:
         if container.name == plate_1:
             plate_dict[1] = container.name

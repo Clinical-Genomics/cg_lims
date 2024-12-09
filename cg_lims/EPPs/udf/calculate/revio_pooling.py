@@ -125,7 +125,7 @@ def revio_pooling(
     target_volume_udf: str,
     target_concentration_udf: str,
 ):
-    """Calculate and set the pooling aliquots needed to prepare for Revio sequencing."""
+    """Calculate and set the pooling aliquots needed for pooling SMRTbell libraries."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
