@@ -89,6 +89,12 @@ def file_placeholder(
     return click.option("-f", "--file", required=False, help=help)
 
 
+def file_placeholders(
+    help: str = "File placeholder option used when multiple are possible.",
+) -> click.option:
+    return click.option("-f", "--files", required=True, multiple=True, help=help)
+
+
 def samples_file(help: str = "Txt file with sample ids") -> click.option:
     return click.option(
         "--samples-file",
@@ -717,6 +723,18 @@ def minimum_volume(
     help: str = "Minimum volume",
 ) -> click.option:
     return click.option("--min-volume", required=False, default=0, help=help)
+
+
+def target_concentration_udf(
+    help: str = "String of UDF used to get the targeted concentration",
+) -> click.option:
+    return click.option("--target-concentration-udf", required=True, help=help)
+
+
+def target_volume_udf(
+    help: str = "String of UDF used to get the targeted volume",
+) -> click.option:
+    return click.option("--target-volume-udf", required=True, help=help)
 
 
 def round_decimals(
