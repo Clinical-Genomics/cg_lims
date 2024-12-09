@@ -35,7 +35,7 @@ def create_smrtlink_sample_setup(ctx, file: str):
 
     try:
         sample_setup_csv_rows: List[List[str]] = get_csv_sample_rows(process=process)
-        file_path: Path = Path(f"{file}.csv")
+        file_path: Path = Path(f"{file}_sample_setup.csv")
         build_csv(rows=sample_setup_csv_rows, file=file_path, headers=SAMPLE_SETUP_CSV_HEADER)
         click.echo("The sample setup CSV was successfully generated.")
     except LimsError as e:

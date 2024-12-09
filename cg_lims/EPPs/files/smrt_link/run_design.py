@@ -22,7 +22,7 @@ def create_smrtlink_run_design(ctx, file: str):
     try:
         revio_run: RevioRun = RevioRun(process=process)
         csv_string: str = revio_run.create_csv()
-        with open(f"{file}.csv", "w") as file:
+        with open(f"{file}_run_design.csv", "w") as file:
             file.write(csv_string)
         click.echo("The run design CSV was successfully generated.")
     except LimsError as e:
