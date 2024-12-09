@@ -1,5 +1,6 @@
 import logging
-from typing import Any, Dict, List, Optional
+import re
+from typing import Any, Dict, List, Optional, Pattern
 
 import pandas as pd
 from cg_lims.enums import StrEnum
@@ -185,6 +186,12 @@ def _is_indexed(pool: Artifact) -> bool:
     return False
 
 
+def _trim_unsupported_characters(name: str) -> str:
+    """Return a trimmed sample name only containing supported characters"""
+    pattern: Pattern[str] = re.compile(r"[^A-Za-z0-9 _:\.-]")
+    return re.sub(pattern=pattern, repl=" ", string=name)
+
+
 class RevioRun:
     process_id: Process
     plates: Dict[Any, Any]
@@ -256,7 +263,7 @@ class RevioRun:
                 index_set: str = pool.samples[0].id
 
             df[well] = [
-                pool.name,
+                _trim_unsupported_characters(name=pool.name),
                 pool.udf.get("Library Type"),
                 pool.udf.get("Revio Application"),
                 POLYMERASE_KITS[pool.udf.get("Polymerase Kit")],
