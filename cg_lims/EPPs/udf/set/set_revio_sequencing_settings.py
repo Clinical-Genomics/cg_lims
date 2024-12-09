@@ -41,9 +41,9 @@ def set_plates(process: Process) -> None:
 
 
 def calculate_weighted_average_size(artifact: Artifact) -> float:
-    """"""
+    """Calculate the weighted average fragment size of an artifact (single sample or pool)"""
     if len(artifact.samples) <= 1:
-        input_artifact = artifact.input_artifact_list()[0]
+        input_artifact: Artifact = artifact.input_artifact_list()[0]
         return input_artifact.udf.get("Size (bp)")
     input_artifacts: List[Artifact] = get_non_pooled_artifacts(artifact=artifact)
     sizes: List[float] = []
@@ -55,7 +55,7 @@ def calculate_weighted_average_size(artifact: Artifact) -> float:
 
 
 def get_library_concentration(artifact: Artifact) -> float:
-    """"""
+    """Return the library concentration of an artifact"""
     lims: Lims = artifact.lims
     sample_id: str = artifact.samples[0].id
     if len(artifact.samples) <= 1:
@@ -64,17 +64,19 @@ def get_library_concentration(artifact: Artifact) -> float:
     else:
         udf_name: str = "Target Pool Concentration (pM)"
         step_name: str = "Pooling Samples for Sequencing (Revio)"
-    all_artifacts = lims.get_artifacts(process_type=step_name, samplelimsid=sample_id)
+    all_artifacts: List[Artifact] = lims.get_artifacts(
+        process_type=step_name, samplelimsid=sample_id
+    )
     artifact: Artifact = get_latest_artifact(lims_artifacts=all_artifacts)
     parent_process: Process = artifact.parent_process
     return parent_process.udf[udf_name]
 
 
 def get_polymerase_kit(artifact: Artifact) -> float:
-    """"""
+    """Return the type of polymerase used for a given artifact"""
     lims: Lims = artifact.lims
     sample_id: str = artifact.samples[0].id
-    all_artifacts = lims.get_artifacts(
+    all_artifacts: List[Artifact] = lims.get_artifacts(
         process_type="Preparing ABC Complex (Revio)", samplelimsid=sample_id
     )
     artifact: Artifact = get_latest_artifact(lims_artifacts=all_artifacts)
@@ -83,7 +85,7 @@ def get_polymerase_kit(artifact: Artifact) -> float:
 
 
 def set_artifact_values(artifacts: List[Artifact]) -> None:
-    """"""
+    """Set all values needed for the artifacts in a Set Up Sequencing Run (Revio) step"""
     for artifact in artifacts:
         artifact.udf["Mean Size (bp)"] = calculate_weighted_average_size(artifact=artifact)
         artifact.udf["Library Concentration (pM)"] = get_library_concentration(artifact=artifact)
