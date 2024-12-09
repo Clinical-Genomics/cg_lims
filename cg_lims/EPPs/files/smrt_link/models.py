@@ -58,6 +58,12 @@ PLATE_PART_NUMBERS: Dict[str, str] = {
 }
 
 
+POLYMERASE_KITS: Dict[str, str] = {
+    "Revio polymerase kit": "Lxxxxx102739100123199",
+    "Revio SPRQ polymerase kit": "Lxxxxx103496900123199",
+}
+
+
 class RevioIndexSets(StrEnum):
     SMRTBELL_INDEX_SET: str = "43f950a9-8bde-3855-6b25-c13368069745"
 
@@ -87,7 +93,7 @@ class SampleSetup:
         process = artifact.parent_process
         self.sample_name = artifact.samples[0].id
         self.system_name = process.udf.get("Sequencing Instrument")
-        self.binding_kit = process.udf.get("Binding Kit")
+        self.binding_kit = POLYMERASE_KITS[process.udf.get("Binding Kit")]
         self.number_of_samples = len(artifact.samples)
         self.application = process.udf.get("Revio Application")
         self.available_volume = artifact.udf.get("Volume (ul)")
@@ -255,7 +261,7 @@ class RevioRun:
                 pool.name,
                 pool.udf.get("Library Type"),
                 pool.udf.get("Revio Application"),
-                pool.udf.get("Polymerase Kit"),
+                POLYMERASE_KITS[pool.udf.get("Polymerase Kit")],
                 self.movie_acquisition_time,
                 pool.udf.get("Mean Size (bp)"),
                 pool.udf.get("Library Concentration (pM)"),
