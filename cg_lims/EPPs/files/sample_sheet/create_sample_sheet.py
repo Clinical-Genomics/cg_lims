@@ -14,24 +14,11 @@ from cg_lims.EPPs.files.sample_sheet.models import (
     SampleSheetHeader,
 )
 from cg_lims.exceptions import InvalidValueError, LimsError
-from cg_lims.get.artifacts import get_artifact_lane, get_artifacts
+from cg_lims.get.artifacts import get_artifact_lane, get_artifacts, get_non_pooled_artifacts
 from genologics.entities import Artifact, Process, ReagentType
 from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
-
-
-def get_non_pooled_artifacts(artifact: Artifact) -> List[Artifact]:
-    """Return the parent artifact of the sample. Should hold the reagent_label"""
-    artifacts: List[Artifact] = []
-
-    if len(artifact.samples) == 1:
-        artifacts.append(artifact)
-        return artifacts
-
-    for artifact in artifact.input_artifact_list():
-        artifacts.extend(get_non_pooled_artifacts(artifact))
-    return artifacts
 
 
 def get_reagent_label(artifact: Artifact) -> Optional[str]:

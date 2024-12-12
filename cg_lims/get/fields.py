@@ -86,6 +86,18 @@ def get_index_well(artifact: Artifact):
         return "-"
 
 
+def get_smrtbell_adapter_name(artifact: Artifact) -> str:
+    """
+    Parse out the SMRTbell adapter name from a reagent label string which typically looks like this:
+    48_H06 bc2048 (TGATGCTAGTGAGTAT)
+    """
+    if artifact.reagent_labels:
+        reagent_label: str = artifact.reagent_labels[0]
+        return reagent_label.split(" ")[1]
+    else:
+        return "-"
+
+
 def get_barcode(artifact: Artifact):
     """Central script for generation of barcode. Looks at container type and
     assign barcode according to Atlas document 'Barcodes at Clinical Genomics'"""
