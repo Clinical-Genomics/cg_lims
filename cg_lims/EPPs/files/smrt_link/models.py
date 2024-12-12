@@ -107,6 +107,7 @@ class SampleSetup:
         self.minimum_pipetting_volume = 1
 
     def get_sample_setup_row(self) -> List[str]:
+        """Return a list containing row information for a sample."""
         return [
             self.sample_name,
             "",
@@ -202,9 +203,9 @@ class RevioRun:
     plate_2_type: Optional[str]
     file_version: int = 1
     run_comments: Optional[str]
-    adaptive_loading: bool = True
-    base_kinetics: bool = False
-    consensus_mode: bool = True
+    adaptive_loading: bool
+    base_kinetics: bool
+    consensus_mode: str
     data_project: int = 1
 
     def __init__(self, process: Process):
