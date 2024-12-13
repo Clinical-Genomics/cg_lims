@@ -12,6 +12,7 @@ from cg_lims.EPPs.files.pooling_map.make_pooling_map import pool_map
 from cg_lims.EPPs.files.sample_sheet.create_ont_sample_sheet import create_ont_sample_sheet
 from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import create_sample_sheet
 from cg_lims.EPPs.files.xml_to_udf import parse_run_parameters
+from cg_lims.EPPs.files.femtopulse_csv import make_femtopulse_csv
 
 
 @click.group(invoke_without_command=True)
@@ -31,3 +32,4 @@ files.add_command(create_ont_sample_sheet)
 files.add_command(create_sample_sheet)
 files.add_command(parse_run_parameters)
 files.add_command(parse_ont_report)
+files.add_command(make_femtopulse_csv)
