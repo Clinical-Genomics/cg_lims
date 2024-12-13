@@ -12,8 +12,8 @@ from genologics.lims import Artifact
 
 LOG = logging.getLogger(__name__)
 
-ROWS = list(range(1,13)) # list numbered 1 to 12
-WELL_POSITIONS = [f"A{i}" for i in range(1,13)] # list with well positions A1-A12
+ROWS = list(range(1,13)) # List numbered 1 to 12
+WELL_POSITIONS = [f"A{i}" for i in range(1,13)] # List with well positions A1-A12
 SAMPLE_NAMES = [""] * 12 # List with twelve empty positions for sample names
 
 
@@ -61,8 +61,6 @@ def get_data_and_write(
         1: WELL_POSITIONS,
         2: SAMPLE_NAMES
     })
-    print(df)
-    print(file)
     df.to_csv(Path(file), index=False, header=False)
 
 @click.command()
