@@ -82,7 +82,7 @@ def make_femtopulse_csv(
     try:
         get_data_and_write(
             artifacts=artifacts,
-            file=f"{file}.csv",
+            file=f"{file}_femtopulse.csv",
         )
         click.echo("The file was successfully generated.")
     except LimsError as e:
