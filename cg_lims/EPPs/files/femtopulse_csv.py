@@ -5,10 +5,11 @@ from typing import List
 
 import click
 import pandas as pd
+from genologics.lims import Artifact
+
 from cg_lims import options
 from cg_lims.exceptions import InvalidValueError, LimsError
 from cg_lims.get.artifacts import get_artifacts
-from genologics.lims import Artifact
 
 LOG = logging.getLogger(__name__)
 
