@@ -232,3 +232,16 @@ def get_latest_result_files(
         raise MissingArtifactError(message=message)
 
     return specific_result_files
+
+
+def get_non_pooled_artifacts(artifact: Artifact) -> List[Artifact]:
+    """Return the parent artifact of the sample. Should hold the reagent_label"""
+    artifacts: List[Artifact] = []
+
+    if len(artifact.samples) == 1:
+        artifacts.append(artifact)
+        return artifacts
+
+    for artifact in artifact.input_artifact_list():
+        artifacts.extend(get_non_pooled_artifacts(artifact))
+    return artifacts
