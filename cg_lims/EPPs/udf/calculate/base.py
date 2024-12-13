@@ -29,6 +29,7 @@ from cg_lims.EPPs.udf.calculate.novaseq_x_volumes import novaseq_x_volumes
 from cg_lims.EPPs.udf.calculate.ont_aliquot_volume import ont_aliquot_volume
 from cg_lims.EPPs.udf.calculate.ont_sequencing_reload import ont_available_sequencing_reload
 from cg_lims.EPPs.udf.calculate.qpcr_concentration import qpcr_concentration
+from cg_lims.EPPs.udf.calculate.revio_pooling import revio_pooling
 from cg_lims.EPPs.udf.calculate.sum_missing_reads_in_pool import missing_reads_in_pool
 from cg_lims.EPPs.udf.calculate.twist_get_volumes_from_buffer import get_volumes_from_buffer
 
@@ -70,3 +71,4 @@ calculate.add_command(calculate_saphyr_concentration)
 calculate.add_command(ont_aliquot_volume)
 calculate.add_command(ont_available_sequencing_reload)
 calculate.add_command(adjust_missing_reads)
+calculate.add_command(revio_pooling)
