@@ -63,6 +63,7 @@ def get_data_and_write(
     })
     df.to_csv(Path(file), index=False, header=False)
 
+
 @click.command()
 @options.file_placeholder()
 @options.measurement()
@@ -81,7 +82,7 @@ def make_femtopulse_csv(
     try:
         get_data_and_write(
             artifacts=artifacts,
-            file=f"{process.id}-{file}.csv",
+            file=f"{file}.csv",
         )
         click.echo("The file was successfully generated.")
     except LimsError as e:
