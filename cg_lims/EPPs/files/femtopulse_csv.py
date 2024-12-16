@@ -42,10 +42,11 @@ def get_data_and_write(
         artifact_name: str = artifact.samples[0].name
         artifact_well: str = artifact.location[1]
 
-        # Convert sample well format from 'A:1' to 'A1'
+        # Converts sample well format from 'A:1' to 'A1'
         parsed_well: str = parse_well(artifact_well)
 
-        # Checks that the sample well matches with one in the WELL_POSITIONS list and is A1-A11
+        # Checks that the sample well matches with one in the WELL_POSITIONS list (A1-A11)
+        # and adds the sample name to the SAMPLE_NAMES list for that position
         if parsed_well in WELL_POSITIONS:
             index: int = WELL_POSITIONS.index(parsed_well)
             if index < 11:
@@ -53,12 +54,13 @@ def get_data_and_write(
             else:
                 failed_samples.append({"artifact_name": artifact_name, 
                                        "parsed_well": parsed_well, 
-                                       "error": "This position is reserved for the ladder"})
+                                       "error": "This position is reserved for the ladder."})
         else:
             failed_samples.append({"artifact_name": artifact_name, 
                                 "parsed_well": parsed_well, 
-                                "error": "Position is not possible for the run"})
+                                "error": "Position is not possible for the run."})
 
+    # Prints out error message(s)
     if failed_samples:
         error_index: int = 0
         for sample in failed_samples:
@@ -67,8 +69,8 @@ def get_data_and_write(
                 all_errors: str = error_message
                 error_index =+ 1
             else:
-                all_errors = all_errors + '\n' + error_message
-        raise InvalidValueError(f"Errors found:\n{all_errors}")
+                all_errors = all_errors + ' ' + error_message
+        raise InvalidValueError(f"Errors found: {all_errors}")
 
     # The ladder will always be in well A12
     SAMPLE_NAMES[-1] = "ladder"
