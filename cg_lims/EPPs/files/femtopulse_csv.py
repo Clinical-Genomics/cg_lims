@@ -35,6 +35,8 @@ def get_data_and_write(
     one numbered 1-12, one with the sample position/well for the run and 
     a column with the sample name or ladder (in the 12th position)."""
 
+    failed_samples: list = []
+
     for artifact in artifacts:
 
         artifact_name: str = artifact.samples[0].name
@@ -49,9 +51,20 @@ def get_data_and_write(
             if index < 11:
                 SAMPLE_NAMES[index] = artifact_name
             else:
-                raise InvalidValueError(f"Position {parsed_well} reserved for 'ladder', skipped.")
+                failed_samples.append({"artifact_name": artifact_name, 
+                                       "parsed_well": parsed_well, 
+                                       "error": "This position is reserved for the ladder"})
         else:
-            raise InvalidValueError(f"Not possible position ({parsed_well}) for {artifact_name}, skipped.")
+            failed_samples.append({"artifact_name": artifact_name, 
+                                "parsed_well": parsed_well, 
+                                "error": "Position is not possible for the run"})
+
+    if failed_samples:
+        error_message: str = "\n".join(
+            f"Sample {sample['artifact_name']} in position {sample['parsed_well']}: {sample['error']}"
+        for sample in failed_samples
+        )
+        raise InvalidValueError(f"Errors found:\n{error_message}")
 
     # The ladder will always be in well A12
     SAMPLE_NAMES[-1] = "ladder"
