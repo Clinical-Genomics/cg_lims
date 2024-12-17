@@ -12,7 +12,6 @@ class ArtifactUDFs(BaseModel):
 
 class ProcessUDFs(BaseModel):
     lot_nr_elution_buffer_bex: Optional[str] = Field(None, alias="Lot no: Elution Buffer")
-    )
 
 
 class ArnoldStep(BaseStep):
