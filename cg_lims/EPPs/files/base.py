@@ -2,6 +2,7 @@
 import click
 from cg_lims.EPPs.files.barcode_tubes import make_barcode_csv
 from cg_lims.EPPs.files.csv_for_kapa_truble_shooting.csv_for_kapa_debug import trouble_shoot_kapa
+from cg_lims.EPPs.files.femtopulse_csv import make_femtopulse_csv
 
 # commands
 from cg_lims.EPPs.files.file_to_udf import csv_well_to_udf
@@ -14,7 +15,6 @@ from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import create_sample_sh
 from cg_lims.EPPs.files.smrt_link.run_design import create_smrtlink_run_design
 from cg_lims.EPPs.files.smrt_link.sample_setup import create_smrtlink_sample_setup
 from cg_lims.EPPs.files.xml_to_udf import parse_run_parameters
-from cg_lims.EPPs.files.femtopulse_csv import make_femtopulse_csv
 
 
 @click.group(invoke_without_command=True)
