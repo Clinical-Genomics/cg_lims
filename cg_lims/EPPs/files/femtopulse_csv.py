@@ -84,8 +84,8 @@ def get_data_and_write(artifacts: List[Artifact], file: str):
     DATAFRAME["sample names"].iloc[-1] = "ladder"
 
     # Create the csv file
-    DATAFRAME.to_csv(Path(file), index=True, header=False)
     DATAFRAME.index = range(1, len(DATAFRAME) + 1)
+    DATAFRAME.to_csv(Path(file), index=True, header=False)
 
 
 @click.command()
