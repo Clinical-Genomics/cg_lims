@@ -5,20 +5,17 @@ from typing import List
 
 import click
 import pandas as pd
-from genologics.lims import Artifact
-
 from cg_lims import options
 from cg_lims.exceptions import InvalidValueError, LimsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.fields import get_artifact_well
+from genologics.lims import Artifact
 
 LOG = logging.getLogger(__name__)
 
 
 WELL_POSITIONS = [f"A{i}" for i in range(1, 13)]  # List with well positions A1-A12
-SAMPLE_NAMES = [""] * len(
-    WELL_POSITIONS
-)  # List with twelve empty positions for sample names
+SAMPLE_NAMES = [""] * len(WELL_POSITIONS)  # List with twelve empty positions for sample names
 DATAFRAME = pd.DataFrame(
     {"well positions": WELL_POSITIONS, "sample names": SAMPLE_NAMES}
 )  # Dataframe with well positions and sample names
@@ -41,10 +38,9 @@ def get_data_and_write(artifacts: List[Artifact], file: str):
     for artifact in artifacts:
 
         artifact_name: str = get_sample_artifact_name(artifact=artifact)
-        artifact_well: str = get_artifact_well(artifact=artifact)
 
-        # Converts sample well format from 'A:1' to 'A1'
-        #parsed_well: str = parse_well(artifact_well)
+        # Fetch sample well in format 'A1'
+        artifact_well: str = get_artifact_well(artifact=artifact)
 
         # Checks that the sample well matches with one in the WELL_POSITIONS list (A1-A11)
         # and adds the sample name to the SAMPLE_NAMES list for that position
@@ -58,9 +54,9 @@ def get_data_and_write(artifacts: List[Artifact], file: str):
                     }
                 )
             else:
-                DATAFRAME.loc[
-                    DATAFRAME["well positions"] == artifact_well, "sample names"
-                ] = artifact_name
+                DATAFRAME.loc[DATAFRAME["well positions"] == artifact_well, "sample names"] = (
+                    artifact_name
+                )
         else:
             failed_samples.append(
                 {
