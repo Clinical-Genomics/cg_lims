@@ -5,25 +5,30 @@ from typing import List
 
 import click
 import pandas as pd
+from genologics.lims import Artifact
+
 from cg_lims import options
 from cg_lims.exceptions import InvalidValueError, LimsError
 from cg_lims.get.artifacts import get_artifacts
-from genologics.lims import Artifact
+from cg_lims.get.fields import get_artifact_well
 
 LOG = logging.getLogger(__name__)
 
-ROWS = list(range(1, 13))  # List numbered 1 to 12
+
 WELL_POSITIONS = [f"A{i}" for i in range(1, 13)]  # List with well positions A1-A12
-SAMPLE_NAMES = [""] * 12  # List with twelve empty positions for sample names
+SAMPLE_NAMES = [""] * len(
+    WELL_POSITIONS
+)  # List with twelve empty positions for sample names
+DATAFRAME = pd.DataFrame(
+    {"well positions": WELL_POSITIONS, "sample names": SAMPLE_NAMES}
+)  # Dataframe with well positions and sample names
 
 
-def parse_well(artifact_position: str) -> str:
-    """Convert position from format 'A:1' to 'A1'."""
-    try:
-        row, col = artifact_position.split(":")
-        return f"{row}{col}"
-    except Exception:
-        return None
+def get_sample_artifact_name(artifact: Artifact):
+
+    artifact_name: str = artifact.samples[0].name
+
+    return artifact_name
 
 
 def get_data_and_write(artifacts: List[Artifact], file: str):
@@ -35,55 +40,52 @@ def get_data_and_write(artifacts: List[Artifact], file: str):
 
     for artifact in artifacts:
 
-        artifact_name: str = artifact.samples[0].name
-        artifact_well: str = artifact.location[1]
+        artifact_name: str = get_sample_artifact_name(artifact=artifact)
+        artifact_well: str = get_artifact_well(artifact=artifact)
 
         # Converts sample well format from 'A:1' to 'A1'
-        parsed_well: str = parse_well(artifact_well)
+        #parsed_well: str = parse_well(artifact_well)
 
         # Checks that the sample well matches with one in the WELL_POSITIONS list (A1-A11)
         # and adds the sample name to the SAMPLE_NAMES list for that position
-        if parsed_well in WELL_POSITIONS:
-            index: int = WELL_POSITIONS.index(parsed_well)
-            if index < 11:
-                SAMPLE_NAMES[index] = artifact_name
-            else:
+        if artifact_well in DATAFRAME["well positions"].values:
+            if artifact_well == DATAFRAME["well positions"].iloc[-1]:
                 failed_samples.append(
                     {
                         "artifact_name": artifact_name,
-                        "parsed_well": parsed_well,
+                        "parsed_well": artifact_well,
                         "error": "This position is reserved for the ladder.",
                     }
                 )
+            else:
+                DATAFRAME.loc[
+                    DATAFRAME["well positions"] == artifact_well, "sample names"
+                ] = artifact_name
         else:
             failed_samples.append(
                 {
                     "artifact_name": artifact_name,
-                    "parsed_well": parsed_well,
-                    "error": "Position is not possible for the run.",
+                    "parsed_well": artifact_well,
+                    "error": "This position is not possible for the run.",
                 }
             )
 
     # Prints out error message(s)
     if failed_samples:
-        error_index: int = 0
+        all_errors = ""
         for sample in failed_samples:
             error_message: str = (
                 f"Sample {sample['artifact_name']} in position {sample['parsed_well']}: {sample['error']}"
             )
-            if error_index < 1:
-                all_errors: str = error_message
-                error_index = +1
-            else:
-                all_errors = all_errors + " " + error_message
+            all_errors = all_errors + " " + error_message
         raise InvalidValueError(f"Errors found: {all_errors}")
 
     # The ladder will always be in well A12
-    SAMPLE_NAMES[-1] = "ladder"
+    DATAFRAME["sample names"].iloc[-1] = "ladder"
 
     # Create the csv file
-    df = pd.DataFrame({0: ROWS, 1: WELL_POSITIONS, 2: SAMPLE_NAMES})
-    df.to_csv(Path(file), index=False, header=False)
+    DATAFRAME.to_csv(Path(file), index=True, header=False)
+    DATAFRAME.index = range(1, len(DATAFRAME) + 1)
 
 
 @click.command()
