@@ -2,8 +2,7 @@
 import click
 from cg_lims.EPPs.files.barcode_tubes import make_barcode_csv
 from cg_lims.EPPs.files.csv_for_kapa_truble_shooting.csv_for_kapa_debug import trouble_shoot_kapa
-
-# commands
+from cg_lims.EPPs.files.femtopulse_csv import make_femtopulse_csv
 from cg_lims.EPPs.files.file_to_udf import csv_well_to_udf
 from cg_lims.EPPs.files.hamilton.base import hamilton
 from cg_lims.EPPs.files.ont_json_to_udf import parse_ont_report
@@ -33,5 +32,6 @@ files.add_command(create_ont_sample_sheet)
 files.add_command(create_sample_sheet)
 files.add_command(parse_run_parameters)
 files.add_command(parse_ont_report)
+files.add_command(make_femtopulse_csv)
 files.add_command(create_smrtlink_sample_setup)
 files.add_command(create_smrtlink_run_design)
