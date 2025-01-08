@@ -14,6 +14,9 @@ class ArtifactUDFs(BaseModel):
 class ProcessUDFs(BaseModel):
     lot_nr_etoh_bead_purification_post_hyb: Optional[str] = Field(None, alias="Ethanol")
     lot_nr_h2o_bead_purification_post_hyb: Optional[str] = Field(None, alias="Nuclease free water")
+    lot_nr_elution_buffer_bead_purification_post_hyb: Optional[str] = Field(
+        None, alias="Lot no: Elution Buffer"
+    )
     bead_purification_post_hyb_method: Optional[str] = Field(None, alias="Method document")
     binding_and_purification_beads: Optional[str] = Field(
         None, alias="Twist Binding and Purification beads"
