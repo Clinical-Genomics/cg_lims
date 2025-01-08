@@ -66,8 +66,10 @@ def quantit_excel_to_udf(
     try:
         if not Path(file_path).is_file():
             raise MissingFileError(f"No such file: {file_path}")
-        well_dict: Dict[str, Artifact] = create_well_dict(process=process, input_flag=input)
-        set_udfs(udf, well_dict, Path(file_path))
+        well_dict: Dict[str, Artifact] = create_well_dict(
+            process=process, input_flag=input, quantit_well_format=True
+        )
+        set_udfs(udf=udf, well_dict=well_dict, result_file=Path(file_path))
         click.echo(f"Updated {len(well_dict.keys())} artifact(s) successfully.")
     except LimsError as e:
         sys.exit(e.message)
