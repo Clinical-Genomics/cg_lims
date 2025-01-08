@@ -5,6 +5,7 @@ from cg_lims.EPPs.files.csv_for_kapa_truble_shooting.csv_for_kapa_debug import t
 from cg_lims.EPPs.files.femtopulse_csv import make_femtopulse_csv
 from cg_lims.EPPs.files.file_to_udf import csv_well_to_udf
 from cg_lims.EPPs.files.hamilton.base import hamilton
+from cg_lims.EPPs.files.illumina_xml_to_udf import parse_run_parameters
 from cg_lims.EPPs.files.ont_json_to_udf import parse_ont_report
 from cg_lims.EPPs.files.placement_map.make_96well_placement_map import placement_map
 from cg_lims.EPPs.files.pooling_map.make_pooling_map import pool_map
@@ -12,7 +13,6 @@ from cg_lims.EPPs.files.sample_sheet.create_ont_sample_sheet import create_ont_s
 from cg_lims.EPPs.files.sample_sheet.create_sample_sheet import create_sample_sheet
 from cg_lims.EPPs.files.smrt_link.run_design import create_smrtlink_run_design
 from cg_lims.EPPs.files.smrt_link.sample_setup import create_smrtlink_sample_setup
-from cg_lims.EPPs.files.xml_to_udf import parse_run_parameters
 
 
 @click.group(invoke_without_command=True)
