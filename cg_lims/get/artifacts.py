@@ -245,3 +245,32 @@ def get_non_pooled_artifacts(artifact: Artifact) -> List[Artifact]:
     for artifact in artifact.input_artifact_list():
         artifacts.extend(get_non_pooled_artifacts(artifact))
     return artifacts
+
+
+def create_well_dict(
+    process: Process,
+    input_flag: bool = False,
+    native_well_format: bool = False,
+) -> Dict[str, Artifact]:
+    """Creates a well dict based on the input_output_map
+    keys: well of input artifact
+    values: input/output artifact depending on the input flag
+    """
+
+    well_dict: Dict[str, Artifact] = {}
+    lims: Lims = process.lims
+    for input, output in process.input_output_maps:
+        if output.get("output-generation-type") == "PerAllInputs":
+            continue
+        source_artifact: Artifact = (
+            Artifact(lims, id=input["limsid"])
+            if input_flag
+            else Artifact(lims, id=output["limsid"])
+        )
+        well: str = (
+            source_artifact.location[1].replace(":", "")
+            if not native_well_format
+            else source_artifact.location[1]
+        )
+        well_dict[well] = source_artifact
+    return well_dict
