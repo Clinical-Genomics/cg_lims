@@ -7,6 +7,7 @@ from cg_lims.EPPs.files.hamilton.base import hamilton
 from cg_lims.EPPs.files.parsers.file_to_udf import csv_well_to_udf
 from cg_lims.EPPs.files.parsers.illumina_xml_to_udf import parse_run_parameters
 from cg_lims.EPPs.files.parsers.ont_json_to_udf import parse_ont_report
+from cg_lims.EPPs.files.parsers.quantit_excel_to_udf import quantit_excel_to_udf
 from cg_lims.EPPs.files.placement_map.make_96well_placement_map import placement_map
 from cg_lims.EPPs.files.pooling_map.make_pooling_map import pool_map
 from cg_lims.EPPs.files.sample_sheet.create_ont_sample_sheet import create_ont_sample_sheet
@@ -35,3 +36,4 @@ files.add_command(parse_ont_report)
 files.add_command(make_femtopulse_csv)
 files.add_command(create_smrtlink_sample_setup)
 files.add_command(create_smrtlink_run_design)
+files.add_command(quantit_excel_to_udf)
