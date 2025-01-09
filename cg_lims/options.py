@@ -741,3 +741,9 @@ def round_decimals(
     help: str = "The number of decimals you want to round to.",
 ) -> click.option:
     return click.option("-r", "--round-decimals", required=False, help=help)
+
+
+def value_fields(
+    help: str = "Value fields in file",
+) -> click.option:
+    return click.option("-vfs", "--value-fields", required=True, multiple=True, help=help)
