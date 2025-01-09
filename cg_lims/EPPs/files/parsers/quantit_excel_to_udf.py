@@ -18,10 +18,12 @@ def set_udfs(udf: str, well_dict: dict, result_file: Path):
     """Reads the Quant-iT Excel file and sets the value for each sample"""
 
     failed_artifacts: int = 0
+    skipped_artifacts: int = 0
     df: pd.DataFrame = pd.read_excel(result_file, skiprows=11, header=None)
     for index, row in df.iterrows():
         if row[0] not in well_dict.keys():
             LOG.info(f"Well {row[0]} is not used by a sample in the step, skipping.")
+            skipped_artifacts += 1
             continue
         elif pd.isna(row[2]):
             LOG.info(
@@ -33,10 +35,13 @@ def set_udfs(udf: str, well_dict: dict, result_file: Path):
         artifact.udf[udf] = row[2]
         artifact.put()
 
-    if failed_artifacts:
-        raise MissingArtifactError(
-            f"Warning: Skipped {failed_artifacts} artifact(s) with wrong and/or blank values for some UDFs."
-        )
+    if failed_artifacts or skipped_artifacts:
+        error_message = "Warning:"
+        if failed_artifacts:
+            error_message += f" Skipped {failed_artifacts} artifact(s) with wrong and/or blank values for some UDFs."
+        if skipped_artifacts:
+            error_message += f" Skipped {failed_artifacts} artifact(s) as they weren't represented in the result file."
+        raise MissingArtifactError(error_message)
 
 
 @click.command()
