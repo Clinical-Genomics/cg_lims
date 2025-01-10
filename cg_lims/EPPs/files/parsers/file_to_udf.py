@@ -17,7 +17,7 @@ LOG = logging.getLogger(__name__)
 
 
 def make_udf_dict(udfs: Tuple[str], value_fields: Tuple[str]) -> Dict[str, str]:
-    """"""
+    """Create dictionary containing UDF names and their corresponding value field names."""
     if len(udfs) != len(value_fields):
         raise ArgumentError(
             f"The number of artifact-udfs to update and file value fields must be the same."
@@ -29,8 +29,8 @@ def make_udf_dict(udfs: Tuple[str], value_fields: Tuple[str]) -> Dict[str, str]:
 
 
 def get_file_placeholder_paths(placeholder_names: List[str], process: Process) -> List[str]:
-    """"""
-    file_paths = []
+    """Convert a list of file placeholder names to complete file paths."""
+    file_paths: List[str] = []
     for placeholder_name in placeholder_names:
         file_artifact: Artifact = get_artifact_by_name(process=process, name=placeholder_name)
         file_paths.append(get_file_path(file_artifact=file_artifact))
@@ -40,8 +40,7 @@ def get_file_placeholder_paths(placeholder_names: List[str], process: Process) -
 def set_udfs_from_file(
     well_field: str, udf_vf_dict: Dict[str, str], well_dict: dict, result_file: Path
 ) -> List[str]:
-    """Reads the csv and sets the value for each sample"""
-
+    """Parse a CSV file and set the corresponding UDF values for each sample."""
     error_msg: List[str] = []
     passed_arts: int = 0
     with open(result_file, newline="", encoding="latin1") as csvfile:
@@ -60,7 +59,6 @@ def set_udfs_from_file(
                     LOG.info(f"Well {well} was not found in the step. Skipping!")
                     continue
                 artifact: Artifact = well_dict[well]
-
                 value: Any = sample.get(value_field)
                 if value is None:
                     error_msg.append("Some samples in the file had missing values.")
@@ -87,7 +85,7 @@ def set_udfs(
     local_files: Optional[List[str]],
     process: Process,
 ) -> None:
-    """"""
+    """Loop through each given file and parse out the given values which are then set to their corresponding UDFs."""
     if local_files:
         files: List[str] = local_files
     else:
@@ -134,7 +132,7 @@ def csv_well_to_udf(
     value_fields: Tuple[str],
     input: bool,
 ):
-    """Script to copy data from file to udf based on well position"""
+    """Script to copy data from files to UDFs based on well position."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process: Process = ctx.obj["process"]
