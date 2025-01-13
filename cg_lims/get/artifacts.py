@@ -3,7 +3,8 @@ from datetime import datetime
 from enum import Enum
 from typing import Dict, List, Literal, Optional, Set, Tuple
 
-from cg_lims.exceptions import FileError, MissingArtifactError
+from cg_lims.exceptions import FileError, InvalidValueError, MissingArtifactError
+from cg_lims.get.fields import get_artifact_well, get_quantit_artifact_well
 from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
 
@@ -245,3 +246,36 @@ def get_non_pooled_artifacts(artifact: Artifact) -> List[Artifact]:
     for artifact in artifact.input_artifact_list():
         artifacts.extend(get_non_pooled_artifacts(artifact))
     return artifacts
+
+
+def create_well_dict(
+    process: Process,
+    input_flag: bool = False,
+    native_well_format: bool = False,
+    quantit_well_format: bool = False,
+) -> Dict[str, Artifact]:
+    """Creates a well dict based on the input_output_map
+    keys: well of input artifact
+    values: input/output artifact depending on the input flag
+    """
+
+    well_dict: Dict[str, Artifact] = {}
+    lims: Lims = process.lims
+    for input, output in process.input_output_maps:
+        if output.get("output-generation-type") == "PerAllInputs":
+            continue
+        input_artifact = Artifact(lims, id=input["limsid"])
+        output_artifact = Artifact(lims, id=output["limsid"])
+        source_artifact: Artifact = input_artifact if input_flag else output_artifact
+        if native_well_format:
+            well: str = source_artifact.location[1]
+        elif quantit_well_format:
+            well: str = get_quantit_artifact_well(artifact=source_artifact)
+        else:
+            well: str = get_artifact_well(artifact=source_artifact)
+        if well in well_dict.keys():
+            raise InvalidValueError(
+                f"Can't create dictionary! Well {well} is already used by another artifact."
+            )
+        well_dict[well] = output_artifact
+    return well_dict

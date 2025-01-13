@@ -65,6 +65,15 @@ def get_artifact_well(artifact: Artifact) -> str:
     return location[1].replace(":", "")
 
 
+def get_quantit_artifact_well(artifact: Artifact) -> str:
+    """Parsing out the well position from LocationDescriptor"""
+
+    col, row = artifact.location[1].split(":")
+    if int(row) < 10:
+        row = "0" + row
+    return col + row
+
+
 def get_index_well(artifact: Artifact):
     """Parsing out the index well position from the reagent label string which
     typically looks like this: '44_A05 IDT_10nt_446 (AGCGTGACCT-CCATCCGAGT)'

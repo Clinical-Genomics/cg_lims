@@ -29,6 +29,12 @@ def udf(
     return click.option("-u", "--udf", required=False, help=help)
 
 
+def udfs(
+    help: str = "UDF names",
+) -> click.option:
+    return click.option("-u", "--udfs", required=False, multiple=True, help=help)
+
+
 def buffer_udf(
     help: str = "UDF name",
 ) -> click.option:
@@ -45,6 +51,12 @@ def well_field(
     help: str = "Well field in file",
 ) -> click.option:
     return click.option("-wf", "--well-field", required=True, help=help)
+
+
+def well_fields(
+    help: str = "Well field in file",
+) -> click.option:
+    return click.option("-wf", "--well-fields", required=True, multiple=True, help=help)
 
 
 def value_field(
@@ -92,7 +104,7 @@ def file_placeholder(
 def file_placeholders(
     help: str = "File placeholder option used when multiple are possible.",
 ) -> click.option:
-    return click.option("-f", "--files", required=True, multiple=True, help=help)
+    return click.option("-f", "--files", required=False, multiple=True, help=help)
 
 
 def samples_file(help: str = "Txt file with sample ids") -> click.option:
@@ -105,6 +117,10 @@ def samples_file(help: str = "Txt file with sample ids") -> click.option:
 
 def local_file(help="local file path for debug purposes.") -> click.option:
     return click.option("-lf", "--local_file", required=False, help=help)
+
+
+def local_files(help="local file paths for debug purposes.") -> click.option:
+    return click.option("-lf", "--local_files", required=False, multiple=True, help=help)
 
 
 def input(
@@ -741,3 +757,9 @@ def round_decimals(
     help: str = "The number of decimals you want to round to.",
 ) -> click.option:
     return click.option("-r", "--round-decimals", required=False, help=help)
+
+
+def value_fields(
+    help: str = "Value fields in file",
+) -> click.option:
+    return click.option("-vf", "--value-fields", required=True, multiple=True, help=help)
