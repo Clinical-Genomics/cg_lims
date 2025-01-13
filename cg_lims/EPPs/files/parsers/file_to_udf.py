@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import csv
 import logging
 import sys
@@ -60,7 +58,7 @@ def set_udfs_from_file(
                     continue
                 artifact: Artifact = well_dict[well]
                 value: Any = sample.get(value_field)
-                if value is None:
+                if not value:
                     error_msg.append("Some samples in the file had missing values.")
                     LOG.info(f"Missing value for sample {sample} in well {well}. Skipping!")
                     continue
@@ -112,7 +110,7 @@ def set_udfs(
 
     if error_message:
         error_string: str = " ".join(list(set(error_message)))
-        raise MissingArtifactError(error_string)
+        raise MissingArtifactError(error_string + " See the log for details.")
 
 
 @click.command()
