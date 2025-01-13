@@ -29,6 +29,12 @@ def udf(
     return click.option("-u", "--udf", required=False, help=help)
 
 
+def udfs(
+    help: str = "UDF names",
+) -> click.option:
+    return click.option("-u", "--udfs", required=False, multiple=True, help=help)
+
+
 def buffer_udf(
     help: str = "UDF name",
 ) -> click.option:

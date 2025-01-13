@@ -116,7 +116,7 @@ def set_udfs(
 @click.command()
 @options.file_placeholders(help="File placeholder name.")
 @options.local_files()
-@options.udf_values()
+@options.udfs()
 @options.well_fields()
 @options.value_fields()
 @options.input()
@@ -125,7 +125,7 @@ def csv_well_to_udf(
     ctx,
     files: Tuple[str],
     local_files: Tuple[str],
-    udf_values: Tuple[str],
+    udfs: Tuple[str],
     well_fields: Tuple[str],
     value_fields: Tuple[str],
     input: bool,
@@ -137,7 +137,7 @@ def csv_well_to_udf(
 
     try:
         well_dict: Dict[str, Artifact] = create_well_dict(process=process, input_flag=input)
-        udf_vf_dict: Dict[str, str] = make_udf_dict(udfs=udf_values, value_fields=value_fields)
+        udf_vf_dict: Dict[str, str] = make_udf_dict(udfs=udfs, value_fields=value_fields)
         set_udfs(
             well_fields=list(well_fields),
             udf_vf_dict=udf_vf_dict,
