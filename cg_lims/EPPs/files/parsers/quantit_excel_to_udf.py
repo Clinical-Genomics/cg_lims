@@ -36,7 +36,7 @@ def set_udfs(udf: str, well_dict: dict, result_file: Path):
         artifact.put()
 
     if failed_artifacts or skipped_artifacts:
-        error_message = "Warning:"
+        error_message: str = "Warning:"
         if failed_artifacts:
             error_message += f" Skipped {failed_artifacts} artifact(s) with wrong and/or blank values for some UDFs."
         if skipped_artifacts:
