@@ -23,7 +23,9 @@ class ProcessUDFs(BaseModel):
     lot_nr_h2o_aliquot_samples_fragmentation: Optional[str] = Field(
         None, alias="Nuclease free water"
     )
-    lot_nr_elution_buffer_aliquot_samples_fragmentation: Optional[str] = Field(None, alias="Lot no: Elution Buffer")
+    lot_nr_elution_buffer_aliquot_samples_fragmentation: Optional[str] = Field(
+        None, alias="Lot no: Elution Buffer"
+    )
 
 
 class ArtifactUDFs(BaseModel):

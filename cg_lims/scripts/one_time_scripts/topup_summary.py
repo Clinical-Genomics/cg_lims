@@ -36,8 +36,11 @@ def get_matching_samples(
     lims: Lims, from_date: datetime.date, to_date: datetime.date, apptags: List[str]
 ) -> List[Sample]:
     """Return all samples matching the given apptags and timeframe."""
-    udf_dict: Dict[str, List[str]] = {"Sequencing Analysis": apptags}
-    found_samples: List[Sample] = lims.get_samples(udf=udf_dict)
+    found_samples: List[Sample] = []
+    for apptag in apptags:
+        udf_dict: Dict[str, List[str]] = {"Sequencing Analysis": [apptag]}
+        found_samples += lims.get_samples(udf=udf_dict)
+    LOG.info(f"Total amount samples with matching apptags: {len(found_samples)}.")
     matching_samples: List[Sample] = []
     for sample in found_samples:
         sequenced_at: datetime.date = sample.udf.get("Sequencing Finished")
