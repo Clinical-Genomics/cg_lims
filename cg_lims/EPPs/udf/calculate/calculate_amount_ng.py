@@ -49,7 +49,7 @@ def calculate_amount_ng(
         artifacts_with_missing_udf: List = []
         for artifact in artifacts:
             if preset_volume:
-                vol = float(preset_volume)
+                vol: float = float(preset_volume)
             elif total_volume_pudf:
                 vol: float = process.udf.get(total_volume_pudf)
             elif volume_udf:
