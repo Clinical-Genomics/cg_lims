@@ -15,6 +15,7 @@ LOG = logging.getLogger(__name__)
 @options.concentration_udf()
 @options.amount_udf_option()
 @options.volume_udf()
+@options.total_volume_process_udf()
 @options.subtract_volume()
 @options.preset_volume()
 @options.measurement()
@@ -24,6 +25,7 @@ def calculate_amount_ng(
     ctx: click.Context,
     amount_udf: str,
     volume_udf: str,
+    total_volume_pudf: str,
     concentration_udf: str,
     subtract_volume: str,
     preset_volume: float,
@@ -48,6 +50,8 @@ def calculate_amount_ng(
         for artifact in artifacts:
             if preset_volume:
                 vol = float(preset_volume)
+            elif total_volume_pudf:
+                vol: float = process.udf.get(total_volume_pudf)
             elif volume_udf:
                 vol = artifact.udf.get(volume_udf)
             conc: float = artifact.udf.get(concentration_udf)
