@@ -53,7 +53,7 @@ def calculate_amount_ng(
             elif total_volume_pudf:
                 vol: float = process.udf.get(total_volume_pudf)
             elif volume_udf:
-                vol = artifact.udf.get(volume_udf)
+                vol: float = artifact.udf.get(volume_udf)
             conc: float = artifact.udf.get(concentration_udf)
             if None in [conc, vol]:
                 missing_udfs_count += 1
