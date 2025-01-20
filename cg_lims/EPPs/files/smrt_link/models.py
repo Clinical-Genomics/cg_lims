@@ -189,8 +189,8 @@ def _is_indexed(pool: Artifact) -> bool:
 
 def _trim_unsupported_characters(name: str) -> str:
     """Return a trimmed sample name only containing supported characters"""
-    pattern: Pattern[str] = re.compile(r"[^A-Za-z0-9 _:\.-]")
-    return re.sub(pattern=pattern, repl=" ", string=name)
+    pattern: Pattern[str] = re.compile(r"[^A-Za-z0-9_:\.-]")
+    return re.sub(pattern=pattern, repl="_", string=name)
 
 
 class RevioRun:
@@ -243,7 +243,6 @@ class RevioRun:
                     "Well Name",
                     "Library Type",
                     "Application",
-                    "Polymerase Kit",
                     "Movie Acquisition Time (hours)",
                     "Insert Size (bp)",
                     "Library Concentration (pM)",
@@ -267,7 +266,6 @@ class RevioRun:
                 _trim_unsupported_characters(name=pool.name),
                 pool.udf.get("Library Type"),
                 pool.udf.get("Revio Application"),
-                POLYMERASE_KITS[pool.udf.get("Polymerase Kit")],
                 pool.udf.get("Movie Acquisition Time (hours)"),
                 pool.udf.get("Mean Size (bp)"),
                 pool.udf.get("Library Concentration (pM)"),
