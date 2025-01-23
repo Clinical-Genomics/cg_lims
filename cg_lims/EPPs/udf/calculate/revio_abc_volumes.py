@@ -108,9 +108,9 @@ def revio_abc_volumes(
         artifacts: List[Artifact] = get_artifacts(process=process)
 
         for artifact in artifacts:
-            if artifact.udf[volume_udf] == None:
+            if artifact.udf.get(volume_udf) == None:
                 error_message = (
-                "Missing a value for one or more sample volumes")
+                "Missing a value for one or more sample volumes.")
                 LOG.error(error_message)
                 raise MissingValueError(error_message)
             set_annealing_mix_per_sample(artifact=artifact, volume_udf=volume_udf)
