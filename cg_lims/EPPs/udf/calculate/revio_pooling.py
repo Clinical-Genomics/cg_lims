@@ -38,7 +38,7 @@ def get_numeric_artifact_udf(artifact: Artifact, udf_name: str) -> Any:
     value: Any = artifact.udf.get(udf_name)
     if not value or value == 0:
         raise MissingUDFsError(
-            f"Sample {get_one_sample_from_artifact(artifact=artifact)} is missing a value for the UDF {udf_name}!"
+            f"Artifact {artifact.name} is missing a value for the UDF {udf_name}!"
         )
     return value
 
