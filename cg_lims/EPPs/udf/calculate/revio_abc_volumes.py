@@ -62,13 +62,12 @@ def set_total_ABC_volumes(
 ) -> None:
     """Calculate and set the total master mix and reagent volumes needed for all samples in the step.
     Adding some excess specified in the cli command."""
-    total_sample_volume: float = calculate_total_sample_volume(
-        artifacts=artifacts, volume_udf=volume_udf
-    )
 
-    process.udf["Total Annealing Mix Volume (ul)"] = round(float(factor) * total_sample_volume, 1)
-    process.udf["Annealing Buffer Volume (ul)"] = round(
-        float(factor) * float(annealing_reagent_ratio) * total_sample_volume, 1
+    process.udf["Total Annealing Mix Volume (ul)"] = calculate_total_ABC_volumes(factor=factor, total_sample_volume=total_sample_volume)
+    process.udf["Annealing Buffer Volume (ul)"] = calculate_total_ABC_volumes(
+        factor=factor,
+        total_sample_volume=total_sample_volume,
+        reagent_ratio=annealing_reagent_ratio,
     )
     process.udf["Standard Sequencing Primer Volume (ul)"] = calculate_total_ABC_volumes(
         factor=factor,
@@ -118,12 +117,8 @@ def revio_abc_volumes(
 
     try:
         artifacts: List[Artifact] = get_artifacts(process=process)
-        total_sample_volume: float = calculate_total_sample_volume(
-            artifacts=artifacts, volume_udf=volume_udf
-        )
-
         for artifact in artifacts:
-            if artifact.udf.get(volume_udf) == None:
+            if not artifact.udf.get(volume_udf):
                 error_message = "Missing a value for one or more sample volumes."
                 LOG.error(error_message)
                 raise MissingValueError(error_message)
@@ -134,6 +129,9 @@ def revio_abc_volumes(
                 volume_udf=volume_udf,
                 polymerase_dilution_mix_ratio=polymerase_dilution_mix_ratio,
             )
+        total_sample_volume: float = calculate_total_sample_volume(
+            artifacts=artifacts, volume_udf=volume_udf
+        )
         set_total_ABC_volumes(
             process=process,
             factor=factor,
