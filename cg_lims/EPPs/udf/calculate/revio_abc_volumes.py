@@ -34,10 +34,10 @@ def calculate_and_set_polymerase_dilution_mix_per_sample(
     artifact: Artifact, volume_udf: str, polymerase_dilution_mix_ratio: str
 ) -> None:
     """Set the volume Polymerase Dilution Mix to add per sample."""
-    polymerase_dilution_volume: float = (
-        float(polymerase_dilution_mix_ratio) * artifact.udf[volume_udf]
+    polymerase_dilution_volume: float = round(
+        (float(polymerase_dilution_mix_ratio) * artifact.udf[volume_udf]), 2
     )
-    artifact.udf["Volume Polymerase Dilution Mix (ul)"] = round(polymerase_dilution_volume, 2)
+    artifact.udf["Volume Polymerase Dilution Mix (ul)"] = polymerase_dilution_volume
     artifact.put()
 
 
@@ -121,7 +121,7 @@ def revio_abc_volumes(
         artifacts: List[Artifact] = get_artifacts(process=process)
         for artifact in artifacts:
             if not artifact.udf.get(volume_udf):
-                error_message = "Missing a value for one or more sample volumes."
+                error_message = "Missing a value for one or more sample volumes!"
                 LOG.error(error_message)
                 raise MissingValueError(error_message)
             set_beads_per_sample(artifact=artifact, volume_udf=volume_udf)
