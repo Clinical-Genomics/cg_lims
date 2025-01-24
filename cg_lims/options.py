@@ -570,7 +570,7 @@ def apptag_rna(
 
 
 def factor(
-    help: str = "Factor to multiply Reads to sequence (M) with",
+    help: str = "Factor for adjustment of reads to sequence, volumes etc",
 ) -> click.option:
     return click.option(
         "--factor",
@@ -763,3 +763,47 @@ def value_fields(
     help: str = "Value fields in file",
 ) -> click.option:
     return click.option("-vf", "--value-fields", required=True, multiple=True, help=help)
+
+
+def annealing_reagent_ratio(
+    help: str = "Constant for calculating annealing reagent volumes for ABC",
+) -> click.option:
+    return click.option(
+        "--annealing-reagent-ratio",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+
+def polymerase_buffer_ratio(
+    help: str = "Constant for calculating the polymerase buffer volume for ABC",
+) -> click.option:
+    return click.option(
+        "--polymerase-buffer-ratio",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+
+def polymerase_dilution_mix_ratio(
+    help: str = "Constant for calculating the polymerase dilution mix volume for ABC",
+) -> click.option:
+    return click.option(
+        "--polymerase-dilution-mix-ratio",
+        required=True,
+        multiple=False,
+        help=help,
+    )
+
+
+def sequencing_polymerase_ratio(
+    help: str = "Constant for calculating the sequencing polymerase volume for ABC",
+) -> click.option:
+    return click.option(
+        "--sequencing-polymerase-ratio",
+        required=True,
+        multiple=False,
+        help=help,
+    )
