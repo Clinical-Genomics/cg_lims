@@ -63,7 +63,9 @@ def set_total_ABC_volumes(
     """Calculate and set the total master mix and reagent volumes needed for all samples in the step.
     Adding some excess specified in the cli command."""
 
-    process.udf["Total Annealing Mix Volume (ul)"] = calculate_total_ABC_volumes(factor=factor, total_sample_volume=total_sample_volume)
+    process.udf["Total Annealing Mix Volume (ul)"] = calculate_total_ABC_volumes(
+        factor=factor, total_sample_volume=total_sample_volume
+    )
     process.udf["Annealing Buffer Volume (ul)"] = calculate_total_ABC_volumes(
         factor=factor,
         total_sample_volume=total_sample_volume,
