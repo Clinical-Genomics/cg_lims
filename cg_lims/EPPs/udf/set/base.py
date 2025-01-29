@@ -7,7 +7,7 @@ from cg_lims.EPPs.udf.set.set_revio_sequencing_settings import set_revio_sequenc
 from cg_lims.EPPs.udf.set.set_sample_date import set_sample_date
 from cg_lims.EPPs.udf.set.set_samples_reads_missing import set_reads_missing_on_new_samples
 from cg_lims.EPPs.udf.set.set_sequencing_settings import set_sequencing_settings
-from cg_lims.EPPs.udf.set.smrt_link_run_values import fetch_smrtlink_run_information
+from cg_lims.EPPs.udf.set.smrt_link_run_information import fetch_smrtlink_run_information
 from cg_lims.EPPs.udf.set.updated_sample_volume import updated_sample_volume
 
 
