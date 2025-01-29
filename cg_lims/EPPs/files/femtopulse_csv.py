@@ -54,16 +54,12 @@ def generate_plate_positions(
     WELL_POSITIONS = []
     SAMPLE_NAMES = []
 
-    # Generate positions for samples (1-11 in each required row)
+    # Generate positions for samples (1-11 in each required row) and ladder positions (position 12 in sequential rows)
     for row_id in range(max_rows):
         row_letter = ROWS[row_id]
         for col in range(1, 12):  # positions 1-11
             WELL_POSITIONS.append(f"{row_letter}{col}")
             SAMPLE_NAMES.append("")
-
-    # Add ladder positions (position 12 in sequential rows)
-    for row_id in range(max_rows):
-        row_letter = ROWS[row_id]
         WELL_POSITIONS.append(f"{row_letter}12")
         SAMPLE_NAMES.append("ladder" if row_id < num_of_ladders else "")
 
