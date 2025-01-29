@@ -40,23 +40,23 @@ def generate_plate_positions(
 ) -> pd.DataFrame:
     """Generate all possible plate positions based on number of artifacts and ladders."""
 
-    ROWS = ["A", "B", "C", "D", "E", "F", "G", "H"]
-    SAMPLES_PER_ROW = 11  # Only using positions 1-11
+    ROWS: List = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    SAMPLES_PER_ROW: int = 11  # Only using positions 1-11
 
     # Calculate required number of rows for samples
-    required_rows = math.ceil(num_of_artifacts / SAMPLES_PER_ROW)
-    max_rows = max(required_rows, num_of_ladders)
+    required_rows: int = math.ceil(num_of_artifacts / SAMPLES_PER_ROW)
+    max_rows: int = max(required_rows, num_of_ladders)
     if max_rows > 8:
         raise InvalidValueError(
             f"Too many rows required ({max_rows}). Maximum is 8 rows."
         )
 
-    WELL_POSITIONS = []
-    SAMPLE_NAMES = []
+    WELL_POSITIONS: List = []
+    SAMPLE_NAMES: List = []
 
     # Generate positions for samples (1-11 in each required row) and ladder positions (position 12 in sequential rows)
     for row_id in range(max_rows):
-        row_letter = ROWS[row_id]
+        row_letter: str = ROWS[row_id]
         for col in range(1, 12):  # positions 1-11
             WELL_POSITIONS.append(f"{row_letter}{col}")
             SAMPLE_NAMES.append("")
@@ -70,10 +70,10 @@ def generate_plate_positions(
 
 def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str):
     """Make a csv file for a Femtopulse run start with three columns:
-    index, sample position and sample name or ladder"""
+    index, sample position and sample name or ladder."""
 
     # Generate the plate layout based on number of artifacts and ladders
-    DATAFRAME = generate_plate_positions(
+    DATAFRAME: pd.DataFrame = generate_plate_positions(
         num_of_artifacts=len(artifacts), num_of_ladders=num_of_ladders
     )
 
