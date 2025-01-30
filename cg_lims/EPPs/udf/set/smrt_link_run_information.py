@@ -3,6 +3,7 @@ import sys
 from typing import Dict, List, Optional
 
 import click
+from cg_lims.clients.smrt_link.models import SmrtLinkConfig
 from cg_lims.clients.smrt_link.smrt_link_client import SmrtLinkClient
 from cg_lims.exceptions import InvalidValueError, LimsError
 from genologics.entities import Process
@@ -86,7 +87,8 @@ def fetch_smrtlink_run_information(ctx):
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
     process: Process = ctx.obj["process"]
-    smrt_link_client: SmrtLinkClient = ctx.obj["smrt_link"]
+    smrt_link_config: SmrtLinkConfig = ctx.obj["smrt_link"]
+    smrt_link_client: SmrtLinkClient = smrt_link_config.client()
 
     try:
         set_run_udfs(client=smrt_link_client, process=process)
