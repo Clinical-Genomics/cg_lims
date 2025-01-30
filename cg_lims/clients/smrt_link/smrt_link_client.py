@@ -92,7 +92,6 @@ def _disable_insecure_warning():
     Workaround to silence SSL warnings when the invoker has explicitly
     requested insecure mode.
     """
-    import warnings
 
     # To disable the ssl cert check warning
     import urllib3
