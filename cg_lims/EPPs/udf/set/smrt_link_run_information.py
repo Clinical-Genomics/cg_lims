@@ -43,7 +43,7 @@ def get_smrt_link_run(client: SmrtLinkClient, run_name: str) -> Dict:
     runs: List[Dict] = client.get_runs(name=run_name)
     if len(runs) > 1:
         raise InvalidValueError(
-            f"Found more than one matching run in SMRT Link named {run_name}. Can't determine which one to use!"
+            f"Found {len(runs)} matching runs in SMRT Link named {run_name}. Can't determine which one to use!"
         )
     return runs[0]
 
@@ -53,15 +53,15 @@ def get_value_from_dict(run_dict: Dict, key: str) -> Optional[str]:
     try:
         value: Optional[str] = run_dict[key]
     except KeyError:
-        LOG.info(f"No value found in the run dictionary for '{key}'.")
+        LOG.info(f"No value found for '{key}' in the run. Skipping.")
         value = None
     return value
 
 
 def create_run_link(run_dict: Dict, client: SmrtLinkClient) -> str:
-    """Create and return a link to the SMRT Link page of a particular sequencing run."""
+    """Create and return a link to the SMRT Link page of a sequencing run."""
     uuid: str = get_value_from_dict(run_dict=run_dict, key="uniqueId")
-    return f"https://{client.host}:{client.port}/sl/runs/{uuid}"
+    return f"{client.base_url}/sl/runs/{uuid}"
 
 
 def set_run_udfs(client: SmrtLinkClient, process: Process) -> None:
@@ -89,7 +89,7 @@ def fetch_smrtlink_run_information(ctx):
 
     try:
         set_run_udfs(client=smrt_link_client, process=process)
-        message: str = "Run information have been successfully fetched from SMRT Link."
+        message: str = "Run information has been successfully fetched from SMRT Link!"
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
