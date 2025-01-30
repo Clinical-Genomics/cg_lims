@@ -26,14 +26,11 @@ SMRT_LINK_RUN_KEYS: Dict[str, str] = {
     "Total Cells in Run": "totalCells",
 }
 
-SMRT_LINK_RUN_URL: str = "https://cg-smrtlnk.sys.scilifelab.se:8243/sl/runs/"
-
 
 def get_run_name(process: Process) -> str:
     """Get the Run Name UDF value from a step."""
     setup_steps: List[Process] = process.parent_processes()
     if len(set(setup_steps)) > 1:
-        print(setup_steps)
         raise InvalidValueError(
             "There's too many parent processes for the given step! "
             "All samples in the step needs to be from the same run."
@@ -61,10 +58,10 @@ def get_value_from_dict(run_dict: Dict, key: str) -> Optional[str]:
     return value
 
 
-def create_run_link(run_dict: Dict) -> str:
+def create_run_link(run_dict: Dict, client: SmrtLinkClient) -> str:
     """Create and return a link to the SMRT Link page of a particular sequencing run."""
     uuid: str = get_value_from_dict(run_dict=run_dict, key="uniqueId")
-    return SMRT_LINK_RUN_URL + uuid
+    return f"https://{client.host}:{client.port}/sl/runs/{uuid}"
 
 
 def set_run_udfs(client: SmrtLinkClient, process: Process) -> None:
@@ -75,7 +72,7 @@ def set_run_udfs(client: SmrtLinkClient, process: Process) -> None:
     for udf_name, json_field in SMRT_LINK_RUN_KEYS.items():
         process.udf[udf_name] = get_value_from_dict(run_dict=run_dict, key=json_field)
 
-    process.udf["SMRT Link Run"] = create_run_link(run_dict=run_dict)
+    process.udf["SMRT Link Run"] = create_run_link(run_dict=run_dict, client=client)
     process.put()
 
 
