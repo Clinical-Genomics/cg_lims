@@ -37,7 +37,7 @@ def cli(ctx, config):
 
     smrt_link_host: str = config_data.get("SMRT_LINK_HOST")
     smrt_link_user: str = config_data.get("SMRT_LINK_USER")
-    smrt_link_pass: str = config_data.get("SMRT_LINK_PASS")
+    smrt_link_pass: str = config_data.get("SMRT_LINK_PASSWORD")
     smrt_link_config: SmrtLinkConfig = SmrtLinkConfig(
         host=smrt_link_host, username=smrt_link_user, password=smrt_link_pass
     )
