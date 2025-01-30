@@ -206,10 +206,10 @@ def _disable_insecure_warning():
         ProtocolError,
     )
 
-    warnings.warn(
-        "You are running with some SSL security features disabled (verify=False).  Please note that this is considered risky and exposes you to remote attacks that can steal your authorization credentials or sensitive data.",
-        InsecureRequestWarning,
-    )
+    # warnings.warn(
+    #     "You are running with some SSL security features disabled (verify=False).  Please note that this is considered risky and exposes you to remote attacks that can steal your authorization credentials or sensitive data.",
+    #     InsecureRequestWarning,
+    # )
     urllib3.disable_warnings(InsecureRequestWarning)  # pylint: disable=no-member
 
 
