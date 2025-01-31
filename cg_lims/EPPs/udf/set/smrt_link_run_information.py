@@ -43,7 +43,12 @@ def get_smrt_link_run(client: SmrtLinkClient, run_name: str) -> Dict:
     runs: List[Dict] = client.get_runs(name=run_name)
     if len(runs) > 1:
         raise InvalidValueError(
-            f"Found {len(runs)} matching runs in SMRT Link named {run_name}. Can't determine which one to use!"
+            f"Found {len(runs)} matching runs in SMRT Link named '{run_name}'. Can't determine which one to use!"
+        )
+    elif not runs:
+        raise InvalidValueError(
+            f"Could not find any runs in SMRT Link named '{run_name}'! "
+            f"Please double check that the run name in the previous step is correct."
         )
     return runs[0]
 
