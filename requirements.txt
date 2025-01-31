@@ -11,3 +11,4 @@ matplotlib
 pymongo
 coloredlogs
 openpyxl
+requests

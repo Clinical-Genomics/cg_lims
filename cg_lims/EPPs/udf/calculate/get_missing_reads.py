@@ -2,9 +2,9 @@ import logging
 import sys
 
 import click
+from cg_lims.clients.cg.status_db_api import StatusDBAPI
 from cg_lims.exceptions import LimsError, MissingCgFieldError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.status_db_api import StatusDBAPI
 from genologics.entities import Artifact
 from requests.exceptions import ConnectionError
 

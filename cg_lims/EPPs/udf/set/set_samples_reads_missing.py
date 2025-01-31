@@ -1,13 +1,14 @@
 """CLI module to set Reads Missing (M) udf on new samples"""
+
 import logging
 import sys
 from typing import List
 
 import click
+from cg_lims.clients.cg.status_db_api import StatusDBAPI
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.samples import get_process_samples
 from cg_lims.get.udfs import get_udf
-from cg_lims.status_db_api import StatusDBAPI
 from genologics.entities import Sample
 
 LOG = logging.getLogger(__name__)
