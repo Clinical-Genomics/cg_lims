@@ -765,6 +765,18 @@ def value_fields(
     return click.option("-vf", "--value-fields", required=True, multiple=True, help=help)
 
 
+def sequencing_container_udf(
+    help: str = "UDF name for values connected to a particular sequencing container.",
+) -> click.option:
+    return click.option("-sc", "--sequencing-container-udf", required=True, help=help)
+
+
+def control_volume_udf(
+    help: str = "UDF name used to get the control volume.",
+) -> click.option:
+    return click.option("-cv", "--control-volume-udf", required=True, help=help)
+
+  
 def annealing_reagent_ratio(
     help: str = "Constant for calculating annealing reagent volumes for ABC",
 ) -> click.option:
