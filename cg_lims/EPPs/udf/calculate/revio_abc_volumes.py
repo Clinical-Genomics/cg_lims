@@ -90,12 +90,10 @@ def set_total_ABC_volumes(
         total_sample_volume=total_sample_volume,
         reagent_ratio=annealing_reagent_ratio,
     )
-    process.udf["Total Polymerase Dilution Mix Volume (ul)"] = (
-        calculate_total_ABC_volumes(
-            factor=factor,
-            total_sample_volume=total_sample_volume,
-            reagent_ratio=polymerase_dilution_mix_ratio,
-        )
+    process.udf["Total Polymerase Dilution Mix Volume (ul)"] = calculate_total_ABC_volumes(
+        factor=factor,
+        total_sample_volume=total_sample_volume,
+        reagent_ratio=polymerase_dilution_mix_ratio,
     )
     process.udf["Polymerase Buffer Volume (ul)"] = calculate_total_ABC_volumes(
         factor=factor,
@@ -172,9 +170,7 @@ def revio_abc_volumes(
             polymerase_dilution_mix_ratio=polymerase_dilution_mix_ratio,
             sequencing_polymerase_ratio=sequencing_polymerase_ratio,
         )
-        message: str = (
-            "ABC volumes have been calculated for all artifacts and process UDFs!"
-        )
+        message: str = "ABC volumes have been calculated for all artifacts and process UDFs!"
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
