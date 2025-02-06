@@ -35,91 +35,62 @@ def get_number_of_ladders(process: Process) -> int:
     return num_of_ladders
 
 
-def generate_plate_positions(
-    num_of_artifacts: int, num_of_ladders: int
-) -> pd.DataFrame:
-    """Generate all possible plate positions based on number of artifacts and ladders."""
-
-    ROWS: List = ["A", "B", "C", "D", "E", "F", "G", "H"]
-    SAMPLES_PER_ROW: int = 11  # Only using positions 1-11
-
-    # Calculate required number of rows for samples
-    required_rows: int = math.ceil(num_of_artifacts / SAMPLES_PER_ROW)
-    max_rows: int = max(required_rows, num_of_ladders)
-    if max_rows > 8:
-        raise InvalidValueError(
-            f"Too many rows required ({max_rows}). Maximum is 8 rows."
-        )
-
-    WELL_POSITIONS: List = []
-    SAMPLE_NAMES: List = []
-
-    # Generate positions for samples (1-11 in each required row) and ladder positions (position 12 in sequential rows)
-    for row_id in range(max_rows):
-        row_letter: str = ROWS[row_id]
-        for col in range(1, 12):  # positions 1-11
-            WELL_POSITIONS.append(f"{row_letter}{col}")
-            SAMPLE_NAMES.append("")
-        WELL_POSITIONS.append(f"{row_letter}12")
-        SAMPLE_NAMES.append("ladder" if row_id < num_of_ladders else "")
-
-    return pd.DataFrame(
-        {"well positions": WELL_POSITIONS, "sample names": SAMPLE_NAMES}
-    )
-
-
 def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str):
     """Make a csv file for a Femtopulse run start with three columns:
     index, sample position and sample name or ladder."""
 
-    # Generate the plate layout based on number of artifacts and ladders
-    DATAFRAME: pd.DataFrame = generate_plate_positions(
-        num_of_artifacts=len(artifacts), num_of_ladders=num_of_ladders
+    # Get well positions and sample names
+    samples_and_positions: tuple = [
+        (get_artifact_well(artifact), get_sample_artifact_name(artifact))
+        for artifact in artifacts
+    ]
+
+    # Check that no sample is in position 12, where the ladders should be.
+    invalid_samples: List = [
+        sample for position, sample in samples_and_positions if position.endswith("12")
+    ]
+    if invalid_samples:
+        raise InvalidValueError(
+            f"Samples {invalid_samples} in position 12, which is reserved for the ladders"
+        )
+
+    # Sort by well position
+    samples_and_positions.sort(key=lambda x: (x[0][0], int(x[0][1:])))
+
+    # Get the unique rows needed based on sample positions (A, B, C...)
+    unique_rows: List = sorted(
+        set(position[0] for position, _ in samples_and_positions)
     )
 
-    failed_samples: list = []
+    # The specified number of ladders will be placed in order A, B, C
+    all_rows: List = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    rows_needed: List = unique_rows
+    if num_of_ladders > len(rows_needed):
+        rows_needed: List = sorted(set(rows_needed + all_rows[:num_of_ladders]))
 
-    for artifact in artifacts:
+    # Create a list of sample names and ladders based on the rows needed for the run
+    sample_position_layout: List = []
+    for row in rows_needed:
+        row_samples: List = [
+            (position, sample)
+            for position, sample in samples_and_positions
+            if position.startswith(row)
+        ]
+        # Add existing samples for positions 1-11
+        for position in range(1, 12):
+            well = f"{row}{position}"
+            sample = next((samp for pos, samp in row_samples if pos == well), "")
+            sample_position_layout.append((well, sample))
+        # Add ladder or empty position for position 12
+        ladder: str = "ladder" if rows_needed.index(row) < num_of_ladders else ""
+        sample_position_layout.append((f"{row}12", ladder))
 
-        artifact_name: str = get_sample_artifact_name(artifact=artifact)
-        artifact_well: str = get_artifact_well(artifact=artifact)
-
-        # Check if well position is valid and not a ladder position
-        if artifact_well in DATAFRAME["well positions"].values:
-            if artifact_well.endswith("12"):
-                failed_samples.append(
-                    {
-                        "artifact_name": artifact_name,
-                        "parsed_well": artifact_well,
-                        "error": "This position is reserved for the ladder.",
-                    }
-                )
-            else:
-                DATAFRAME.loc[
-                    DATAFRAME["well positions"] == artifact_well, "sample names"
-                ] = artifact_name
-        else:
-            failed_samples.append(
-                {
-                    "artifact_name": artifact_name,
-                    "parsed_well": artifact_well,
-                    "error": "This position is not suitable for the run.",
-                }
-            )
-
-    # Prints out error messages
-    if failed_samples:
-        all_errors = ""
-        for sample in failed_samples:
-            error_message: str = (
-                f"Sample {sample['artifact_name']} in position {sample['parsed_well']}: {sample['error']}"
-            )
-            all_errors = all_errors + " " + error_message
-        raise InvalidValueError(f"Errors found: {all_errors}")
-
-    # Create the csv file
-    DATAFRAME.index = range(1, len(DATAFRAME) + 1)
-    DATAFRAME.to_csv(Path(file), index=True, header=False, sep=";")
+    # Create and write dataframe
+    df = pd.DataFrame(
+        sample_position_layout, columns=["well positions", "sample names"]
+    )
+    df.index = range(1, len(df) + 1)
+    df.to_csv(Path(file), index=True, header=False, sep=";")
 
 
 @click.command()
