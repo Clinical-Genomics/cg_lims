@@ -72,24 +72,11 @@ def get_library_concentration(artifact: Artifact) -> float:
     return parent_process.udf[udf_name]
 
 
-def get_polymerase_kit(artifact: Artifact) -> float:
-    """Return the type of polymerase used for a given artifact"""
-    lims: Lims = artifact.lims
-    sample_id: str = artifact.samples[0].id
-    all_artifacts: List[Artifact] = lims.get_artifacts(
-        process_type="Preparing ABC Complex (Revio)", samplelimsid=sample_id
-    )
-    artifact: Artifact = get_latest_artifact(lims_artifacts=all_artifacts)
-    parent_process: Process = artifact.parent_process
-    return parent_process.udf["Binding Kit"]
-
-
 def set_artifact_values(artifacts: List[Artifact]) -> None:
     """Set all values needed for the artifacts in a Set Up Sequencing Run (Revio) step"""
     for artifact in artifacts:
         artifact.udf["Mean Size (bp)"] = calculate_weighted_average_size(artifact=artifact)
         artifact.udf["Library Concentration (pM)"] = get_library_concentration(artifact=artifact)
-        artifact.udf["Polymerase Kit"] = get_polymerase_kit(artifact=artifact)
         artifact.put()
 
 
