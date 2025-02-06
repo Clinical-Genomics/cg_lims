@@ -1,4 +1,5 @@
 """CLI module to set Reads Missing (M) udf on new samples"""
+
 import logging
 import sys
 from typing import List
