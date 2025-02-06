@@ -5,10 +5,9 @@ from typing import List
 
 import click
 import numpy as np
-from cg_lims.exceptions import InvalidValueError, LimsError
-from cg_lims.get.artifacts import get_artifacts, get_latest_artifact, get_non_pooled_artifacts
+from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
+from cg_lims.get.artifacts import get_artifacts, get_non_pooled_artifacts
 from genologics.entities import Artifact, Container, Process
-from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
 
@@ -43,7 +42,7 @@ def set_plates(process: Process) -> None:
 def calculate_weighted_average_size(artifact: Artifact) -> float:
     """Calculate the weighted average fragment size of an artifact (single sample or pool)"""
     if len(artifact.samples) <= 1:
-        input_artifact: Artifact = artifact.input_artifact_list()[0]
+        input_artifact: Artifact = artifact.input_artifact_list()[0].input_artifact_list()[0]
         return input_artifact.udf.get("Size (bp)")
     input_artifacts: List[Artifact] = get_non_pooled_artifacts(artifact=artifact)
     sizes: List[float] = []
@@ -54,29 +53,22 @@ def calculate_weighted_average_size(artifact: Artifact) -> float:
     return round(np.average(sizes, weights=volumes), 0)
 
 
-def get_library_concentration(artifact: Artifact) -> float:
+def get_loading_concentration(artifact: Artifact) -> float:
     """Return the library concentration of an artifact"""
-    lims: Lims = artifact.lims
-    sample_id: str = artifact.samples[0].id
-    if len(artifact.samples) <= 1:
-        udf_name: str = "Loading Concentration (pM)"
-        step_name: str = "Preparing ABC Complex (Revio)"
-    else:
-        udf_name: str = "Target Pool Concentration (pM)"
-        step_name: str = "Pooling Samples for Sequencing (Revio)"
-    all_artifacts: List[Artifact] = lims.get_artifacts(
-        process_type=step_name, samplelimsid=sample_id
-    )
-    artifact: Artifact = get_latest_artifact(lims_artifacts=all_artifacts)
-    parent_process: Process = artifact.parent_process
-    return parent_process.udf[udf_name]
+    input_artifact: Artifact = artifact.input_artifact_list()[0]
+    loading_concentration: float = input_artifact.udf.get("Loading Concentration (pM)")
+    if not loading_concentration:
+        raise MissingUDFsError(
+            f"Artifact {input_artifact.name} is missing a loading concentration!"
+        )
+    return loading_concentration
 
 
 def set_artifact_values(artifacts: List[Artifact]) -> None:
     """Set all values needed for the artifacts in a Set Up Sequencing Run (Revio) step"""
     for artifact in artifacts:
         artifact.udf["Mean Size (bp)"] = calculate_weighted_average_size(artifact=artifact)
-        artifact.udf["Library Concentration (pM)"] = get_library_concentration(artifact=artifact)
+        artifact.udf["Library Concentration (pM)"] = get_loading_concentration(artifact=artifact)
         artifact.put()
 
 
