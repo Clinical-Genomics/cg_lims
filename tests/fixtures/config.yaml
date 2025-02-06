@@ -1,7 +1,10 @@
 BASEURI: somebase.scilifelab.se
-HOST: somehoast.scilifelab.se
+HOST: somehost.scilifelab.se
 USERNAME: someuser
 PASSWORD: somepassword
 CG_URL: https://something
 SERVICE_ACCOUNT_EMAIL: someemail@mail.com
 SERVICE_ACCOUNT_AUTH_FILE: /path/to/file.json
+SMRT_LINK_HOST: anotherhost.scilifelab.se
+SMRT_LINK_USER: anotheruser
+SMRT_LINK_PASS: anotherpassword
