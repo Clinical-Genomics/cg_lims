@@ -50,8 +50,8 @@ def set_beads_per_sample(
     artifact.put()
 
 
-def set_volume_elution(artifact: Artifact, elution_volume: float) -> None:
-    artifact.udf["Volume Elution (ul)"] = elution_volume
+def set_volume_elution(artifact: Artifact, elution_volume: str) -> None:
+    artifact.udf["Volume Elution (ul)"] = float(elution_volume)
     artifact.put()
 
 
@@ -122,7 +122,7 @@ def set_total_ABC_volumes(
 def revio_abc_volumes(
     ctx: click.Context,
     volume_udf: str,
-    preset_volume: float,
+    preset_volume: str,
     factor: str,
     annealing_reagent_ratio: str,
     polymerase_buffer_ratio: str,
