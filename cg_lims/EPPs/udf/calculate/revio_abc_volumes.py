@@ -16,18 +16,12 @@ def calculate_total_sample_volume(artifacts: List[Artifact], volume_udf: str) ->
     return sum(artifact.udf[volume_udf] for artifact in artifacts)
 
 
-def set_beads_per_sample(artifact: Artifact, volume_udf: str) -> None:
-    """Set the SMRTbell cleanup bead volume (1X of sample volume)."""
-    beads_volume: float = round(artifact.udf[volume_udf], 2)
-    artifact.udf["Volume Cleanup Beads (ul)"] = beads_volume
-    artifact.put()
-
-
 def set_annealing_mix_per_sample(artifact: Artifact, volume_udf: str) -> None:
     """Set the volume Annealing mix to add per sample."""
     annealing_mix_volume: float = round(artifact.udf[volume_udf], 2)
     artifact.udf["Volume Annealing Mix (ul)"] = annealing_mix_volume
     artifact.put()
+    return annealing_mix_volume
 
 
 def calculate_and_set_polymerase_dilution_mix_per_sample(
@@ -38,6 +32,26 @@ def calculate_and_set_polymerase_dilution_mix_per_sample(
         (float(polymerase_dilution_mix_ratio) * artifact.udf[volume_udf]), 2
     )
     artifact.udf["Volume Polymerase Dilution Mix (ul)"] = polymerase_dilution_volume
+    artifact.put()
+    return polymerase_dilution_volume
+
+
+def set_beads_per_sample(
+    artifact: Artifact,
+    volume_udf: str,
+    annealing_volume: float,
+    polymerase_dilution_volume: float,
+) -> None:
+    """Set the SMRTbell cleanup bead volume (1X of sample and added annealing mix and polymerase dilution volume)."""
+    beads_volume: float = round(
+        artifact.udf[volume_udf] + annealing_volume + polymerase_dilution_volume, 2
+    )
+    artifact.udf["Volume Cleanup Beads (ul)"] = beads_volume
+    artifact.put()
+
+
+def set_volume_elution(artifact: Artifact, elution_volume: float) -> None:
+    artifact.udf["Volume Elution (ul)"] = elution_volume
     artifact.put()
 
 
@@ -76,10 +90,12 @@ def set_total_ABC_volumes(
         total_sample_volume=total_sample_volume,
         reagent_ratio=annealing_reagent_ratio,
     )
-    process.udf["Total Polymerase Dilution Mix Volume (ul)"] = calculate_total_ABC_volumes(
-        factor=factor,
-        total_sample_volume=total_sample_volume,
-        reagent_ratio=polymerase_dilution_mix_ratio,
+    process.udf["Total Polymerase Dilution Mix Volume (ul)"] = (
+        calculate_total_ABC_volumes(
+            factor=factor,
+            total_sample_volume=total_sample_volume,
+            reagent_ratio=polymerase_dilution_mix_ratio,
+        )
     )
     process.udf["Polymerase Buffer Volume (ul)"] = calculate_total_ABC_volumes(
         factor=factor,
@@ -96,6 +112,7 @@ def set_total_ABC_volumes(
 
 @click.command()
 @options.volume_udf()
+@options.preset_volume()
 @options.factor()
 @options.annealing_reagent_ratio()
 @options.polymerase_buffer_ratio()
@@ -105,6 +122,7 @@ def set_total_ABC_volumes(
 def revio_abc_volumes(
     ctx: click.Context,
     volume_udf: str,
+    preset_volume: float,
     factor: str,
     annealing_reagent_ratio: str,
     polymerase_buffer_ratio: str,
@@ -124,13 +142,27 @@ def revio_abc_volumes(
                 error_message = "Missing a value for one or more sample volumes!"
                 LOG.error(error_message)
                 raise MissingValueError(error_message)
-            set_beads_per_sample(artifact=artifact, volume_udf=volume_udf)
-            set_annealing_mix_per_sample(artifact=artifact, volume_udf=volume_udf)
-            calculate_and_set_polymerase_dilution_mix_per_sample(
+            elif not preset_volume:
+                error_message = "Missing a value to set the elution volume!"
+                LOG.error(error_message)
+                raise MissingValueError(error_message)
+            annealing_mix_volume: float = set_annealing_mix_per_sample(
+                artifact=artifact, volume_udf=volume_udf
+            )
+            polymerase_dilution_volume: float = (
+                calculate_and_set_polymerase_dilution_mix_per_sample(
+                    artifact=artifact,
+                    volume_udf=volume_udf,
+                    polymerase_dilution_mix_ratio=polymerase_dilution_mix_ratio,
+                )
+            )
+            set_beads_per_sample(
                 artifact=artifact,
                 volume_udf=volume_udf,
-                polymerase_dilution_mix_ratio=polymerase_dilution_mix_ratio,
+                annealing_volume=annealing_mix_volume,
+                polymerase_dilution_volume=polymerase_dilution_volume,
             )
+            set_volume_elution(artifact=artifact, elution_volume=preset_volume)
         total_sample_volume: float = calculate_total_sample_volume(
             artifacts=artifacts, volume_udf=volume_udf
         )
@@ -143,7 +175,9 @@ def revio_abc_volumes(
             polymerase_dilution_mix_ratio=polymerase_dilution_mix_ratio,
             sequencing_polymerase_ratio=sequencing_polymerase_ratio,
         )
-        message: str = "ABC volumes have been calculated for all artifacts and process UDFs!"
+        message: str = (
+            "ABC volumes have been calculated for all artifacts and process UDFs!"
+        )
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
