@@ -37,13 +37,14 @@ def get_number_of_ladders(process: Process) -> int:
 
 def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str):
     """Make a csv file for a Femtopulse run start with three columns:
-    index, sample position and sample name or ladder."""
+    index, sample position and sample name, blank or ladder."""
 
-    # Get well positions and sample names
+    # Get well positions and sample names and sort by well position
     samples_and_positions: tuple = [
         (get_artifact_well(artifact), get_sample_artifact_name(artifact))
         for artifact in artifacts
     ]
+    samples_and_positions.sort(key=lambda x: (x[0][0], int(x[0][1:])))
 
     # Check that no sample is in position 12, where the ladders should be.
     invalid_samples: List = [
@@ -51,20 +52,14 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
     ]
     if invalid_samples:
         raise InvalidValueError(
-            f"Samples {invalid_samples} in position 12, which is reserved for the ladders"
+            f"Sample(s) {invalid_samples} in position 12, which is reserved for the ladders."
         )
 
-    # Sort by well position
-    samples_and_positions.sort(key=lambda x: (x[0][0], int(x[0][1:])))
-
-    # Get the unique rows needed based on sample positions (A, B, C...)
-    unique_rows: List = sorted(
+    # Get all unique rows needed based on sample positions and number of ladders
+    all_rows: List = ["A", "B", "C", "D", "E", "F", "G", "H"]
+    rows_needed: List = sorted(
         set(position[0] for position, _ in samples_and_positions)
     )
-
-    # Get all rows needed based on number of ladders
-    all_rows: List = ["A", "B", "C", "D", "E", "F", "G", "H"]
-    rows_needed: List = unique_rows
     for row in all_rows:
         if len(rows_needed) >= num_of_ladders:
             break
@@ -72,7 +67,7 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
             rows_needed.append(row)
     rows_needed.sort()
 
-    # Create a list of sample names and ladders based on the rows needed for the run
+    # Create a list of positions, sample names, blanks and ladders based on the rows needed for the run.
     sample_position_layout: List = []
     for row in rows_needed:
         row_samples: List = [
@@ -95,7 +90,6 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
     )
     df.index = range(1, len(df) + 1)
     df.to_csv(Path(file), index=True, header=False, sep=";")
-    print(df)
 
 
 @click.command()
