@@ -5,10 +5,10 @@ from pathlib import Path
 from typing import Callable, Dict, List
 
 import pytest
+from cg_lims.clients.cg.status_db_api import StatusDBAPI
+from cg_lims.clients.cg.token_manager import TokenManager
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
 from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
-from cg_lims.status_db_api import StatusDBAPI
-from cg_lims.token_manager import TokenManager
 from click.testing import CliRunner
 from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims

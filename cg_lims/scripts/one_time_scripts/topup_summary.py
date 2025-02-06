@@ -1,12 +1,11 @@
-import csv
 import datetime
 import logging
 from typing import Any, Dict, List, Tuple
 
 import click
 from cg_lims import options
+from cg_lims.clients.cg.status_db_api import StatusDBAPI
 from cg_lims.exceptions import LimsError
-from cg_lims.status_db_api import StatusDBAPI
 from genologics.entities import Artifact, Container, Process, Sample
 from genologics.lims import Lims
 
