@@ -142,10 +142,8 @@ def revio_abc_volumes(
                 error_message = "Missing a value for one or more sample volumes!"
                 LOG.error(error_message)
                 raise MissingValueError(error_message)
-            elif not preset_volume:
-                error_message = "Missing a value to set the elution volume!"
-                LOG.error(error_message)
-                raise MissingValueError(error_message)
+            elif preset_volume:
+                set_volume_elution(artifact=artifact, elution_volume=preset_volume)
             annealing_mix_volume: float = set_annealing_mix_per_sample(
                 artifact=artifact, volume_udf=volume_udf
             )
@@ -162,7 +160,6 @@ def revio_abc_volumes(
                 annealing_volume=annealing_mix_volume,
                 polymerase_dilution_volume=polymerase_dilution_volume,
             )
-            set_volume_elution(artifact=artifact, elution_volume=preset_volume)
         total_sample_volume: float = calculate_total_sample_volume(
             artifacts=artifacts, volume_udf=volume_udf
         )
