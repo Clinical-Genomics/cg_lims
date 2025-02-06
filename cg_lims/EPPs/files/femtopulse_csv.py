@@ -62,11 +62,15 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
         set(position[0] for position, _ in samples_and_positions)
     )
 
-    # The specified number of ladders will be placed in order A, B, C
+    # Get all rows needed based on number of ladders
     all_rows: List = ["A", "B", "C", "D", "E", "F", "G", "H"]
     rows_needed: List = unique_rows
-    if num_of_ladders > len(rows_needed):
-        rows_needed: List = sorted(set(rows_needed + all_rows[:num_of_ladders]))
+    for row in all_rows:
+        if len(rows_needed) >= num_of_ladders:
+            break
+        if row not in rows_needed:
+            rows_needed.append(row)
+    rows_needed.sort()
 
     # Create a list of sample names and ladders based on the rows needed for the run
     sample_position_layout: List = []
@@ -91,6 +95,7 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
     )
     df.index = range(1, len(df) + 1)
     df.to_csv(Path(file), index=True, header=False, sep=";")
+    print(df)
 
 
 @click.command()
