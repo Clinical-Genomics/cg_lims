@@ -6,12 +6,11 @@ from typing import List
 
 import click
 import pandas as pd
-from genologics.lims import Artifact, Process
-
 from cg_lims import options
 from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.fields import get_artifact_well
+from genologics.lims import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 
@@ -29,9 +28,7 @@ def get_number_of_ladders(process: Process) -> int:
             f"Missing the number of ladders, please specify a number between 1-8."
         )
     if not 1 <= num_of_ladders <= 8:
-        raise InvalidValueError(
-            f"Number of ladders must be between 1 and 8. Got: {num_of_ladders}"
-        )
+        raise InvalidValueError(f"Number of ladders must be between 1 and 8. Got: {num_of_ladders}")
     return num_of_ladders
 
 
@@ -41,8 +38,7 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
 
     # Get well positions and sample names and sort by well position
     samples_and_positions: tuple = [
-        (get_artifact_well(artifact), get_sample_artifact_name(artifact))
-        for artifact in artifacts
+        (get_artifact_well(artifact), get_sample_artifact_name(artifact)) for artifact in artifacts
     ]
     samples_and_positions.sort(key=lambda x: (x[0][0], int(x[0][1:])))
 
@@ -57,9 +53,7 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
 
     # Get all unique rows needed based on sample positions and number of ladders
     all_rows: List = ["A", "B", "C", "D", "E", "F", "G", "H"]
-    rows_needed: List = sorted(
-        set(position[0] for position, _ in samples_and_positions)
-    )
+    rows_needed: List = sorted(set(position[0] for position, _ in samples_and_positions))
     for row in all_rows:
         if len(rows_needed) >= num_of_ladders:
             break
@@ -85,9 +79,7 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
         sample_position_layout.append((f"{row}12", ladder))
 
     # Create and write dataframe
-    df = pd.DataFrame(
-        sample_position_layout, columns=["well positions", "sample names"]
-    )
+    df = pd.DataFrame(sample_position_layout, columns=["well positions", "sample names"])
     df.index = range(1, len(df) + 1)
     df.to_csv(Path(file), index=True, header=False, sep=";")
 
