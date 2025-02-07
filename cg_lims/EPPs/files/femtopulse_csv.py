@@ -1,8 +1,7 @@
 import logging
-import math
 import sys
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 import click
 import pandas as pd
@@ -17,6 +16,7 @@ LOG = logging.getLogger(__name__)
 
 
 def get_sample_artifact_name(artifact: Artifact) -> str:
+    """Retrieves the name of the sample associated with the given artifact."""
     artifact_name: str = artifact.samples[0].name
     return artifact_name
 
@@ -40,14 +40,14 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
     index, sample position and sample name, blank or ladder."""
 
     # Get well positions and sample names and sort by well position
-    samples_and_positions: tuple = [
+    samples_and_positions: List[Tuple[str,str]] = [
         (get_artifact_well(artifact), get_sample_artifact_name(artifact))
         for artifact in artifacts
     ]
     samples_and_positions.sort(key=lambda x: (x[0][0], int(x[0][1:])))
 
     # Check that no sample is in position 12, where the ladders should be.
-    invalid_samples: List = [
+    invalid_samples: List[str] = [
         sample for position, sample in samples_and_positions if position.endswith("12")
     ]
     if invalid_samples:
@@ -70,15 +70,15 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
     # Create a list of positions, sample names, blanks and ladders based on the rows needed for the run.
     sample_position_layout: List = []
     for row in rows_needed:
-        row_samples: List = [
+        row_samples: List[str, str] = [
             (position, sample)
             for position, sample in samples_and_positions
             if position.startswith(row)
         ]
         # Add existing samples for positions 1-11
         for position in range(1, 12):
-            well = f"{row}{position}"
-            sample = next((samp for pos, samp in row_samples if pos == well), "")
+            well: str = f"{row}{position}"
+            sample: str = next((samp for pos, samp in row_samples if pos == well), "")
             sample_position_layout.append((well, sample))
         # Add ladder or empty position for position 12
         ladder: str = "ladder" if rows_needed.index(row) < num_of_ladders else ""
@@ -91,6 +91,11 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
     df.index = range(1, len(df) + 1)
     df.to_csv(Path(file), index=True, header=False, sep=";")
 
+    if len(rows_needed) > num_of_ladders:
+        raise InvalidValueError(
+            f"Warning: The number of populated sample rows ({len(rows_needed)}) "
+            f"exceed the amount of ladders chosen ({num_of_ladders})."
+        )
 
 @click.command()
 @options.file_placeholder()
@@ -105,7 +110,7 @@ def make_femtopulse_csv(
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
-    artifacts = get_artifacts(process=process, measurement=measurement)
+    artifacts: List[Artifact] = get_artifacts(process=process, measurement=measurement)
 
     try:
         num_of_ladders: int = get_number_of_ladders(process=process)
