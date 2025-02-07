@@ -138,15 +138,15 @@ def revio_abc_volumes(
     try:
         artifacts: List[Artifact] = get_artifacts(process=process)
         for artifact in artifacts:
-            sample_volume: float = get_artifact_volume(
-                artifact=artifact, volume_udf=volume_udf
-            )
             if not artifact.udf.get(volume_udf):
                 error_message = "Missing a library volume for one or more samples!"
                 LOG.error(error_message)
                 raise MissingValueError(error_message)
             elif preset_volume:
                 preset_volume: float = float(preset_volume)
+            sample_volume: float = get_artifact_volume(
+                artifact=artifact, volume_udf=volume_udf
+            )
             annealing_mix_volume: float = sample_volume
             polymerase_dilution_volume: float = calculate_per_sample_mix_volumes(
                 volume_udf=sample_volume,
