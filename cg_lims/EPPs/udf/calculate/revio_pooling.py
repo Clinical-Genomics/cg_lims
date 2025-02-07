@@ -7,18 +7,9 @@ from cg_lims import options
 from cg_lims.EPPs.udf.calculate.constants import SMRT_LINK_AVERAGE_MOLECULAR_WEIGHT_SS_DNA
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts
-from cg_lims.get.samples import get_one_sample_from_artifact
 from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
-
-
-def get_targeted_pooling_concentration(process: Process, udf_name: str) -> float:
-    """Return the targeted pooling concentration from a process."""
-    final_concentration: float = process.udf.get(udf_name)
-    if not final_concentration or final_concentration == 0:
-        raise MissingUDFsError("You need to specify a final loading concentration value above 0.")
-    return final_concentration
 
 
 def get_total_pooling_volume(
@@ -134,10 +125,10 @@ def revio_pooling(
 
     try:
         artifacts: List[Artifact] = get_artifacts(process=process)
-        target_concentration: float = get_targeted_pooling_concentration(
-            process=process, udf_name=target_concentration_udf
-        )
         for artifact in artifacts:
+            target_concentration: float = get_numeric_artifact_udf(
+                artifact=artifact, udf_name=target_concentration_udf
+            )
             target_volume: float = get_total_pooling_volume(
                 process=process,
                 artifact=artifact,
