@@ -85,7 +85,7 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
     if len(rows_needed) > num_of_ladders:
         raise InvalidValueError(
             f"Warning: The number of populated sample rows ({len(rows_needed)}) "
-            f"exceed the amount of ladders chosen ({num_of_ladders})."
+            f"exceed the number of ladders ({num_of_ladders})."
         )
 
 @click.command()
