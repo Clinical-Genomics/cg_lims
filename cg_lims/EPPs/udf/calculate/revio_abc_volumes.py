@@ -46,7 +46,7 @@ def calculate_total_ABC_volumes(
     Adding some excess represented by factor."""
     if not reagent_ratio:
         reagent_ratio = 1
-    return round(float(factor) * total_sample_volume * float(reagent_ratio), 1)
+    return round(float(factor) * total_sample_volume * float(reagent_ratio), 2)
 
 
 def set_reagent_volumes_per_sample(
