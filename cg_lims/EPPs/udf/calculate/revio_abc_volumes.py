@@ -3,11 +3,10 @@ import sys
 from typing import List, Optional
 
 import click
-from genologics.entities import Artifact, Process
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingValueError
 from cg_lims.get.artifacts import get_artifacts
+from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 
@@ -90,12 +89,10 @@ def set_total_ABC_volumes(
         total_sample_volume=total_sample_volume,
         reagent_ratio=annealing_reagent_ratio,
     )
-    process.udf["Total Polymerase Dilution Mix Volume (ul)"] = (
-        calculate_total_ABC_volumes(
-            factor=factor,
-            total_sample_volume=total_sample_volume,
-            reagent_ratio=polymerase_dilution_mix_ratio,
-        )
+    process.udf["Total Polymerase Dilution Mix Volume (ul)"] = calculate_total_ABC_volumes(
+        factor=factor,
+        total_sample_volume=total_sample_volume,
+        reagent_ratio=polymerase_dilution_mix_ratio,
     )
     process.udf["Polymerase Buffer Volume (ul)"] = calculate_total_ABC_volumes(
         factor=factor,
@@ -144,9 +141,7 @@ def revio_abc_volumes(
                 raise MissingValueError(error_message)
             elif preset_volume:
                 preset_volume: float = float(preset_volume)
-            sample_volume: float = get_artifact_volume(
-                artifact=artifact, volume_udf=volume_udf
-            )
+            sample_volume: float = get_artifact_volume(artifact=artifact, volume_udf=volume_udf)
             annealing_mix_volume: float = sample_volume
             polymerase_dilution_volume: float = calculate_per_sample_mix_volumes(
                 volume_udf=sample_volume,
@@ -176,9 +171,7 @@ def revio_abc_volumes(
             polymerase_dilution_mix_ratio=polymerase_dilution_mix_ratio,
             sequencing_polymerase_ratio=sequencing_polymerase_ratio,
         )
-        message: str = (
-            "ABC volumes have been calculated for all artifacts and process UDFs!"
-        )
+        message: str = "ABC volumes have been calculated for all artifacts and process UDFs!"
         LOG.info(message)
         click.echo(message)
     except LimsError as e:
