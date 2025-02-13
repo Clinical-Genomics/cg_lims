@@ -37,8 +37,9 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
     index, sample position and sample name, blank or ladder."""
 
     # Get well positions and sample names and sort by well position
-    samples_and_positions: List[Tuple[str,str]] = [(get_artifact_well(artifact), get_sample_artifact_name(artifact))
-        for artifact in artifacts]
+    samples_and_positions: List[Tuple[str, str]] = [
+        (get_artifact_well(artifact), get_sample_artifact_name(artifact)) for artifact in artifacts
+    ]
     samples_and_positions.sort(key=lambda x: (x[0][0], int(x[0][1:])))
 
     # Check that no sample is in position 12, where the ladders should be.
@@ -87,6 +88,7 @@ def get_data_and_write(artifacts: List[Artifact], num_of_ladders: int, file: str
             f"Warning: The number of populated sample rows ({len(rows_needed)}) "
             f"exceed the number of ladders ({num_of_ladders})."
         )
+
 
 @click.command()
 @options.file_placeholder()
