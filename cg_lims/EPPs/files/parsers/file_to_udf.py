@@ -2,7 +2,7 @@ import csv
 import logging
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 import click
 from cg_lims import options
@@ -14,16 +14,44 @@ from genologics.entities import Artifact, Process
 LOG = logging.getLogger(__name__)
 
 
-def make_udf_dict(udfs: Tuple[str], value_fields: Tuple[str]) -> Dict[str, str]:
-    """Create dictionary containing UDF names and their corresponding value field names."""
-    if len(udfs) != len(value_fields):
+def make_parameter_dict(
+    udfs: Tuple[str], value_fields: Tuple[str], files: List[str], well_fields: Tuple[str]
+) -> Dict[str, Dict[str, Dict[str, str]]]:
+    """
+    Create a dictionary mapping file names to their corresponding well names and UDF (User Defined Field) values.
+
+    Args:
+        udfs (Tuple[str]): A tuple of UDF names.
+        value_fields (Tuple[str]): A tuple of value field names corresponding to the UDFs.
+        files (List[str]): A list of file names.
+        well_fields (Tuple[str]): A tuple of well names.
+
+    Returns:
+        Dict[str, Dict[str, Dict[str, str]]]: A dictionary with the structure:
+            {
+                <File>: {
+                    'Well Name': <Well Name>,
+                    'UDF': {
+                        <UDF 1>: <Field 1>,
+                        <UDF 2>: <Field 2>,
+                        ...
+                    }
+                }
+            }
+
+    Raises:
+        ArgumentError: If the lengths of `udfs`, `value_fields`, `files`, and `well_fields` are not equal.
+    """
+    if not (len(udfs) == len(value_fields) == len(files) == len(well_fields)):
         raise ArgumentError(
-            f"The number of artifact-udfs to update and file value fields must be the same."
+            f"The number of UDFs to update, value fields, well names and input files must all be equal."
         )
-    udf_vf_dict: dict = {}
-    for i in range(len(udfs)):
-        udf_vf_dict[udfs[i]] = value_fields[i]
-    return udf_vf_dict
+    param_dict: Dict[str, Dict[str, Dict[str, str]]] = {}
+    for i in range(len(files)):
+        if files[i] not in param_dict:
+            param_dict[files[i]] = {"Well Name": well_fields[i], "UDF": {}}
+        param_dict[files[i]]["UDF"][udfs[i]] = value_fields[i]
+    return param_dict
 
 
 def get_file_placeholder_paths(placeholder_names: List[str], process: Process) -> List[str]:
@@ -36,27 +64,26 @@ def get_file_placeholder_paths(placeholder_names: List[str], process: Process) -
 
 
 def set_udfs_from_file(
-    well_field: str, udf_vf_dict: Dict[str, str], well_dict: dict, result_file: Path
+    well_field: str, udf_vf_dict: Dict[str, str], well_dict: Dict[str, Artifact], result_file: Path
 ) -> List[str]:
     """Parse a CSV file and set the corresponding UDF values for each sample."""
     error_msg: List[str] = []
     passed_arts: int = 0
     with open(result_file, newline="", encoding="latin1") as csvfile:
         reader: csv.DictReader = csv.DictReader(csvfile)
-        for udf_name in list(udf_vf_dict.keys()):
-            if udf_vf_dict[udf_name] not in reader.fieldnames:
-                LOG.info(
-                    f"Value {udf_vf_dict[udf_name]} does not exist in file {result_file}, skipping."
-                )
+        for sample in reader:
+            well: str = sample.get(well_field)
+            if well not in well_dict:
+                LOG.info(f"Well {well} was not found in the step. Skipping!")
                 continue
-            value_field: str = udf_vf_dict.pop(udf_name)
-
-            for sample in reader:
-                well: str = sample.get(well_field)
-                if well not in well_dict:
-                    LOG.info(f"Well {well} was not found in the step. Skipping!")
+            artifact: Artifact = well_dict[well]
+            for udf_name in list(udf_vf_dict.keys()):
+                if udf_vf_dict[udf_name] not in reader.fieldnames:
+                    LOG.info(
+                        f"Value {udf_vf_dict[udf_name]} does not exist in file {result_file}, skipping."
+                    )
                     continue
-                artifact: Artifact = well_dict[well]
+                value_field: str = udf_vf_dict[udf_name]
                 value: Any = sample.get(value_field)
                 if not value:
                     error_msg.append("Some samples in the file had missing values.")
@@ -76,34 +103,20 @@ def set_udfs_from_file(
 
 
 def set_udfs(
-    well_fields: List[str],
-    udf_vf_dict: Dict[str, str],
+    param_dict: Dict[str, Dict[str, Dict[str, str]]],
     well_dict: dict,
-    file_placeholders: List[str],
-    local_files: Optional[List[str]],
-    process: Process,
 ) -> None:
     """Loop through each given file and parse out the given values which are then set to their corresponding UDFs."""
-    if local_files:
-        files: List[str] = local_files
-    else:
-        files: List[str] = get_file_placeholder_paths(
-            placeholder_names=file_placeholders, process=process
-        )
-    if len(well_fields) != len(files):
-        raise ArgumentError(f"The number of files to read  and file value fields must be the same.")
 
-    file_well_list: zip = zip(files, well_fields)
     error_message: List[str] = []
 
-    for file_tuple in file_well_list:
-        file: str = file_tuple[0]
-        well_field: str = file_tuple[1]
+    for file in param_dict.keys():
+        well_field: str = param_dict[file]["Well Name"]
         if not Path(file).is_file():
             raise MissingFileError(f"No such file: {file}")
         error_message += set_udfs_from_file(
             well_field=well_field,
-            udf_vf_dict=udf_vf_dict,
+            udf_vf_dict=param_dict[file]["UDF"],
             well_dict=well_dict,
             result_file=Path(file),
         )
@@ -136,15 +149,21 @@ def csv_well_to_udf(
     process: Process = ctx.obj["process"]
 
     try:
+        if local_files:
+            files: List[str] = list(local_files)
+        else:
+            files: List[str] = get_file_placeholder_paths(
+                placeholder_names=list(files), process=process
+            )
+
         well_dict: Dict[str, Artifact] = create_well_dict(process=process, input_flag=input)
-        udf_vf_dict: Dict[str, str] = make_udf_dict(udfs=udfs, value_fields=value_fields)
+        param_dict: Dict[str, Dict[str, Dict[str, str]]] = make_parameter_dict(
+            udfs=udfs, value_fields=value_fields, files=files, well_fields=well_fields
+        )
+        print(param_dict)
         set_udfs(
-            well_fields=list(well_fields),
-            udf_vf_dict=udf_vf_dict,
+            param_dict=param_dict,
             well_dict=well_dict,
-            file_placeholders=list(files),
-            local_files=list(local_files),
-            process=process,
         )
         click.echo("The UDFs were successfully populated.")
     except LimsError as e:
