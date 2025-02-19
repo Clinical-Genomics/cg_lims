@@ -75,7 +75,10 @@ def set_run_udfs(client: SmrtLinkClient, process: Process) -> None:
     run_dict: Dict = get_smrt_link_run(client=client, run_name=run_name)
 
     for udf_name, json_field in SMRT_LINK_RUN_KEYS.items():
-        process.udf[udf_name] = get_value_from_dict(run_dict=run_dict, key=json_field)
+        value: str = get_value_from_dict(run_dict=run_dict, key=json_field)
+        if not value:
+            continue
+        process.udf[udf_name] = value
 
     process.udf["SMRT Link Run"] = create_run_link(run_dict=run_dict, client=client)
     process.put()
