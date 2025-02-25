@@ -4,7 +4,7 @@ from enum import Enum
 from typing import Dict, List, Literal, Optional, Set, Tuple
 
 from cg_lims.exceptions import FileError, InvalidValueError, MissingArtifactError
-from cg_lims.get.fields import get_artifact_well, get_quantit_artifact_well
+from cg_lims.get.fields import get_alternative_artifact_well, get_artifact_well
 from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
 
@@ -270,7 +270,7 @@ def create_well_dict(
         if native_well_format:
             well: str = source_artifact.location[1]
         elif quantit_well_format:
-            well: str = get_quantit_artifact_well(artifact=source_artifact)
+            well: str = get_alternative_artifact_well(artifact=source_artifact)
         else:
             well: str = get_artifact_well(artifact=source_artifact)
         if well in well_dict.keys():
