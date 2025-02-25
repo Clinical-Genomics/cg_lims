@@ -1,12 +1,12 @@
 import logging
 from typing import List
 
+from cg_lims.clients.cg.models import SampleLaneSequencingMetrics
 from cg_lims.clients.cg.status_db_api import StatusDBAPI
 from cg_lims.EPPs.qc.models import SampleLane, SampleLaneSet
 from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
 from cg_lims.exceptions import MissingSampleError
 from cg_lims.get.samples import is_negative_control
-from cg_lims.models.sample_lane_sequencing_metrics import SampleLaneSequencingMetrics
 from genologics.entities import Sample
 from genologics.lims import Lims
 
