@@ -73,7 +73,8 @@ class StatusDBAPI:
         return [SampleLaneSequencingMetrics.model_validate(metric) for metric in metrics_data]
 
     def get_pacbio_sequencing_run_from_run_id(self, run_id: str) -> List[PacbioSequencingRun]:
-        """"""
+        """API function for fetching PacBio sequencing runs from StatusDB.
+        Returns a list of PacbioSequencingRun objects given a run ID."""
         runs_endpoint: str = f"/pacbio_sequencing_run/{run_id}"
         runs_data: Dict[str, List[Dict]] = self._get(endpoint=runs_endpoint)
         return [PacbioSequencingRun.model_validate(run) for run in runs_data["runs"]]
@@ -81,7 +82,8 @@ class StatusDBAPI:
     def get_pacbio_sequencing_metrics(
         self, sample_id: Optional[str] = None, smrt_cell_id: Optional[str] = None
     ) -> List[PacbioSampleSequencingMetrics]:
-        """"""
+        """API function for fetching PacBio sample sequencing metrics from StatusDB.
+        Returns a list of PacbioSampleSequencingMetrics objects."""
         query_params: Dict[str, str] = {}
         if sample_id:
             query_params["sample_id"] = sample_id
@@ -89,7 +91,7 @@ class StatusDBAPI:
             query_params["smrt_cell_id"] = smrt_cell_id
 
         query_string: str = f"?{urlencode(query=query_params)}" if query_params else ""
-        metrics_endpoint = f"/pacbio_sample_sequencing_metrics{query_string}"
+        metrics_endpoint: str = f"/pacbio_sample_sequencing_metrics{query_string}"
         metrics_data: Dict[str, List[Dict]] = self._get(endpoint=metrics_endpoint)
         return [
             PacbioSampleSequencingMetrics.model_validate(metric)
