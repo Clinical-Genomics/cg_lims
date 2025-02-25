@@ -14,7 +14,7 @@ LOG = logging.getLogger(__name__)
 
 
 def get_run_id(udf_name: str, process: Process) -> str:
-    """"""
+    """Return the Run ID of the process."""
     try:
         return process.udf[udf_name]
     except KeyError:
@@ -22,7 +22,7 @@ def get_run_id(udf_name: str, process: Process) -> str:
 
 
 def get_plate_number(artifact: Artifact) -> int:
-    """"""
+    """Return the run plate number for the given artifact."""
     parent_process: Process = artifact.parent_process
     plate_name: str = artifact.container.name
     if parent_process.udf.get("Plate 1") and parent_process.udf.get("Plate 1") == plate_name:
@@ -37,7 +37,7 @@ def get_plate_number(artifact: Artifact) -> int:
 
 
 def create_artifact_dict(artifacts: List[Artifact]) -> Dict[int, Dict[str, Artifact]]:
-    """"""
+    """Build and return a dictionary detailing the plate number and well position for each artifact in the step."""
     artifact_dict: Dict[int, Dict[str, Artifact]] = {1: {}, 2: {}}
     for artifact in artifacts:
         plate_number: int = get_plate_number(artifact=artifact)
@@ -49,14 +49,13 @@ def create_artifact_dict(artifacts: List[Artifact]) -> Dict[int, Dict[str, Artif
 def find_matching_artifact(
     metric: PacbioSequencingRun, artifact_dict: Dict[int, Dict[str, Artifact]]
 ) -> Artifact:
-    """"""
+    """Return the matching artifact given a specific PacbioSequencingRun
+    metric and the artifact dictionary of the step."""
     well: str = metric.well
     plate_number: int = metric.plate
     try:
         return artifact_dict[plate_number][well]
     except KeyError:
-        print(metric)
-        print(artifact_dict)
         raise MissingArtifactError(
             f"Can't find a matching artifact in the step for plate {plate_number}, well {well}!"
         )
@@ -65,7 +64,7 @@ def find_matching_artifact(
 def set_smrt_cell_metrics(
     metrics: List[PacbioSequencingRun], artifact_dict: Dict[int, Dict[str, Artifact]]
 ) -> None:
-    """"""
+    """Set the metrics-related artifact UDFs."""
     for metric in metrics:
         artifact: Artifact = find_matching_artifact(metric=metric, artifact_dict=artifact_dict)
         artifact.udf["SMRT Cell ID"] = metric.internal_id
@@ -79,7 +78,7 @@ def set_smrt_cell_metrics(
 @click.command()
 @click.pass_context
 def smrt_cell_metrics(ctx):
-    """"""
+    """Script for fetching SMRT Cell level sequencing metrics and IDs."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
@@ -95,6 +94,6 @@ def smrt_cell_metrics(ctx):
         )
         set_smrt_cell_metrics(metrics=smrt_cell_values, artifact_dict=artifact_dict)
 
-        click.echo("The UDFs were successfully populated.")
+        click.echo("SMRT Cell information was successfully fetched.")
     except LimsError as e:
         sys.exit(e.message)
