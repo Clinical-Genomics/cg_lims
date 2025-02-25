@@ -160,7 +160,6 @@ def csv_well_to_udf(
         param_dict: Dict[str, Dict[str, Dict[str, str]]] = make_parameter_dict(
             udfs=udfs, value_fields=value_fields, files=files, well_fields=well_fields
         )
-        print(param_dict)
         set_udfs(
             param_dict=param_dict,
             well_dict=well_dict,
