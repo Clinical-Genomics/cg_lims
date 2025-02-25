@@ -5,7 +5,12 @@ from typing import Dict, List
 import click
 from cg_lims.clients.cg.models import PacbioSequencingRun
 from cg_lims.clients.cg.status_db_api import StatusDBAPI
-from cg_lims.exceptions import LimsError, MissingArtifactError, MissingUDFsError
+from cg_lims.exceptions import (
+    LimsError,
+    MissingArtifactError,
+    MissingCgFieldError,
+    MissingUDFsError,
+)
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.fields import get_alternative_artifact_well
 from genologics.entities import Artifact, Process
@@ -92,6 +97,11 @@ def smrt_cell_metrics(ctx):
         smrt_cell_values: List[PacbioSequencingRun] = (
             status_db_api.get_pacbio_sequencing_run_from_run_id(run_id=run_id)
         )
+        if len(artifacts) != len(smrt_cell_values):
+            raise MissingCgFieldError(
+                f"There is a mismatch between the amount of SMRT Cells in the step ({len(artifacts)}) and StatusDB "
+                f"({len(smrt_cell_values)})! Please make sure that the post-processing for the run went as expected."
+            )
         set_smrt_cell_metrics(metrics=smrt_cell_values, artifact_dict=artifact_dict)
 
         click.echo("SMRT Cell information was successfully fetched.")
