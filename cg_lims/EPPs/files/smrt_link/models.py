@@ -6,7 +6,7 @@ import pandas as pd
 from cg_lims.enums import StrEnum
 from cg_lims.exceptions import MissingUDFsError
 from cg_lims.get.artifacts import get_artifacts, get_non_pooled_artifacts
-from cg_lims.get.fields import get_smrtbell_adapter_name
+from cg_lims.get.fields import get_alternative_artifact_well, get_smrtbell_adapter_name
 from genologics.lims import Artifact, Container, Process
 
 LOG = logging.getLogger(__name__)
@@ -166,15 +166,10 @@ def _build_plate_dict(process: Process) -> Dict[Any, Any]:
     return plate_dict
 
 
-def _convert_well(well: str) -> str:
-    """Convert a well from the format in Clarity LIMS to the one used in SMRT Link. For example: A:1 -> A01"""
-    return well.replace(":", "0")
-
-
 def _get_smrt_cell_well(pool: Artifact, plate_dict: Dict[Any, Any]) -> str:
     """Return the SMRT Cell well position of a pool."""
     plate: Container = pool.container
-    well: str = _convert_well(well=pool.location[1])
+    well: str = get_alternative_artifact_well(artifact=pool)
     return f"{plate_dict[plate.name]}_{well}"
 
 
