@@ -59,14 +59,14 @@ def get_processing_time(sample: Sample) -> Optional[dt.datetime]:
 
 
 def get_artifact_well(artifact: Artifact) -> str:
-    """Parsing out the well position from LocationDescriptor"""
+    """Parse out the well position from LocationDescriptor"""
 
     location: Tuple = artifact.location
     return location[1].replace(":", "")
 
 
-def get_quantit_artifact_well(artifact: Artifact) -> str:
-    """Parsing out the well position from LocationDescriptor"""
+def get_alternative_artifact_well(artifact: Artifact) -> str:
+    """Parse out the well position from LocationDescriptor and converts it to the format: A:1 -> A01"""
 
     col, row = artifact.location[1].split(":")
     if int(row) < 10:
