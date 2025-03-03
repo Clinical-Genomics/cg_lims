@@ -7,8 +7,14 @@ from typing import Callable, Dict, List
 import pytest
 from cg_lims.clients.cg.status_db_api import StatusDBAPI
 from cg_lims.clients.cg.token_manager import TokenManager
-from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
-from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
+from cg_lims.EPPs.qc.sequencing_artifact_manager import (
+    SequencingArtifactManager,
+    SmrtCellSampleManager,
+)
+from cg_lims.EPPs.qc.sequencing_quality_checker import (
+    PacBioSequencingQualityChecker,
+    SequencingQualityChecker,
+)
 from click.testing import CliRunner
 from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
@@ -447,6 +453,11 @@ def pacbio_smrt_cell_sample_ids() -> Dict[str, List[str]]:
 
 
 @pytest.fixture
+def missing_pacbio_sample_id(pacbio_smrt_cell_sample_ids: Dict[str, List[str]]) -> str:
+    return next(iter(pacbio_smrt_cell_sample_ids.values()))[0]
+
+
+@pytest.fixture
 def missing_smrt_cell_id(pacbio_smrt_cell_sample_ids: Dict[str, List[str]]) -> str:
     return next(iter(pacbio_smrt_cell_sample_ids))
 
@@ -485,6 +496,17 @@ def pacbio_metrics_json(pacbio_smrt_cell_sample_ids) -> Dict[str, List[Dict]]:
 
 
 @pytest.fixture
+def pacbio_metrics_all_failing_json(pacbio_smrt_cell_sample_ids) -> Dict[str, List[Dict]]:
+    return generate_pacbio_metrics_json(
+        smrt_cell_samples=pacbio_smrt_cell_sample_ids,
+        hifi_mean_read_length=12000,
+        hifi_median_read_quality="Q13",
+        hifi_reads=120000,
+        hifi_yield=0,
+    )
+
+
+@pytest.fixture
 def pacbio_metrics_missing_sample_json(pacbio_smrt_cell_sample_ids) -> Dict[str, List[Dict]]:
     metrics: Dict[str, List[Dict]] = generate_pacbio_metrics_json(
         smrt_cell_samples=pacbio_smrt_cell_sample_ids,
@@ -511,16 +533,23 @@ def pacbio_metrics_missing_smrt_cell_json(
         hifi_yield=45000000,
     )
 
+    missing_cell_metrics: List[Dict] = []
     for metric in metrics["metrics"]:
-        if metric["smrt_cell_id"] == missing_smrt_cell_id:
-            metrics["metrics"].remove(metric)
+        if metric["smrt_cell_id"] != missing_smrt_cell_id:
+            missing_cell_metrics.append(metric)
+    metrics["metrics"] = missing_cell_metrics
 
     return metrics
 
 
 @pytest.fixture
-def pacbio_passing_metrics_response(pacbio_metrics_missing_samples_json, mock_response) -> Mock:
-    return mock_response(pacbio_metrics_missing_samples_json)
+def pacbio_passing_metrics_response(pacbio_metrics_json, mock_response) -> Mock:
+    return mock_response(pacbio_metrics_json)
+
+
+@pytest.fixture
+def pacbio_failing_metrics_response(pacbio_metrics_all_failing_json, mock_response) -> Mock:
+    return mock_response(pacbio_metrics_all_failing_json)
 
 
 @pytest.fixture
@@ -535,3 +564,17 @@ def pacbio_missing_smrt_cell_metrics_response(
     pacbio_metrics_missing_smrt_cell_json, mock_response
 ) -> Mock:
     return mock_response(pacbio_metrics_missing_smrt_cell_json)
+
+
+@pytest.fixture
+def pacbio_sequencing_quality_checker(
+    lims: Lims,
+    status_db_api_client: StatusDBAPI,
+) -> PacBioSequencingQualityChecker:
+    server("revio_demux_run")
+    process: Process = Process(lims=lims, id="24-558673")
+    artifact_manager: SmrtCellSampleManager = SmrtCellSampleManager(process=process, lims=lims)
+
+    return PacBioSequencingQualityChecker(
+        cg_api_client=status_db_api_client, artifact_manager=artifact_manager
+    )
