@@ -2,8 +2,8 @@ from pathlib import Path
 from typing import List
 
 import click
-from genologics.entities import Entity
-from genologics.lims import Process
+from genologics.entities import Entity, Process
+from genologics.lims import Lims
 from pydantic.v1 import BaseModel
 
 
@@ -51,17 +51,14 @@ def build_file_structure(base_dir: str) -> ProcessFixure:
 
 def add_file(entity: Entity, entity_dir: Path) -> None:
     new_file = Path(f"{entity_dir.absolute()}/{entity.id}.xml")
+    lims: Lims = entity.lims
+    base_uri: str = lims.baseuri
     with open(new_file.absolute(), "wb") as file:
         file.write(entity.xml())
     replace_str(
         file=new_file,
-        replace="clinical-lims-stage.scilifelab.se",
-        replace_with="127.0.0.1:8000",
-    )
-    replace_str(
-        file=new_file,
-        replace="https:",
-        replace_with="http:",
+        replace=base_uri,
+        replace_with="http://127.0.0.1:8000/",
     )
 
 
@@ -76,8 +73,8 @@ def add_entities(entities: List[Entity], entity_dir: Path):
 @click.option("--test_name")
 @click.pass_context
 def make_fixture(ctx, process: str, test_name: str):
-    lims = ctx.obj["lims"]
-    process = Process(lims=lims, id=process)
+    lims: Lims = ctx.obj["lims"]
+    process: Process = Process(lims=lims, id=process)
     process.get()
     fixture_dir: ProcessFixure = build_file_structure(base_dir=test_name)
     add_file(entity=process, entity_dir=fixture_dir.processes)
