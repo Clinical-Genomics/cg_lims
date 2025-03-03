@@ -31,7 +31,7 @@ def get_artifact_lane(artifact: Artifact) -> int:
 
 
 def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
-    lane_sample_artifacts = set()
+    lane_sample_artifacts: Set = set()
 
     for input_map, output_map in process.input_output_maps:
         try:
@@ -45,6 +45,25 @@ def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
             continue
 
     return list(lane_sample_artifacts)
+
+
+def get_smrt_cell_sample_artifacts(
+    process: Process, smrt_cell_udf: str
+) -> List[Tuple[str, Artifact]]:
+    smrt_cell_sample_artifacts: Set = set()
+
+    for input_map, output_map in process.input_output_maps:
+        try:
+            if is_output_type_per_reagent(output_map):
+                output_artifact: Artifact = get_artifact_from_map(output_map)
+                input_artifact: Artifact = get_artifact_from_map(input_map)
+                smrt_cell_id: str = input_artifact.udf.get(smrt_cell_udf)
+
+                smrt_cell_sample_artifacts.add((smrt_cell_id, output_artifact))
+        except KeyError:
+            continue
+
+    return list(smrt_cell_sample_artifacts)
 
 
 def is_output_type_per_reagent(output_map: Dict) -> bool:
