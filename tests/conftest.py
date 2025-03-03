@@ -251,7 +251,7 @@ def mock_response() -> Callable:
     return _mock_response
 
 
-def generate_metrics_json(
+def generate_illumina_metrics_json(
     flow_cell_name: str,
     sample_ids: List[str],
     lanes: int,
@@ -277,7 +277,7 @@ def generate_metrics_json(
 def novaseq_metrics_passing_thresholds_json(
     novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
 ) -> List[Dict]:
-    return generate_metrics_json(
+    return generate_illumina_metrics_json(
         flow_cell_name=novaseq_flow_cell_name,
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
@@ -290,7 +290,7 @@ def novaseq_metrics_passing_thresholds_json(
 def novaseq_metrics_failing_q30_threshold_json(
     novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
 ) -> List[Dict]:
-    return generate_metrics_json(
+    return generate_illumina_metrics_json(
         flow_cell_name=novaseq_flow_cell_name,
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
@@ -303,7 +303,7 @@ def novaseq_metrics_failing_q30_threshold_json(
 def novaseq_metrics_failing_reads_json(
     novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
 ) -> List[Dict]:
-    return generate_metrics_json(
+    return generate_illumina_metrics_json(
         flow_cell_name=novaseq_flow_cell_name,
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
@@ -316,7 +316,7 @@ def novaseq_metrics_failing_reads_json(
 def novaseq_metrics_two_failing(
     novaseq_flow_cell_name, novaseq_sample_ids, novaseq_lanes
 ) -> List[Dict]:
-    metrics = generate_metrics_json(
+    metrics = generate_illumina_metrics_json(
         flow_cell_name=novaseq_flow_cell_name,
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
@@ -353,7 +353,7 @@ def novaseq_metrics_missing_for_sample_in_lane(
     missing_sample_id,
     missing_lane,
 ) -> List[Dict]:
-    metrics: List[Dict] = generate_metrics_json(
+    metrics: List[Dict] = generate_illumina_metrics_json(
         flow_cell_name=novaseq_flow_cell_name,
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
@@ -378,7 +378,7 @@ def novaseq_missing_sample(
 ) -> List[Dict]:
     novaseq_sample_ids.append(sample_id_missing_in_lims)
 
-    metrics: List[Dict] = generate_metrics_json(
+    metrics: List[Dict] = generate_illumina_metrics_json(
         flow_cell_name=novaseq_flow_cell_name,
         sample_ids=novaseq_sample_ids,
         lanes=novaseq_lanes,
@@ -433,3 +433,105 @@ def sequencing_quality_checker(
     return SequencingQualityChecker(
         cg_api_client=status_db_api_client, artifact_manager=artifact_manager
     )
+
+
+@pytest.fixture
+def pacbio_smrt_cell_sample_ids() -> Dict[str, List[str]]:
+    return {
+        "EA157507": ["STG15780A2", "STG15780A6", "STG15780A1"],
+        "EA157514": ["STG15780A2", "STG15780A6", "STG15780A1"],
+        "EA121040": ["STG15780A5", "STG15780A4"],
+        "EA157515": ["STG15780A5", "STG15780A4"],
+        "EA157532": ["STG15780A3"],
+    }
+
+
+@pytest.fixture
+def missing_smrt_cell_id(pacbio_smrt_cell_sample_ids: Dict[str, List[str]]) -> str:
+    return next(iter(pacbio_smrt_cell_sample_ids))
+
+
+def generate_pacbio_metrics_json(
+    smrt_cell_samples: Dict[str, List[str]],
+    hifi_mean_read_length: int,
+    hifi_median_read_quality: str,
+    hifi_reads: int,
+    hifi_yield: int,
+) -> Dict[str, List[Dict]]:
+    metrics: Dict[str, List[Dict]] = {"metrics": []}
+    for smrt_cell_id, sample_ids in smrt_cell_samples.items():
+        for sample_id in sample_ids:
+            metric = {
+                "hifi_mean_read_length": hifi_mean_read_length,
+                "hifi_median_read_quality": hifi_median_read_quality,
+                "hifi_reads": hifi_reads,
+                "hifi_yield": hifi_yield,
+                "sample_id": sample_id,
+                "smrt_cell_id": smrt_cell_id,
+            }
+            metrics["metrics"].append(metric)
+    return metrics
+
+
+@pytest.fixture
+def pacbio_metrics_json(pacbio_smrt_cell_sample_ids) -> Dict[str, List[Dict]]:
+    return generate_pacbio_metrics_json(
+        smrt_cell_samples=pacbio_smrt_cell_sample_ids,
+        hifi_mean_read_length=21000,
+        hifi_median_read_quality="Q45",
+        hifi_reads=500000,
+        hifi_yield=45000000,
+    )
+
+
+@pytest.fixture
+def pacbio_metrics_missing_sample_json(pacbio_smrt_cell_sample_ids) -> Dict[str, List[Dict]]:
+    metrics: Dict[str, List[Dict]] = generate_pacbio_metrics_json(
+        smrt_cell_samples=pacbio_smrt_cell_sample_ids,
+        hifi_mean_read_length=21000,
+        hifi_median_read_quality="Q45",
+        hifi_reads=500000,
+        hifi_yield=45000000,
+    )
+
+    metrics["metrics"].pop(0)
+
+    return metrics
+
+
+@pytest.fixture
+def pacbio_metrics_missing_smrt_cell_json(
+    pacbio_smrt_cell_sample_ids, missing_smrt_cell_id
+) -> Dict[str, List[Dict]]:
+    metrics: Dict[str, List[Dict]] = generate_pacbio_metrics_json(
+        smrt_cell_samples=pacbio_smrt_cell_sample_ids,
+        hifi_mean_read_length=21000,
+        hifi_median_read_quality="Q45",
+        hifi_reads=500000,
+        hifi_yield=45000000,
+    )
+
+    for metric in metrics["metrics"]:
+        if metric["smrt_cell_id"] == missing_smrt_cell_id:
+            metrics["metrics"].remove(metric)
+
+    return metrics
+
+
+@pytest.fixture
+def pacbio_passing_metrics_response(pacbio_metrics_missing_samples_json, mock_response) -> Mock:
+    return mock_response(pacbio_metrics_missing_samples_json)
+
+
+@pytest.fixture
+def pacbio_missing_sample_metrics_response(
+    pacbio_metrics_missing_sample_json, mock_response
+) -> Mock:
+    return mock_response(pacbio_metrics_missing_sample_json)
+
+
+@pytest.fixture
+def pacbio_missing_smrt_cell_metrics_response(
+    pacbio_metrics_missing_smrt_cell_json, mock_response
+) -> Mock:
+    return mock_response(pacbio_metrics_missing_smrt_cell_json)

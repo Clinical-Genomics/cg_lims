@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" limsid="92-4880260" uri="http://127.0.0.1:8000/api/v2/artifacts/92-4880260?state=3941935">
+    <name>EPP Log</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process limsid="24-558673" uri="http://127.0.0.1:8000/api/v2/processes/24-558673" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample limsid="STG15780A1" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A1" />
+    <sample limsid="STG15780A2" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A2" />
+    <sample limsid="STG15780A3" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A3" />
+    <sample limsid="STG15780A4" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A4" />
+    <sample limsid="STG15780A5" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A5" />
+    <sample limsid="STG15780A6" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A6" />
+    <reagent-label name="1_A01 bc2001 (ATCGTGCGACGAGTAT)" />
+    <reagent-label name="2_B01 bc2002 (TGCATGTCATGAGTAT)" />
+    <reagent-label name="4_D01 bc2004 (TGCAGTGCTCGAGTAT)" />
+    <reagent-label name="3_C01 bc2003 (ACGAGTGCTCGAGTAT)" />
+    <reagent-label name="6_F01 bc2006 (CATGCGATCTGAGTAT)" />
+    <reagent-label name="5_E01 bc2005 (TGACTCGATCGAGTAT)" />
+    <workflow-stages />
+</art:artifact>
