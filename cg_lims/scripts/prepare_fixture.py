@@ -75,7 +75,7 @@ def add_entities(entities: List[Entity], entity_dir: Path):
 @click.option("--process")
 @click.option("--test_name")
 @click.pass_context
-def make_fixure(ctx, process: str, test_name: str):
+def make_fixture(ctx, process: str, test_name: str):
     lims = ctx.obj["lims"]
     process = Process(lims=lims, id=process)
     process.get()
