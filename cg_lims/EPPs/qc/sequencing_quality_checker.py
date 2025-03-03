@@ -3,16 +3,7 @@ from typing import List
 
 from cg_lims.clients.cg.models import PacbioSampleSequencingMetrics, SampleLaneSequencingMetrics
 from cg_lims.clients.cg.status_db_api import StatusDBAPI
-from cg_lims.EPPs.qc.models import (
-    TEST_FIXTURE,
-    TEST_FIXTURE_EXTRA_SAMPLES,
-    TEST_FIXTURE_MISSING_CELLS,
-    TEST_FIXTURE_MISSING_SAMPLES,
-    CellSample,
-    CellSampleSet,
-    SampleLane,
-    SampleLaneSet,
-)
+from cg_lims.EPPs.qc.models import CellSample, CellSampleSet, SampleLane, SampleLaneSet
 from cg_lims.EPPs.qc.sequencing_artifact_manager import (
     SequencingArtifactManager,
     SmrtCellSampleManager,
@@ -193,13 +184,9 @@ class PacBioSequencingQualityChecker:
     def _get_sequencing_metrics(self) -> List[PacbioSampleSequencingMetrics]:
         metrics: List[PacbioSampleSequencingMetrics] = []
         for cell_id in self.smrt_cells:
-            # cell_metrics: List[PacbioSampleSequencingMetrics] = (
-            #    self.cg_api_client.get_pacbio_sequencing_metrics(smrt_cell_id=cell_id)
-            # )
-            try:
-                cell_metrics = TEST_FIXTURE[cell_id]
-            except KeyError:
-                cell_metrics = []
+            cell_metrics: List[PacbioSampleSequencingMetrics] = (
+                self.cg_api_client.get_pacbio_sequencing_metrics(smrt_cell_id=cell_id)
+            )
             metrics.extend(cell_metrics)
         self.metrics = metrics
         return metrics
