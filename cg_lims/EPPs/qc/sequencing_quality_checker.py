@@ -183,11 +183,10 @@ class PacBioSequencingQualityChecker:
 
     def _get_sequencing_metrics(self) -> List[PacbioSampleSequencingMetrics]:
         metrics: List[PacbioSampleSequencingMetrics] = []
-        for cell_id in self.smrt_cells:
-            cell_metrics: List[PacbioSampleSequencingMetrics] = (
-                self.cg_api_client.get_pacbio_sequencing_metrics(smrt_cell_id=cell_id)
-            )
-            metrics.extend(cell_metrics)
+        cell_metrics: List[PacbioSampleSequencingMetrics] = (
+            self.cg_api_client.get_pacbio_sequencing_metrics(smrt_cell_ids=self.smrt_cells)
+        )
+        metrics.extend(cell_metrics)
         self.metrics = metrics
         return metrics
 
