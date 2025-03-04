@@ -1,13 +1,13 @@
 from pathlib import Path
-from typing import List
+from typing import List, Optional, Set
 
 import click
-from genologics.entities import Entity, Process
+from genologics.entities import Artifact, Container, Containertype, Entity, Process, Sample
 from genologics.lims import Lims
 from pydantic.v1 import BaseModel
 
 
-class ProcessFixure(BaseModel):
+class ProcessFixture(BaseModel):
     samples: Path
     artifacts: Path
     containers: Path
@@ -20,26 +20,26 @@ def replace_str(file: Path, replace: str, replace_with: str) -> None:
     file.write_text(file.read_text().replace(replace, replace_with))
 
 
-def build_file_structure(base_dir: str) -> ProcessFixure:
-    processes = Path(f"{base_dir}/processes/")
+def build_file_structure(base_dir: str) -> ProcessFixture:
+    processes: Path = Path(f"{base_dir}/processes/")
     if not processes.exists():
         processes.mkdir(parents=True)
-    processtypes = Path(f"{base_dir}/processtypes/")
+    processtypes: Path = Path(f"{base_dir}/processtypes/")
     if not processtypes.exists():
         processtypes.mkdir(parents=True)
-    artifacts = Path(f"{base_dir}/artifacts/")
+    artifacts: Path = Path(f"{base_dir}/artifacts/")
     if not artifacts.exists():
         artifacts.mkdir(parents=True)
-    containers = Path(f"{base_dir}/containers/")
+    containers: Path = Path(f"{base_dir}/containers/")
     if not containers.exists():
         containers.mkdir(parents=True)
-    containertypes = Path(f"{base_dir}/containertypes/")
+    containertypes: Path = Path(f"{base_dir}/containertypes/")
     if not containertypes.exists():
         containertypes.mkdir(parents=True)
-    samples = Path(f"{base_dir}/samples/")
+    samples: Path = Path(f"{base_dir}/samples/")
     if not samples.exists():
         samples.mkdir(parents=True)
-    return ProcessFixure(
+    return ProcessFixture(
         samples=samples,
         processes=processes,
         artifacts=artifacts,
@@ -50,7 +50,7 @@ def build_file_structure(base_dir: str) -> ProcessFixure:
 
 
 def add_file(entity: Entity, entity_dir: Path) -> None:
-    new_file = Path(f"{entity_dir.absolute()}/{entity.id}.xml")
+    new_file: Path = Path(f"{entity_dir.absolute()}/{entity.id}.xml")
     lims: Lims = entity.lims
     base_uri: str = lims.baseuri
     with open(new_file.absolute(), "wb") as file:
@@ -76,18 +76,18 @@ def make_fixture(ctx, process: str, test_name: str):
     lims: Lims = ctx.obj["lims"]
     process: Process = Process(lims=lims, id=process)
     process.get()
-    fixture_dir: ProcessFixure = build_file_structure(base_dir=test_name)
+    fixture_dir: ProcessFixture = build_file_structure(base_dir=test_name)
     add_file(entity=process, entity_dir=fixture_dir.processes)
     add_file(entity=process.type, entity_dir=fixture_dir.processtypes)
-    artifacts = process.all_inputs() + process.all_outputs()
+    artifacts: List[Artifact] = process.all_inputs() + process.all_outputs()
     add_entities(entities=artifacts, entity_dir=fixture_dir.artifacts)
-    samples = []
+    samples: List[Sample] = []
     for artifact in artifacts:
         samples += artifact.samples
     add_entities(entities=samples, entity_dir=fixture_dir.samples)
-    containers = {artifact.location[0] for artifact in artifacts}
+    containers: Set[Optional[Container]] = {artifact.location[0] for artifact in artifacts}
     if None in containers:
         containers.remove(None)
     add_entities(entities=list(containers), entity_dir=fixture_dir.containers)
-    container_types = list({container.type for container in containers})
+    container_types: List[Containertype] = list({container.type for container in containers})
     add_entities(entities=container_types, entity_dir=fixture_dir.containertypes)
