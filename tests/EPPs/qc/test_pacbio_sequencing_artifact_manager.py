@@ -1,8 +1,8 @@
 from typing import List, Optional, Set, Tuple
 
 from cg_lims.EPPs.qc.sequencing_artifact_manager import (
+    PacbioSequencingArtifactManager,
     SmrtCellSampleArtifacts,
-    SmrtCellSampleManager,
 )
 from cg_lims.get.artifacts import get_smrt_cell_sample_artifacts
 from cg_lims.get.fields import get_artifact_sample_id
@@ -74,7 +74,7 @@ def test_updating_samples(lims: Lims):
 
     # GIVEN a PacBio sequencing artifact manager
     process: Process = Process(lims=lims, id="24-558673")
-    artifact_manager = SmrtCellSampleManager(process=process, lims=lims)
+    artifact_manager = PacbioSequencingArtifactManager(process=process, lims=lims)
 
     # GIVEN all sample artifacts mapped to their SMRT Cells in the process
     cell_samples: List[Tuple[str, Artifact]] = get_smrt_cell_sample_artifacts(

@@ -3,7 +3,7 @@ import sys
 
 import click
 from cg_lims.clients.cg.status_db_api import StatusDBAPI
-from cg_lims.EPPs.qc.sequencing_artifact_manager import SmrtCellSampleManager
+from cg_lims.EPPs.qc.sequencing_artifact_manager import PacbioSequencingArtifactManager
 from cg_lims.EPPs.qc.sequencing_quality_checker import PacBioSequencingQualityChecker
 from cg_lims.exceptions import LimsError
 from genologics.entities import Process
@@ -24,7 +24,9 @@ def pacbio_sample_sequencing_metrics(ctx):
     status_db_api: StatusDBAPI = ctx.obj["status_db"]
 
     try:
-        artifact_manager: SmrtCellSampleManager = SmrtCellSampleManager(process=process, lims=lims)
+        artifact_manager: PacbioSequencingArtifactManager = PacbioSequencingArtifactManager(
+            process=process, lims=lims
+        )
 
         quality_checker: PacBioSequencingQualityChecker = PacBioSequencingQualityChecker(
             artifact_manager=artifact_manager,

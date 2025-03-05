@@ -37,7 +37,7 @@ class SampleLaneArtifacts:
         }
 
 
-class SequencingArtifactManager:
+class IlluminaSequencingArtifactManager:
     """
     Responsible for providing a high level interface for updating sample artifacts
     with sequencing metrics and retrieving the flow cell name and q30 threshold.
@@ -125,7 +125,7 @@ class SmrtCellSampleArtifacts:
         return set(cell_list)
 
 
-class SmrtCellSampleManager:
+class PacbioSequencingArtifactManager:
     """
     Responsible for providing a high level interface for updating sample artifacts
     with sequencing metrics and retrieving the flow cell name and q30 threshold.

@@ -8,12 +8,12 @@ import pytest
 from cg_lims.clients.cg.status_db_api import StatusDBAPI
 from cg_lims.clients.cg.token_manager import TokenManager
 from cg_lims.EPPs.qc.sequencing_artifact_manager import (
-    SequencingArtifactManager,
-    SmrtCellSampleManager,
+    IlluminaSequencingArtifactManager,
+    PacbioSequencingArtifactManager,
 )
 from cg_lims.EPPs.qc.sequencing_quality_checker import (
+    IlluminaSequencingQualityChecker,
     PacBioSequencingQualityChecker,
-    SequencingQualityChecker,
 )
 from click.testing import CliRunner
 from genologics.entities import Artifact, Process, Sample
@@ -433,10 +433,12 @@ def sequencing_quality_checker(
     lims_process_with_novaseq_data: Process,
     lims: Lims,
     status_db_api_client: StatusDBAPI,
-) -> SequencingQualityChecker:
-    artifact_manager = SequencingArtifactManager(process=lims_process_with_novaseq_data, lims=lims)
+) -> IlluminaSequencingQualityChecker:
+    artifact_manager = IlluminaSequencingArtifactManager(
+        process=lims_process_with_novaseq_data, lims=lims
+    )
 
-    return SequencingQualityChecker(
+    return IlluminaSequencingQualityChecker(
         cg_api_client=status_db_api_client, artifact_manager=artifact_manager
     )
 
@@ -573,7 +575,9 @@ def pacbio_sequencing_quality_checker(
 ) -> PacBioSequencingQualityChecker:
     server("revio_demux_run")
     process: Process = Process(lims=lims, id="24-558673")
-    artifact_manager: SmrtCellSampleManager = SmrtCellSampleManager(process=process, lims=lims)
+    artifact_manager: PacbioSequencingArtifactManager = PacbioSequencingArtifactManager(
+        process=process, lims=lims
+    )
 
     return PacBioSequencingQualityChecker(
         cg_api_client=status_db_api_client, artifact_manager=artifact_manager

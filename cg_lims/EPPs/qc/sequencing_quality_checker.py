@@ -5,8 +5,8 @@ from cg_lims.clients.cg.models import PacbioSampleSequencingMetrics, SampleLaneS
 from cg_lims.clients.cg.status_db_api import StatusDBAPI
 from cg_lims.EPPs.qc.models import CellSample, CellSampleSet, SampleLane, SampleLaneSet
 from cg_lims.EPPs.qc.sequencing_artifact_manager import (
-    SequencingArtifactManager,
-    SmrtCellSampleManager,
+    IlluminaSequencingArtifactManager,
+    PacbioSequencingArtifactManager,
 )
 from cg_lims.exceptions import MissingSampleError
 from cg_lims.get.samples import is_negative_control
@@ -24,15 +24,15 @@ MISSING_IN_LIMS_MSG = (
 MISSING_IN_METRICS_MSG = "No metrics were found for the following sample sequencing artifacts:"
 
 
-class SequencingQualityChecker:
+class IlluminaSequencingQualityChecker:
     """This class contains the logic for validating the sequencing quality of a flow cell."""
 
     READS_MIN_THRESHOLD = 1000
 
     def __init__(
-        self, cg_api_client: StatusDBAPI, artifact_manager: SequencingArtifactManager
+        self, cg_api_client: StatusDBAPI, artifact_manager: IlluminaSequencingArtifactManager
     ) -> None:
-        self.artifact_manager: SequencingArtifactManager = artifact_manager
+        self.artifact_manager: IlluminaSequencingArtifactManager = artifact_manager
         self.cg_api_client: StatusDBAPI = cg_api_client
 
         self.q30_threshold: int = self.artifact_manager.q30_threshold
@@ -174,8 +174,10 @@ class PacBioSequencingQualityChecker:
 
     YIELD_MIN_THRESHOLD = 10000
 
-    def __init__(self, cg_api_client: StatusDBAPI, artifact_manager: SmrtCellSampleManager) -> None:
-        self.artifact_manager: SmrtCellSampleManager = artifact_manager
+    def __init__(
+        self, cg_api_client: StatusDBAPI, artifact_manager: PacbioSequencingArtifactManager
+    ) -> None:
+        self.artifact_manager: PacbioSequencingArtifactManager = artifact_manager
         self.cg_api_client: StatusDBAPI = cg_api_client
 
         self.smrt_cells: List[str] = self.artifact_manager.get_cells_in_lims()
