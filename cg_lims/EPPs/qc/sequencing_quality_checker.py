@@ -166,6 +166,7 @@ class IlluminaSequencingQualityChecker:
         return " ".join(messages)
 
     def samples_failed_quality_control(self) -> bool:
+        """Return a boolean informing if the step contained any failed samples."""
         return self.failed_qc_count > 0
 
 
@@ -304,4 +305,5 @@ class PacBioSequencingQualityChecker:
         return " ".join(messages)
 
     def samples_failed_quality_control(self) -> bool:
+        """Return a boolean informing if the step contained any failed samples."""
         return self.failed_qc_count > 0

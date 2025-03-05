@@ -31,6 +31,7 @@ def get_artifact_lane(artifact: Artifact) -> int:
 
 
 def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
+    """Return a list of tuples (lane number, Artifact) detailing the artifacts on each lane in a BCL Convert step."""
     lane_sample_artifacts: Set = set()
 
     for input_map, output_map in process.input_output_maps:
@@ -50,6 +51,10 @@ def get_lane_sample_artifacts(process: Process) -> List[Tuple[int, Artifact]]:
 def get_smrt_cell_sample_artifacts(
     process: Process, smrt_cell_udf: str
 ) -> List[Tuple[str, Artifact]]:
+    """
+    Return a list of tuples (cell ID, Artifact) detailing the artifacts
+    on each SMRT Cell in a Demultiplex Revio Run step.
+    """
     smrt_cell_sample_artifacts: Set = set()
 
     for input_map, output_map in process.input_output_maps:
@@ -67,16 +72,20 @@ def get_smrt_cell_sample_artifacts(
 
 
 def is_output_type_per_reagent(output_map: Dict) -> bool:
+    """Check if the output type is per reagent for a given output map."""
     return output_map["output-generation-type"] == OutputGenerationType.PER_REAGENT
 
 
 def get_artifact_from_map(map: Dict) -> Artifact:
+    """Return the artifact for a given input or output map."""
     return map[ARTIFACT_KEY]
 
 
 def get_sample_artifact(lims: Lims, sample: Sample) -> Artifact:
-    """Returning the initial artifact related to a sample.
-    Assuming first artifact is allways named sample.id + 'PA1."""
+    """
+    Return the initial artifact related to a sample.
+    Assuming first artifact is always named sample.id + 'PA1.
+    """
     sample_artifact_id = f"{sample.id}PA1"
     artifact = Artifact(lims, id=sample_artifact_id)
     try:
@@ -111,8 +120,10 @@ def get_artifacts(
     measurement: Optional[bool] = False,
     reagent_label: Optional[bool] = False,
 ) -> List[Artifact]:
-    """If inputs is True, returning all input analytes of the process,
-    otherwise returning all output analytes of the process"""
+    """
+    If inputs is True, returning all input analytes of the process,
+    otherwise returning all output analytes of the process
+    """
 
     if input:
         return process.all_inputs(unique=True)
@@ -143,8 +154,10 @@ def get_artifacts(
 
 
 def get_artifact_by_name(process: Process, name: str) -> Artifact:
-    """Searches for output artifacts with name <file_name>
-    Raises error if more than one artifact with same name!"""
+    """
+    Searches for output artifacts with name <file_name>
+    Raises error if more than one artifact with same name!
+    """
 
     artifacts = list(filter(lambda a: a.name in [name], process.all_outputs()))
 
@@ -188,12 +201,14 @@ def get_latest_analyte(
     process_types: Optional[List[str]],
     sample_artifact: bool = False,
 ) -> Artifact:
-    """Getting the most recently generated analyte by process_types and sample_id.
+    """
+    Getting the most recently generated analyte by process_types and sample_id.
 
     Searching for all Analytes associated with <sample_id> that were produced by <process_types>.
 
     Returning the analyte with latest parent_process.date_run.
-    If there are many such artifacts only one will be returned."""
+    If there are many such artifacts only one will be returned.
+    """
 
     if sample_artifact and not process_types:
         return get_sample_artifact(lims=lims, sample=Sample(lims, sample_id))
@@ -221,11 +236,13 @@ def get_latest_result_files(
     process_types: Optional[List[str]],
     output_generation_type: Literal["PerInput", "PerReagentLabel"],
 ) -> List[Artifact]:
-    """This function will make a lot of queries if the nr of artifacts in the step are many and the artifacts are pools.
+    """
+    This function will make a lot of queries if the nr of artifacts in the step are many and the artifacts are pools.
     (At least 3+2n+nk queries to teh database, where n is the number of input artifacts and k is the number of samples
     per artifact if artifact is pool.)
 
-    Only use this function if you have to."""
+    Only use this function if you have to.
+    """
 
     all_result_files = lims.get_artifacts(
         samplelimsid=sample_id,
