@@ -42,7 +42,9 @@ class SequencingQualityChecker:
         self.failed_qc_count: int = 0
 
     def _get_sequencing_metrics(self) -> List[SampleLaneSequencingMetrics]:
-        metrics = self.cg_api_client.get_sequencing_metrics_for_flow_cell(self.flow_cell_name)
+        metrics = self.cg_api_client.get_sequencing_metrics_for_illumina_flow_cell(
+            self.flow_cell_name
+        )
         self.metrics = metrics
         return metrics
 

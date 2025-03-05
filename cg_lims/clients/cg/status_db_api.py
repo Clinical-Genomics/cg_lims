@@ -65,7 +65,7 @@ class StatusDBAPI:
         except ConnectionError:
             raise LimsError(message="No connection to clinical-api!")
 
-    def get_sequencing_metrics_for_flow_cell(
+    def get_sequencing_metrics_for_illumina_flow_cell(
         self, flow_cell_name: str
     ) -> List[SampleLaneSequencingMetrics]:
         metrics_endpoint: str = f"/flowcells/{flow_cell_name}/sequencing_metrics"
@@ -73,8 +73,10 @@ class StatusDBAPI:
         return [SampleLaneSequencingMetrics.model_validate(metric) for metric in metrics_data]
 
     def get_pacbio_sequencing_run_from_run_id(self, run_id: str) -> List[PacbioSequencingRun]:
-        """API function for fetching PacBio sequencing runs from StatusDB.
-        Returns a list of PacbioSequencingRun objects given a run ID."""
+        """
+        API function for fetching PacBio sequencing runs from StatusDB.
+        Returns a list of PacbioSequencingRun objects given a run ID.
+        """
         runs_endpoint: str = f"/pacbio_sequencing_run/{run_id}"
         runs_data: Dict[str, List[Dict]] = self._get(endpoint=runs_endpoint)
         return [PacbioSequencingRun.model_validate(run) for run in runs_data["runs"]]
@@ -82,8 +84,11 @@ class StatusDBAPI:
     def get_pacbio_sequencing_metrics(
         self, sample_id: Optional[str] = None, smrt_cell_ids: Optional[List[str]] = None
     ) -> List[PacbioSampleSequencingMetrics]:
-        """API function for fetching PacBio sample sequencing metrics from StatusDB.
-        Returns a list of PacbioSampleSequencingMetrics objects."""
+        """
+        API function for fetching PacBio sample sequencing metrics from StatusDB.
+        Returns a list of PacbioSampleSequencingMetrics objects given a sample ID
+        and/or a list of SMRT Cell IDs.
+        """
         query_params: List[Tuple[str, str]] = []
         if sample_id:
             query_params.append(("sample_id", sample_id))

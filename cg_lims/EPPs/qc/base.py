@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import click
+from cg_lims.EPPs.qc.illumina_sequencing_quality_control import sequencing_quality_control
 from cg_lims.EPPs.qc.pacbio_sequencing_quality_control import pacbio_sample_sequencing_metrics
-from cg_lims.EPPs.qc.sequencing_quality_control import sequencing_quality_control
 from cg_lims.EPPs.qc.set_qc_fail import set_qc_fail
 
 
