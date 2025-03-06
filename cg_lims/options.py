@@ -830,7 +830,7 @@ def metric_udfs(
 def aggregate_metric_udfs(
     help: str = "UDF names for aggregated sample metrics.",
 ) -> click.option:
-    return click.option("-amu", "--aggregated-metric-udfs", required=True, multiple=True, help=help)
+    return click.option("-amu", "--aggregate-metric-udfs", required=True, multiple=True, help=help)
 
 
 def unit_conversion(
