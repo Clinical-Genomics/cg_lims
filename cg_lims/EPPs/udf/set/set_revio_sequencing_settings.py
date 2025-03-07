@@ -12,14 +12,14 @@ from genologics.entities import Artifact, Container, Process
 LOG = logging.getLogger(__name__)
 
 
-def get_run_name(process: Process) -> str:
+def get_run_name() -> str:
     """Create and return a run name from today's date and the step ID."""
-    return f"{date.today().strftime('%y%m%d')}_{process.id}"
+    return f"Run{date.today().strftime('%y%m%d')}"
 
 
 def set_run_name(process: Process) -> None:
     """Set the run name to both process and artifact UDFs."""
-    run_name: str = get_run_name(process=process)
+    run_name: str = get_run_name()
     process.udf["Run Name"] = run_name
     process.put()
 
