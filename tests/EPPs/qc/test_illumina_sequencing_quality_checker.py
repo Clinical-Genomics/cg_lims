@@ -1,12 +1,12 @@
 from typing import List
 
-from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
+from cg_lims.EPPs.qc.sequencing_quality_checker import IlluminaSequencingQualityChecker
 from genologics.lims import Lims
 from mock import Mock
 
 
 def test_quality_control_of_flow_cell_with_all_passing(
-    sequencing_quality_checker: SequencingQualityChecker,
+    sequencing_quality_checker: IlluminaSequencingQualityChecker,
     novaseq_passing_metrics_response: Mock,
     mocker,
     lims: Lims,
@@ -22,7 +22,7 @@ def test_quality_control_of_flow_cell_with_all_passing(
 
 
 def test_all_samples_fail_q30(
-    sequencing_quality_checker: SequencingQualityChecker,
+    sequencing_quality_checker: IlluminaSequencingQualityChecker,
     novaseq_q30_fail_response: Mock,
     novaseq_sample_ids: List[str],
     novaseq_lanes,
@@ -41,7 +41,7 @@ def test_all_samples_fail_q30(
 
 
 def test_all_samples_have_too_few_reads(
-    sequencing_quality_checker: SequencingQualityChecker,
+    sequencing_quality_checker: IlluminaSequencingQualityChecker,
     novaseq_reads_fail_response: Mock,
     novaseq_sample_ids: List[str],
     novaseq_lanes: int,
@@ -60,7 +60,7 @@ def test_all_samples_have_too_few_reads(
 
 
 def test_some_samples_fail_quality_control(
-    sequencing_quality_checker: SequencingQualityChecker,
+    sequencing_quality_checker: IlluminaSequencingQualityChecker,
     novaseq_two_failing_metrics_response: Mock,
     mocker,
     lims: Lims,
@@ -76,7 +76,7 @@ def test_some_samples_fail_quality_control(
 
 
 def test_metrics_missing_for_samples_in_lane(
-    sequencing_quality_checker: SequencingQualityChecker,
+    sequencing_quality_checker: IlluminaSequencingQualityChecker,
     novaseq_missing_metrics_for_sample_in_lane_response: Mock,
     missing_sample_id: str,
     missing_lane: int,
@@ -98,7 +98,7 @@ def test_metrics_missing_for_samples_in_lane(
 
 
 def test_sample_missing_in_lims(
-    sequencing_quality_checker: SequencingQualityChecker,
+    sequencing_quality_checker: IlluminaSequencingQualityChecker,
     novaseq_metrics_with_extra_sample_response: Mock,
     sample_id_missing_in_lims: str,
     mocker,

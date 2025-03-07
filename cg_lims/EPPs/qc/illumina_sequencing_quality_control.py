@@ -2,8 +2,8 @@ import logging
 import sys
 
 import click
-from cg_lims.EPPs.qc.sequencing_artifact_manager import SequencingArtifactManager
-from cg_lims.EPPs.qc.sequencing_quality_checker import SequencingQualityChecker
+from cg_lims.EPPs.qc.sequencing_artifact_manager import IlluminaSequencingArtifactManager
+from cg_lims.EPPs.qc.sequencing_quality_checker import IlluminaSequencingQualityChecker
 
 LOG = logging.getLogger(__name__)
 
@@ -19,9 +19,9 @@ def sequencing_quality_control(ctx):
     status_db_api = ctx.obj["status_db"]
     lims = ctx.obj["lims"]
 
-    artifact_manager = SequencingArtifactManager(process=process, lims=lims)
+    artifact_manager = IlluminaSequencingArtifactManager(process=process, lims=lims)
 
-    quality_checker = SequencingQualityChecker(
+    quality_checker = IlluminaSequencingQualityChecker(
         artifact_manager=artifact_manager,
         cg_api_client=status_db_api,
     )

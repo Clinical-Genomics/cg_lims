@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<smp:sample xmlns:smp="http://genologics.com/ri/sample" xmlns:udf="http://genologics.com/ri/userdefined" limsid="STG15780A5" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A5">
+    <name>sample5-pb-test</name>
+    <date-received>2025-01-31</date-received>
+    <project uri="http://127.0.0.1:8000/api/v2/projects/STG15780" limsid="STG15780" />
+    <submitter uri="http://127.0.0.1:8000/api/v2/researchers/1655">
+        <first-name>Stage</first-name>
+        <last-name>STG</last-name>
+    </submitter>
+    <artifact uri="http://127.0.0.1:8000/api/v2/artifacts/STG15780A5PA1?state=3939401" limsid="STG15780A5PA1" />
+    <udf:field name="customer" type="String">cust000</udf:field>
+    <udf:field name="Data Analysis" type="String">raw-data</udf:field>
+    <udf:field name="Library Prep Finished" type="Date">2025-02-18</udf:field>
+    <udf:field name="Sample Delivered" type="Boolean">true</udf:field>
+    <udf:field name="Sequencing Finished" type="Date">2025-02-19</udf:field>
+    <udf:field name="Received at" type="Date">2025-02-10</udf:field>
+    <udf:field name="tumor" type="String">no</udf:field>
+    <udf:field name="Volume (uL)" type="String">50</udf:field>
+    <udf:field name="Data Delivery" type="String">bam</udf:field>
+    <udf:field name="Delivered at" type="Date">2025-02-19</udf:field>
+    <udf:field name="Passed Initial QC" type="String">True</udf:field>
+    <udf:field name="Passed Library QC" type="String">False</udf:field>
+    <udf:field name="Passed Sequencing QC" type="String">False</udf:field>
+    <udf:field name="Gender" type="String">unknown</udf:field>
+    <udf:field name="priority" type="String">standard</udf:field>
+    <udf:field name="Process only if QC OK" type="String">no</udf:field>
+    <udf:field name="Original Container" type="String">sample5-pb-test</udf:field>
+    <udf:field name="Original Well" type="String">1:1</udf:field>
+    <udf:field name="Source" type="String">blood</udf:field>
+    <udf:field name="Sequencing Analysis" type="String">LWPBELB070</udf:field>
+    <udf:field name="Mass" type="String">High Mass</udf:field>
+</smp:sample>
