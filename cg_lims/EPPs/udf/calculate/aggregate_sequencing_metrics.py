@@ -26,13 +26,18 @@ class MetricUdf:
 def create_metric_list(
     metric_udfs: List[str], aggregate_metric_udfs: List[str], unit_conversion_factor: List[str]
 ) -> List[MetricUdf]:
-    """"""
+    """
+    Return a list of MetricUdf objects given lists of:
+        - metrics UDFs (metric_udfs)
+        - corresponding aggregate metric UDFs (aggregate_metric_udfs)
+        - unit conversion factors (unit_conversion_factor)
+    """
     if len(metric_udfs) != len(aggregate_metric_udfs) != len(unit_conversion_factor):
         raise ArgumentError(
             f"The provided amount sample metrics UDFs, aggregate metric UDFs "
             f"and unit conversion factors must all be equal."
         )
-    metric_list = []
+    metric_list: List[MetricUdf] = []
     for metric_udf, aggregate_metric_udf, unit_conversion in zip(
         metric_udfs, aggregate_metric_udfs, unit_conversion_factor
     ):
@@ -53,7 +58,11 @@ def aggregate_udf(
     destination_udf: str,
     unit_conversion: float,
 ) -> None:
-    """"""
+    """
+    Aggregate the specified UDF values across all source artifacts.
+    Will update the given destination entity but not push anything.
+    NOTE: It assumes that all UDF values are numeric.
+    """
     aggregated_value: float = 0
     found_values: int = 0
     for source_artifact in source_artifacts:
@@ -76,7 +85,12 @@ def aggregate_values_for_artifact(
     artifact: Artifact,
     lims: Lims,
 ) -> None:
-    """"""
+    """
+    Aggregate all UDFs in the specified MetricUdf list across the artifacts
+    found for the given process type and input artifact. The sums are then saved to
+    the destination UDFs on the sample level.
+    NOTE: Will only fetch values for artifacts that have a 'PASSED' QC flag.
+    """
     for sample in artifact.samples:
         source_artifacts: List[Artifact] = lims.get_artifacts(
             samplelimsid=sample.id, process_type=process_type, qc_flag="PASSED"
@@ -95,7 +109,7 @@ def aggregate_values_for_artifact(
 def aggregate_all_artifacts(
     metrics: List[MetricUdf], process_type: str, artifacts: List[Artifact], lims: Lims
 ) -> None:
-    """"""
+    """Aggregate all metric UDFs across all given input artifacts."""
     for artifact in artifacts:
         aggregate_values_for_artifact(
             metrics=metrics,
@@ -118,7 +132,10 @@ def aggregate_sequencing_metrics(
     unit_conversion_factor: List[str],
     process_types: List[str],
 ):
-    """"""
+    """
+    Script for aggregating artifact UDFs for numeric values and saving them to the sample level.
+    Will skip all values coming from artifacts without a passed QC flag.
+    """
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process: Process = ctx.obj["process"]
