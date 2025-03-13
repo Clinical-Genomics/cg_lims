@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<con:container xmlns:con="http://genologics.com/ri/container" limsid="27-464272" uri="http://127.0.0.1:8000/api/v2/containers/27-464272">
+    <name>thisisplate1</name>
+    <type name="Revio Sequencing Plate" uri="http://127.0.0.1:8000/api/v2/containertypes/655" />
+    <occupied-wells>4</occupied-wells>
+    <placement limsid="2-4879476" uri="http://127.0.0.1:8000/api/v2/artifacts/2-4879476">
+        <value>A:1</value>
+    </placement>
+    <placement limsid="2-4879477" uri="http://127.0.0.1:8000/api/v2/artifacts/2-4879477">
+        <value>B:1</value>
+    </placement>
+    <placement limsid="2-4879478" uri="http://127.0.0.1:8000/api/v2/artifacts/2-4879478">
+        <value>C:1</value>
+    </placement>
+    <placement limsid="2-4879479" uri="http://127.0.0.1:8000/api/v2/artifacts/2-4879479">
+        <value>D:1</value>
+    </placement>
+    <state>Populated</state>
+</con:container>

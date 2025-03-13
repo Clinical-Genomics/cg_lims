@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" limsid="92-4880258" uri="http://127.0.0.1:8000/api/v2/artifacts/92-4880258?state=3941945">
+    <name>sample6-pb-test (HiFi reads)</name>
+    <type>ResultFile</type>
+    <output-type>ResultFile</output-type>
+    <parent-process limsid="24-558673" uri="http://127.0.0.1:8000/api/v2/processes/24-558673" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <sample limsid="STG15780A6" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A6" />
+    <reagent-label name="6_F01 bc2006 (CATGCGATCTGAGTAT)" />
+    <workflow-stages />
+</art:artifact>

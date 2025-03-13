@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<art:artifact xmlns:art="http://genologics.com/ri/artifact" xmlns:udf="http://genologics.com/ri/userdefined" limsid="2-4879476" uri="http://127.0.0.1:8000/api/v2/artifacts/2-4879476?state=3941501">
+    <name>P1</name>
+    <type>Analyte</type>
+    <output-type>Analyte</output-type>
+    <parent-process limsid="24-558669" uri="http://127.0.0.1:8000/api/v2/processes/24-558669" />
+    <qc-flag>UNKNOWN</qc-flag>
+    <location>
+        <container limsid="27-464272" uri="http://127.0.0.1:8000/api/v2/containers/27-464272" />
+        <value>A:1</value>
+    </location>
+    <working-flag>true</working-flag>
+    <sample limsid="STG15780A4" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A4" />
+    <sample limsid="STG15780A5" uri="http://127.0.0.1:8000/api/v2/samples/STG15780A5" />
+    <reagent-label name="4_D01 bc2004 (TGCAGTGCTCGAGTAT)" />
+    <reagent-label name="5_E01 bc2005 (TGACTCGATCGAGTAT)" />
+    <udf:field name="Library Type" type="String">Standard</udf:field>
+    <udf:field name="Revio Application" type="String">Human WGS</udf:field>
+    <udf:field name="Library Concentration (pM)" type="Numeric">225</udf:field>
+    <udf:field name="Mean Size (bp)" type="Numeric">19904</udf:field>
+    <udf:field name="Movie Acquisition Time (hours)" type="Numeric">24</udf:field>
+    <udf:field name="SMRT Cell ID" type="String">EA121040</udf:field>
+    <udf:field name="% reads passing Q30" type="Numeric">92.9</udf:field>
+    <udf:field name="P0 %" type="Numeric">58</udf:field>
+    <udf:field name="P1 %" type="Numeric">41</udf:field>
+    <udf:field name="P2 %" type="Numeric">0</udf:field>
+    <workflow-stages>
+        <workflow-stage uri="http://127.0.0.1:8000/api/v2/configuration/workflows/2304/stages/8256" name="Revio Run" status="COMPLETE" />
+        <workflow-stage uri="http://127.0.0.1:8000/api/v2/configuration/workflows/2304/stages/8257" name="Demultiplex Revio Run" status="IN_PROGRESS" />
+    </workflow-stages>
+    <demux uri="http://127.0.0.1:8000/api/v2/artifacts/2-4879476/demux" />
+</art:artifact>

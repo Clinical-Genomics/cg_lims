@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ptp:process-type xmlns:ptp="http://genologics.com/ri/processtype" name="Demultiplex Revio Run v1" uri="http://127.0.0.1:8000/api/v2/processtypes/2066">
+    <field-definition name="Comments" uri="http://127.0.0.1:8000/api/v2/configuration/udfs/8047" />
+    <field-definition name="Threshold for Mean Read Length" uri="http://127.0.0.1:8000/api/v2/configuration/udfs/8048" />
+    <parameter name="Queue Samples to Sequence Aggregation" uri="http://127.0.0.1:8000/api/v2/configuration/automations/3316">
+        <string>bash -c -l "conda activate cg_lims &amp;&amp;  lims -c /home/glsai/.genologics.yaml epps -l {compoundOutputFileLuid0} -p {processLuid}  move place-samples-in-seq-agg -w 2304 -s 8258 -n 'Preparing ABC Complex (Revio) v2'"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <parameter name="Set Next Steps - Remove" uri="http://127.0.0.1:8000/api/v2/configuration/automations/3315">
+        <string>bash -l -c "/opt/gls/clarity/bin/java -jar /opt/gls/clarity/extensions/ngs-common/v5/EPP/ngs-extensions.jar -i {stepURI:v2} -u {username} -p {password} script:evaluateDynamicExpression -t false -h false -exp 'nextStep = ::REMOVE::' -log {compoundOutputFileLuid1}"</string>
+        <run-program-per-event>false</run-program-per-event>
+        <channel>limsserver</channel>
+        <invocation-type>PostProcess</invocation-type>
+    </parameter>
+    <process-input>
+        <artifact-type>Analyte</artifact-type>
+        <display-name>Analyte</display-name>
+    </process-input>
+    <process-output>
+        <artifact-type>ResultFile</artifact-type>
+        <display-name>ResultFile</display-name>
+        <output-generation-type>PerReagentLabel</output-generation-type>
+        <variability-type>Fixed</variability-type>
+        <number-of-outputs>1</number-of-outputs>
+        <output-name>{SubmittedSampleName} (HiFi reads)</output-name>
+    </process-output>
+    <process-output>
+        <artifact-type>ResultFile</artifact-type>
+        <display-name>ResultFile</display-name>
+        <output-generation-type>PerAllInputs</output-generation-type>
+        <variability-type>Fixed</variability-type>
+        <number-of-outputs>1</number-of-outputs>
+        <output-name>{LIST:EPP Log}</output-name>
+    </process-output>
+    <process-type-attribute name="Enabled">true</process-type-attribute>
+    <process-type-attribute name="Family">Configured</process-type-attribute>
+    <process-type-attribute name="ContextCode">DEM</process-type-attribute>
+    <process-type-attribute name="OutputContextCode">DE</process-type-attribute>
+    <permitted-containers />
+    <permitted-reagent-categories />
+    <required-reagent-kits />
+    <permitted-control-types />
+    <permitted-instrument-types />
+    <queue-fields />
+    <ice-bucket-fields />
+    <step-fields />
+    <sample-fields />
+    <step-properties>
+        <step-property name="measurementWithFile" value="false" />
+        <step-property name="qcProtocolStep" value="true" />
+        <step-property name="autoAttachFiles" value="0/{LIST:EPP Log}/isAutoAttached=true|0/{SubmittedSampleName} (HiFi reads)/isAutoAttached=true" />
+        <step-property name="expandContainerGroupsCheckBox" value="true" />
+    </step-properties>
+    <epp-triggers />
+</ptp:process-type>

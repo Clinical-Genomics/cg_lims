@@ -1,6 +1,6 @@
 from cg_lims.EPPs.qc.sequencing_artifact_manager import (
+    IlluminaSequencingArtifactManager,
     SampleLaneArtifacts,
-    SequencingArtifactManager,
 )
 from cg_lims.get.artifacts import get_lane_sample_artifacts
 from cg_lims.get.fields import get_artifact_sample_id
@@ -31,7 +31,9 @@ def test_sample_artifacts_add_and_get(lims_process_with_novaseq_data: Process):
 
 def test_get_flow_cell_name(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a sequencing artifact manager
-    artifact_manager = SequencingArtifactManager(process=lims_process_with_novaseq_data, lims=lims)
+    artifact_manager = IlluminaSequencingArtifactManager(
+        process=lims_process_with_novaseq_data, lims=lims
+    )
 
     # WHEN extracting the flow cell name
     flow_cell_name: str = artifact_manager.flow_cell_name
@@ -43,7 +45,9 @@ def test_get_flow_cell_name(lims_process_with_novaseq_data: Process, lims: Lims)
 
 def test_get_q30_threshold(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a sequencing artifact manager
-    artifact_manager = SequencingArtifactManager(process=lims_process_with_novaseq_data, lims=lims)
+    artifact_manager = IlluminaSequencingArtifactManager(
+        process=lims_process_with_novaseq_data, lims=lims
+    )
 
     # WHEN extracting the q30 threshold
     q30_threshold: int = artifact_manager.q30_threshold
@@ -55,7 +59,9 @@ def test_get_q30_threshold(lims_process_with_novaseq_data: Process, lims: Lims):
 
 def test_updating_samples(lims_process_with_novaseq_data: Process, lims: Lims):
     # GIVEN a sequencing artifact manager
-    artifact_manager = SequencingArtifactManager(process=lims_process_with_novaseq_data, lims=lims)
+    artifact_manager = IlluminaSequencingArtifactManager(
+        process=lims_process_with_novaseq_data, lims=lims
+    )
 
     # GIVEN all sample artifacts mapped to their lanes in the process
     lane_samples = get_lane_sample_artifacts(lims_process_with_novaseq_data)
