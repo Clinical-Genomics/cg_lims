@@ -819,3 +819,21 @@ def sequencing_polymerase_ratio(
         multiple=False,
         help=help,
     )
+
+
+def metric_udfs(
+    help: str = "UDF names for sample metrics.",
+) -> click.option:
+    return click.option("-mu", "--metric-udfs", required=True, multiple=True, help=help)
+
+
+def aggregate_metric_udfs(
+    help: str = "UDF names for aggregated sample metrics.",
+) -> click.option:
+    return click.option("-amu", "--aggregate-metric-udfs", required=True, multiple=True, help=help)
+
+
+def unit_conversion(
+    help: str = "Unit conversion factor.",
+) -> click.option:
+    return click.option("-uc", "--unit-conversion-factor", required=True, multiple=True, help=help)

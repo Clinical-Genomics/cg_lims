@@ -2,6 +2,7 @@
 
 import click
 from cg_lims.EPPs.udf.calculate.adjust_missing_reads import adjust_missing_reads
+from cg_lims.EPPs.udf.calculate.aggregate_sequencing_metrics import aggregate_sequencing_metrics
 from cg_lims.EPPs.udf.calculate.aliquot_amount import aliquot_amount
 from cg_lims.EPPs.udf.calculate.aliquot_volume import aliquot_volume
 from cg_lims.EPPs.udf.calculate.calculate_amount_ng import calculate_amount_ng
@@ -74,3 +75,4 @@ calculate.add_command(ont_available_sequencing_reload)
 calculate.add_command(adjust_missing_reads)
 calculate.add_command(revio_pooling)
 calculate.add_command(revio_abc_volumes)
+calculate.add_command(aggregate_sequencing_metrics)
