@@ -1,12 +1,12 @@
 import logging
 import sys
-from typing import List
+from typing import List, Optional
 
 import click
 from cg_lims import options
 from cg_lims.exceptions import ArgumentError, LimsError
 from cg_lims.get.artifacts import get_artifacts
-from genologics.entities import Artifact, Entity, Process
+from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
 
 LOG = logging.getLogger(__name__)
@@ -54,67 +54,61 @@ def create_metric_list(
 def aggregate_udf(
     source_artifacts: List[Artifact],
     source_udf: str,
-    destination_entity: Entity,
-    destination_udf: str,
     unit_conversion: float,
-) -> None:
+) -> float:
     """
-    Aggregate the specified UDF values across all source artifacts.
-    Will update the given destination entity but not push anything.
+    Aggregate the specified UDF value across all source artifacts.
     NOTE: It assumes that all UDF values are numeric.
     """
     aggregated_value: float = 0
-    found_values: int = 0
+
     for source_artifact in source_artifacts:
         if not source_artifact.udf.get(source_udf):
             LOG.info(f"Artifact {source_artifact} has no value for '{source_udf}'. Skipping!")
             continue
         aggregated_value += float(source_artifact.udf.get(source_udf))
-        found_values += 1
-    if found_values:
-        destination_entity.udf[destination_udf] = aggregated_value * unit_conversion
-    else:
-        LOG.warning(
-            f"No matching '{source_udf}' values found for {destination_entity}. Nothing will be aggregated."
-        )
+
+    return aggregated_value * unit_conversion
 
 
-def aggregate_values_for_artifact(
-    metrics: List[MetricUdf],
+def aggregate_metric_for_artifacts(
+    metric: MetricUdf,
     process_type: str,
-    artifact: Artifact,
+    artifacts: List[Artifact],
     lims: Lims,
 ) -> None:
     """
-    Aggregate all UDFs in the specified MetricUdf list across the artifacts
-    found for the given process type and input artifact. The sums are then saved to
-    the destination UDFs on the sample level.
+    Aggregate the metric UDF in the specified MetricUdf object across the all the artifacts
+    found for the given process type and list of input artifacts. The sums are
+    then saved to the destination UDF on the sample level.
     NOTE: Will only fetch values for artifacts that have a 'PASSED' QC flag.
     """
-    for sample in artifact.samples:
-        source_artifacts: List[Artifact] = lims.get_artifacts(
-            samplelimsid=sample.id, process_type=process_type, qc_flag="PASSED"
-        )
-        for metric in metrics:
-            aggregate_udf(
+    for artifact in artifacts:
+        samples: List[Sample] = artifact.samples
+        aggregated_result: float = 0
+        for sample in samples:
+            source_artifacts: List[Artifact] = lims.get_artifacts(
+                samplelimsid=sample.id, process_type=process_type, qc_flag="PASSED"
+            )
+            aggregated_result += aggregate_udf(
                 source_artifacts=source_artifacts,
                 source_udf=metric.sample_metric_udf,
-                destination_entity=sample,
-                destination_udf=metric.aggregate_udf,
                 unit_conversion=metric.unit_conversion,
             )
-        sample.put()
+        for sample in samples:
+            sample.udf[metric.aggregate_udf] = aggregated_result
+            sample.put()
 
 
-def aggregate_all_artifacts(
+def aggregate_all_metrics(
     metrics: List[MetricUdf], process_type: str, artifacts: List[Artifact], lims: Lims
 ) -> None:
     """Aggregate all metric UDFs across all given input artifacts."""
-    for artifact in artifacts:
-        aggregate_values_for_artifact(
-            metrics=metrics,
+    for metric in metrics:
+        aggregate_metric_for_artifacts(
+            metric=metric,
             process_type=process_type,
-            artifact=artifact,
+            artifacts=artifacts,
             lims=lims,
         )
 
@@ -149,7 +143,7 @@ def aggregate_sequencing_metrics(
         )
         artifacts: List[Artifact] = get_artifacts(process=process)
         for process_type in process_types:
-            aggregate_all_artifacts(
+            aggregate_all_metrics(
                 metrics=metrics, process_type=process_type, artifacts=artifacts, lims=lims
             )
         click.echo("All UDF values have been aggregated!")
