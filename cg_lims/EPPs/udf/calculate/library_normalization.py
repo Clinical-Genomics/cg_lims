@@ -24,8 +24,7 @@ def calculate_sample_volume(
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
         warning_message: str = (
-            f"The final concentration ({final_concentration} nM) is higher than the original one"
-            f" ({sample_concentration} nM) for sample {artifact.samples[0].id}. No dilution needed."
+            f"The final concentration is higher than the original one for sample {artifact.samples[0].id}. No dilution needed."
         )
         LOG.warning(warning_message)
         global failed_samples
@@ -47,7 +46,7 @@ def calculate_buffer_volume(total_volume: float, sample_volume: float) -> float:
 def set_artifact_volumes(
     artifacts: List[Artifact],
     final_concentration: float,
-    total_volume: Optional[float],
+    set_total_volume: Optional[float],
     total_volume_udf: Optional[str],
     sample_volume_udf: str,
     buffer_volume_udf: str,
@@ -58,13 +57,15 @@ def set_artifact_volumes(
         sample_concentration: float = get_artifact_concentration(
             artifact=artifact, concentration_udf=concentration_udf
         )
-        if not total_volume_udf and not total_volume:
+        if not total_volume_udf and not set_total_volume:
             error_message = (
                 "The calculation needs either a total volume value or UDF name to be given!"
             )
             LOG.error(error_message)
             raise MissingValueError(error_message)
-        elif total_volume_udf and not total_volume:
+        elif set_total_volume:
+            total_volume: float = set_total_volume
+        else:
             total_volume: float = get_total_volume(
                 artifact=artifact, total_volume_udf=total_volume_udf
             )
@@ -105,7 +106,7 @@ def library_normalization(
     total_volume_udf: Optional[str] = None,
     total_volume_pudf: Optional[str] = None,
 ) -> None:
-    """Calculate and set volumes needed for normalization of pool before sequencing."""
+    """Calculate and set volumes needed for normalization of sample or pool before sequencing."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process: Process = ctx.obj["process"]
@@ -123,7 +124,7 @@ def library_normalization(
         set_artifact_volumes(
             artifacts=artifacts,
             final_concentration=final_concentration,
-            total_volume=total_volume,
+            set_total_volume=total_volume,
             total_volume_udf=total_volume_udf,
             sample_volume_udf=sample_udf,
             buffer_volume_udf=buffer_udf,
