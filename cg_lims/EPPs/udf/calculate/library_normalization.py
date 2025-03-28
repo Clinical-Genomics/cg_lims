@@ -23,7 +23,7 @@ def calculate_sample_volume(
     total_volume: float,
     sample_concentration: float,
     artifact: Artifact,
-    sample_volume_limit: str,
+    sample_volume_limit: Optional[str],
 ) -> float:
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
