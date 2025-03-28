@@ -19,7 +19,11 @@ failed_samples = []
 
 
 def calculate_sample_volume(
-    final_concentration: float, total_volume: float, sample_concentration: float, artifact: Artifact, sample_volume_limit: str,
+    final_concentration: float,
+    total_volume: float,
+    sample_concentration: float,
+    artifact: Artifact,
+    sample_volume_limit: str,
 ) -> float:
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
@@ -33,7 +37,9 @@ def calculate_sample_volume(
     return (final_concentration * total_volume) / sample_concentration
 
 
-def calculate_buffer_volume(artifact: Artifact, total_volume: float, sample_volume: float) -> float:
+def calculate_buffer_volume(
+    artifact: Artifact, total_volume: float, sample_volume: float
+) -> float:
     """Calculate and return the buffer volume needed to reach the desired total volume."""
     if sample_volume > total_volume:
         LOG.info(
@@ -61,9 +67,7 @@ def set_artifact_volumes(
             artifact=artifact, concentration_udf=concentration_udf
         )
         if not total_volume_udf and not set_total_volume:
-            error_message = (
-                "The calculation needs either a total volume value or UDF name to be given!"
-            )
+            error_message = "The calculation needs either a total volume value or UDF name to be given!"
             LOG.error(error_message)
             raise MissingValueError(error_message)
         elif set_total_volume:
@@ -95,8 +99,7 @@ def set_artifact_volumes(
 @options.buffer_udf(help="Name of buffer volume UDF.")
 @options.concentration_udf(help="Name of sample concentration UDF.")
 @options.final_concentration_udf(help="Name of final target concentration UDF.")
-@options.sample_volume_limit(
-    help="The available volume of a sample.")
+@options.sample_volume_limit(help="The available volume of a sample.")
 @options.total_volume_udf(
     help="Name of total volume UDF on sample level. Note: Can't be combined with the process level alternative."
 )
