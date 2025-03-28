@@ -4,8 +4,9 @@ from typing import List, Optional
 
 import click
 from cg_lims import options
-from cg_lims.exceptions import InvalidValueError, LimsError, MissingValueError
+from cg_lims.exceptions import InvalidValueError, LimsError, MissingValueError, LowVolumeError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.samples import get_one_sample_from_artifact
 from cg_lims.get.udfs import (
     get_artifact_concentration,
     get_final_concentration,
@@ -16,6 +17,7 @@ from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 failed_samples = []
+samples_below_threshold: List[str] = []
 
 
 def calculate_sample_volume(
@@ -49,6 +51,15 @@ def calculate_buffer_volume(total_volume: float, sample_volume: float, sample_id
     return total_volume - sample_volume
 
 
+def volumes_below_threshold(
+    minimum_volume: float, sample_volume: float, buffer_volume: float
+) -> bool:
+    """Check if volume aliquots are below the given threshold."""
+    return (sample_volume < minimum_volume) or (
+        buffer_volume != 0 and buffer_volume < minimum_volume
+    )
+
+
 def set_artifact_volumes(
     artifacts: List[Artifact],
     final_concentration: float,
@@ -58,8 +69,10 @@ def set_artifact_volumes(
     buffer_volume_udf: str,
     concentration_udf: str,
     sample_volume_limit: Optional[str],
+    minimum_limit: float,
 ) -> None:
     """Set volume UDFs on artifact level, given a list of artifacts, final concentration, and UDF names."""
+
     for artifact in artifacts:
         sample_id: str = artifact.samples[0].id
         sample_concentration: float = get_artifact_concentration(
@@ -95,6 +108,13 @@ def set_artifact_volumes(
             artifact.udf[total_volume_udf] = sample_volume
         artifact.put()
 
+        if volumes_below_threshold(
+            minimum_volume=minimum_limit,
+            sample_volume=round(sample_volume, 2),
+            buffer_volume=round(buffer_volume, 2),
+        ):
+            samples_below_threshold.append(get_one_sample_from_artifact(artifact=artifact).id)
+
 
 @click.command()
 @options.input()
@@ -102,6 +122,9 @@ def set_artifact_volumes(
 @options.buffer_udf(help="Name of buffer volume UDF.")
 @options.concentration_udf(help="Name of sample concentration UDF.")
 @options.final_concentration_udf(help="Name of final target concentration UDF.")
+@options.minimum_volume(
+    help="The minimum volume (ul) allowed without sending a warning to the user. Default is 0."
+)
 @options.sample_volume_limit(help="The available volume of a sample.")
 @options.total_volume_udf(
     help="Name of total volume UDF on sample level. Note: Can't be combined with the process level alternative."
@@ -117,6 +140,7 @@ def library_normalization(
     buffer_udf: str,
     concentration_udf: str,
     final_concentration_udf: str,
+    min_volume: str = 0,
     sample_volume_limit: Optional[str] = None,
     total_volume_udf: Optional[str] = None,
     total_volume_pudf: Optional[str] = None,
@@ -145,7 +169,12 @@ def library_normalization(
             buffer_volume_udf=buffer_udf,
             concentration_udf=concentration_udf,
             sample_volume_limit=sample_volume_limit,
+            minimum_limit=float(min_volume),
         )
+        if samples_below_threshold:
+            raise LowVolumeError(
+                f"Warning: {len(samples_below_threshold)} sample(s) have aliquot volumes below {min_volume} µl - {', '.join(samples_below_threshold)}"
+            )
         if failed_samples:
             failed_samples_string: str = ", ".join(failed_samples)
             error_message: str = (
