@@ -19,7 +19,7 @@ failed_samples = []
 
 
 def calculate_sample_volume(
-    final_concentration: float, total_volume: float, sample_concentration: float, artifact: Artifact
+    final_concentration: float, total_volume: float, sample_concentration: float, artifact: Artifact, sample_volume_limit: str,
 ) -> float:
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
@@ -29,16 +29,18 @@ def calculate_sample_volume(
         LOG.warning(warning_message)
         global failed_samples
         failed_samples.append(artifact.name)
-        return total_volume
+        return float(sample_volume_limit)
     return (final_concentration * total_volume) / sample_concentration
 
 
-def calculate_buffer_volume(total_volume: float, sample_volume: float) -> float:
+def calculate_buffer_volume(artifact: Artifact, total_volume: float, sample_volume: float) -> float:
     """Calculate and return the buffer volume needed to reach the desired total volume."""
     if sample_volume > total_volume:
         LOG.info(
             f"Sample volume is already larger than the total one. Setting buffer volume to 0 ul."
         )
+        return 0
+    elif artifact.name in failed_samples:
         return 0
     return total_volume - sample_volume
 
@@ -51,6 +53,7 @@ def set_artifact_volumes(
     sample_volume_udf: str,
     buffer_volume_udf: str,
     concentration_udf: str,
+    sample_volume_limit: str,
 ) -> None:
     """Set volume UDFs on artifact level, given a list of artifacts, final concentration, and UDF names."""
     for artifact in artifacts:
@@ -74,12 +77,15 @@ def set_artifact_volumes(
             artifact=artifact,
             total_volume=total_volume,
             sample_concentration=sample_concentration,
+            sample_volume_limit=sample_volume_limit,
         )
         buffer_volume: float = calculate_buffer_volume(
-            total_volume=total_volume, sample_volume=sample_volume
+            artifact=artifact, total_volume=total_volume, sample_volume=sample_volume
         )
         artifact.udf[sample_volume_udf] = sample_volume
         artifact.udf[buffer_volume_udf] = buffer_volume
+        if artifact.name in failed_samples:
+            artifact.udf[total_volume_udf] = sample_volume
         artifact.put()
 
 
@@ -89,6 +95,8 @@ def set_artifact_volumes(
 @options.buffer_udf(help="Name of buffer volume UDF.")
 @options.concentration_udf(help="Name of sample concentration UDF.")
 @options.final_concentration_udf(help="Name of final target concentration UDF.")
+@options.sample_volume_limit(
+    help="Set sample volume limit")
 @options.total_volume_udf(
     help="Name of total volume UDF on sample level. Note: Can't be combined with the process level alternative."
 )
@@ -103,6 +111,7 @@ def library_normalization(
     buffer_udf: str,
     concentration_udf: str,
     final_concentration_udf: str,
+    sample_volume_limit: str,
     total_volume_udf: Optional[str] = None,
     total_volume_pudf: Optional[str] = None,
 ) -> None:
@@ -129,6 +138,7 @@ def library_normalization(
             sample_volume_udf=sample_udf,
             buffer_volume_udf=buffer_udf,
             concentration_udf=concentration_udf,
+            sample_volume_limit=sample_volume_limit,
         )
         if failed_samples:
             failed_samples_string: str = ", ".join(failed_samples)
