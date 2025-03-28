@@ -22,31 +22,29 @@ def calculate_sample_volume(
     final_concentration: float,
     total_volume: float,
     sample_concentration: float,
-    artifact: Artifact,
     sample_volume_limit: Optional[str],
+    sample_id: str,
 ) -> float:
     """Calculate and return the sample volume needed to reach the desired final concentration."""
     if final_concentration > sample_concentration:
         warning_message: str = (
-            f"The final concentration is higher than the original one for sample {artifact.samples[0].id}. No dilution needed."
+            f"The final concentration is higher than the original one for sample {sample_id}. No dilution needed."
         )
         LOG.warning(warning_message)
         global failed_samples
-        failed_samples.append(artifact.samples[0].id)
+        failed_samples.append(sample_id)
         return float(sample_volume_limit) if sample_volume_limit else total_volume
     return (final_concentration * total_volume) / sample_concentration
 
 
-def calculate_buffer_volume(
-    artifact: Artifact, total_volume: float, sample_volume: float
-) -> float:
+def calculate_buffer_volume(total_volume: float, sample_volume: float, sample_id: str) -> float:
     """Calculate and return the buffer volume needed to reach the desired total volume."""
     if sample_volume > total_volume:
         LOG.info(
             f"Sample volume is already larger than the total one. Setting buffer volume to 0 ul."
         )
         return 0
-    elif artifact.samples[0].id in failed_samples:
+    elif sample_id in failed_samples:
         return 0
     return total_volume - sample_volume
 
@@ -63,11 +61,14 @@ def set_artifact_volumes(
 ) -> None:
     """Set volume UDFs on artifact level, given a list of artifacts, final concentration, and UDF names."""
     for artifact in artifacts:
+        sample_id: str = artifact.samples[0].id
         sample_concentration: float = get_artifact_concentration(
             artifact=artifact, concentration_udf=concentration_udf
         )
         if not total_volume_udf and not set_total_volume:
-            error_message = "The calculation needs either a total volume value or UDF name to be given!"
+            error_message = (
+                "The calculation needs either a total volume value or UDF name to be given!"
+            )
             LOG.error(error_message)
             raise MissingValueError(error_message)
         elif set_total_volume:
@@ -78,17 +79,19 @@ def set_artifact_volumes(
             )
         sample_volume: float = calculate_sample_volume(
             final_concentration=final_concentration,
-            artifact=artifact,
             total_volume=total_volume,
             sample_concentration=sample_concentration,
             sample_volume_limit=sample_volume_limit,
+            sample_id=sample_id,
         )
         buffer_volume: float = calculate_buffer_volume(
-            artifact=artifact, total_volume=total_volume, sample_volume=sample_volume
+            total_volume=total_volume,
+            sample_volume=sample_volume,
+            sample_id=sample_id,
         )
         artifact.udf[sample_volume_udf] = sample_volume
         artifact.udf[buffer_volume_udf] = buffer_volume
-        if artifact.samples[0].id in failed_samples and sample_volume_limit:
+        if sample_id in failed_samples and sample_volume_limit:
             artifact.udf[total_volume_udf] = sample_volume
         artifact.put()
 
