@@ -16,7 +16,7 @@ from cg_lims.get.udfs import (
 from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
-failed_samples = []
+samples_low_concentration = []
 samples_below_threshold: List[str] = []
 
 
@@ -33,8 +33,8 @@ def calculate_sample_volume(
             f"The final concentration is higher than the original one for sample {sample_id}. No dilution needed."
         )
         LOG.warning(warning_message)
-        global failed_samples
-        failed_samples.append(sample_id)
+        global samples_low_concentration
+        samples_low_concentration.append(sample_id)
         return float(sample_volume_limit) if sample_volume_limit else total_volume
     return (final_concentration * total_volume) / sample_concentration
 
@@ -46,7 +46,7 @@ def calculate_buffer_volume(total_volume: float, sample_volume: float, sample_id
             f"Sample volume is already larger than the total one. Setting buffer volume to 0 ul."
         )
         return 0
-    elif sample_id in failed_samples:
+    elif sample_id in samples_low_concentration:
         return 0
     return total_volume - sample_volume
 
@@ -104,10 +104,11 @@ def set_artifact_volumes(
         )
         artifact.udf[sample_volume_udf] = sample_volume
         artifact.udf[buffer_volume_udf] = buffer_volume
-        if sample_id in failed_samples and sample_volume_limit:
+        if sample_id in samples_low_concentration and sample_volume_limit:
             artifact.udf[total_volume_udf] = sample_volume
         artifact.put()
 
+        # Check if sample or buffer volumes are below a given threshold
         if volumes_below_threshold(
             minimum_volume=minimum_limit,
             sample_volume=round(sample_volume, 2),
@@ -171,17 +172,20 @@ def library_normalization(
             sample_volume_limit=sample_volume_limit,
             minimum_limit=float(min_volume),
         )
-        if samples_below_threshold:
-            raise LowVolumeError(
-                f"Warning: {len(samples_below_threshold)} sample(s) have aliquot volumes below {min_volume} µl - {', '.join(samples_below_threshold)}"
-            )
-        if failed_samples:
-            failed_samples_string: str = ", ".join(failed_samples)
-            error_message: str = (
-                f"The following artifacts had a lower concentration than targeted: {failed_samples_string}"
-            )
-            LOG.info(error_message)
-            raise InvalidValueError(error_message)
+        if samples_below_threshold or samples_low_concentration:
+            messages: List = []
+            if samples_below_threshold:
+                messages.append(
+                    f"Warning: {len(samples_below_threshold)} sample(s) have normalization volumes below {min_volume} µl - {', '.join(samples_below_threshold)}"
+                )
+            if samples_low_concentration:
+                failed_samples_string: str = ", ".join(samples_low_concentration)
+                messages.append(
+                    f"The following artifacts had a lower concentration than targeted: {failed_samples_string}"
+                )
+            all_errors: List = ". ".join(messages)
+            LOG.info(all_errors)
+            raise InvalidValueError(all_errors)
         message: str = "Volumes were successfully calculated."
         LOG.info(message)
         click.echo(message)
