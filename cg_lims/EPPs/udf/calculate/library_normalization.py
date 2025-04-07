@@ -4,7 +4,7 @@ from typing import List, Optional
 
 import click
 from cg_lims import options
-from cg_lims.exceptions import InvalidValueError, LimsError, MissingValueError, LowVolumeError
+from cg_lims.exceptions import InvalidValueError, LimsError, MissingValueError
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.samples import get_one_sample_from_artifact
 from cg_lims.get.udfs import (
