@@ -16,7 +16,7 @@ from cg_lims.get.udfs import (
 from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
-samples_low_concentration = []
+samples_low_concentration: List = []
 samples_below_threshold: List[str] = []
 
 
@@ -173,17 +173,17 @@ def library_normalization(
             minimum_limit=float(min_volume),
         )
         if samples_below_threshold or samples_low_concentration:
-            messages: List = []
+            messages: List = ["Warning:"]
             if samples_below_threshold:
                 messages.append(
-                    f"Warning: {len(samples_below_threshold)} sample(s) have normalization volumes below {min_volume} µl - {', '.join(samples_below_threshold)}"
+                    f"{len(samples_below_threshold)} sample(s) have normalization volumes below {min_volume} µl - {', '.join(samples_below_threshold)}."
                 )
             if samples_low_concentration:
                 failed_samples_string: str = ", ".join(samples_low_concentration)
                 messages.append(
-                    f"The following artifacts had a lower concentration than targeted: {failed_samples_string}"
+                    f"The following artifacts had a lower concentration than targeted: {failed_samples_string}."
                 )
-            all_errors: List = ". ".join(messages)
+            all_errors: List = " ".join(messages)
             LOG.info(all_errors)
             raise InvalidValueError(all_errors)
         message: str = "Volumes were successfully calculated."
