@@ -219,7 +219,7 @@ class RevioRun:
     def _create_run_settings(self) -> str:
         """Return the [Run Settings] section of the run design."""
         plate_rows: str = f"Plate 1,{PLATE_PART_NUMBERS[self.plate_1_type]}\n"
-        if self.plates[2]:
+        if 2 in self.plates.keys():
             plate_rows += f"Plate 2,{PLATE_PART_NUMBERS[self.plate_2_type]}\n"
         return (
             f"{RunDesignHeader.RUN_SETTINGS}\n"
