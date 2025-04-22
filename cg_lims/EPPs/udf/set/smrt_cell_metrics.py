@@ -77,6 +77,7 @@ def set_smrt_cell_metrics(
         artifact.udf["P1 %"] = metric.p1_percent
         artifact.udf["P2 %"] = metric.p2_percent
         artifact.udf["% reads passing Q30"] = metric.percent_reads_passing_q30
+        artifact.udf["SMRT Cell HiFi Yield (Gb)"] = metric.hifi_yield / 10**9
         artifact.put()
 
 
