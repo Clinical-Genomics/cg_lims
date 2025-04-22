@@ -149,7 +149,7 @@ class SampleSetup:
 
 
 def _build_plate_dict(process: Process) -> Dict[Any, Any]:
-    """Create a sequencing plate dict containing plate position (int) and Container object"""
+    """Create a sequencing plate dict containing plate position (int) and Container object, both as keys and values."""
     containers: List[Container] = process.output_containers()
     plate_1: str = process.udf.get("Plate 1")
     plate_2: str = process.udf.get("Plate 2")
@@ -188,10 +188,19 @@ def _trim_unsupported_characters(name: str) -> str:
     return re.sub(pattern=pattern, repl="_", string=name)
 
 
+def _create_pool_dict(plate_dict: Dict[Any, Any], process: Process) -> Dict[str, Artifact]:
+    """Create a well-sorted dictionary detailing all pool artifacts within the step."""
+    pool_dict: Dict[str, Artifact] = {}
+    pool_artifacts: List[Artifact] = get_artifacts(process=process)
+    for pool in pool_artifacts:
+        pool_dict[_get_smrt_cell_well(pool=pool, plate_dict=plate_dict)] = pool
+    return dict(sorted(pool_dict.items()))
+
+
 class RevioRun:
     process_id: Process
     plates: Dict[Any, Any]
-    pools: List[Artifact]
+    pools: Dict[str, Artifact]
     run_name: str
     instrument_type: str
     plate_1_type: str
@@ -206,7 +215,7 @@ class RevioRun:
     def __init__(self, process: Process):
         self.process = process
         self.plates = _build_plate_dict(process=process)
-        self.pools = get_artifacts(process=process)
+        self.pools = _create_pool_dict(plate_dict=self.plates, process=process)
         self.run_name = process.udf.get("Run Name")
         self.instrument_type = process.udf.get("Instrument Type")
         self.plate_1_type = process.udf.get("Plate 1 Type")
@@ -250,8 +259,7 @@ class RevioRun:
                 ]
             }
         )
-        for pool in self.pools:
-            well: str = _get_smrt_cell_well(pool=pool, plate_dict=self.plates)
+        for well, pool in self.pools.items():
             if _is_indexed(pool=pool):
                 index_set: str = RevioIndexSets.SMRTBELL_INDEX_SET
             else:
@@ -276,12 +284,12 @@ class RevioRun:
     def _get_sample_settings(self) -> str:
         """Return the [SMRT Cell Settings] section of the run design."""
         section = f"Bio Sample Name,Plate Well,Adapter,Adapter2"
-        for pool in self.pools:
+        for well, pool in self.pools.items():
             artifacts: List[Artifact] = get_non_pooled_artifacts(artifact=pool)
             for artifact in artifacts:
                 row = (
                     f"\n{artifact.samples[0].id},"
-                    f"{_get_smrt_cell_well(pool=pool, plate_dict=self.plates)},"
+                    f"{well},"
                     f"{get_smrtbell_adapter_name(artifact=artifact)},"
                     f"{get_smrtbell_adapter_name(artifact=artifact)}"
                 )
