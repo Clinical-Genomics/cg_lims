@@ -3,7 +3,7 @@ import sys
 from typing import Dict, List
 
 import click
-from genologics import Artifact, Process
+from genologics.entities import Artifact, Process
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
