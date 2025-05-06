@@ -2,6 +2,7 @@ import logging
 import sys
 
 import click
+
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import make_plate_file
@@ -13,20 +14,19 @@ LOG = logging.getLogger(__name__)
 def get_file_data_and_write(artifacts: list, file: str) -> None:
     """Getting row data for Hamilton file"""
 
-    # failed_samples = []
-    file_rows = {}
-    for art in artifacts:
-        sample_id = art.samples[0].id
-        well = art.location[1].replace(":", "")
-        bait_set = art.udf.get("Bait Set")
-        pcr_plate = art.udf.get("PCR Plate")
+    failed_samples: list = []
+    file_rows: dict = {}
+    for artifact in artifacts:
+        sample_id: str = artifact.name
+        well: str = artifact.location[1].replace(":", "")
+        bait_set: str = artifact.udf.get("Bait Set")
+        pcr_plate: str = artifact.udf.get("PCR Plate")
 
-        file_rows[well] = [
-            sample_id,
-            well,
-            bait_set,
-            pcr_plate
-        ]
+        if not bait_set or not pcr_plate:
+            failed_samples.append(sample_id)
+            continue
+
+        file_rows[well] = [sample_id, well, bait_set, pcr_plate]
 
     headers = [
         "LIMS ID",
@@ -37,10 +37,10 @@ def get_file_data_and_write(artifacts: list, file: str) -> None:
 
     make_plate_file(file, file_rows, headers)
 
-    #if failed_samples:
-    #    raise MissingUDFsError(
-    #        f"Could not find udf: Amount needed (ng) for samples: {', '.join(failed_samples)}, from step {amount_step}."
-    #    )
+    if failed_samples:
+        raise MissingUDFsError(
+            f"Missing values for the UDFs Bait Set or PCR Plate for artifacts: {', '.join(failed_samples)}."
+        )
 
 
 def resolve_file_extension(extension: str) -> str:
@@ -62,7 +62,7 @@ def make_target_enrichment_csv(ctx: click.Context, file: str, extension: str):
     process = ctx.obj["process"]
     artifacts = get_artifacts(process=process, input=False)
 
-    file_name = (
+    file_name: str = (
         f"{file}_{artifacts[0].container.name}_{process.type.name.replace(' ', '_')}"
         f"{resolve_file_extension(extension)}"
     )
