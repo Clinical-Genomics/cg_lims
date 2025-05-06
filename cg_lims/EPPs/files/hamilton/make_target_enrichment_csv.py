@@ -1,12 +1,15 @@
 import logging
 import sys
+from typing import Dict, List
 
 import click
+from genologics import Artifact, Process
 
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import make_plate_file
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.fields import get_artifact_well
 
 LOG = logging.getLogger(__name__)
 
@@ -14,11 +17,11 @@ LOG = logging.getLogger(__name__)
 def get_file_data_and_write(artifacts: list, file: str) -> None:
     """Getting row data for Hamilton file"""
 
-    failed_samples: list = []
-    file_rows: dict = {}
+    failed_samples: List[str] = []
+    file_rows: Dict[str, List[str]] = {}
     for artifact in artifacts:
         sample_id: str = artifact.name
-        well: str = artifact.location[1].replace(":", "")
+        well: str = get_artifact_well(artifact=artifact)
         bait_set: str = artifact.udf.get("Bait Set")
         pcr_plate: str = artifact.udf.get("PCR Plate")
 
@@ -28,7 +31,7 @@ def get_file_data_and_write(artifacts: list, file: str) -> None:
 
         file_rows[well] = [sample_id, well, bait_set, pcr_plate]
 
-    headers = [
+    headers: List[str] = [
         "LIMS ID",
         "Pool Well",
         "Bait Set",
@@ -59,8 +62,8 @@ def resolve_file_extension(extension: str) -> str:
 def make_target_enrichment_csv(ctx: click.Context, file: str, extension: str):
     """Script to make a csv file for Target Enrichment on Hamilton."""
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
-    process = ctx.obj["process"]
-    artifacts = get_artifacts(process=process, input=False)
+    process: Process = ctx.obj["process"]
+    artifacts: List[Artifact] = get_artifacts(process=process, input=False)
 
     file_name: str = (
         f"{file}_{artifacts[0].container.name}_{process.type.name.replace(' ', '_')}"
