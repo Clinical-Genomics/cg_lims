@@ -3,13 +3,12 @@ import sys
 from typing import Dict, List
 
 import click
-from genologics.entities import Artifact, Process
-
 from cg_lims import options
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import make_plate_file
 from cg_lims.get.artifacts import get_artifacts
 from cg_lims.get.fields import get_artifact_well
+from genologics.entities import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 
