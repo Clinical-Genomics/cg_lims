@@ -69,14 +69,14 @@ def get_data_and_write(
 
     # Filter off unwanted columns
     out = unfiltered_df["Barcode"]
-    out.to_csv(Path(file), index=False)
+    out.to_excel(Path(file), index=False)
 
 
 @click.command()
 @options.file_placeholder(help="Barcode Tubes")
 @options.input()
 @click.pass_context
-def make_barcode_csv(
+def make_barcode_file(
     ctx: click.Context,
     file: str,
     input: bool,
@@ -89,7 +89,7 @@ def make_barcode_csv(
     try:
         get_data_and_write(
             artifacts=artifacts,
-            file=f"{file}-Barcode-Tubes.csv",
+            file=f"{file}-Barcode-Tubes.xlsx",
         )
         click.echo("The file was successfully generated.")
     except LimsError as e:

@@ -1,4 +1,5 @@
 from pathlib import Path
+import pandas as pd
 
 import pytest
 from cg_lims.EPPs.files.barcode_tubes import get_data_and_write
@@ -7,7 +8,7 @@ from genologics.entities import Artifact
 from tests.conftest import server
 
 
-def test_with_diff_containers(barcode_tubes_csv, lims):
+def test_with_diff_containers(barcode_tubes_file, lims):
     # GIVEN four artifacts, only two of them ACC9553A3PA1
     # and ACC9621A7PA1 have container type "Tube" and are the
     # only ones to be included in the final file.
@@ -25,9 +26,10 @@ def test_with_diff_containers(barcode_tubes_csv, lims):
     get_data_and_write(artifacts=artifacts, file=file)
 
     # THEN the file has been created and the file content is as expected.
-    file_content = file.read_text()
+    file_content = pd.read_excel(file).to_csv()
     file.unlink()
-    assert file_content == barcode_tubes_csv
+    assert file_content == barcode_tubes_file
+    
 
 
 def test_MissingValueError(lims):
