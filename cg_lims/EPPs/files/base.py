@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import click
-from cg_lims.EPPs.files.barcode_tubes import make_barcode_csv
+from cg_lims.EPPs.files.barcode_tubes import make_barcode_file
 from cg_lims.EPPs.files.csv_for_kapa_truble_shooting.csv_for_kapa_debug import trouble_shoot_kapa
 from cg_lims.EPPs.files.femtopulse_csv import make_femtopulse_csv
 from cg_lims.EPPs.files.hamilton.base import hamilton
@@ -28,7 +28,7 @@ files.add_command(pool_map)
 files.add_command(placement_map)
 files.add_command(hamilton)
 files.add_command(trouble_shoot_kapa)
-files.add_command(make_barcode_csv)
+files.add_command(make_barcode_file)
 files.add_command(create_ont_sample_sheet)
 files.add_command(create_sample_sheet)
 files.add_command(parse_run_parameters)

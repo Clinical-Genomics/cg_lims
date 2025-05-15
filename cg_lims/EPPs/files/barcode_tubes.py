@@ -76,7 +76,7 @@ def get_data_and_write(
 @options.file_placeholder(help="Barcode Tubes")
 @options.input()
 @click.pass_context
-def make_barcode_csv(
+def make_barcode_file(
     ctx: click.Context,
     file: str,
     input: bool,

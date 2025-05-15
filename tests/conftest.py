@@ -1,6 +1,7 @@
 import datetime as dt
 import threading
 import time
+import pandas as pd
 from pathlib import Path
 from typing import Callable, Dict, List
 
@@ -174,12 +175,13 @@ def flow_cell_fixture() -> dict:
 
 
 @pytest.fixture
-def barcode_tubes_csv() -> str:
+def barcode_tubes_file() -> str:
     """Get file path to valid json"""
 
-    file_path = "tests/fixtures/barcode_tubes_csv.txt"
+    file_path = "tests/fixtures/barcode_tubes_file.xlsx"
     file = Path(file_path)
-    return file.read_text()
+    dataframe = pd.read_excel(file)
+    return dataframe.to_csv()
 
 
 @pytest.fixture
