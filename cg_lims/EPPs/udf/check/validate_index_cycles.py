@@ -75,7 +75,7 @@ def validate_index_cycles(ctx):
     the NovaSeq sequencing set-up is enough for all indexes."""
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
 
-    process = ctx.obj["process"]
+    process: Process = ctx.obj["process"]
 
     try:
         error_message: str = validate_per_reagent(process=process)
