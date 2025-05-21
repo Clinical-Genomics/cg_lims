@@ -14,4 +14,4 @@ class DefaultIndexLength(IntEnum):
 
     FLOW_CELL_10B: int = 10
     FLOW_CELL_25B: int = 10
-    FLOW_CELL_15B: int = 8
+    FLOW_CELL_15B: int = 10
