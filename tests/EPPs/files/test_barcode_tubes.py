@@ -1,6 +1,6 @@
 from pathlib import Path
-import pandas as pd
 
+import pandas as pd
 import pytest
 from cg_lims.EPPs.files.barcode_tubes import get_data_and_write
 from cg_lims.exceptions import InvalidValueError, MissingValueError
@@ -29,7 +29,6 @@ def test_with_diff_containers(barcode_tubes_file, lims):
     file_content = pd.read_excel(file).to_csv()
     file.unlink()
     assert file_content == barcode_tubes_file
-    
 
 
 def test_MissingValueError(lims):
