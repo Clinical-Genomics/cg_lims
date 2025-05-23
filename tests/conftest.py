@@ -1,10 +1,10 @@
 import datetime as dt
 import threading
 import time
-import pandas as pd
 from pathlib import Path
 from typing import Callable, Dict, List
 
+import pandas as pd
 import pytest
 from cg_lims.clients.cg.status_db_api import StatusDBAPI
 from cg_lims.clients.cg.token_manager import TokenManager
