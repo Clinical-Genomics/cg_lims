@@ -36,22 +36,29 @@ def get_numeric_artifact_udf(artifact: Artifact, udf_name: str) -> Any:
 
 def convert_ngul_to_pm(ngul_conc: float, average_size: int) -> float:
     """Convert a given concentration from ng/ul to pM with the same formula that SMRT Link uses."""
+    print(f"Original conc: {ngul_conc} ng/ul")
+    print(f"Avg mol weight SS DNA: {SMRT_LINK_AVERAGE_MOLECULAR_WEIGHT_SS_DNA}")
+    print(f"Avg Size: {average_size} bp")
     return 1e9 * ngul_conc / (2 * SMRT_LINK_AVERAGE_MOLECULAR_WEIGHT_SS_DNA * average_size)
 
 
-def get_number_of_samples_in_pool(artifact: Artifact) -> int:
+def get_number_of_pool_inputs(artifact: Artifact) -> int:
     """Return the number of samples in a given pool."""
-    return len(artifact.samples)
+    return len(artifact.input_artifact_list())
 
 
 def get_sample_aliquot_volume(
     target_concentration: float,
     target_volume: float,
     original_concentration: float,
-    number_of_samples: int,
+    number_of_inputs: int,
 ) -> float:
     """Return the sample aliquot volumes needed to pool a sample."""
-    return (target_volume * target_concentration) / (number_of_samples * original_concentration)
+    print(f"Target vol: {target_volume} ul")
+    print(f"Target conc: {target_concentration} pM")
+    print(f"Number of inputs: {number_of_inputs}")
+    print(f"Original conc: {original_concentration} pM")
+    return (target_volume * target_concentration) / (number_of_inputs * original_concentration)
 
 
 def set_pooling_volumes(
@@ -68,7 +75,7 @@ def set_pooling_volumes(
 ) -> None:
     """Set the aliquot volumes needed for the pooling."""
     input_artifacts: List[Artifact] = pool_artifact.input_artifact_list()
-    number_of_samples: int = get_number_of_samples_in_pool(artifact=pool_artifact)
+    number_of_inputs: int = get_number_of_pool_inputs(artifact=pool_artifact)
     total_sample_volume: float = 0
     for input_artifact in input_artifacts:
         size: int = get_numeric_artifact_udf(artifact=input_artifact, udf_name=size_udf)
@@ -82,7 +89,7 @@ def set_pooling_volumes(
             target_concentration=target_concentration,
             target_volume=target_volume,
             original_concentration=input_concentration_pm,
-            number_of_samples=number_of_samples,
+            number_of_inputs=number_of_inputs,
         )
         total_sample_volume += sample_volume
         input_artifact.udf[sample_volume_udf] = sample_volume
