@@ -74,8 +74,11 @@ def make_source_dest_info(
         well_source = "Source Well"
         well = source_artifact.location[1]
     udf_info = more_sample_info(source_artifact, input_udfs) + more_sample_info(
-        dest_artifact, output_udfs
-    )
+        dest_artifact, output_udfs)
+    dest_well = dest_artifact.location[1]
+
+    
+
     return WellInfo(
         project_name=sample.project.name,
         sample_name=sample_name,
@@ -86,7 +89,7 @@ def make_source_dest_info(
         well_source=well_source,
         well=well,
         exta_udf_info=udf_info,
-        dest_well=dest_artifact.location[1],
+        dest_well=dest_well,
     )
 
 
@@ -98,7 +101,7 @@ def more_sample_info(artifact: Artifact, udfs: List[str]) -> str:
         value = artifact.udf.get(udf)
         if value is not None:
             if isinstance(value, float):
-                value = round(value, 2)
+                value = round(value, 3)
             html.append(f"{udf} : {value}<br>")
     return "".join(html)
 
