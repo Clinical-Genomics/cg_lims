@@ -36,9 +36,6 @@ def get_numeric_artifact_udf(artifact: Artifact, udf_name: str) -> Any:
 
 def convert_ngul_to_pm(ngul_conc: float, average_size: int) -> float:
     """Convert a given concentration from ng/ul to pM with the same formula that SMRT Link uses."""
-    print(f"Original conc: {ngul_conc} ng/ul")
-    print(f"Avg mol weight SS DNA: {SMRT_LINK_AVERAGE_MOLECULAR_WEIGHT_SS_DNA}")
-    print(f"Avg Size: {average_size} bp")
     return 1e9 * ngul_conc / (2 * SMRT_LINK_AVERAGE_MOLECULAR_WEIGHT_SS_DNA * average_size)
 
 
@@ -54,10 +51,6 @@ def get_sample_aliquot_volume(
     number_of_inputs: int,
 ) -> float:
     """Return the sample aliquot volumes needed to pool a sample."""
-    print(f"Target vol: {target_volume} ul")
-    print(f"Target conc: {target_concentration} pM")
-    print(f"Number of inputs: {number_of_inputs}")
-    print(f"Original conc: {original_concentration} pM")
     return (target_volume * target_concentration) / (number_of_inputs * original_concentration)
 
 
