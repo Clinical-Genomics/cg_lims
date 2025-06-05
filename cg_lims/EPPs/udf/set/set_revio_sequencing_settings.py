@@ -6,7 +6,7 @@ from typing import List
 import click
 import numpy as np
 from cg_lims.exceptions import InvalidValueError, LimsError, MissingUDFsError
-from cg_lims.get.artifacts import get_artifacts, get_non_pooled_artifacts
+from cg_lims.get.artifacts import get_artifacts
 from genologics.entities import Artifact, Container, Process
 
 LOG = logging.getLogger(__name__)
@@ -41,10 +41,7 @@ def set_plates(process: Process) -> None:
 
 def calculate_weighted_average_size(artifact: Artifact) -> float:
     """Calculate the weighted average fragment size of an artifact (single sample or pool)"""
-    if len(artifact.samples) <= 1:
-        input_artifact: Artifact = artifact.input_artifact_list()[0].input_artifact_list()[0]
-        return input_artifact.udf.get("Size (bp)")
-    input_artifacts: List[Artifact] = get_non_pooled_artifacts(artifact=artifact)
+    input_artifacts: List[Artifact] = artifact.input_artifact_list()[0].input_artifact_list()
     sizes: List[float] = []
     volumes: List[float] = []
     for input_artifact in input_artifacts:
