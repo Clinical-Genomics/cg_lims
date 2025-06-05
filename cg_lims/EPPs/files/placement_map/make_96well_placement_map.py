@@ -74,10 +74,9 @@ def make_source_dest_info(
         well_source = "Source Well"
         well = source_artifact.location[1]
     udf_info = more_sample_info(source_artifact, input_udfs) + more_sample_info(
-        dest_artifact, output_udfs)
+        dest_artifact, output_udfs
+    )
     dest_well = dest_artifact.location[1]
-
-    
 
     return WellInfo(
         project_name=sample.project.name,
