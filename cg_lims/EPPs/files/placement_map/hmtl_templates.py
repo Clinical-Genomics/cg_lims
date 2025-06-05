@@ -79,5 +79,6 @@ Project : {project_name}<br>
 {sample_type} ID : {sample_id}<br>
 {container_source} : {container_name}<br>
 {well_source} : {well}<br>
+Destination Well : {dest_well}<br>
 {exta_udf_info}
 </td>"""
