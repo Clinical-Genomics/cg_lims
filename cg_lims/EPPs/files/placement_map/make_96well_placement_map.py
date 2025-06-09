@@ -100,7 +100,7 @@ def more_sample_info(artifact: Artifact, udfs: List[str]) -> str:
         value = artifact.udf.get(udf)
         if value is not None:
             if isinstance(value, float):
-                value = round(value, 3)
+                value = round(value, 2)
             html.append(f"{udf} : {value}<br>")
     return "".join(html)
 
