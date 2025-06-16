@@ -123,15 +123,12 @@ def get_file_data_and_write(
         tube_well_columns=["Destination Well"],
     )
 
-    if missing_file_udfs:
-        raise MissingUDFsError(
-            f"All information was not added to the file. Udfs missing for samples: {', '.join(missing_file_udfs)}"
-        )
 
-    if missing_source_barcode or missing_destination_barcode or clashing_barcodes:
+    if missing_file_udfs or missing_source_barcode or missing_destination_barcode or clashing_barcodes:
         unique_clashing_barcodes: list = set(clashing_barcodes)
         raise MissingUDFsError(
-            f"Error concerning barcodes for the following one, two or three cases: "
+            f"Error creating the normalization file concerning the following one, two, three or four cases: "
+            f"All information was not added to the file. Udfs missing for samples: {', '.join(missing_file_udfs)}. "
             f"The following samples are missing the source barcode: {', '.join(missing_source_barcode)}. "
             f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. "
             f"The following destination container barcodes clash with the input container barcodes. Please make sure the destination barcodes are unique! {', '.join(unique_clashing_barcodes)}."
