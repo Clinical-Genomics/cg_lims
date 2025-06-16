@@ -128,7 +128,7 @@ def get_file_data_and_write(
         unique_clashing_barcodes: list = set(clashing_barcodes)
         raise MissingUDFsError(
             f"Error creating the normalization file concerning the following one, two, three or four cases: "
-            f"The follwing samples are missing UDFs and were not added to the file: {', '.join(missing_file_udfs)}. "
+            f"The following samples are missing UDFs and were not added to the file: {', '.join(missing_file_udfs)}. "
             f"The following samples are missing the source barcode: {', '.join(missing_source_barcode)}. "
             f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. "
             f"The following destination container barcodes clash with the input container barcodes. Please make sure the destination barcodes are unique! {', '.join(unique_clashing_barcodes)}."
