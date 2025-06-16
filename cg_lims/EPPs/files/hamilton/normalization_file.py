@@ -66,7 +66,7 @@ def get_file_data_and_write(
 ):
     """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells."""
 
-    missing_udfs: list = []
+    missing_file_udfs: list = []
     missing_source_barcode: list = []
     missing_destination_barcode: list = []
     clashing_barcode: list = []  # (source_id, source_barcode)
@@ -107,7 +107,7 @@ def get_file_data_and_write(
                 if pool:
                     buffer = False
             except:
-                missing_udfs.append(source_artifact.samples[0].id)
+                missing_file_udfs.append(source_artifact.samples[0].id)
                 continue
 
             row_data_dict: dict = row_data.dict(by_alias=True)
@@ -123,9 +123,9 @@ def get_file_data_and_write(
         tube_well_columns=["Destination Well"],
     )
 
-    if missing_udfs:
+    if missing_file_udfs:
         raise MissingUDFsError(
-            f"All information was not added to the file. Udfs missing for samples: {', '.join(missing_udfs)}"
+            f"All information was not added to the file. Udfs missing for samples: {', '.join(missing_file_udfs)}"
         )
 
     if missing_source_barcode or missing_destination_barcode or clashing_barcode:
