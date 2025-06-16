@@ -50,7 +50,7 @@ def validate_unique_barcodes(
     source_barcode: str,
     source_artifact: Artifact,
     destination_barcodes: list,
-    error_list: list,
+    clashing_barcodes: list,
 ) -> None:
     """Check that the source container barcode is not the same as any of the destination container barcodes."""
 
@@ -58,7 +58,7 @@ def validate_unique_barcodes(
         LOG.warning(
             f"Source artifact {source_artifact.samples[0].id}'s barcode clashes with the output container barcode"
         )
-        error_list.append((source_artifact.samples[0].id, source_barcode))
+        clashing_barcodes.append(source_barcode)
 
 
 def get_file_data_and_write(
@@ -69,7 +69,7 @@ def get_file_data_and_write(
     missing_file_udfs: list = []
     missing_source_barcode: list = []
     missing_destination_barcode: list = []
-    clashing_barcode: list = []  # (source_id, source_barcode)
+    clashing_barcodes: list = []  # (source_id, source_barcode)
     file_rows: list = []
 
     destination_barcodes: list = make_dest_barcode_list(destination_artifacts=destination_artifacts)
@@ -92,7 +92,7 @@ def get_file_data_and_write(
                 source_barcode=source_barcode,
                 source_artifact=source_artifact,
                 destination_barcodes=destination_barcodes,
-                error_list=clashing_barcode,
+                clashing_barcodes=clashing_barcodes,
             )
 
             try:
@@ -128,15 +128,13 @@ def get_file_data_and_write(
             f"All information was not added to the file. Udfs missing for samples: {', '.join(missing_file_udfs)}"
         )
 
-    if missing_source_barcode or missing_destination_barcode or clashing_barcode:
-        clash_descriptions: list = [
-            f"{sample_id} with barcode {barcode}" for sample_id, barcode in clashing_barcode
-        ]
+    if missing_source_barcode or missing_destination_barcode or clashing_barcodes:
+        unique_clashing_barcodes: list = set(clashing_barcodes)
         raise MissingUDFsError(
             f"Error concerning barcodes for the following one, two or three cases: "
             f"The following samples are missing the source barcode: {', '.join(missing_source_barcode)}. "
             f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. "
-            f"The following samples clash with the destination container barcodes. Please make sure the destination barcodes are unique! {', '.join(clash_descriptions)}."
+            f"The following destination container barcodes clash with the input container barcodes. Please make sure the destination barcodes are unique! {', '.join(unique_clashing_barcodes)}."
         )
 
 
