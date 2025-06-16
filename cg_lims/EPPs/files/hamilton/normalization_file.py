@@ -9,7 +9,7 @@ from genologics.lims import Artifact
 
 from cg_lims import options
 from cg_lims.EPPs.files.hamilton.models import BarcodeFileRow
-from cg_lims.exceptions import DuplicateSampleError, LimsError, MissingUDFsError
+from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import build_csv, sort_csv_plate_and_tube
 from cg_lims.get.artifacts import get_artifacts
 
@@ -66,7 +66,7 @@ def get_file_data_and_write(
 ):
     """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells."""
 
-    failed_samples: list = []
+    missing_udfs: list = []
     missing_source_barcode: list = []
     missing_destination_barcode: list = []
     clashing_barcode: list = []  # (source_id, source_barcode)
@@ -107,7 +107,7 @@ def get_file_data_and_write(
                 if pool:
                     buffer = False
             except:
-                failed_samples.append(source_artifact.id)
+                missing_udfs.append(source_artifact.samples[0].id)
                 continue
 
             row_data_dict: dict = row_data.dict(by_alias=True)
@@ -123,24 +123,20 @@ def get_file_data_and_write(
         tube_well_columns=["Destination Well"],
     )
 
-    if failed_samples:
+    if missing_udfs:
         raise MissingUDFsError(
-            f"All samples were not added to the file. Udfs missing for samples: {', '.join(failed_samples)}"
+            f"All information was not added to the file. Udfs missing for samples: {', '.join(missing_udfs)}"
         )
 
-    if clashing_barcode:
+    if missing_source_barcode or missing_destination_barcode or clashing_barcode:
         clash_descriptions: list = [
             f"{sample_id} with barcode {barcode}" for sample_id, barcode in clashing_barcode
         ]
-        raise DuplicateSampleError(
-            f"The following samples: {', '.join(clash_descriptions)} clash with the destination container barcode. Please make sure they are unique!"
-        )
-
-    if missing_source_barcode or missing_destination_barcode:
         raise MissingUDFsError(
-            f"Barcodes missing for some artifacts. "
-            f"Missing source barcode: {', '.join(missing_source_barcode)}. "
-            f"Missing destination barcode: {', '.join(missing_destination_barcode)}."
+            f"Error concerning barcodes for the following one, two or three cases: \n"
+            f"The following samples are missing the source barcode: {', '.join(missing_source_barcode)}. \n"
+            f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. \n"
+            f"The following samples clash with the destination container barcodes. Please make sure the destination barcodes are unique! \n{', '.join(clash_descriptions)}."
         )
 
 
