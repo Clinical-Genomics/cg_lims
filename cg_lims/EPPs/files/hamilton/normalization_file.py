@@ -133,10 +133,10 @@ def get_file_data_and_write(
             f"{sample_id} with barcode {barcode}" for sample_id, barcode in clashing_barcode
         ]
         raise MissingUDFsError(
-            f"Error concerning barcodes for the following one, two or three cases: \n"
-            f"The following samples are missing the source barcode: {', '.join(missing_source_barcode)}. \n"
-            f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. \n"
-            f"The following samples clash with the destination container barcodes. Please make sure the destination barcodes are unique! \n{', '.join(clash_descriptions)}."
+            f"Error concerning barcodes for the following one, two or three cases: "
+            f"The following samples are missing the source barcode: {', '.join(missing_source_barcode)}. "
+            f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. "
+            f"The following samples clash with the destination container barcodes. Please make sure the destination barcodes are unique! {', '.join(clash_descriptions)}."
         )
 
 
