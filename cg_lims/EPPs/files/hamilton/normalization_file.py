@@ -5,12 +5,13 @@ from pathlib import Path
 from typing import List
 
 import click
+from genologics.lims import Artifact
+
 from cg_lims import options
 from cg_lims.EPPs.files.hamilton.models import BarcodeFileRow
-from cg_lims.exceptions import LimsError, MissingUDFsError
+from cg_lims.exceptions import DuplicateSampleError, LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import build_csv, sort_csv_plate_and_tube
 from cg_lims.get.artifacts import get_artifacts
-from genologics.lims import Artifact
 
 LOG = logging.getLogger(__name__)
 
@@ -24,6 +25,40 @@ HEADERS = [
     "Destination Well",
     "Buffer Volume",
 ]
+destination_barcodes: list = []
+
+
+def get_barcode(artifact: Artifact) -> str:
+    """Get the value/name of the container barcode"""
+    return artifact.udf.get("Output Container Barcode")
+
+
+def make_dest_barcode_list(destination_artifacts: List[Artifact]) -> list:
+    """Create a list of all destination barcodes for all artifacts in the step."""
+    for destination_artifact in destination_artifacts:
+        destination_barcodes.append(get_barcode(destination_artifact))
+    return destination_barcodes
+
+
+def validate_set_barcode(barcode: str, artifact: Artifact, error_list: list) -> None:
+    """Check that the container barcode is set for all artifacts."""
+    if barcode is None:
+        error_list.append(artifact.samples[0].id)
+
+
+def validate_unique_barcodes(
+    source_barcode: str,
+    source_artifact: Artifact,
+    destination_barcodes: list,
+    error_list: list,
+) -> None:
+    """Check that the source container barcode is not the same as any of the destination container barcodes."""
+
+    if source_barcode in destination_barcodes:
+        LOG.warning(
+            f"Source artifact {source_artifact.samples[0].id}'s barcode clashes with the output container barcode"
+        )
+        error_list.append((source_artifact.samples[0].id, source_barcode))
 
 
 def get_file_data_and_write(
@@ -31,16 +66,35 @@ def get_file_data_and_write(
 ):
     """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells."""
 
-    failed_samples = []
-    missing_source_barcode = []
-    missing_destination_barcode = []
-    file_rows = []
+    failed_samples: list = []
+    missing_source_barcode: list = []
+    missing_destination_barcode: list = []
+    clashing_barcode: list = []  # (source_id, source_barcode)
+    file_rows: list = []
+
+    destination_barcodes: list = make_dest_barcode_list(destination_artifacts=destination_artifacts)
+
     for destination_artifact in destination_artifacts:
-        if destination_artifact.udf.get("Output Container Barcode") is None:
-            missing_destination_barcode.append(destination_artifact.id)
+        destination_barcode: str = get_barcode(destination_artifact)
+        validate_set_barcode(
+            barcode=destination_barcode,
+            artifact=destination_artifact,
+            error_list=missing_destination_barcode,
+        )
         source_artifacts = destination_artifact.input_artifact_list()
         buffer = True
         for source_artifact in source_artifacts:
+            source_barcode: str = get_barcode(source_artifact)
+            validate_set_barcode(
+                barcode=source_barcode, artifact=source_artifact, error_list=missing_source_barcode
+            )
+            validate_unique_barcodes(
+                source_barcode=source_barcode,
+                source_artifact=source_artifact,
+                destination_barcodes=destination_barcodes,
+                error_list=clashing_barcode,
+            )
+
             try:
                 row_data = BarcodeFileRow(
                     source_artifact=source_artifact,
@@ -56,12 +110,9 @@ def get_file_data_and_write(
                 failed_samples.append(source_artifact.id)
                 continue
 
-            row_data_dict = row_data.dict(by_alias=True)
+            row_data_dict: dict = row_data.dict(by_alias=True)
 
             file_rows.append([row_data_dict[header] for header in HEADERS])
-
-            if source_artifact.udf.get("Output Container Barcode") is None:
-                missing_source_barcode.append(source_artifact.id)
 
     build_csv(file=Path(file), rows=file_rows, headers=HEADERS)
     sort_csv_plate_and_tube(
@@ -76,6 +127,15 @@ def get_file_data_and_write(
         raise MissingUDFsError(
             f"All samples were not added to the file. Udfs missing for samples: {', '.join(failed_samples)}"
         )
+
+    if clashing_barcode:
+        clash_descriptions: list = [
+            f"{sample_id} with barcode {barcode}" for sample_id, barcode in clashing_barcode
+        ]
+        raise DuplicateSampleError(
+            f"The following samples: {', '.join(clash_descriptions)} clash with the destination container barcode. Please make sure they are unique!"
+        )
+
     if missing_source_barcode or missing_destination_barcode:
         raise MissingUDFsError(
             f"Barcodes missing for some artifacts. "
@@ -85,7 +145,7 @@ def get_file_data_and_write(
 
 
 @click.command()
-@options.file_placeholder(help="Hamilton Noramlization File")
+@options.file_placeholder(help="Hamilton Normalization File")
 @options.buffer_udf()
 @options.volume_udf()
 @options.pooling_step()
@@ -99,7 +159,7 @@ def barcode_file(
     pooling_step: bool,
     measurement: bool = False,
 ):
-    """Script to make a hamilton normalization file"""
+    """Script to make a hamilton normalization file."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process = ctx.obj["process"]
