@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List
 
 import click
-from genologics.lims import Artifact
+from genologics.lims import Artifact, Process
 
 from cg_lims import options
 from cg_lims.EPPs.files.hamilton.models import BarcodeFileRow
@@ -32,16 +32,16 @@ def get_barcode(artifact: Artifact) -> str:
     return artifact.udf.get("Output Container Barcode")
 
 
-def make_dest_barcode_list(destination_artifacts: List[Artifact]) -> list:
+def make_dest_barcode_list(destination_artifacts: List[Artifact]) -> List[str]:
     """Create a list of all destination barcodes for all artifacts in the step."""
-    destination_barcodes: list = []
+    destination_barcodes: List[str] = []
 
     for destination_artifact in destination_artifacts:
         destination_barcodes.append(get_barcode(destination_artifact))
     return destination_barcodes
 
 
-def validate_set_barcode(artifact: Artifact, error_list: list) -> None:
+def validate_set_barcode(artifact: Artifact, error_list: List[str]) -> None:
     """Check that the container barcode is set for all artifacts."""
     barcode: str = get_barcode(artifact)
     if barcode is None:
@@ -50,11 +50,11 @@ def validate_set_barcode(artifact: Artifact, error_list: list) -> None:
 
 def validate_unique_barcodes(
     source_artifact: Artifact,
-    destination_barcodes: list,
-    clashing_barcodes: list,
+    destination_barcodes: List[str],
+    clashing_barcodes: List[str],
 ) -> None:
     """Check that the source container barcode is not the same as any of the destination container barcodes."""
-    
+
     source_barcode: str = get_barcode(source_artifact)
     if source_barcode in destination_barcodes:
         LOG.warning(
@@ -68,12 +68,12 @@ def get_file_data_and_write(
 ):
     """Making a Hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells."""
 
-    missing_file_udfs: list = []
-    missing_source_barcode: list = []
-    missing_destination_barcode: list = []
-    clashing_barcodes: list = []  # (source_id, source_barcode)
-    file_rows: list = []
-    destination_barcodes: list = make_dest_barcode_list(destination_artifacts=destination_artifacts)
+    missing_file_udfs: List[str] = []
+    missing_source_barcode: List[str] = []
+    missing_destination_barcode: List[str] = []
+    clashing_barcodes: List[str] = []  # (source_id, source_barcode)
+    file_rows: List[str] = []
+    destination_barcodes: List[str] = make_dest_barcode_list(destination_artifacts=destination_artifacts)
 
     for destination_artifact in destination_artifacts:
         validate_set_barcode(
@@ -120,29 +120,16 @@ def get_file_data_and_write(
 
     all_err_msgs: str = ""
     if missing_file_udfs:
-        err_msg_missing_udfs: str = (
-            f"The following samples are missing UDFs and were not added to the file: {', '.join(missing_file_udfs)}. "
-        )
-        all_err_msgs: str = all_err_msgs + err_msg_missing_udfs
+        all_err_msgs += f"The following samples are missing UDFs and were not added to the file: {', '.join(missing_file_udfs)}. "
     if missing_source_barcode:
-        err_msg_missing_src_barcode: str = (
-            f"The following samples are missing the source barcode: {', '.join(missing_source_barcode)}. "
-        )
-        all_err_msgs: str = all_err_msgs + err_msg_missing_src_barcode
+        all_err_msgs += f"The following samples are missing the source barcode: {', '.join(missing_source_barcode)}. "
     if missing_destination_barcode:
-        err_msg_missing_dest_barcode: str = (
-            f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. "
-        )
-        all_err_msgs: str = all_err_msgs + err_msg_missing_dest_barcode
+        all_err_msgs += f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. "
     if clashing_barcodes:
         unique_clashing_barcodes: list = set(clashing_barcodes)
-        err_msg_clashing_barcodes: str = (
-            f"The following destination container barcodes clash with the input container barcodes. Please make sure the destination barcodes are unique! {', '.join(unique_clashing_barcodes)}."
-        )
-        all_err_msgs: str = all_err_msgs + err_msg_clashing_barcodes
-
-        if all_err_msgs:
-            raise MissingUDFsError(f"Error creating the normalization file. " f"{(all_err_msgs)}")
+        all_err_msgs += f"The following destination container barcodes clash with the input container barcodes. Please make sure the destination barcodes are unique! {', '.join(unique_clashing_barcodes)}."
+    if all_err_msgs:
+        raise MissingUDFsError(f"Error creating the normalization file. " f"{(all_err_msgs)}")
 
 
 @click.command()
@@ -160,11 +147,11 @@ def barcode_file(
     pooling_step: bool,
     measurement: bool = False,
 ):
-    """Script to make a hamilton normalization file."""
+    """Script to make a Hamilton normalization file."""
 
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
-    process = ctx.obj["process"]
-    artifacts = get_artifacts(process=process, measurement=measurement)
+    process: Process = ctx.obj["process"]
+    artifacts: List[Artifact] = get_artifacts(process=process, measurement=measurement)
     try:
         get_file_data_and_write(
             pool=pooling_step,
