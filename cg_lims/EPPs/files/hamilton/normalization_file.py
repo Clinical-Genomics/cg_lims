@@ -5,13 +5,12 @@ from pathlib import Path
 from typing import List
 
 import click
-from genologics.lims import Artifact, Process
-
 from cg_lims import options
 from cg_lims.EPPs.files.hamilton.models import BarcodeFileRow
 from cg_lims.exceptions import LimsError, MissingUDFsError
 from cg_lims.files.manage_csv_files import build_csv, sort_csv_plate_and_tube
 from cg_lims.get.artifacts import get_artifacts
+from genologics.lims import Artifact, Process
 
 LOG = logging.getLogger(__name__)
 
@@ -72,8 +71,10 @@ def get_file_data_and_write(
     missing_source_barcode: List[str] = []
     missing_destination_barcode: List[str] = []
     clashing_barcodes: List[str] = []  # (source_id, source_barcode)
-    file_rows: List[str] = []
-    destination_barcodes: List[str] = make_dest_barcode_list(destination_artifacts=destination_artifacts)
+    file_rows: List[List[str]] = []
+    destination_barcodes: List[str] = make_dest_barcode_list(
+        destination_artifacts=destination_artifacts
+    )
 
     for destination_artifact in destination_artifacts:
         validate_set_barcode(
@@ -126,8 +127,11 @@ def get_file_data_and_write(
     if missing_destination_barcode:
         all_err_msgs += f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. "
     if clashing_barcodes:
-        unique_clashing_barcodes: list = set(clashing_barcodes)
-        all_err_msgs += f"The following destination container barcodes clash with the input container barcodes. Please make sure the destination barcodes are unique! {', '.join(unique_clashing_barcodes)}."
+        unique_clashing_barcodes: set = set(clashing_barcodes)
+        all_err_msgs += (
+            f"The following destination container barcodes clash with the input container barcodes. "
+            f"Please make sure the destination barcodes are unique! {', '.join(unique_clashing_barcodes)}."
+        )
     if all_err_msgs:
         raise MissingUDFsError(f"Error creating the normalization file. " f"{(all_err_msgs)}")
 
