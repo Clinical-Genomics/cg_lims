@@ -25,7 +25,6 @@ HEADERS = [
     "Destination Well",
     "Buffer Volume",
 ]
-destination_barcodes: list = []
 
 
 def get_barcode(artifact: Artifact) -> str:
@@ -35,28 +34,31 @@ def get_barcode(artifact: Artifact) -> str:
 
 def make_dest_barcode_list(destination_artifacts: List[Artifact]) -> list:
     """Create a list of all destination barcodes for all artifacts in the step."""
+    destination_barcodes: list = []
+
     for destination_artifact in destination_artifacts:
         destination_barcodes.append(get_barcode(destination_artifact))
     return destination_barcodes
 
 
-def validate_set_barcode(barcode: str, artifact: Artifact, error_list: list) -> None:
+def validate_set_barcode(artifact: Artifact, error_list: list) -> None:
     """Check that the container barcode is set for all artifacts."""
+    barcode: str = get_barcode(artifact)
     if barcode is None:
         error_list.append(artifact.samples[0].id)
 
 
 def validate_unique_barcodes(
-    source_barcode: str,
     source_artifact: Artifact,
     destination_barcodes: list,
     clashing_barcodes: list,
 ) -> None:
     """Check that the source container barcode is not the same as any of the destination container barcodes."""
-
+    
+    source_barcode: str = get_barcode(source_artifact)
     if source_barcode in destination_barcodes:
         LOG.warning(
-            f"Source artifact {source_artifact.samples[0].id}'s barcode clashes with the output container barcode"
+            f"Sample {source_artifact.samples[0].id}'s input barcode clashes with the output container barcode"
         )
         clashing_barcodes.append(source_barcode)
 
@@ -64,32 +66,25 @@ def validate_unique_barcodes(
 def get_file_data_and_write(
     destination_artifacts: List[Artifact], file: str, volume_udf: str, buffer_udf: str, pool: bool
 ):
-    """Making a hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells."""
+    """Making a Hamilton normalization file with sample and buffer volumes, source and destination barcodes and wells."""
 
     missing_file_udfs: list = []
     missing_source_barcode: list = []
     missing_destination_barcode: list = []
     clashing_barcodes: list = []  # (source_id, source_barcode)
     file_rows: list = []
-
     destination_barcodes: list = make_dest_barcode_list(destination_artifacts=destination_artifacts)
 
     for destination_artifact in destination_artifacts:
-        destination_barcode: str = get_barcode(destination_artifact)
         validate_set_barcode(
-            barcode=destination_barcode,
             artifact=destination_artifact,
             error_list=missing_destination_barcode,
         )
         source_artifacts = destination_artifact.input_artifact_list()
         buffer = True
         for source_artifact in source_artifacts:
-            source_barcode: str = get_barcode(source_artifact)
-            validate_set_barcode(
-                barcode=source_barcode, artifact=source_artifact, error_list=missing_source_barcode
-            )
+            validate_set_barcode(artifact=source_artifact, error_list=missing_source_barcode)
             validate_unique_barcodes(
-                source_barcode=source_barcode,
                 source_artifact=source_artifact,
                 destination_barcodes=destination_barcodes,
                 clashing_barcodes=clashing_barcodes,
@@ -123,16 +118,31 @@ def get_file_data_and_write(
         tube_well_columns=["Destination Well"],
     )
 
-
-    if missing_file_udfs or missing_source_barcode or missing_destination_barcode or clashing_barcodes:
-        unique_clashing_barcodes: list = set(clashing_barcodes)
-        raise MissingUDFsError(
-            f"Error creating the normalization file concerning the following one, two, three or four cases: "
+    all_err_msgs: str = ""
+    if missing_file_udfs:
+        err_msg_missing_udfs: str = (
             f"The following samples are missing UDFs and were not added to the file: {', '.join(missing_file_udfs)}. "
+        )
+        all_err_msgs: str = all_err_msgs + err_msg_missing_udfs
+    if missing_source_barcode:
+        err_msg_missing_src_barcode: str = (
             f"The following samples are missing the source barcode: {', '.join(missing_source_barcode)}. "
+        )
+        all_err_msgs: str = all_err_msgs + err_msg_missing_src_barcode
+    if missing_destination_barcode:
+        err_msg_missing_dest_barcode: str = (
             f"The following samples are missing the destination barcode: {', '.join(missing_destination_barcode)}. "
+        )
+        all_err_msgs: str = all_err_msgs + err_msg_missing_dest_barcode
+    if clashing_barcodes:
+        unique_clashing_barcodes: list = set(clashing_barcodes)
+        err_msg_clashing_barcodes: str = (
             f"The following destination container barcodes clash with the input container barcodes. Please make sure the destination barcodes are unique! {', '.join(unique_clashing_barcodes)}."
         )
+        all_err_msgs: str = all_err_msgs + err_msg_clashing_barcodes
+
+        if all_err_msgs:
+            raise MissingUDFsError(f"Error creating the normalization file. " f"{(all_err_msgs)}")
 
 
 @click.command()
