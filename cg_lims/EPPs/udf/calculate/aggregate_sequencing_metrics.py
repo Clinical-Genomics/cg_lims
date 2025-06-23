@@ -91,7 +91,7 @@ def aggregate_udf(
 
 
 def group_by_process(artifacts: List[Artifact]) -> Dict[Process, List[Artifact]]:
-    """"""
+    """Group the input list of artifacts by their parent process."""
     groups: Dict = defaultdict(list)
     for artifact in artifacts:
         key: Process = artifact.parent_process
