@@ -833,7 +833,21 @@ def aggregate_metric_udfs(
     return click.option("-amu", "--aggregate-metric-udfs", required=True, multiple=True, help=help)
 
 
+def latest_aggregate_metric_udfs(
+    help: str = "UDF names for the aggregated sample metrics for the latest run.",
+) -> click.option:
+    return click.option(
+        "-lamu", "--latest-aggregate-metric-udfs", required=True, multiple=True, help=help
+    )
+
+
 def unit_conversion(
     help: str = "Unit conversion factor.",
 ) -> click.option:
     return click.option("-uc", "--unit-conversion-factor", required=True, multiple=True, help=help)
+
+
+def times_sequenced_udf(
+    help: str = "UDF name for the value documenting the amount of times the sample has been sequenced.",
+) -> click.option:
+    return click.option("-t", "--times-sequenced-udf", required=True, multiple=False, help=help)
