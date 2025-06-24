@@ -126,7 +126,7 @@ def aggregate_metric_for_artifacts(
             )
             latest_process: Process = get_latest_process(processes=list(grouped_artifacts.keys()))
             for process, process_artifacts in grouped_artifacts.items():
-                aggregated_result = aggregate_udf(
+                aggregated_result: float = aggregate_udf(
                     source_artifacts=process_artifacts,
                     source_udf=metric.sample_metric_udf,
                     unit_conversion=metric.unit_conversion,
