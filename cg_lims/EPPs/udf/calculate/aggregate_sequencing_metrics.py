@@ -132,7 +132,7 @@ def aggregate_metric_for_artifacts(
                     unit_conversion=metric.unit_conversion,
                 )
                 if process == latest_process:
-                    latest_aggregate = aggregated_result
+                    latest_aggregate += aggregated_result
                 total_aggregated_result += aggregated_result
                 times_sequenced = len(grouped_artifacts.keys())
         for sample in samples:
