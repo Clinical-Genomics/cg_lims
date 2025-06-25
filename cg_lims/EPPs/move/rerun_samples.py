@@ -25,6 +25,7 @@ def get_artifacts_to_requeue(
     rerun_artifacts: List[Artifact],
     process_types: List[str],
     sample_artifact: Optional[bool],
+    ignore_fail: bool = False,
 ) -> List[Artifact]:
     """Get input artifacts to define step (output artifacts of sort step)
     Args:
@@ -32,9 +33,10 @@ def get_artifacts_to_requeue(
         rerun_artifacts: List # Artifacts with Rerun flag
         process_types: List[str] # Name of step(s) before the requeue step
         sample_artifact: Optional[bool] # Flag to specify if it is the sample artifacts that should be requeued
+        ignore_fail: bool # Decides if MissingArtifactErrors should be ignored or not. Default is False.
     """
 
-    if not rerun_artifacts:
+    if not rerun_artifacts and not ignore_fail:
         raise MissingArtifactError(
             "Found no artifacts to requeue! Please double check the configuration."
         )
@@ -71,8 +73,23 @@ def check_same_sample_in_many_rerun_pools(rerun_arts: List[Artifact]) -> None:
     duplicate_samples: List[Sample] = list(set(all_samples))
     if duplicate_samples:
         raise DuplicateSampleError(
-            f"Waring same sample in many pools: {' ,'.join([sample.id for sample in duplicate_samples])}"
+            f"Warning same sample in many pools: {' ,'.join([sample.id for sample in duplicate_samples])}"
         )
+
+
+def queue_rerun_artifacts(
+    lims: Lims,
+    artifacts: List[Artifact],
+    workflow_id: str,
+    stage_id: str,
+    ignore_fail: bool = False,
+) -> None:
+    """Queue artifacts for rerun. Ignores missing artifacts if 'ignore_failed' is True."""
+    try:
+        queue_artifacts(lims=lims, artifacts=artifacts, workflow_id=workflow_id, stage_id=stage_id)
+    except MissingArtifactError as e:
+        if not ignore_fail:
+            raise e
 
 
 @click.command()
@@ -88,6 +105,9 @@ def check_same_sample_in_many_rerun_pools(rerun_arts: List[Artifact]) -> None:
     help="Use this flag if you want to queue the input artifacts of the current process. Default is to queue the "
     "output artifacts (analytes) of the process. "
 )
+@options.ignore_fail(
+    help="Use this flag if you don't want to warn about missing samples to requeue."
+)
 @click.pass_context
 def rerun_samples(
     ctx,
@@ -97,6 +117,7 @@ def rerun_samples(
     sample_artifact: Optional[bool],
     udf: str,
     input: bool,
+    ignore_fail: Optional[bool],
 ):
     """Script to requeue samples for sequencing."""
 
@@ -113,9 +134,16 @@ def rerun_samples(
             rerun_artifacts=rerun_artifacts,
             process_types=process_types,
             sample_artifact=sample_artifact,
+            ignore_fail=ignore_fail,
         )
-        check_same_sample_in_many_rerun_pools(artifacts_to_requeue)
-        queue_artifacts(lims, artifacts_to_requeue, workflow_id, stage_id)
+        check_same_sample_in_many_rerun_pools(rerun_arts=artifacts_to_requeue)
+        queue_rerun_artifacts(
+            lims=lims,
+            artifacts=artifacts_to_requeue,
+            workflow_id=workflow_id,
+            stage_id=stage_id,
+            ignore_fail=ignore_fail,
+        )
         click.echo("Artifacts have been queued.")
     except LimsError as e:
         sys.exit(e.message)
