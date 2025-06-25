@@ -25,6 +25,7 @@ def get_artifacts_to_requeue(
     rerun_artifacts: List[Artifact],
     process_types: List[str],
     sample_artifact: Optional[bool],
+    ignore_fail: bool = False,
 ) -> List[Artifact]:
     """Get input artifacts to define step (output artifacts of sort step)
     Args:
@@ -32,9 +33,10 @@ def get_artifacts_to_requeue(
         rerun_artifacts: List # Artifacts with Rerun flag
         process_types: List[str] # Name of step(s) before the requeue step
         sample_artifact: Optional[bool] # Flag to specify if it is the sample artifacts that should be requeued
+        ignore_fail: bool # Decides if MissingArtifactErrors should be ignored or not. Default is False.
     """
 
-    if not rerun_artifacts:
+    if not rerun_artifacts and not ignore_fail:
         raise MissingArtifactError(
             "Found no artifacts to requeue! Please double check the configuration."
         )
@@ -132,6 +134,7 @@ def rerun_samples(
             rerun_artifacts=rerun_artifacts,
             process_types=process_types,
             sample_artifact=sample_artifact,
+            ignore_fail=ignore_fail,
         )
         check_same_sample_in_many_rerun_pools(rerun_arts=artifacts_to_requeue)
         queue_rerun_artifacts(
