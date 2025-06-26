@@ -17,8 +17,6 @@ def sum_reads_in_pool(artifacts: list) -> Tuple[int, int]:
     passed_arts = 0
 
     for artifact in artifacts:
-        if len(artifact.samples) == 1:
-            continue
 
         missing_reads_pool = []
         for sample in artifact.samples:
