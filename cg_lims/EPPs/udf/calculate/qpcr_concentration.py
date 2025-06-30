@@ -138,6 +138,20 @@ def get_container_name(process: Process) -> str:
     return containers[0].name
 
 
+def get_original_file_name(file_artifact: Artifact) -> str:
+    """Return the original file name of the given file artifact."""
+    return file_artifact.files[0].original_location
+
+
+def validate_file_name(container_name: str, file_name: str, ignore_fail: bool) -> None:
+    """Validate the file name given the container name."""
+    if not ignore_fail and container_name not in file_name:
+        raise FileError(
+            f"The file name ('{file_name}') does not match the given container ({container_name})! "
+            f"Please check that the correct file has been used."
+        )
+
+
 @click.command()
 @options.file_placeholder(help="qPCR result file placeholder name.")
 @options.local_file()
@@ -160,22 +174,24 @@ def qpcr_concentration(
     LOG.info(f"Running {ctx.command_path} with params: {ctx.params}")
     process: Process = ctx.obj["process"]
 
+    container_name: str = get_container_name(process=process)
+
     if local_file:
         file_path: Path = Path(local_file)
+        file_name: str = file_path.name
+        validate_file_name(
+            container_name=container_name, file_name=file_name, ignore_fail=ignore_fail
+        )
     else:
         file_art: Artifact = get_artifact_by_name(process=process, name=file)
+        file_name: str = get_original_file_name(file_artifact=file_art)
+        validate_file_name(
+            container_name=container_name, file_name=file_name, ignore_fail=ignore_fail
+        )
         file_path: Path = Path(get_file_path(file_art))
 
     if not file_path.is_file():
         raise MissingFileError(f"No such file: {file_path}")
-
-    container_name: str = get_container_name(process=process)
-
-    if not ignore_fail and container_name not in file_path.name:
-        raise FileError(
-            f"The file name ('{file_path.name}') does not match the given container ({container_name})! "
-            f"Please check that the correct file has been used."
-        )
 
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, measurement=True)
