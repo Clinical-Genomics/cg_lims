@@ -3,7 +3,6 @@ import sys
 from typing import Tuple
 
 import click
-
 from cg_lims.exceptions import LimsError
 from cg_lims.get.artifacts import get_artifacts
 
