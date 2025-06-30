@@ -9,11 +9,18 @@ import numpy as np
 import pandas as pd
 from cg_lims import options
 from cg_lims.EPPs.udf.calculate.constants import WELL_TRANSFORMER
-from cg_lims.exceptions import FailingQCError, LimsError, MissingFileError, MissingValueError
+from cg_lims.exceptions import (
+    FailingQCError,
+    FileError,
+    InvalidContainerError,
+    LimsError,
+    MissingFileError,
+    MissingValueError,
+)
 from cg_lims.get.artifacts import get_artifact_by_name, get_artifacts
 from cg_lims.get.files import get_file_path
 from cg_lims.get.samples import get_one_sample_from_artifact
-from genologics.entities import Artifact, Process
+from genologics.entities import Artifact, Container, Process
 
 LOG = logging.getLogger(__name__)
 
@@ -77,7 +84,7 @@ class WellValues:
         self.artifact.put()
 
 
-def parse_quantification_summary(summary_file: str) -> Dict[str, WellValues]:
+def parse_quantification_summary(summary_file: Path) -> Dict[str, WellValues]:
     """Parse Quantification Summary excel file and return python dict with
     original wells as the keys and WellValues objects as the values."""
     df: pd.DataFrame = pd.read_excel(summary_file)
@@ -121,12 +128,23 @@ def set_missing_artifact_values(artifact: Artifact, size_bp: int) -> None:
     artifact.put()
 
 
+def get_container_name(process: Process) -> str:
+    """Return the name of the container available in the step. Will fail if more than one is found."""
+    containers: List[Container] = process.output_containers()
+    if len(containers) > 1:
+        raise InvalidContainerError(
+            f"Warning: Can't fetch container name. Only one is allowed in the step."
+        )
+    return containers[0].name
+
+
 @click.command()
 @options.file_placeholder(help="qPCR result file placeholder name.")
 @options.local_file()
 @options.replicate_threshold()
 @options.concentration_threshold()
 @options.size_bp()
+@options.ignore_fail(help="Use this flag if you want to override the file name check.")
 @click.pass_context
 def qpcr_concentration(
     ctx,
@@ -135,6 +153,7 @@ def qpcr_concentration(
     replicate_threshold: str,
     concentration_threshold: str,
     size_bp: str,
+    ignore_fail: bool = False,
 ) -> None:
     """Script for calculating qPCR dilutions. Requires an input qPCR result file and produces an output log file."""
 
@@ -142,13 +161,21 @@ def qpcr_concentration(
     process: Process = ctx.obj["process"]
 
     if local_file:
-        file_path: str = local_file
+        file_path: Path = Path(local_file)
     else:
         file_art: Artifact = get_artifact_by_name(process=process, name=file)
-        file_path: str = get_file_path(file_art)
+        file_path: Path = Path(get_file_path(file_art))
 
-    if not Path(file_path).is_file():
+    if not file_path.is_file():
         raise MissingFileError(f"No such file: {file_path}")
+
+    container_name: str = get_container_name(process=process)
+
+    if not ignore_fail and container_name not in file_path.name:
+        raise FileError(
+            f"The file name ('{file_path.name}') does not match the given container ({container_name})! "
+            f"Please check that the correct file has been used."
+        )
 
     try:
         artifacts: List[Artifact] = get_artifacts(process=process, measurement=True)
