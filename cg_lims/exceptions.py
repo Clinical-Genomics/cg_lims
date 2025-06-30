@@ -113,6 +113,12 @@ class InvalidValueError(LimsError):
     pass
 
 
+class InvalidContainerError(LimsError):
+    """Raise when a container is invalid"""
+
+    pass
+
+
 class CSVColumnError(LimsError):
     """Raise when handling errors with csv columns"""
 
