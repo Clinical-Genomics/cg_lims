@@ -1,5 +1,6 @@
 """Base cg_lims calss definitions
 """
+
 import logging
 from typing import Optional
 
