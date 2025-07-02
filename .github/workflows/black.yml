@@ -3,7 +3,7 @@ name: Black
 on: [pull_request]
 
 jobs:
-  lint:
+  black-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Check out git repository
