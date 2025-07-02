@@ -1,4 +1,5 @@
 """CLI module for calculating beads volumes"""
+
 import logging
 import sys
 from typing import List
@@ -20,6 +21,8 @@ def calculate_elution_volume(sample_volume: float) -> float:
 def calculate_beads_volume(sample_volume: float) -> float:
     """Calculates the bead volume. Double of sample volume."""
     return 2 * sample_volume
+
+
 def calculate_volumes(artifacts: List[Artifact]):
     """Calculates beads volume, water volume and elution volume"""
 
@@ -38,6 +41,8 @@ def calculate_volumes(artifacts: List[Artifact]):
         raise MissingUDFsError(
             f'Udf "Sample Volume (ul)" missing for {missing_udfs} out of {len(artifacts)} samples'
         )
+
+
 @click.command()
 @click.pass_context
 def calculate_beads(context: click.Context):

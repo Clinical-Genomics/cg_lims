@@ -24,6 +24,8 @@ HEADERS = [
     "Destination Well",
     "Buffer Volume",
 ]
+
+
 def get_barcode(artifact: Artifact) -> str:
     """Get the value/name of the container barcode"""
     return artifact.udf.get("Output Container Barcode")
