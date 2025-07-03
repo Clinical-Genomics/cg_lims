@@ -113,9 +113,9 @@ def get_file_data_and_write(
     build_csv(file=Path(file), rows=file_rows, headers=HEADERS)
     sort_csv_plate_and_tube(
         file=Path(file),
-        plate_columns=["Barcode Source Container", "Source Well"],
+        plate_columns=["Barcode Destination Container", "Destination Well"],
         tube_columns=["Destination Well"],
-        plate_well_columns=["Source Well"],
+        plate_well_columns=["Destination Well"],
         tube_well_columns=["Destination Well"],
     )
 
