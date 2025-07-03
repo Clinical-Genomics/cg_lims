@@ -4,6 +4,7 @@ needed, as specified in the step `CG002 - Normalization of microbial samples for
 
 For an explanation of the volume calculations, see AM-document 1764 Method - Manual
 cost-efficient library preparation for microbial WGS """
+
 import logging
 import sys
 from typing import List

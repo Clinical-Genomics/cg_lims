@@ -1,5 +1,6 @@
 """Scripts to check the process artifact udfs are set.
 """
+
 import logging
 import sys
 from typing import List

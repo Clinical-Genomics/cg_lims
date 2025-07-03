@@ -1,0 +1,21 @@
+name: Black
+
+on: [pull_request]
+
+jobs:
+  black-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out git repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.6.0
+        with:
+          python-version: "3.8"
+
+      - name: Set up Black
+        uses: psf/black@stable
+        with:
+          options: ". --check --line-length 100 --diff --color"
+          version: "24.8.0"

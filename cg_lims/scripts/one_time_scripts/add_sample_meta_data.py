@@ -1,4 +1,5 @@
 """One time script to add Covid meta data to sample"""
+
 import logging
 import pathlib
 from datetime import date, datetime

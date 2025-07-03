@@ -1,4 +1,5 @@
 """CLI module for calculating beads volumes"""
+
 import logging
 import sys
 from typing import List

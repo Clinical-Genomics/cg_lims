@@ -1,5 +1,6 @@
 """Scripts to set the sample date udfs.
 """
+
 import logging
 from datetime import datetime
 from typing import List, Literal
