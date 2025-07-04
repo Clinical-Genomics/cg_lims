@@ -128,7 +128,8 @@ def aggregate_metric_for_artifacts(
                 artifacts=source_artifacts
             )
             latest_process: Process = get_latest_process(processes=list(grouped_artifacts.keys()))
-            latest_flow_cell_id: str = get_flow_cell_name(process=latest_process)
+            if get_flow_cell_name(process=latest_process):
+                latest_flow_cell_id: str = get_flow_cell_name(process=latest_process)
             for process, process_artifacts in grouped_artifacts.items():
                 aggregated_result: float = aggregate_udf(
                     source_artifacts=process_artifacts,
