@@ -851,3 +851,9 @@ def times_sequenced_udf(
     help: str = "UDF name for the value documenting the amount of times the sample has been sequenced.",
 ) -> click.option:
     return click.option("-t", "--times-sequenced-udf", required=True, multiple=False, help=help)
+
+
+def flow_cell_udf(
+    help: str = "UDF name for Illumina flow cells.",
+) -> click.option:
+    return click.option("-fcu", "--flow-cell-udf", required=False, multiple=False, help=help)

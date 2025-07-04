@@ -1,12 +1,13 @@
 import logging
 import sys
 from collections import defaultdict
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 import click
 from cg_lims import options
 from cg_lims.exceptions import ArgumentError, LimsError
 from cg_lims.get.artifacts import get_artifacts
+from cg_lims.get.fields import get_flow_cell_name
 from cg_lims.get.processes import get_latest_process
 from genologics.entities import Artifact, Process, Sample
 from genologics.lims import Lims
@@ -102,6 +103,7 @@ def group_by_process(artifacts: List[Artifact]) -> Dict[Process, List[Artifact]]
 def aggregate_metric_for_artifacts(
     metric: MetricUdf,
     times_sequenced_udf: str,
+    latest_sequencing_container_udf: Optional[str],
     process_type: str,
     artifacts: List[Artifact],
     lims: Lims,
@@ -117,6 +119,7 @@ def aggregate_metric_for_artifacts(
         total_aggregated_result: float = 0
         latest_aggregate: float = 0
         times_sequenced: int = 0
+        latest_flow_cell_id: Optional[str] = None
         for sample in samples:
             source_artifacts: List[Artifact] = lims.get_artifacts(
                 samplelimsid=sample.id, process_type=process_type, qc_flag="PASSED"
@@ -125,6 +128,8 @@ def aggregate_metric_for_artifacts(
                 artifacts=source_artifacts
             )
             latest_process: Process = get_latest_process(processes=list(grouped_artifacts.keys()))
+            if latest_sequencing_container_udf and get_flow_cell_name(process=latest_process):
+                latest_flow_cell_id: str = get_flow_cell_name(process=latest_process)
             for process, process_artifacts in grouped_artifacts.items():
                 aggregated_result: float = aggregate_udf(
                     source_artifacts=process_artifacts,
@@ -140,6 +145,8 @@ def aggregate_metric_for_artifacts(
             sample.udf[times_sequenced_udf] = times_sequenced
             sample.put()
         artifact.udf[metric.latest_aggregate_udf] = latest_aggregate
+        if latest_flow_cell_id:
+            artifact.udf[latest_sequencing_container_udf] = latest_flow_cell_id
         artifact.put()
 
 
@@ -149,6 +156,7 @@ def aggregate_all_metrics(
     artifacts: List[Artifact],
     lims: Lims,
     times_sequenced_udf: str,
+    latest_sequencing_container_udf: Optional[str],
 ) -> None:
     """Aggregate all metric UDFs across all given input artifacts."""
     for metric in metrics:
@@ -158,6 +166,7 @@ def aggregate_all_metrics(
             artifacts=artifacts,
             lims=lims,
             times_sequenced_udf=times_sequenced_udf,
+            latest_sequencing_container_udf=latest_sequencing_container_udf,
         )
 
 
@@ -168,6 +177,10 @@ def aggregate_all_metrics(
 @options.unit_conversion()
 @options.process_types()
 @options.times_sequenced_udf()
+@options.flow_cell_udf(
+    help="The UDF describing the flow cell name of the latest sequencing run of the sample."
+    " NOTE: Only works for Illumina flow cells.",
+)
 @click.pass_context
 def aggregate_sequencing_metrics(
     ctx,
@@ -177,6 +190,7 @@ def aggregate_sequencing_metrics(
     unit_conversion_factor: List[str],
     process_types: List[str],
     times_sequenced_udf: str,
+    flow_cell_udf: Optional[str] = None,
 ):
     """
     Script for aggregating artifact UDFs for numeric values and saving them to the sample level.
@@ -202,6 +216,7 @@ def aggregate_sequencing_metrics(
                 artifacts=artifacts,
                 lims=lims,
                 times_sequenced_udf=times_sequenced_udf,
+                latest_sequencing_container_udf=flow_cell_udf,
             )
         click.echo("All UDF values have been aggregated!")
     except LimsError as e:
